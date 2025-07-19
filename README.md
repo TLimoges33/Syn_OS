@@ -1,81 +1,93 @@
-# Syn_OS - Consciousness-Enhanced Cybersecurity OS
+# Syn_OS
 
-> **Security-First | Zero-Trust | AI-Enhanced**
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Security](https://img.shields.io/badge/Security-First-brightgreen)](./SECURITY.md)
 
-Syn_OS is a next-generation operating system that integrates advanced AI consciousness with enterprise-grade cybersecurity. Built from the ground up with a security-first architecture and zero-trust principles.
+A security-first operating system integrating AI consciousness with cybersecurity fundamentals. Built to address the critical vulnerabilities identified in legacy systems through clean architecture and zero-trust principles.
 
-## 🛡️ Security Features
+## Overview
 
-- **Zero Command Injection** - All inputs validated and sanitized
-- **mTLS Everywhere** - End-to-end encryption for all communications  
-- **Hardware Security Module** - Root of trust with HSM integration
-- **eBPF Monitoring** - Real-time kernel-level security monitoring
-- **Role-Based Access Control** - Granular permissions and capabilities
+Syn_OS is a complete rebuild focused on:
+- **Security-first design** - Every component validated and hardened
+- **Zero-trust architecture** - Continuous verification and minimal access
+- **AI integration** - Local AI processing with LM Studio compatibility  
+- **Clean codebase** - Replacing compromised legacy systems
 
-## 🧠 AI Integration
+## Architecture
 
-- **Local AI Processing** - LM Studio compatible, runs offline
-- **Consciousness Engine** - Adaptive decision-making system
-- **Resource Efficient** - Optimized for student/development hardware
-- **Model Hot-Swapping** - Switch AI models without restart
+```
+src/
+├── security/           # Authentication, encryption, validation
+├── consciousness/      # AI decision engine and learning systems
+├── kernel/            # eBPF programs and system monitoring
+└── frontend/          # User interfaces and dashboards
+```
 
-## 🚀 Performance
+## Security Features
 
-- **<10ms AI Decisions** - Cached inference for real-time response
-- **100K+ Messages/sec** - High-performance ZeroMQ message bus
-- **<1% Overhead** - Efficient eBPF kernel monitoring
-- **99.9% Uptime** - Production-ready reliability
+- Input validation and sanitization for all external data
+- mTLS encryption for all network communications
+- Hardware security module (HSM) integration
+- Real-time threat detection with eBPF monitoring
+- Role-based access control with dynamic permissions
 
-## 📋 Development Status
+## AI Capabilities
 
-**Current Phase: Phase 0 - Foundation Reset**
+- Local AI processing (offline-first)
+- Adaptive decision making based on system patterns
+- Resource optimization and performance tuning
+- Anomaly detection and automated response
+- Compatible with standard ML frameworks
 
-- [x] Repository initialization
-- [x] Security-first architecture design
+## Development
+
+### Prerequisites
+- Rust (latest stable)
+- Python 3.9+
+- Go 1.19+
+- Node.js 18+
+
+### Setup
+```bash
+git clone https://github.com/TLimoges33/Syn_OS.git
+cd Syn_OS
+./scripts/setup/install.sh
+```
+
+### Testing
+```bash
+make test              # Run all tests
+make security-scan     # Security vulnerability scan
+make lint             # Code quality checks
+```
+
+## Quality Standards
+
+- **Test Coverage**: >90% for all modules
+- **Security**: Zero high/critical vulnerabilities
+- **Performance**: <100ms response times
+- **Documentation**: Complete API coverage
+
+## Contributing
+
+1. Read [CONTRIBUTING.md](./docs/CONTRIBUTING.md)
+2. Review [SECURITY.md](./SECURITY.md) 
+3. Follow security-first development practices
+4. All PRs require security review
+
+## Project Status
+
+**Current Phase**: Foundation Development
+
+- [x] Repository setup and architecture
 - [ ] Core security implementation
 - [ ] Consciousness engine framework
-- [ ] System integration
-- [ ] Production hardening
+- [ ] System integration testing
 
-## 🏗️ Architecture
+## License
 
-```
-Syn_OS/
-├── src/
-│   ├── security/          # Authentication, encryption, validation
-│   ├── consciousness/     # AI engine and decision systems
-│   ├── kernel/           # eBPF programs and syscall hooks
-│   └── frontend/         # React dashboard and CLI tools
-├── docs/                 # Architecture and development guides
-├── config/               # System configuration files
-├── tests/                # Comprehensive test suites
-└── scripts/              # Setup and deployment automation
-```
-
-## 🔧 Technology Stack
-
-- **Security**: Rust for memory safety and performance
-- **AI**: Python with HuggingFace and LangChain
-- **Performance**: Go for high-throughput services
-- **Frontend**: TypeScript/React for modern UX
-- **Infrastructure**: Docker, Kubernetes, Terraform
-
-## 📊 Quality Metrics
-
-- **Security Score**: Target A+ (vs previous 2/10)
-- **Code Quality**: Target >8/10 maintainability
-- **Test Coverage**: >90% across all components
-- **Performance**: <100ms p99 latency
-- **Documentation**: Complete API and developer guides
-
-## 🤝 Contributing
-
-See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for development guidelines and security requirements.
-
-## 📄 License
-
-MIT License - See [LICENSE](LICENSE) for details.
+MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-**Built with security, consciousness, and artistic vision.**
+Built with security, consciousness, and clean code principles.
