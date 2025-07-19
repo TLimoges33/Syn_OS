@@ -1,0 +1,12 @@
+{
+    "folders": [
+        {
+            "name": "SynapticOS",
+            "path": "/media/sf_X_DRIVE/Ty Main/Syn_OS"
+        }
+    ],
+    "settings": {
+        "terminal.integrated.cwd": "/media/sf_X_DRIVE/Ty Main/Syn_OS",
+        "terminal.integrated.defaultProfile.linux": "bash"
+    }
+}
