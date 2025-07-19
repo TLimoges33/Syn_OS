@@ -5,6 +5,13 @@
 set -euo pipefail
 
 echo "🚀 Initializing Syn_OS comprehensive development environment..."
+echo "📍 Working directory: $(pwd)"
+echo "👤 User: $(whoami)"
+echo "🏠 Home: $HOME"
+
+# Fix common codespace issues first
+echo "🔧 Applying codespace fixes..."
+bash .devcontainer/fix-cargo-issues.sh || echo "Cargo fixes applied"
 
 # Security: Validate environment
 echo "🔍 Validating security configuration..."

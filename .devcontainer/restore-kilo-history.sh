@@ -6,10 +6,16 @@ set -euo pipefail
 
 echo "🔄 Restoring Kilo Code chat history..."
 
-# Source and destination paths
-SOURCE_KILO="/home/diablorain/.config/Code/User/globalStorage/kilocode.kilo-code"
-DEST_KILO="/workspace/.devcontainer/kilo-backup"
-PROJECT_KILO="/workspace/.kilocode"
+# Source and destination paths (codespace-aware)
+SOURCE_KILO="/home/vscode/.config/Code/User/globalStorage/kilocode.kilo-code"
+if [[ ! -d "$SOURCE_KILO" ]]; then
+    SOURCE_KILO="/home/diablorain/.config/Code/User/globalStorage/kilocode.kilo-code"
+fi
+
+# Use current workspace directory
+WORKSPACE_DIR="${PWD}"
+DEST_KILO="${WORKSPACE_DIR}/.devcontainer/kilo-backup"
+PROJECT_KILO="${WORKSPACE_DIR}/.kilocode"
 
 # Create backup directory
 mkdir -p "$DEST_KILO"

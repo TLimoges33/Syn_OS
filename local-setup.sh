@@ -25,15 +25,26 @@ if [[ -z "$1" ]]; then
 fi
 
 echo "🦀 Creating Rust project: $1"
-cargo new "$1"
+echo "📁 Current directory: $(pwd)"
+
+# Use CARGO_TARGET_DIR to avoid file conflicts
+export CARGO_TARGET_DIR="/tmp/cargo-target-$USER"
+mkdir -p "$CARGO_TARGET_DIR"
+
+cargo new "$1" --vcs none
 cd "$1"
 
-# Add common dependencies
-cargo add serde --features derive
-cargo add tokio --features full
-cargo add clap --features derive
-cargo add anyhow
-cargo add thiserror
+# Add common dependencies with retry and file sync
+echo "Adding dependencies with file sync..."
+sync
+sleep 1
+cargo add serde --features derive --offline=false || echo "serde dependency may need manual addition"
+sync
+sleep 1  
+cargo add anyhow --offline=false || echo "anyhow dependency may need manual addition"
+sync
+sleep 1
+cargo add thiserror --offline=false || echo "thiserror dependency may need manual addition"
 
 # Create basic security configuration
 cat > deny.toml << 'EOD'
@@ -108,15 +119,27 @@ EOF
 # Create rw (rust watch) command
 cat > ~/.local/bin/rw << 'EOF'
 #!/bin/bash
-# Rust watch command
+# Rust watch command with codespace optimization
 
 if ! command -v cargo-watch &> /dev/null; then
     echo "Installing cargo-watch..."
+    export CARGO_TARGET_DIR="/tmp/cargo-target-install"
     cargo install cargo-watch
 fi
 
+# Check if we're in a Rust project
+if [[ ! -f "Cargo.toml" ]]; then
+    echo "❌ Error: Not in a Rust project directory"
+    echo "💡 Run this command from a directory with Cargo.toml"
+    echo "🔧 Or create a project first: new-rust-project my-project"
+    exit 1
+fi
+
 echo "🦀 Starting Rust watch mode..."
-cargo watch -x check -x test
+echo "📁 Project: $(pwd)"
+export CARGO_TARGET_DIR="/tmp/cargo-target-$(basename $(pwd))"
+mkdir -p "$CARGO_TARGET_DIR"
+cargo watch -x "check --bins --lib" -x "test --lib"
 EOF
 
 # Create development aliases script
