@@ -40,6 +40,8 @@ echo "🛡️ Installing Rust security toolchain..."
 cargo install --locked cargo-audit || echo "cargo-audit already installed"
 cargo install --locked cargo-deny || echo "cargo-deny already installed"
 cargo install --locked cargo-geiger || echo "cargo-geiger already installed"
+cargo install --locked cargo-tarpaulin || echo "cargo-tarpaulin already installed" # Code coverage
+cargo install --locked flamegraph || echo "flamegraph already installed" # Performance profiling
 
 # Python security environment
 echo "🐍 Setting up Python security environment..."

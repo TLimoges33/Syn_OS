@@ -34,39 +34,82 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
         pkg-config \
         libssl-dev \
         libudev-dev \
+        make \
+        autotools-dev \
+        automake \
+        autoconf \
+        libtool \
         # Compiler infrastructure
         llvm \
         clang \
+        clang-tools \
+        clang-tidy \
+        clang-format \
         lld \
+        gcc-multilib \
+        g++-multilib \
+        # Static analysis tools
+        cppcheck \
         # Debugging tools
         gdb \
+        gdb-multiarch \
         lldb \
         valgrind \
         strace \
         ltrace \
+        # Performance and profiling
+        linux-tools-common \
+        linux-tools-generic \
+        perf-tools-unstable \
         # Assembly and binary tools
         nasm \
         binutils \
+        binutils-multiarch \
         bsdextrautils \
+        objdump \
+        nm \
+        readelf \
         # Virtualization for kernel testing
         qemu-system-x86 \
+        qemu-system-arm \
         qemu-utils \
         # Security tools
         fail2ban \
         rkhunter \
         chkrootkit \
+        # Network analysis
+        tcpdump \
+        wireshark-common \
+        tshark \
+        nmap \
+        netcat \
         # Monitoring tools
         htop \
         iotop \
-        tcpdump \
+        sysstat \
+        dstat \
         # Network security
         curl \
         wget \
         gnupg \
+        openssh-client \
+        # Database tools
+        sqlite3 \
+        postgresql-client \
+        # Documentation tools
+        pandoc \
+        graphviz \
+        # File and text processing
+        jq \
+        yq \
+        tree \
+        ripgrep \
+        fd-find \
         # Python development
         python3 \
         python3-pip \
         python3-venv \
+        python3-dev \
         # Go development placeholder
         software-properties-common \
         # Node.js LTS
@@ -84,23 +127,75 @@ RUN GO_VERSION="1.21.5" \
     && tar -C /usr/local -xzf "go${GO_VERSION}.linux-amd64.tar.gz" \
     && rm "go${GO_VERSION}.linux-amd64.tar.gz"
 
+# Install Go development tools
+ENV PATH="/usr/local/go/bin:${PATH}"
+RUN go install golang.org/x/tools/gopls@latest \
+    && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest \
+    && go install github.com/securecodewarrior/shenron@latest \
+    && go install github.com/aquasecurity/trivy@latest \
+    && go install github.com/trufflesecurity/trufflehog/v3@latest
+
+# Install additional security and development tools
+RUN curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin \
+    && curl -sSfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin \
+    && wget -O /usr/local/bin/hadolint https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64 \
+    && chmod +x /usr/local/bin/hadolint
+
 # Install Rust from builder stage
 COPY --from=rust-builder /usr/local/cargo /usr/local/cargo
 COPY --from=rust-builder /usr/local/rustup /usr/local/rustup
 
-# Install Python security packages
+# Install Python security and development packages
 RUN python3 -m pip install --no-cache-dir --upgrade pip \
     && python3 -m pip install --no-cache-dir \
+        # Core development tools
         capstone \
         keystone-engine \
         requests \
         pyyaml \
+        # Security tools
         bandit \
         safety \
-        semgrep
+        semgrep \
+        detect-secrets \
+        # Code quality tools
+        black \
+        isort \
+        mypy \
+        pylint \
+        flake8 \
+        # Testing frameworks
+        pytest \
+        pytest-cov \
+        # Documentation tools
+        sphinx \
+        mkdocs \
+        # Data analysis
+        pandas \
+        numpy \
+        # Container security
+        trivy-operator
 
-# Install additional security tools
-RUN cargo install cargo-audit cargo-deny
+# Install comprehensive Rust toolchain
+RUN cargo install --locked \
+        # Security tools
+        cargo-audit \
+        cargo-deny \
+        cargo-geiger \
+        # Development tools
+        cargo-watch \
+        cargo-expand \
+        cargo-tree \
+        cargo-outdated \
+        # Testing and benchmarking
+        cargo-nextest \
+        criterion \
+        # Cross-compilation
+        cross \
+        # Documentation
+        mdbook \
+        # Code generation
+        bindgen-cli
 
 # Security: File system permissions
 RUN mkdir -p /workspace \
