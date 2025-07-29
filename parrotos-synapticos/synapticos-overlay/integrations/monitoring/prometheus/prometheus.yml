@@ -1,0 +1,139 @@
+# Prometheus Configuration for SynapticsOS
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'synapticos-prod'
+    environment: 'production'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:9093
+
+# Load rules once and periodically evaluate them
+rule_files:
+  - "alerts/*.yml"
+  - "recording_rules/*.yml"
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    metrics_path: '/metrics'
+
+  # Node Exporter - System metrics
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: 
+          - 'node-exporter:9100'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: '([^:]+):.*'
+
+  # Kong API Gateway metrics
+  - job_name: 'kong'
+    static_configs:
+      - targets: ['api-gateway:8001']
+    metrics_path: '/metrics'
+    scheme: http
+
+  # Vault metrics
+  - job_name: 'vault'
+    static_configs:
+      - targets: ['vault:8200']
+    metrics_path: '/v1/sys/metrics'
+    params:
+      format: ['prometheus']
+    bearer_token_file: /etc/prometheus/vault-token
+
+  # n8n workflow metrics
+  - job_name: 'n8n'
+    static_configs:
+      - targets: ['n8n:5678']
+    metrics_path: '/metrics'
+    basic_auth:
+      username: 'prometheus'
+      password_file: /etc/prometheus/n8n-password
+
+  # Context Engine metrics
+  - job_name: 'context-engine'
+    static_configs:
+      - targets: ['context-engine:8080']
+    metrics_path: '/metrics'
+    scheme: http
+
+  # JaceAI metrics
+  - job_name: 'jace-ai'
+    static_configs:
+      - targets: ['jace-ai:8081']
+    metrics_path: '/metrics'
+
+  # Speechify metrics
+  - job_name: 'speechify'
+    static_configs:
+      - targets: ['speechify:8082']
+    metrics_path: '/metrics'
+
+  # PostgreSQL exporter
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+
+  # Docker container metrics
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+    metrics_path: '/metrics'
+
+  # Loki log aggregation status
+  - job_name: 'loki'
+    static_configs:
+      - targets: ['loki:3100']
+    metrics_path: '/metrics'
+
+  # Service discovery for dynamic targets
+  - job_name: 'kubernetes-pods'
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
+      - source_labels: [__meta_kubernetes_namespace]
+        action: replace
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        action: replace
+        target_label: kubernetes_pod_name
+
+# Remote write configuration for long-term storage
+remote_write:
+  - url: "http://thanos-receive:19291/api/v1/receive"
+    queue_config:
+      max_samples_per_send: 10000
+      batch_send_deadline: 30s
+      min_backoff: 30ms
+      max_backoff: 100ms
+
+# Remote read configuration
+remote_read:
+  - url: "http://thanos-query:9090/api/v1/read"
+    read_recent: true

@@ -1,0 +1,29 @@
+[package]
+name = "syn-security"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+# Cryptography
+ring = { workspace = true }
+chacha20poly1305 = { workspace = true }
+x25519-dalek = { workspace = true }
+ed25519-dalek = { workspace = true }
+
+# Error handling
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+
+# Core utilities
+spin = { workspace = true }
+
+[features]
+default = ["audit-logging", "threat-detection"]
+audit-logging = []
+threat-detection = []
+zero-trust = []
