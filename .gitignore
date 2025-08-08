@@ -26,3 +26,105 @@ Thumbs.db
 
 # MCP OS-specific configuration
 .kilocode/mcp.json
+
+# SECURITY: Additional sensitive files and directories
+# Never commit these files as they contain secrets and credentials
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cer
+*.der
+secrets/
+keys/
+certificates/
+vault/
+.vault/
+.secrets/
+
+# Environment files - CRITICAL SECURITY
+.env.production
+.env.staging
+.env.development
+.env.test
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+data/
+*.dump
+*.sql
+
+# Security log files - may contain sensitive information
+audit.log
+security.log
+access.log
+error.log
+/var/log/syn_os/
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+*.save
+
+# Docker secrets
+docker-compose.override.yml
+
+# Kubernetes secrets
+*.yaml.secret
+*.yml.secret
+k8s-secrets/
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+.terraform/
+terraform.tfvars
+*.auto.tfvars
+
+# SSH keys
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+known_hosts
+authorized_keys
+
+# GPG keys
+*.gpg
+*.asc
+pubring.gpg
+secring.gpg
+
+# Configuration files that might contain secrets
+config.ini
+config.yaml
+config.yml
+local.conf
+production.conf
+
+# Security scan results
+.bandit
+.safety
+security-report.*
+vulnerability-report.*
+
+# GeoIP databases (large files, download separately)
+*.mmdb
+GeoLite2-*.mmdb
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Node.js (if frontend is added)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

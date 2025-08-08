@@ -1,0 +1,523 @@
+name: Syn_OS CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types: [ published ]
+
+env:
+  GO_VERSION: '1.21'
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # Code Quality and Security Checks
+  code-quality:
+    name: Code Quality & Security
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: ${{ env.GO_VERSION }}
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 black isort bandit safety
+        pip install -r requirements.txt || true
+        pip install -r requirements-nats.txt || true
+    
+    - name: Python Code Formatting (Black)
+      run: black --check --diff .
+    
+    - name: Python Import Sorting (isort)
+      run: isort --check-only --diff .
+    
+    - name: Python Linting (flake8)
+      run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    
+    - name: Python Security Check (Bandit)
+      run: bandit -r src/ applications/ tools/ -f json -o bandit-report.json || true
+    
+    - name: Python Dependency Security (Safety)
+      run: safety check --json --output safety-report.json || true
+    
+    - name: Go Formatting
+      run: |
+        cd services/orchestrator
+        if [ "$(gofmt -s -l . | wc -l)" -gt 0 ]; then
+          echo "Go code is not formatted:"
+          gofmt -s -l .
+          exit 1
+        fi
+    
+    - name: Go Linting
+      uses: golangci/golangci-lint-action@v3
+      with:
+        version: latest
+        working-directory: services/orchestrator
+    
+    - name: Go Security Check
+      uses: securecodewarrior/github-action-gosec@master
+      with:
+        args: '-fmt json -out gosec-report.json ./services/orchestrator/...'
+    
+    - name: Upload Security Reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-reports
+        path: |
+          bandit-report.json
+          safety-report.json
+          gosec-report.json
+
+  # Unit Tests
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    needs: code-quality
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_USER: test_user
+          POSTGRES_DB: syn_os_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+      
+      nats:
+        image: nats:2.10-alpine
+        ports:
+          - 4222:4222
+          - 8222:8222
+        options: >-
+          --health-cmd "wget --quiet --tries=1 --spider http://localhost:8222/healthz || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: ${{ env.GO_VERSION }}
+    
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-cov pytest-asyncio coverage
+        pip install -r requirements.txt || true
+        pip install -r requirements-nats.txt || true
+        pip install -r tests/requirements.txt || true
+    
+    - name: Run Python Unit Tests
+      env:
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: 5432
+        POSTGRES_DB: syn_os_test
+        POSTGRES_USER: test_user
+        POSTGRES_PASSWORD: test_password
+        REDIS_HOST: localhost
+        REDIS_PORT: 6379
+        NATS_URL: nats://localhost:4222
+      run: |
+        python tests/coverage/test_runner.py
+    
+    - name: Run Go Unit Tests
+      working-directory: services/orchestrator
+      env:
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: 5432
+        POSTGRES_DB: syn_os_test
+        POSTGRES_USER: test_user
+        POSTGRES_PASSWORD: test_password
+        REDIS_HOST: localhost
+        REDIS_PORT: 6379
+        NATS_URL: nats://localhost:4222
+      run: |
+        go test -v -race -coverprofile=coverage.out ./...
+        go tool cover -html=coverage.out -o coverage.html
+    
+    - name: Upload Test Coverage
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-coverage
+        path: |
+          tests/coverage/
+          services/orchestrator/coverage.html
+    
+    - name: Upload Coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./tests/coverage/coverage.xml,./services/orchestrator/coverage.out
+        flags: unittests
+        name: syn-os-coverage
+
+  # Integration Tests
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_USER: test_user
+          POSTGRES_DB: syn_os_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+      
+      nats:
+        image: nats:2.10-alpine
+        ports:
+          - 4222:4222
+          - 8222:8222
+        options: >-
+          --health-cmd "nats-server --help"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: ${{ env.GO_VERSION }}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt || true
+        pip install -r requirements-nats.txt || true
+        pip install -r tests/requirements.txt || true
+    
+    - name: Build Go services
+      working-directory: services/orchestrator
+      run: |
+        go mod download
+        go build -o bin/orchestrator ./cmd/orchestrator
+    
+    - name: Start Services
+      env:
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: 5432
+        POSTGRES_DB: syn_os_test
+        POSTGRES_USER: test_user
+        POSTGRES_PASSWORD: test_password
+        REDIS_HOST: localhost
+        REDIS_PORT: 6379
+        NATS_URL: nats://localhost:4222
+      run: |
+        # Start orchestrator in background
+        cd services/orchestrator
+        ./bin/orchestrator &
+        ORCHESTRATOR_PID=$!
+        echo "ORCHESTRATOR_PID=$ORCHESTRATOR_PID" >> $GITHUB_ENV
+        
+        # Start consciousness system in background
+        cd ../../src/consciousness_v2
+        python -m main &
+        CONSCIOUSNESS_PID=$!
+        echo "CONSCIOUSNESS_PID=$CONSCIOUSNESS_PID" >> $GITHUB_ENV
+        
+        # Wait for services to start
+        sleep 10
+    
+    - name: Run Integration Tests
+      env:
+        ORCHESTRATOR_URL: http://localhost:8080
+        CONSCIOUSNESS_URL: http://localhost:8081
+        NATS_URL: nats://localhost:4222
+      run: |
+        python tests/integration/test_consciousness_orchestrator_integration.py
+    
+    - name: Stop Services
+      if: always()
+      run: |
+        kill $ORCHESTRATOR_PID || true
+        kill $CONSCIOUSNESS_PID || true
+
+  # Build and Package
+  build:
+    name: Build & Package
+    runs-on: ubuntu-latest
+    needs: [unit-tests, integration-tests]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: ${{ env.GO_VERSION }}
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: Login to Docker Hub
+      if: github.event_name != 'pull_request'
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    
+    - name: Build Go binaries
+      run: |
+        cd services/orchestrator
+        go mod download
+        CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o bin/orchestrator ./cmd/orchestrator
+    
+    - name: Build Docker images
+      run: |
+        # Build orchestrator image
+        docker build -t syn-os/orchestrator:${{ github.sha }} -f services/orchestrator/Dockerfile services/orchestrator
+        
+        # Build consciousness image
+        docker build -t syn-os/consciousness:${{ github.sha }} -f Dockerfile.consciousness .
+        
+        # Tag as latest if main branch
+        if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+          docker tag syn-os/orchestrator:${{ github.sha }} syn-os/orchestrator:latest
+          docker tag syn-os/consciousness:${{ github.sha }} syn-os/consciousness:latest
+        fi
+    
+    - name: Push Docker images
+      if: github.event_name != 'pull_request'
+      run: |
+        docker push syn-os/orchestrator:${{ github.sha }}
+        docker push syn-os/consciousness:${{ github.sha }}
+        
+        if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+          docker push syn-os/orchestrator:latest
+          docker push syn-os/consciousness:latest
+        fi
+    
+    - name: Create Release Package
+      if: github.event_name == 'release'
+      run: |
+        mkdir -p release
+        
+        # Copy binaries
+        cp services/orchestrator/bin/orchestrator release/
+        
+        # Copy deployment scripts
+        cp parrotos-synapticos/deploy_syn_os.sh release/
+        cp docker-compose.yml release/
+        cp docker-compose.test.yml release/
+        cp Makefile release/
+        
+        # Copy documentation
+        cp -r docs release/
+        
+        # Create archive
+        tar -czf syn-os-${{ github.event.release.tag_name }}.tar.gz release/
+    
+    - name: Upload Release Asset
+      if: github.event_name == 'release'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./syn-os-${{ github.event.release.tag_name }}.tar.gz
+        asset_name: syn-os-${{ github.event.release.tag_name }}.tar.gz
+        asset_content_type: application/gzip
+
+  # Security Scan
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name != 'pull_request'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+    
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: 'trivy-results.sarif'
+    
+    - name: Docker Image Security Scan
+      run: |
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+          -v $PWD:/tmp/.cache/ aquasec/trivy:latest image \
+          --exit-code 0 --no-progress --format table \
+          syn-os/orchestrator:${{ github.sha }}
+
+  # Deploy to Staging
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [build, security-scan]
+    if: github.ref == 'refs/heads/develop'
+    environment: staging
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Deploy to Staging Environment
+      run: |
+        echo "Deploying to staging environment..."
+        # Add actual deployment commands here
+        # This could involve SSH to staging server, kubectl apply, etc.
+    
+    - name: Run Smoke Tests
+      run: |
+        echo "Running smoke tests on staging..."
+        # Add smoke test commands here
+
+  # Deploy to Production
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [build, security-scan]
+    if: github.event_name == 'release'
+    environment: production
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Deploy to Production Environment
+      run: |
+        echo "Deploying to production environment..."
+        # Add actual deployment commands here
+        # This could involve SSH to production server, kubectl apply, etc.
+    
+    - name: Run Health Checks
+      run: |
+        echo "Running production health checks..."
+        # Add health check commands here
+    
+    - name: Notify Deployment Success
+      uses: 8398a7/action-slack@v3
+      with:
+        status: success
+        text: "Syn_OS ${{ github.event.release.tag_name }} deployed to production successfully! 🎉"
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # Performance Tests
+  performance-tests:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    needs: integration-tests
+    if: github.ref == 'refs/heads/main' || github.event_name == 'release'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install dependencies
+      run: |
+        pip install locust pytest-benchmark
+    
+    - name: Run Performance Tests
+      run: |
+        echo "Running performance tests..."
+        # Add performance test commands here
+        # python tests/performance/test_performance.py
+    
+    - name: Upload Performance Results
+      uses: actions/upload-artifact@v3
+      with:
+        name: performance-results
+        path: performance-results/
+
+  # Workflow notifications
+  notifications:
+    name: Notifications
+    runs-on: ubuntu-latest
+    needs: [unit-tests, integration-tests, build]
+    if: always()
+    
+    steps:
+    - name: Notify on Failure
+      if: failure()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: failure
+        text: "Syn_OS CI/CD pipeline failed! 🚨"
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
