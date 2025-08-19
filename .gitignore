@@ -24,8 +24,15 @@ Thumbs.db
 *.tmp
 *.temp
 
-# MCP OS-specific configuration
-.kilocode/mcp.json
+# Claude/Kilo Code Engine - Not needed for production development
+.claude/
+.kilocode/
+*.claude.json
+mcp.json
+mcp-*.json
+
+# MCP OS-specific configuration (if still needed)
+.mcp/
 
 # SECURITY: Additional sensitive files and directories
 # Never commit these files as they contain secrets and credentials
