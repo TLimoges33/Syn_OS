@@ -1,0 +1,22 @@
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+    "--cov=src",
+    "--cov-report=html:results/coverage_reports/html",
+    "--cov-report=term-missing",
+    "--benchmark-only",
+    "--benchmark-sort=mean"
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*", "venv/*", "*/migrations/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError"
+]

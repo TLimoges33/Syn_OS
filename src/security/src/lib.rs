@@ -3,6 +3,7 @@ pub mod crypto;
 pub mod validation;
 pub mod monitoring;
 pub mod audit;
+pub mod integration;
 
 use core::sync::atomic::{AtomicBool, Ordering};
 
@@ -27,6 +28,9 @@ pub fn init() {
     
     // Initialize audit logging
     audit::init();
+    
+    // Initialize security integration bridge
+    integration::init();
     
     SECURITY_INITIALIZED.store(true, Ordering::SeqCst);
     println!("✅ Security Subsystem initialized");

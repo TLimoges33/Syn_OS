@@ -1470,3 +1470,452 @@ class KernelConsciousnessHooksV2(ConsciousnessComponent):
         except Exception as e:
             logger.error(f"Error updating configuration: {e}")
             return False
+
+
+# Compatibility aliases for audit system
+KernelHooksV2 = KernelConsciousnessHooksV2
+
+class MemoryManagementHooks:
+    """Memory management hooks for consciousness integration"""
+    
+    def __init__(self, kernel_interface: KernelConsciousnessInterface):
+        self.kernel_interface = kernel_interface
+        self.logger = logging.getLogger(f"{__name__}.MemoryManagementHooks")
+        self.memory_allocations: Dict[int, Dict[str, Any]] = {}
+        self.memory_pressure_threshold = 0.85
+        
+    async def process_scheduling_hook(self, pid: int, priority: int, consciousness_level: float) -> bool:
+        """Hook for process scheduling with consciousness awareness"""
+        try:
+            # Classify the process
+            classification = await self.kernel_interface.classify_process(pid)
+            
+            # Adjust scheduling based on consciousness requirements
+            if classification.process_type != ConsciousnessProcessType.NONE:
+                # Apply consciousness-aware scheduling
+                adjusted_priority = priority + classification.priority_boost
+                
+                # Set CPU affinity for consciousness processes
+                if classification.cpu_affinity:
+                    try:
+                        proc = psutil.Process(pid)
+                        proc.cpu_affinity(classification.cpu_affinity)
+                        
+                        # Set real-time scheduling for critical consciousness processes
+                        if classification.real_time_required:
+                            proc.nice(-10)  # Higher priority
+                        
+                        self.logger.debug(f"Applied consciousness scheduling to PID {pid}: priority={adjusted_priority}")
+                        return True
+                        
+                    except (psutil.NoSuchProcess, psutil.AccessDenied):
+                        pass
+            
+            return False
+            
+        except Exception as e:
+            self.logger.error(f"Error in process scheduling hook for PID {pid}: {e}")
+            return False
+    
+    async def memory_management_hook(self, addr: int, size: int, operation: str, pool_type: AIMemoryPoolType) -> bool:
+        """Hook for memory management operations"""
+        try:
+            if operation == "allocate":
+                # Track memory allocation
+                self.memory_allocations[addr] = {
+                    'size': size,
+                    'pool_type': pool_type,
+                    'timestamp': datetime.now(),
+                    'owner_pid': os.getpid()
+                }
+                
+                # Check for memory pressure
+                total_allocated = sum(alloc['size'] for alloc in self.memory_allocations.values())
+                available_memory = psutil.virtual_memory().available
+                
+                memory_pressure = total_allocated / (total_allocated + available_memory)
+                
+                if memory_pressure > self.memory_pressure_threshold:
+                    self.logger.warning(f"Memory pressure detected: {memory_pressure:.2%}")
+                    await self._trigger_memory_optimization()
+                
+                self.logger.debug(f"Memory allocated: 0x{addr:x}, size={size}, pool={pool_type}")
+                return True
+                
+            elif operation == "free":
+                # Remove from tracking
+                if addr in self.memory_allocations:
+                    allocation = self.memory_allocations.pop(addr)
+                    self.logger.debug(f"Memory freed: 0x{addr:x}, size={allocation['size']}")
+                    return True
+                else:
+                    self.logger.warning(f"Attempted to free untracked memory: 0x{addr:x}")
+                    return False
+                    
+            return False
+            
+        except Exception as e:
+            self.logger.error(f"Error in memory management hook: {e}")
+            return False
+    
+    async def _trigger_memory_optimization(self):
+        """Trigger memory optimization when pressure is detected"""
+        try:
+            # Free old allocations
+            current_time = datetime.now()
+            old_allocations = []
+            
+            for addr, alloc in self.memory_allocations.items():
+                age = (current_time - alloc['timestamp']).total_seconds()
+                if age > 300:  # 5 minutes old
+                    old_allocations.append(addr)
+            
+            # Free old allocations
+            for addr in old_allocations:
+                await self.kernel_interface.free_ai_memory(addr)
+                self.memory_allocations.pop(addr, None)
+            
+            self.logger.info(f"Memory optimization freed {len(old_allocations)} old allocations")
+            
+        except Exception as e:
+            self.logger.error(f"Error in memory optimization: {e}")
+
+class SecurityEventHandling:
+    """Security event handling for kernel consciousness integration"""
+    
+    def __init__(self, kernel_interface: KernelConsciousnessInterface):
+        self.kernel_interface = kernel_interface
+        self.logger = logging.getLogger(f"{__name__}.SecurityEventHandling")
+        self.security_events: List[Dict[str, Any]] = []
+        self.threat_level = 0.0
+        
+    async def security_events_hook(self, event_type: str, event_data: Dict[str, Any]) -> bool:
+        """Handle security events from kernel"""
+        try:
+            security_event = {
+                'timestamp': datetime.now(),
+                'event_type': event_type,
+                'data': event_data,
+                'threat_level': self._calculate_threat_level(event_type, event_data)
+            }
+            
+            self.security_events.append(security_event)
+            
+            # Keep only recent events
+            if len(self.security_events) > 1000:
+                self.security_events = self.security_events[-1000:]
+            
+            # Update overall threat level
+            recent_events = self.security_events[-10:]  # Last 10 events
+            self.threat_level = np.mean([e['threat_level'] for e in recent_events])
+            
+            # Handle high-threat events
+            if security_event['threat_level'] > 0.7:
+                await self._handle_high_threat_event(security_event)
+            
+            self.logger.debug(f"Security event processed: {event_type}, threat_level={security_event['threat_level']:.3f}")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Error handling security event: {e}")
+            return False
+    
+    def _calculate_threat_level(self, event_type: str, event_data: Dict[str, Any]) -> float:
+        """Calculate threat level for security event"""
+        base_threat_levels = {
+            'process_violation': 0.6,
+            'memory_corruption': 0.9,
+            'unauthorized_access': 0.8,
+            'privilege_escalation': 0.95,
+            'suspicious_syscall': 0.4,
+            'resource_exhaustion': 0.5,
+            'network_anomaly': 0.3,
+            'file_access_violation': 0.7
+        }
+        
+        base_threat = base_threat_levels.get(event_type, 0.3)
+        
+        # Adjust based on event data
+        if event_data.get('repeated_occurrence', False):
+            base_threat += 0.2
+        
+        if event_data.get('elevated_privileges', False):
+            base_threat += 0.3
+        
+        if event_data.get('system_critical', False):
+            base_threat += 0.4
+        
+        return min(1.0, base_threat)
+    
+    async def _handle_high_threat_event(self, security_event: Dict[str, Any]):
+        """Handle high-threat security events"""
+        try:
+            self.logger.warning(f"High-threat security event detected: {security_event['event_type']}")
+            
+            # Increase consciousness level for better threat detection
+            current_level = await self._get_current_consciousness_level()
+            enhanced_level = min(1.0, current_level + 0.2)
+            await self.kernel_interface.set_consciousness_level(enhanced_level)
+            
+            # Log security event for analysis
+            event_record = {
+                'timestamp': security_event['timestamp'].isoformat(),
+                'type': security_event['event_type'],
+                'threat_level': security_event['threat_level'],
+                'data': security_event['data']
+            }
+            
+            # Would integrate with security logging system here
+            self.logger.critical(f"Security threat record: {event_record}")
+            
+        except Exception as e:
+            self.logger.error(f"Error handling high-threat event: {e}")
+    
+    async def _get_current_consciousness_level(self) -> float:
+        """Get current consciousness level"""
+        # This would normally query the kernel or consciousness system
+        return 0.5  # Default fallback
+    
+    def get_security_metrics(self) -> Dict[str, Any]:
+        """Get security event metrics"""
+        if not self.security_events:
+            return {'total_events': 0, 'average_threat_level': 0.0}
+        
+        recent_events = self.security_events[-100:]  # Last 100 events
+        
+        event_types = {}
+        for event in recent_events:
+            event_type = event['event_type']
+            event_types[event_type] = event_types.get(event_type, 0) + 1
+        
+        return {
+            'total_events': len(self.security_events),
+            'recent_events': len(recent_events),
+            'average_threat_level': self.threat_level,
+            'max_threat_level': max(e['threat_level'] for e in recent_events) if recent_events else 0.0,
+            'event_types': event_types,
+            'high_threat_events': len([e for e in recent_events if e['threat_level'] > 0.7])
+        }
+
+class ConsciousnessIntegration:
+    """Consciousness integration for kernel operations"""
+    
+    def __init__(self, kernel_interface: KernelConsciousnessInterface):
+        self.kernel_interface = kernel_interface
+        self.logger = logging.getLogger(f"{__name__}.ConsciousnessIntegration")
+        self.consciousness_state = {
+            'level': 0.5,
+            'last_update': datetime.now(),
+            'neural_activity': 0.0,
+            'adaptation_count': 0
+        }
+        
+    async def consciousness_integration_hook(self, consciousness_data: Dict[str, Any]) -> bool:
+        """Integrate consciousness data with kernel operations"""
+        try:
+            # Update consciousness state
+            self.consciousness_state.update({
+                'level': consciousness_data.get('consciousness_level', self.consciousness_state['level']),
+                'last_update': datetime.now(),
+                'neural_activity': consciousness_data.get('neural_activity', 0.0),
+                'adaptation_count': self.consciousness_state['adaptation_count'] + 1
+            })
+            
+            # Apply consciousness level to kernel
+            await self.kernel_interface.set_consciousness_level(self.consciousness_state['level'])
+            
+            # Adjust system resources based on consciousness level
+            await self._adapt_system_resources()
+            
+            self.logger.debug(f"Consciousness integration updated: level={self.consciousness_state['level']:.3f}")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Error in consciousness integration: {e}")
+            return False
+    
+    async def _adapt_system_resources(self):
+        """Adapt system resources based on consciousness level"""
+        try:
+            consciousness_level = self.consciousness_state['level']
+            
+            # Adjust CPU reservations
+            cpu_count = psutil.cpu_count() or 4
+            target_cores = int(consciousness_level * cpu_count)
+            target_cores = max(1, min(cpu_count - 1, target_cores))  # Keep at least 1 core free
+            
+            await self.kernel_interface.reserve_cpu_cores(target_cores, consciousness_level)
+            
+            # Adjust memory allocation strategy based on neural activity
+            neural_activity = self.consciousness_state['neural_activity']
+            
+            if neural_activity > 0.8:
+                # High neural activity - pre-allocate more neural memory
+                await self.kernel_interface.allocate_ai_memory(
+                    32 * 1024 * 1024,  # 32MB
+                    AIMemoryPoolType.NEURAL_WEIGHTS
+                )
+            
+            self.logger.debug(f"System resources adapted for consciousness level {consciousness_level:.3f}")
+            
+        except Exception as e:
+            self.logger.error(f"Error adapting system resources: {e}")
+    
+    def get_consciousness_metrics(self) -> Dict[str, Any]:
+        """Get consciousness integration metrics"""
+        return {
+            'consciousness_level': self.consciousness_state['level'],
+            'last_update': self.consciousness_state['last_update'].isoformat(),
+            'neural_activity': self.consciousness_state['neural_activity'],
+            'adaptation_count': self.consciousness_state['adaptation_count'],
+            'uptime_seconds': (datetime.now() - self.consciousness_state['last_update']).total_seconds()
+        }
+
+class PerformanceMonitoring:
+    """Performance monitoring for kernel consciousness operations"""
+    
+    def __init__(self, kernel_interface: KernelConsciousnessInterface):
+        self.kernel_interface = kernel_interface
+        self.logger = logging.getLogger(f"{__name__}.PerformanceMonitoring")
+        self.performance_history: List[Dict[str, Any]] = []
+        self.alert_thresholds = {
+            'cpu_usage': 90.0,
+            'memory_pressure': 0.9,
+            'consciousness_latency': 100.0,  # milliseconds
+            'neural_processing_time': 50.0   # milliseconds
+        }
+        
+    async def performance_monitoring_hook(self, operation: str, timing_data: Dict[str, float]) -> bool:
+        """Monitor performance of consciousness operations"""
+        try:
+            performance_record = {
+                'timestamp': datetime.now(),
+                'operation': operation,
+                'timing': timing_data,
+                'system_metrics': await self._collect_performance_metrics()
+            }
+            
+            self.performance_history.append(performance_record)
+            
+            # Keep only recent history
+            if len(self.performance_history) > 1000:
+                self.performance_history = self.performance_history[-1000:]
+            
+            # Check for performance alerts
+            await self._check_performance_alerts(performance_record)
+            
+            self.logger.debug(f"Performance recorded for {operation}: {timing_data}")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Error in performance monitoring: {e}")
+            return False
+    
+    async def _collect_performance_metrics(self) -> Dict[str, float]:
+        """Collect current performance metrics"""
+        try:
+            # Get system metrics
+            cpu_percent = psutil.cpu_percent()
+            memory = psutil.virtual_memory()
+            
+            # Calculate consciousness-specific metrics
+            consciousness_processes = len([
+                proc for proc in psutil.process_iter()
+                if any(keyword in proc.name().lower() for keyword in ['consciousness', 'neural', 'synaptic'])
+            ])
+            
+            return {
+                'cpu_usage': cpu_percent,
+                'memory_pressure': memory.percent / 100.0,
+                'consciousness_processes': consciousness_processes,
+                'available_memory_gb': memory.available / (1024**3)
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Error collecting performance metrics: {e}")
+            return {}
+    
+    async def _check_performance_alerts(self, performance_record: Dict[str, Any]):
+        """Check for performance alert conditions"""
+        try:
+            system_metrics = performance_record['system_metrics']
+            timing_data = performance_record['timing']
+            
+            alerts = []
+            
+            # Check CPU usage
+            if system_metrics.get('cpu_usage', 0) > self.alert_thresholds['cpu_usage']:
+                alerts.append(f"High CPU usage: {system_metrics['cpu_usage']:.1f}%")
+            
+            # Check memory pressure
+            if system_metrics.get('memory_pressure', 0) > self.alert_thresholds['memory_pressure']:
+                alerts.append(f"High memory pressure: {system_metrics['memory_pressure']:.2%}")
+            
+            # Check consciousness operation latency
+            if timing_data.get('total_time_ms', 0) > self.alert_thresholds['consciousness_latency']:
+                alerts.append(f"High consciousness latency: {timing_data['total_time_ms']:.1f}ms")
+            
+            # Check neural processing time
+            if timing_data.get('neural_processing_ms', 0) > self.alert_thresholds['neural_processing_time']:
+                alerts.append(f"High neural processing time: {timing_data['neural_processing_ms']:.1f}ms")
+            
+            # Log alerts
+            for alert in alerts:
+                self.logger.warning(f"Performance alert: {alert}")
+            
+        except Exception as e:
+            self.logger.error(f"Error checking performance alerts: {e}")
+    
+    def get_performance_summary(self) -> Dict[str, Any]:
+        """Get performance monitoring summary"""
+        if not self.performance_history:
+            return {'status': 'no_data'}
+        
+        recent_records = self.performance_history[-100:]  # Last 100 operations
+        
+        # Calculate averages
+        avg_timing = {}
+        for record in recent_records:
+            for key, value in record['timing'].items():
+                if key not in avg_timing:
+                    avg_timing[key] = []
+                avg_timing[key].append(value)
+        
+        avg_timing = {key: np.mean(values) for key, values in avg_timing.items()}
+        
+        # Get latest system metrics
+        latest_record = recent_records[-1]
+        latest_metrics = latest_record['system_metrics']
+        
+        return {
+            'total_operations': len(self.performance_history),
+            'recent_operations': len(recent_records),
+            'average_timing': avg_timing,
+            'latest_system_metrics': latest_metrics,
+            'alert_thresholds': self.alert_thresholds,
+            'performance_trend': self._calculate_performance_trend(recent_records)
+        }
+    
+    def _calculate_performance_trend(self, recent_records: List[Dict[str, Any]]) -> str:
+        """Calculate performance trend"""
+        if len(recent_records) < 10:
+            return 'insufficient_data'
+        
+        # Check trend in total processing time
+        recent_times = [
+            record['timing'].get('total_time_ms', 0)
+            for record in recent_records[-10:]
+        ]
+        
+        if len(recent_times) >= 2:
+            early_avg = np.mean(recent_times[:5])
+            late_avg = np.mean(recent_times[-5:])
+            
+            if late_avg > early_avg * 1.2:
+                return 'degrading'
+            elif late_avg < early_avg * 0.8:
+                return 'improving'
+            else:
+                return 'stable'
+        
+        return 'unknown'

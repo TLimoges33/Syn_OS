@@ -774,7 +774,7 @@ class PenetrationTestingSystem:
             url = f"{protocol}://{target}:{port}"
             
             # Make HTTP request
-            response = requests.get(url, timeout=5, verify=False)
+            response = requests.get(url, timeout=5, verify=True)
             
             # Check for information disclosure
             server_header = response.headers.get('Server', '')
@@ -884,7 +884,7 @@ class PenetrationTestingSystem:
             url = f"{protocol}://{target}:{port}"
             
             # Test for common vulnerabilities
-            response = requests.get(url, timeout=5, verify=False)
+            response = requests.get(url, timeout=5, verify=True)
             
             # Check for directory listing
             if "Index of /" in response.text:
@@ -908,7 +908,7 @@ class PenetrationTestingSystem:
             for file_path in common_files:
                 file_url = f"{url}{file_path}"
                 try:
-                    file_response = requests.get(file_url, timeout=3, verify=False)
+                    file_response = requests.get(file_url, timeout=3, verify=True)
                     if file_response.status_code == 200:
                         findings.append(PenetrationTestFinding(
                             finding_id=str(uuid.uuid4()),

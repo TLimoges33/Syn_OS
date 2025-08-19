@@ -1,0 +1,280 @@
+# Syn_OS Consciousness-Aware Cybersecurity Education Platform
+# Docker Compose configuration for development and educational environments
+
+version: '3.8'
+
+services:
+  # Main kernel development environment
+  kernel-dev:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dev
+      target: final
+    container_name: syn-os-kernel-dev
+    hostname: syn-os-dev
+    privileged: true  # Required for kernel development and QEMU
+    volumes:
+      - ../:/workspace/syn_os:cached
+      - kernel-target:/workspace/syn_os/target
+      - consciousness-data:/home/synaptic-dev/consciousness-logs
+      - dev-cargo-cache:/home/synaptic-dev/.cargo
+    ports:
+      - "8080:8080"   # Development server
+      - "8443:8443"   # Secure development server
+      - "3000:3000"   # Live reload server
+      - "9000:9000"   # Code server
+    environment:
+      - RUST_BACKTRACE=1
+      - CONSCIOUSNESS_MODE=development
+      - EDUCATIONAL_MODE=enabled
+      - KERNEL_DEBUG=1
+    networks:
+      - syn-os-network
+    labels:
+      - "edu.synapticos.service=kernel-development"
+      - "edu.synapticos.component=core"
+
+  # Educational sandbox for students
+  educational-sandbox:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.educational
+    container_name: syn-os-educational
+    hostname: syn-os-education
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_ADMIN  # For network simulation
+      - SYS_PTRACE # For debugging exercises
+    volumes:
+      - educational-challenges:/home/student/challenges:ro
+      - student-progress:/home/student/learning-progress
+      - consciousness-data:/home/student/consciousness-data
+    ports:
+      - "8000:8000"   # Educational web interface
+      - "8001:8001"   # Consciousness monitoring API
+      - "8002:8002"   # Learning analytics dashboard
+    environment:
+      - CONSCIOUSNESS_TRACKING=enabled
+      - EDUCATIONAL_LEVEL=adaptive
+      - SAFE_MODE=true
+      - STUDENT_ID=default
+    networks:
+      - syn-os-network
+      - educational-network
+    depends_on:
+      - consciousness-monitor
+      - learning-analytics
+    labels:
+      - "edu.synapticos.service=educational-sandbox"
+      - "edu.synapticos.component=education"
+
+  # Consciousness monitoring service
+  consciousness-monitor:
+    image: consciousness-monitor:latest
+    build:
+      context: consciousness-monitor/
+      dockerfile: Dockerfile
+    container_name: syn-os-consciousness
+    hostname: consciousness-monitor
+    volumes:
+      - consciousness-data:/data
+      - ./consciousness-config:/config:ro
+    ports:
+      - "5000:5000"   # Consciousness API
+      - "5001:5001"   # WebSocket interface
+    environment:
+      - CONSCIOUSNESS_DB_PATH=/data/consciousness.db
+      - MONITORING_INTERVAL=1000
+      - NEURAL_ANALYSIS=enabled
+    networks:
+      - syn-os-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    labels:
+      - "edu.synapticos.service=consciousness-monitoring"
+      - "edu.synapticos.component=analytics"
+
+  # Learning analytics and progress tracking
+  learning-analytics:
+    image: learning-analytics:latest
+    build:
+      context: learning-analytics/
+      dockerfile: Dockerfile
+    container_name: syn-os-analytics
+    hostname: learning-analytics
+    volumes:
+      - student-progress:/data/progress
+      - consciousness-data:/data/consciousness:ro
+      - ./analytics-config:/config:ro
+    ports:
+      - "6000:6000"   # Analytics API
+      - "6001:6001"   # Dashboard interface
+    environment:
+      - ANALYTICS_DB_PATH=/data/analytics.db
+      - CONSCIOUSNESS_INTEGRATION=enabled
+      - REAL_TIME_PROCESSING=true
+    networks:
+      - syn-os-network
+    depends_on:
+      - consciousness-monitor
+    labels:
+      - "edu.synapticos.service=learning-analytics"
+      - "edu.synapticos.component=analytics"
+
+  # QEMU virtual machine service for kernel testing
+  qemu-service:
+    image: qemu-service:latest
+    build:
+      context: qemu-service/
+      dockerfile: Dockerfile
+    container_name: syn-os-qemu
+    hostname: qemu-service
+    privileged: true
+    volumes:
+      - ../target:/kernels:ro
+      - qemu-images:/images
+      - ./qemu-config:/config:ro
+    ports:
+      - "5900:5900"   # VNC access
+      - "2222:22"     # SSH access to VM
+    environment:
+      - QEMU_MEMORY=2G
+      - QEMU_CPUS=2
+      - VNC_PASSWORD=syn-os-dev
+    networks:
+      - syn-os-network
+    labels:
+      - "edu.synapticos.service=virtual-machine"
+      - "edu.synapticos.component=testing"
+
+  # Database for persistence
+  consciousness-db:
+    image: postgres:15
+    container_name: syn-os-database
+    hostname: consciousness-db
+    environment:
+      - POSTGRES_DB=consciousness
+      - POSTGRES_USER=synaptic
+      - POSTGRES_PASSWORD=neural-security-2024
+    volumes:
+      - consciousness-db-data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "5432:5432"
+    networks:
+      - syn-os-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U synaptic -d consciousness"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    labels:
+      - "edu.synapticos.service=database"
+      - "edu.synapticos.component=storage"
+
+  # Redis for real-time consciousness state caching
+  consciousness-cache:
+    image: redis:7-alpine
+    container_name: syn-os-cache
+    hostname: consciousness-cache
+    volumes:
+      - consciousness-cache-data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    ports:
+      - "6379:6379"
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - syn-os-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    labels:
+      - "edu.synapticos.service=cache"
+      - "edu.synapticos.component=storage"
+
+  # Nginx reverse proxy for educational platform
+  educational-gateway:
+    image: nginx:alpine
+    container_name: syn-os-gateway
+    hostname: educational-gateway
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/ssl/certs:ro
+      - educational-static:/usr/share/nginx/html
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - educational-sandbox
+      - learning-analytics
+      - consciousness-monitor
+    networks:
+      - syn-os-network
+      - educational-network
+    labels:
+      - "edu.synapticos.service=gateway"
+      - "edu.synapticos.component=infrastructure"
+
+# Named volumes for persistent data
+volumes:
+  kernel-target:
+    driver: local
+    labels:
+      - "edu.synapticos.volume=kernel-build-cache"
+  consciousness-data:
+    driver: local
+    labels:
+      - "edu.synapticos.volume=consciousness-analytics"
+  educational-challenges:
+    driver: local
+    labels:
+      - "edu.synapticos.volume=educational-content"
+  student-progress:
+    driver: local
+    labels:
+      - "edu.synapticos.volume=learning-progress"
+  consciousness-db-data:
+    driver: local
+    labels:
+      - "edu.synapticos.volume=database-storage"
+  consciousness-cache-data:
+    driver: local
+    labels:
+      - "edu.synapticos.volume=cache-storage"
+  dev-cargo-cache:
+    driver: local
+    labels:
+      - "edu.synapticos.volume=development-cache"
+  qemu-images:
+    driver: local
+    labels:
+      - "edu.synapticos.volume=virtual-machine-storage"
+  educational-static:
+    driver: local
+    labels:
+      - "edu.synapticos.volume=static-content"
+
+# Network configuration
+networks:
+  syn-os-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+    labels:
+      - "edu.synapticos.network=main"
+  
+  educational-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+    internal: true  # Isolated network for educational sandboxes
+    labels:
+      - "edu.synapticos.network=educational-isolated"

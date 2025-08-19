@@ -1,5 +1,5 @@
-use anyhow::{anyhow, Result};
-use ring::{aead, rand};
+use anyhow::Result;
+use ring::rand;
 use chacha20poly1305::{
     aead::{Aead, AeadCore, KeyInit, OsRng},
     ChaCha20Poly1305, Nonce, Key
@@ -109,7 +109,7 @@ impl KeyDerivation {
     /// Generate secure salt
     pub fn generate_salt() -> Result<[u8; 16], CryptoError> {
         let mut salt = [0u8; 16];
-        ring::rand::fill(&ring::rand::SystemRandom::new(), &mut salt)
+        ring::rand::SystemRandom::new().fill(&mut salt)
             .map_err(|_| CryptoError::KeyGenerationFailed)?;
         Ok(salt)
     }
@@ -151,7 +151,7 @@ impl SecureMemory {
     pub fn clear(&mut self) {
         // Overwrite with random data then zeros
         let rng = ring::rand::SystemRandom::new();
-        let _ = ring::rand::fill(&rng, &mut self.data);
+        let _ = rng.fill(&mut self.data);
         self.data.fill(0);
     }
 }
@@ -164,40 +164,45 @@ impl Drop for SecureMemory {
 
 /// Digital signature service using Ed25519
 pub struct SignatureService {
-    keypair: ed25519_dalek::Keypair,
+    signing_key: ed25519_dalek::SigningKey,
 }
 
 impl SignatureService {
     /// Create new signature service with random keypair
     pub fn new() -> Result<Self, CryptoError> {
-        use ed25519_dalek::{Keypair, SecretKey, PublicKey};
+        use ed25519_dalek::SigningKey;
         use rand::rngs::OsRng;
         
-        let mut csprng = OsRng{};
-        let keypair = Keypair::generate(&mut csprng);
+        let mut csprng = OsRng;
+        let signing_key = SigningKey::generate(&mut csprng);
         
-        Ok(Self { keypair })
+        Ok(Self { signing_key })
     }
     
     /// Sign data
     pub fn sign(&self, data: &[u8]) -> Vec<u8> {
         use ed25519_dalek::Signer;
-        self.keypair.sign(data).to_bytes().to_vec()
+        self.signing_key.sign(data).to_bytes().to_vec()
     }
     
     /// Verify signature
     pub fn verify(&self, data: &[u8], signature: &[u8]) -> Result<bool, CryptoError> {
         use ed25519_dalek::{Verifier, Signature};
         
-        let signature = Signature::from_bytes(signature)
-            .map_err(|_| CryptoError::InvalidKey)?;
+        if signature.len() != 64 {
+            return Err(CryptoError::InvalidKey);
+        }
         
-        Ok(self.keypair.public.verify(data, &signature).is_ok())
+        let sig_array: [u8; 64] = signature.try_into().map_err(|_| CryptoError::InvalidKey)?;
+        let signature = Signature::from_bytes(&sig_array);
+        let verifying_key = self.signing_key.verifying_key();
+        
+        Ok(verifying_key.verify(data, &signature).is_ok())
     }
     
     /// Get public key for sharing
     pub fn public_key(&self) -> [u8; 32] {
-        self.keypair.public.to_bytes()
+        self.signing_key.verifying_key().to_bytes()
     }
 }
 
@@ -223,7 +228,9 @@ impl HashService {
     /// Verify hash
     pub fn verify_hash(data: &[u8], expected_hash: &[u8; 32]) -> bool {
         let actual_hash = Self::sha256(data);
-        ring::constant_time::verify_slices_are_equal(&actual_hash, expected_hash).is_ok()
+        // Use secure comparison to prevent timing attacks
+        actual_hash.len() == expected_hash.len() && 
+        actual_hash.iter().zip(expected_hash.iter()).fold(0u8, |acc, (a, b)| acc | (a ^ b)) == 0
     }
 }
 

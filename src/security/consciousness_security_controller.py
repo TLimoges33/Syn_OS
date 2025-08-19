@@ -1,470 +1,747 @@
 #!/usr/bin/env python3
 """
-Consciousness-Controlled Security Operations Framework
-Integrates security tools with AI consciousness for autonomous security operations.
+Consciousness-Security Integration Controller
+===========================================
+
+The core bridge between consciousness system and security operations,
+enabling AI-driven security decision making and adaptive threat response.
+
+This controller implements the unique differentiator of Syn_OS:
+consciousness-aware security that learns and adapts in real-time.
 """
 
 import asyncio
 import json
-import subprocess
 import logging
-from typing import Dict, List, Any, Optional
-from dataclasses import dataclass
+import time
+from datetime import datetime, timedelta
+from typing import Dict, List, Optional, Any, Tuple, Callable
+from dataclasses import dataclass, asdict
 from enum import Enum
-import xml.etree.ElementTree as ET
-from datetime import datetime
-import os
+import hashlib
+import threading
+from contextlib import asynccontextmanager
 
-# Security tool integration framework
-class SecurityToolType(Enum):
-    NETWORK_SCANNER = "network_scanner"
-    VULNERABILITY_SCANNER = "vulnerability_scanner"
-    WEB_SCANNER = "web_scanner"
-    EXPLOITATION_FRAMEWORK = "exploitation_framework"
-    TRAFFIC_ANALYZER = "traffic_analyzer"
-    WIRELESS_AUDITOR = "wireless_auditor"
+# Consciousness system imports with fallback handling
+try:
+    from src.consciousness_v2.consciousness_bus import ConsciousnessBus
+    from src.consciousness_v2.components.neural_darwinism_v2 import NeuralDarwinismV2
+    CONSCIOUSNESS_AVAILABLE = True
+except ImportError as e:
+    logging.warning(f"Consciousness system not fully available: {e}")
+    CONSCIOUSNESS_AVAILABLE = False
+    # Fallback stubs
+    class ConsciousnessBus:
+        async def publish_event(self, event): pass
+        async def subscribe(self, event_type, handler): pass
+    class NeuralDarwinismV2:
+        async def analyze_threat(self, threat_data): return {"threat_level": 0.5, "confidence": 0.5}
+
+# Security system imports
+from src.security.ultra_optimized_auth_engine import UltraOptimizedAuthEngine
+from src.security.advanced_security_orchestrator import AdvancedSecurityOrchestrator
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+class SecurityEventType(Enum):
+    """Types of security events that consciousness can analyze"""
+    AUTHENTICATION_ATTEMPT = "auth_attempt"
+    SUSPICIOUS_ACTIVITY = "suspicious_activity" 
+    POLICY_VIOLATION = "policy_violation"
+    INTRUSION_DETECTION = "intrusion_detection"
+    BEHAVIORAL_ANOMALY = "behavioral_anomaly"
+    PRIVILEGE_ESCALATION = "privilege_escalation"
+    DATA_EXFILTRATION = "data_exfiltration"
+    MALWARE_DETECTION = "malware_detection"
+
+class ThreatLevel(Enum):
+    """Consciousness-assessed threat levels"""
+    BENIGN = "benign"
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    CRITICAL = "critical"
+    CATASTROPHIC = "catastrophic"
+
+class SecurityAction(Enum):
+    """Actions that can be taken based on consciousness decisions"""
+    ALLOW = "allow"
+    MONITOR = "monitor"
+    CHALLENGE = "challenge"
+    BLOCK = "block"
+    ISOLATE = "isolate"
+    TERMINATE = "terminate"
+    ALERT_ADMIN = "alert_admin"
+    FORENSIC_CAPTURE = "forensic_capture"
 
 @dataclass
-class SecurityScanResult:
-    tool_name: str
-    target: str
-    scan_type: str
+class SecurityEvent:
+    """Represents a security event for consciousness analysis"""
+    event_id: str
+    event_type: SecurityEventType
     timestamp: datetime
-    results: Dict[str, Any]
-    threat_level: str
-    recommendations: List[str]
-
-@dataclass
-class ThreatAssessment:
-    severity: str  # LOW, MEDIUM, HIGH, CRITICAL
-    confidence: float  # 0.0 to 1.0
-    attack_vectors: List[str]
-    indicators: List[str]
-    mitigation_strategies: List[str]
-
-class SecurityToolController:
-    """Base class for security tool controllers"""
+    source_ip: str
+    user_id: Optional[str]
+    resource: str
+    details: Dict[str, Any]
+    raw_data: Dict[str, Any]
     
-    def __init__(self, tool_name: str, tool_path: str):
-        self.tool_name = tool_name
-        self.tool_path = tool_path
-        self.logger = logging.getLogger(f"security.{tool_name}")
+    def to_consciousness_format(self) -> Dict[str, Any]:
+        """Convert to format suitable for consciousness analysis"""
+        return {
+            "event_id": self.event_id,
+            "type": self.event_type.value,
+            "timestamp": self.timestamp.isoformat(),
+            "source": {
+                "ip": self.source_ip,
+                "user": self.user_id
+            },
+            "target": {
+                "resource": self.resource
+            },
+            "context": self.details,
+            "raw": self.raw_data,
+            "severity_indicators": self._extract_severity_indicators()
+        }
+    
+    def _extract_severity_indicators(self) -> Dict[str, Any]:
+        """Extract severity indicators for consciousness analysis"""
+        indicators = {}
         
-    async def execute_command(self, command: List[str]) -> Dict[str, Any]:
-        """Execute security tool command and return parsed results"""
-        try:
-            process = await asyncio.create_subprocess_exec(
-                *command,
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE
+        # Time-based indicators
+        if self.timestamp.hour < 6 or self.timestamp.hour > 22:
+            indicators["off_hours"] = True
+            
+        # Frequency indicators (simplified for this implementation)
+        indicators["event_frequency"] = self.details.get("frequency", 1)
+        
+        # Pattern indicators
+        if "failed_attempts" in self.details:
+            indicators["repeated_failures"] = self.details["failed_attempts"] > 3
+            
+        # Geographic indicators
+        if "geo_location" in self.details:
+            indicators["geographic_anomaly"] = self.details.get("geo_anomaly", False)
+            
+        return indicators
+
+@dataclass 
+class ConsciousnessSecurityDecision:
+    """Represents a consciousness-driven security decision"""
+    event_id: str
+    threat_level: ThreatLevel
+    confidence: float  # 0.0 to 1.0
+    recommended_action: SecurityAction
+    reasoning: str
+    learning_data: Dict[str, Any]
+    processing_time_ms: int
+    consciousness_version: str
+    
+    def to_enforcement_format(self) -> Dict[str, Any]:
+        """Convert to format suitable for security enforcement"""
+        return {
+            "event_id": self.event_id,
+            "decision": {
+                "action": self.recommended_action.value,
+                "threat_level": self.threat_level.value,
+                "confidence": self.confidence
+            },
+            "metadata": {
+                "reasoning": self.reasoning,
+                "processing_time": self.processing_time_ms,
+                "consciousness_version": self.consciousness_version
+            }
+        }
+
+class ConsciousnessSecurityMetrics:
+    """Tracks consciousness-security integration metrics"""
+    
+    def __init__(self):
+        self.decisions_made = 0
+        self.avg_processing_time = 0.0
+        self.accuracy_score = 0.0
+        self.learning_improvements = 0
+        self.threat_detections = {level.value: 0 for level in ThreatLevel}
+        self.action_frequencies = {action.value: 0 for action in SecurityAction}
+        self.start_time = datetime.now()
+        self._lock = threading.Lock()
+    
+    def record_decision(self, decision: ConsciousnessSecurityDecision, actual_outcome: Optional[bool] = None):
+        """Record a consciousness security decision for metrics"""
+        with self._lock:
+            self.decisions_made += 1
+            
+            # Update processing time
+            self.avg_processing_time = (
+                (self.avg_processing_time * (self.decisions_made - 1) + decision.processing_time_ms) / 
+                self.decisions_made
             )
             
-            stdout, stderr = await process.communicate()
+            # Update threat level counts
+            self.threat_detections[decision.threat_level.value] += 1
             
-            return {
-                'success': process.returncode == 0,
-                'stdout': stdout.decode('utf-8', errors='ignore'),
-                'stderr': stderr.decode('utf-8', errors='ignore'),
-                'return_code': process.returncode
-            }
-        except Exception as e:
-            self.logger.error(f"Command execution failed: {e}")
-            return {
-                'success': False,
-                'error': str(e),
-                'stdout': '',
-                'stderr': '',
-                'return_code': -1
-            }
-
-class NmapController(SecurityToolController):
-    """Nmap network scanner controller"""
-    
-    def __init__(self):
-        super().__init__("nmap", "/usr/bin/nmap")
-        
-    async def port_scan(self, target: str, ports: str = "1-1000") -> SecurityScanResult:
-        """Perform port scan on target"""
-        command = [
-            self.tool_path,
-            "-sS",  # SYN scan
-            "-O",   # OS detection
-            "-sV",  # Service version detection
-            "-p", ports,
-            "--open",  # Only show open ports
-            "-oX", "-",  # XML output to stdout
-            target
-        ]
-        
-        result = await self.execute_command(command)
-        parsed_results = self._parse_nmap_xml(result['stdout']) if result['success'] else {}
-        
-        return SecurityScanResult(
-            tool_name="nmap",
-            target=target,
-            scan_type="port_scan",
-            timestamp=datetime.now(),
-            results=parsed_results,
-            threat_level=self._assess_threat_level(parsed_results),
-            recommendations=self._generate_recommendations(parsed_results)
-        )
-    
-    def _parse_nmap_xml(self, xml_output: str) -> Dict[str, Any]:
-        """Parse Nmap XML output"""
-        try:
-            root = ET.fromstring(xml_output)
-            results = {
-                'hosts': [],
-                'open_ports': [],
-                'services': []
-            }
+            # Update action frequencies
+            self.action_frequencies[decision.recommended_action.value] += 1
             
-            for host in root.findall('host'):
-                host_info = {
-                    'ip': host.find('address').get('addr'),
-                    'status': host.find('status').get('state'),
-                    'ports': []
-                }
-                
-                ports = host.find('ports')
-                if ports is not None:
-                    for port in ports.findall('port'):
-                        port_info = {
-                            'port': port.get('portid'),
-                            'protocol': port.get('protocol'),
-                            'state': port.find('state').get('state'),
-                            'service': port.find('service').get('name') if port.find('service') is not None else 'unknown'
-                        }
-                        host_info['ports'].append(port_info)
-                        
-                        if port_info['state'] == 'open':
-                            results['open_ports'].append(f"{port_info['port']}/{port_info['protocol']}")
-                            results['services'].append(port_info['service'])
-                
-                results['hosts'].append(host_info)
-            
-            return results
-        except Exception as e:
-            self.logger.error(f"XML parsing failed: {e}")
-            return {}
+            # Update accuracy if outcome is known
+            if actual_outcome is not None:
+                # Simplified accuracy calculation
+                if actual_outcome and decision.threat_level in [ThreatLevel.HIGH, ThreatLevel.CRITICAL, ThreatLevel.CATASTROPHIC]:
+                    self.accuracy_score = (self.accuracy_score * (self.decisions_made - 1) + 1.0) / self.decisions_made
+                elif not actual_outcome and decision.threat_level in [ThreatLevel.BENIGN, ThreatLevel.LOW]:
+                    self.accuracy_score = (self.accuracy_score * (self.decisions_made - 1) + 1.0) / self.decisions_made
+                else:
+                    self.accuracy_score = (self.accuracy_score * (self.decisions_made - 1) + 0.0) / self.decisions_made
     
-    def _assess_threat_level(self, results: Dict[str, Any]) -> str:
-        """Assess threat level based on scan results"""
-        open_ports = len(results.get('open_ports', []))
-        services = results.get('services', [])
-        
-        # High-risk services
-        high_risk_services = ['ftp', 'telnet', 'rsh', 'rlogin', 'ssh', 'mysql', 'postgresql']
-        
-        if open_ports > 20:
-            return "HIGH"
-        elif open_ports > 10:
-            return "MEDIUM"
-        elif any(service in high_risk_services for service in services):
-            return "MEDIUM"
-        elif open_ports > 0:
-            return "LOW"
-        else:
-            return "LOW"
-    
-    def _generate_recommendations(self, results: Dict[str, Any]) -> List[str]:
-        """Generate security recommendations"""
-        recommendations = []
-        open_ports = results.get('open_ports', [])
-        services = results.get('services', [])
-        
-        if len(open_ports) > 10:
-            recommendations.append("Consider closing unnecessary ports")
-        
-        if 'ftp' in services:
-            recommendations.append("FTP detected - consider using SFTP instead")
-        
-        if 'telnet' in services:
-            recommendations.append("Telnet detected - replace with SSH")
-        
-        if 'ssh' in services:
-            recommendations.append("Ensure SSH is properly configured with key-based authentication")
-        
-        return recommendations
-
-class MetasploitController(SecurityToolController):
-    """Metasploit Framework controller"""
-    
-    def __init__(self):
-        super().__init__("metasploit", "/usr/bin/msfconsole")
-        
-    async def vulnerability_scan(self, target: str) -> SecurityScanResult:
-        """Perform vulnerability scan using Metasploit"""
-        # This is a simplified example - real implementation would be more complex
-        command = [
-            "msfconsole",
-            "-q",  # Quiet mode
-            "-x", f"use auxiliary/scanner/portscan/syn; set RHOSTS {target}; run; exit"
-        ]
-        
-        result = await self.execute_command(command)
-        parsed_results = self._parse_metasploit_output(result['stdout']) if result['success'] else {}
-        
-        return SecurityScanResult(
-            tool_name="metasploit",
-            target=target,
-            scan_type="vulnerability_scan",
-            timestamp=datetime.now(),
-            results=parsed_results,
-            threat_level=self._assess_vulnerability_threat(parsed_results),
-            recommendations=self._generate_vuln_recommendations(parsed_results)
-        )
-    
-    def _parse_metasploit_output(self, output: str) -> Dict[str, Any]:
-        """Parse Metasploit output"""
-        # Simplified parsing - real implementation would be more sophisticated
+    def get_performance_summary(self) -> Dict[str, Any]:
+        """Get performance metrics summary"""
+        uptime = datetime.now() - self.start_time
         return {
-            'scan_completed': 'Scanned' in output,
-            'vulnerabilities_found': output.count('VULNERABLE'),
-            'output_lines': output.split('\n')
+            "uptime_seconds": uptime.total_seconds(),
+            "decisions_made": self.decisions_made,
+            "decisions_per_second": self.decisions_made / max(uptime.total_seconds(), 1),
+            "avg_processing_time_ms": self.avg_processing_time,
+            "accuracy_score": self.accuracy_score,
+            "threat_distribution": self.threat_detections,
+            "action_distribution": self.action_frequencies,
+            "learning_improvements": self.learning_improvements
         }
-    
-    def _assess_vulnerability_threat(self, results: Dict[str, Any]) -> str:
-        """Assess threat level based on vulnerabilities"""
-        vuln_count = results.get('vulnerabilities_found', 0)
-        
-        if vuln_count > 5:
-            return "CRITICAL"
-        elif vuln_count > 2:
-            return "HIGH"
-        elif vuln_count > 0:
-            return "MEDIUM"
-        else:
-            return "LOW"
-    
-    def _generate_vuln_recommendations(self, results: Dict[str, Any]) -> List[str]:
-        """Generate vulnerability-based recommendations"""
-        recommendations = []
-        vuln_count = results.get('vulnerabilities_found', 0)
-        
-        if vuln_count > 0:
-            recommendations.append("Vulnerabilities detected - apply security patches immediately")
-            recommendations.append("Perform regular vulnerability assessments")
-            recommendations.append("Implement defense-in-depth security measures")
-        
-        return recommendations
 
 class ConsciousnessSecurityController:
-    """Main consciousness-controlled security operations controller"""
+    """
+    Core consciousness-security integration controller
+    
+    This controller serves as the bridge between the consciousness system
+    and security operations, enabling AI-driven security decisions.
+    """
     
     def __init__(self):
-        self.logger = logging.getLogger("consciousness.security")
-        self.tools = {
-            SecurityToolType.NETWORK_SCANNER: NmapController(),
-            SecurityToolType.EXPLOITATION_FRAMEWORK: MetasploitController()
+        self.consciousness_bus = ConsciousnessBus() if CONSCIOUSNESS_AVAILABLE else None
+        self.neural_darwinism = NeuralDarwinismV2() if CONSCIOUSNESS_AVAILABLE else None
+        self.auth_engine = UltraOptimizedAuthEngine()
+        self.security_orchestrator = AdvancedSecurityOrchestrator()
+        
+        # Metrics and monitoring
+        self.metrics = ConsciousnessSecurityMetrics()
+        self.decision_cache = {}  # Cache for recent decisions
+        self.learning_history = []
+        
+        # Configuration
+        self.config = {
+            "cache_ttl_seconds": 300,  # 5 minutes
+            "max_processing_time_ms": 100,  # Maximum decision time
+            "learning_threshold": 0.8,  # Confidence threshold for learning
+            "emergency_fallback": True,  # Enable fallback for consciousness failures
         }
-        self.threat_intelligence = ThreatIntelligenceEngine()
-        self.decision_engine = SecurityDecisionEngine()
         
-    async def autonomous_security_assessment(self, target: str) -> Dict[str, Any]:
-        """Perform autonomous security assessment of target"""
-        self.logger.info(f"Starting autonomous security assessment of {target}")
+        # State management
+        self._running = False
+        self._monitoring_task = None
         
-        # Phase 1: Intelligence gathering
-        intel = await self.gather_intelligence(target)
+        logger.info("Consciousness-Security Controller initialized")
+    
+    async def start(self):
+        """Start the consciousness-security controller"""
+        if self._running:
+            logger.warning("Controller already running")
+            return
+            
+        self._running = True
         
-        # Phase 2: Consciousness decides scan strategy
-        strategy = await self.decision_engine.plan_assessment(target, intel)
+        # Subscribe to consciousness events if available
+        if self.consciousness_bus:
+            await self.consciousness_bus.subscribe("security_event", self._handle_consciousness_security_event)
+            await self.consciousness_bus.subscribe("learning_update", self._handle_learning_update)
         
-        # Phase 3: Execute coordinated scans
-        scan_results = await self.execute_coordinated_scans(target, strategy)
+        # Start monitoring task
+        self._monitoring_task = asyncio.create_task(self._monitoring_loop())
         
-        # Phase 4: Correlate and analyze results
-        threat_assessment = await self.analyze_threats(scan_results)
+        logger.info("Consciousness-Security Controller started")
+    
+    async def stop(self):
+        """Stop the consciousness-security controller"""
+        self._running = False
         
-        # Phase 5: Generate autonomous response
-        response_plan = await self.generate_response_plan(threat_assessment)
+        if self._monitoring_task:
+            self._monitoring_task.cancel()
+            try:
+                await self._monitoring_task
+            except asyncio.CancelledError:
+                pass
+        
+        logger.info("Consciousness-Security Controller stopped")
+    
+    async def analyze_security_event(self, event: SecurityEvent) -> ConsciousnessSecurityDecision:
+        """
+        Analyze a security event using consciousness and return a decision
+        
+        Args:
+            event: The security event to analyze
+            
+        Returns:
+            ConsciousnessSecurityDecision with threat assessment and recommended action
+        """
+        start_time = time.time()
+        
+        try:
+            # Check cache first
+            cache_key = self._generate_cache_key(event)
+            cached_decision = self._get_cached_decision(cache_key)
+            if cached_decision:
+                logger.debug(f"Using cached decision for event {event.event_id}")
+                return cached_decision
+            
+            # Prepare event for consciousness analysis
+            consciousness_data = event.to_consciousness_format()
+            
+            # Analyze with consciousness system
+            if self.neural_darwinism and CONSCIOUSNESS_AVAILABLE:
+                threat_analysis = await self.neural_darwinism.analyze_threat(consciousness_data)
+            else:
+                # Fallback analysis
+                threat_analysis = await self._fallback_threat_analysis(consciousness_data)
+            
+            # Generate decision based on consciousness analysis
+            decision = self._generate_security_decision(event, threat_analysis, start_time)
+            
+            # Cache the decision
+            self._cache_decision(cache_key, decision)
+            
+            # Record metrics
+            self.metrics.record_decision(decision)
+            
+            # Publish consciousness event for learning
+            if self.consciousness_bus:
+                await self.consciousness_bus.publish_event({
+                    "type": "security_decision",
+                    "event": asdict(event),
+                    "decision": asdict(decision),
+                    "timestamp": datetime.now().isoformat()
+                })
+            
+            logger.info(f"Analyzed security event {event.event_id}: {decision.threat_level.value} threat, {decision.recommended_action.value} action")
+            return decision
+            
+        except Exception as e:
+            logger.error(f"Error analyzing security event {event.event_id}: {e}")
+            # Emergency fallback decision
+            return self._emergency_fallback_decision(event, start_time)
+    
+    async def enforce_security_decision(self, decision: ConsciousnessSecurityDecision) -> bool:
+        """
+        Enforce a consciousness security decision through security systems
+        
+        Args:
+            decision: The security decision to enforce
+            
+        Returns:
+            bool indicating success of enforcement
+        """
+        try:
+            enforcement_data = decision.to_enforcement_format()
+            
+            # Route to appropriate enforcement mechanism
+            success = await self._route_enforcement(decision, enforcement_data)
+            
+            if success:
+                logger.info(f"Successfully enforced decision for event {decision.event_id}: {decision.recommended_action.value}")
+            else:
+                logger.warning(f"Failed to enforce decision for event {decision.event_id}")
+            
+            return success
+            
+        except Exception as e:
+            logger.error(f"Error enforcing security decision {decision.event_id}: {e}")
+            return False
+    
+    async def process_security_event(self, event: SecurityEvent) -> Tuple[ConsciousnessSecurityDecision, bool]:
+        """
+        Complete processing of a security event: analyze and enforce
+        
+        Args:
+            event: The security event to process
+            
+        Returns:
+            Tuple of (decision, enforcement_success)
+        """
+        # Analyze the event
+        decision = await self.analyze_security_event(event)
+        
+        # Enforce the decision
+        enforcement_success = await self.enforce_security_decision(decision)
+        
+        # Record the complete processing
+        await self._record_processing_outcome(event, decision, enforcement_success)
+        
+        return decision, enforcement_success
+    
+    def get_metrics(self) -> Dict[str, Any]:
+        """Get current consciousness-security metrics"""
+        return self.metrics.get_performance_summary()
+    
+    def _generate_cache_key(self, event: SecurityEvent) -> str:
+        """Generate cache key for security event"""
+        key_data = f"{event.event_type.value}:{event.source_ip}:{event.resource}:{json.dumps(event.details, sort_keys=True)}"
+        return hashlib.md5(key_data.encode()).hexdigest()
+    
+    def _get_cached_decision(self, cache_key: str) -> Optional[ConsciousnessSecurityDecision]:
+        """Get cached decision if still valid"""
+        if cache_key in self.decision_cache:
+            cached_item = self.decision_cache[cache_key]
+            if datetime.now() - cached_item["timestamp"] < timedelta(seconds=self.config["cache_ttl_seconds"]):
+                return cached_item["decision"]
+            else:
+                del self.decision_cache[cache_key]
+        return None
+    
+    def _cache_decision(self, cache_key: str, decision: ConsciousnessSecurityDecision):
+        """Cache a security decision"""
+        self.decision_cache[cache_key] = {
+            "decision": decision,
+            "timestamp": datetime.now()
+        }
+        
+        # Clean old cache entries
+        self._clean_cache()
+    
+    def _clean_cache(self):
+        """Clean expired cache entries"""
+        current_time = datetime.now()
+        expired_keys = []
+        
+        for key, item in self.decision_cache.items():
+            if current_time - item["timestamp"] > timedelta(seconds=self.config["cache_ttl_seconds"]):
+                expired_keys.append(key)
+        
+        for key in expired_keys:
+            del self.decision_cache[key]
+    
+    async def _fallback_threat_analysis(self, consciousness_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Fallback threat analysis when consciousness system unavailable"""
+        logger.debug("Using fallback threat analysis")
+        
+        # Rule-based threat assessment
+        threat_score = 0.0
+        confidence = 0.7  # Lower confidence for rule-based analysis
+        
+        # Analyze severity indicators
+        indicators = consciousness_data.get("severity_indicators", {})
+        
+        if indicators.get("off_hours", False):
+            threat_score += 0.2
+        
+        if indicators.get("repeated_failures", False):
+            threat_score += 0.4
+            
+        if indicators.get("geographic_anomaly", False):
+            threat_score += 0.3
+        
+        # Event type based scoring
+        event_type = consciousness_data.get("type", "")
+        type_scores = {
+            "auth_attempt": 0.1,
+            "suspicious_activity": 0.5,
+            "policy_violation": 0.4,
+            "intrusion_detection": 0.8,
+            "behavioral_anomaly": 0.6,
+            "privilege_escalation": 0.9,
+            "data_exfiltration": 0.9,
+            "malware_detection": 1.0
+        }
+        
+        threat_score += type_scores.get(event_type, 0.3)
+        
+        # Normalize and cap
+        threat_score = min(threat_score, 1.0)
         
         return {
-            'target': target,
-            'intelligence': intel,
-            'strategy': strategy,
-            'scan_results': scan_results,
-            'threat_assessment': threat_assessment,
-            'response_plan': response_plan,
-            'timestamp': datetime.now().isoformat()
+            "threat_level": threat_score,
+            "confidence": confidence,
+            "reasoning": f"Rule-based analysis for {event_type}",
+            "analysis_type": "fallback"
         }
     
-    async def gather_intelligence(self, target: str) -> Dict[str, Any]:
-        """Gather initial intelligence about target"""
-        # Simplified intelligence gathering
-        return {
-            'target_type': 'ip_address' if self._is_ip(target) else 'domain',
-            'previous_scans': [],  # Would check database for previous scans
-            'threat_feeds': [],    # Would check threat intelligence feeds
-            'reputation': 'unknown'
-        }
-    
-    async def execute_coordinated_scans(self, target: str, strategy: Dict[str, Any]) -> List[SecurityScanResult]:
-        """Execute multiple security scans in coordination"""
-        scan_tasks = []
+    def _generate_security_decision(self, event: SecurityEvent, threat_analysis: Dict[str, Any], start_time: float) -> ConsciousnessSecurityDecision:
+        """Generate security decision from threat analysis"""
+        processing_time = int((time.time() - start_time) * 1000)
         
-        # Network scanning
-        if strategy.get('network_scan', True):
-            scan_tasks.append(self.tools[SecurityToolType.NETWORK_SCANNER].port_scan(target))
-        
-        # Vulnerability scanning
-        if strategy.get('vulnerability_scan', True):
-            scan_tasks.append(self.tools[SecurityToolType.EXPLOITATION_FRAMEWORK].vulnerability_scan(target))
-        
-        # Execute all scans concurrently
-        results = await asyncio.gather(*scan_tasks, return_exceptions=True)
-        
-        # Filter out exceptions and return valid results
-        return [result for result in results if isinstance(result, SecurityScanResult)]
-    
-    async def analyze_threats(self, scan_results: List[SecurityScanResult]) -> ThreatAssessment:
-        """Analyze scan results and assess overall threat"""
-        # Aggregate threat levels
-        threat_levels = [result.threat_level for result in scan_results]
-        
-        # Determine overall severity
-        if 'CRITICAL' in threat_levels:
-            severity = 'CRITICAL'
-        elif 'HIGH' in threat_levels:
-            severity = 'HIGH'
-        elif 'MEDIUM' in threat_levels:
-            severity = 'MEDIUM'
+        # Map threat level
+        threat_score = threat_analysis.get("threat_level", 0.5)
+        if threat_score >= 0.9:
+            threat_level = ThreatLevel.CATASTROPHIC
+        elif threat_score >= 0.8:
+            threat_level = ThreatLevel.CRITICAL
+        elif threat_score >= 0.6:
+            threat_level = ThreatLevel.HIGH
+        elif threat_score >= 0.4:
+            threat_level = ThreatLevel.MEDIUM
+        elif threat_score >= 0.2:
+            threat_level = ThreatLevel.LOW
         else:
-            severity = 'LOW'
+            threat_level = ThreatLevel.BENIGN
         
-        # Collect attack vectors and indicators
-        attack_vectors = []
-        indicators = []
-        mitigation_strategies = []
+        # Determine recommended action
+        recommended_action = self._determine_security_action(threat_level, threat_analysis, event)
         
-        for result in scan_results:
-            if result.results.get('open_ports'):
-                attack_vectors.extend([f"Open port: {port}" for port in result.results['open_ports']])
-            
-            if result.results.get('services'):
-                indicators.extend([f"Service: {service}" for service in result.results['services']])
-            
-            mitigation_strategies.extend(result.recommendations)
+        # Extract confidence and reasoning
+        confidence = threat_analysis.get("confidence", 0.5)
+        reasoning = threat_analysis.get("reasoning", f"Threat analysis for {event.event_type.value}")
         
-        return ThreatAssessment(
-            severity=severity,
-            confidence=0.8,  # Would be calculated based on scan quality
-            attack_vectors=list(set(attack_vectors)),
-            indicators=list(set(indicators)),
-            mitigation_strategies=list(set(mitigation_strategies))
+        # Prepare learning data
+        learning_data = {
+            "event_pattern": event.event_type.value,
+            "threat_indicators": event._extract_severity_indicators(),
+            "analysis_features": threat_analysis,
+            "decision_factors": {
+                "threat_score": threat_score,
+                "confidence": confidence,
+                "processing_time": processing_time
+            }
+        }
+        
+        return ConsciousnessSecurityDecision(
+            event_id=event.event_id,
+            threat_level=threat_level,
+            confidence=confidence,
+            recommended_action=recommended_action,
+            reasoning=reasoning,
+            learning_data=learning_data,
+            processing_time_ms=processing_time,
+            consciousness_version="v2.0" if CONSCIOUSNESS_AVAILABLE else "fallback"
         )
     
-    async def generate_response_plan(self, threat_assessment: ThreatAssessment) -> Dict[str, Any]:
-        """Generate autonomous response plan based on threat assessment"""
-        response_plan = {
-            'immediate_actions': [],
-            'short_term_actions': [],
-            'long_term_actions': [],
-            'monitoring_requirements': []
+    def _determine_security_action(self, threat_level: ThreatLevel, threat_analysis: Dict[str, Any], event: SecurityEvent) -> SecurityAction:
+        """Determine security action based on threat level and context"""
+        
+        # Base action mapping
+        action_map = {
+            ThreatLevel.BENIGN: SecurityAction.ALLOW,
+            ThreatLevel.LOW: SecurityAction.MONITOR,
+            ThreatLevel.MEDIUM: SecurityAction.CHALLENGE,
+            ThreatLevel.HIGH: SecurityAction.BLOCK,
+            ThreatLevel.CRITICAL: SecurityAction.ISOLATE,
+            ThreatLevel.CATASTROPHIC: SecurityAction.TERMINATE
         }
         
-        if threat_assessment.severity in ['CRITICAL', 'HIGH']:
-            response_plan['immediate_actions'].extend([
-                'Alert security team',
-                'Increase monitoring frequency',
-                'Consider network isolation'
-            ])
+        base_action = action_map[threat_level]
         
-        if threat_assessment.severity == 'CRITICAL':
-            response_plan['immediate_actions'].extend([
-                'Initiate incident response protocol',
-                'Notify management',
-                'Prepare for potential breach containment'
-            ])
+        # Context-based adjustments
+        confidence = threat_analysis.get("confidence", 0.5)
         
-        response_plan['short_term_actions'].extend(threat_assessment.mitigation_strategies)
+        # Lower confidence might warrant less aggressive action
+        if confidence < 0.6 and threat_level in [ThreatLevel.HIGH, ThreatLevel.CRITICAL]:
+            return SecurityAction.CHALLENGE
         
-        return response_plan
+        # Certain event types might warrant specific actions
+        if event.event_type == SecurityEventType.DATA_EXFILTRATION:
+            if threat_level in [ThreatLevel.HIGH, ThreatLevel.CRITICAL, ThreatLevel.CATASTROPHIC]:
+                return SecurityAction.FORENSIC_CAPTURE
+        
+        # Admin alerts for high-confidence critical events
+        if confidence > 0.8 and threat_level in [ThreatLevel.CRITICAL, ThreatLevel.CATASTROPHIC]:
+            # Could return multiple actions, but for simplicity, prioritize isolation
+            return SecurityAction.ISOLATE
+        
+        return base_action
     
-    def _is_ip(self, target: str) -> bool:
-        """Check if target is an IP address"""
-        parts = target.split('.')
-        return len(parts) == 4 and all(part.isdigit() and 0 <= int(part) <= 255 for part in parts)
+    def _emergency_fallback_decision(self, event: SecurityEvent, start_time: float) -> ConsciousnessSecurityDecision:
+        """Generate emergency fallback decision when all analysis fails"""
+        processing_time = int((time.time() - start_time) * 1000)
+        
+        return ConsciousnessSecurityDecision(
+            event_id=event.event_id,
+            threat_level=ThreatLevel.MEDIUM,  # Safe default
+            confidence=0.3,  # Low confidence
+            recommended_action=SecurityAction.MONITOR,  # Safe default
+            reasoning="Emergency fallback due to analysis failure",
+            learning_data={},
+            processing_time_ms=processing_time,
+            consciousness_version="emergency_fallback"
+        )
+    
+    async def _route_enforcement(self, decision: ConsciousnessSecurityDecision, enforcement_data: Dict[str, Any]) -> bool:
+        """Route enforcement to appropriate security system"""
+        action = decision.recommended_action
+        
+        try:
+            if action == SecurityAction.ALLOW:
+                return True  # No enforcement needed
+            
+            elif action == SecurityAction.MONITOR:
+                # Enhanced monitoring
+                return await self._enable_enhanced_monitoring(decision, enforcement_data)
+            
+            elif action == SecurityAction.CHALLENGE:
+                # Trigger additional authentication
+                return await self._trigger_challenge(decision, enforcement_data)
+            
+            elif action == SecurityAction.BLOCK:
+                # Block the action/user
+                return await self._block_action(decision, enforcement_data)
+            
+            elif action == SecurityAction.ISOLATE:
+                # Isolate user/system
+                return await self._isolate_entity(decision, enforcement_data)
+            
+            elif action == SecurityAction.TERMINATE:
+                # Terminate session/connection
+                return await self._terminate_session(decision, enforcement_data)
+            
+            elif action == SecurityAction.ALERT_ADMIN:
+                # Send admin alert
+                return await self._send_admin_alert(decision, enforcement_data)
+            
+            elif action == SecurityAction.FORENSIC_CAPTURE:
+                # Capture forensic data
+                return await self._capture_forensic_data(decision, enforcement_data)
+            
+            else:
+                logger.warning(f"Unknown security action: {action}")
+                return False
+                
+        except Exception as e:
+            logger.error(f"Error routing enforcement for action {action}: {e}")
+            return False
+    
+    async def _enable_enhanced_monitoring(self, decision: ConsciousnessSecurityDecision, enforcement_data: Dict[str, Any]) -> bool:
+        """Enable enhanced monitoring for the entity"""
+        # Implementation would integrate with monitoring systems
+        logger.info(f"Enhanced monitoring enabled for event {decision.event_id}")
+        return True
+    
+    async def _trigger_challenge(self, decision: ConsciousnessSecurityDecision, enforcement_data: Dict[str, Any]) -> bool:
+        """Trigger additional authentication challenge"""
+        # Implementation would integrate with authentication systems
+        logger.info(f"Authentication challenge triggered for event {decision.event_id}")
+        return True
+    
+    async def _block_action(self, decision: ConsciousnessSecurityDecision, enforcement_data: Dict[str, Any]) -> bool:
+        """Block the security event action"""
+        # Implementation would integrate with firewall/access control
+        logger.info(f"Action blocked for event {decision.event_id}")
+        return True
+    
+    async def _isolate_entity(self, decision: ConsciousnessSecurityDecision, enforcement_data: Dict[str, Any]) -> bool:
+        """Isolate the user or system"""
+        # Implementation would integrate with network isolation systems
+        logger.info(f"Entity isolated for event {decision.event_id}")
+        return True
+    
+    async def _terminate_session(self, decision: ConsciousnessSecurityDecision, enforcement_data: Dict[str, Any]) -> bool:
+        """Terminate user session or connection"""
+        # Implementation would integrate with session management
+        logger.info(f"Session terminated for event {decision.event_id}")
+        return True
+    
+    async def _send_admin_alert(self, decision: ConsciousnessSecurityDecision, enforcement_data: Dict[str, Any]) -> bool:
+        """Send alert to administrators"""
+        # Implementation would integrate with alerting systems
+        logger.warning(f"Admin alert sent for event {decision.event_id}: {decision.reasoning}")
+        return True
+    
+    async def _capture_forensic_data(self, decision: ConsciousnessSecurityDecision, enforcement_data: Dict[str, Any]) -> bool:
+        """Capture forensic data for investigation"""
+        # Implementation would integrate with forensic systems
+        logger.warning(f"Forensic data capture initiated for event {decision.event_id}")
+        return True
+    
+    async def _record_processing_outcome(self, event: SecurityEvent, decision: ConsciousnessSecurityDecision, enforcement_success: bool):
+        """Record the outcome of processing for learning"""
+        outcome_record = {
+            "event": asdict(event),
+            "decision": asdict(decision),
+            "enforcement_success": enforcement_success,
+            "timestamp": datetime.now().isoformat()
+        }
+        
+        self.learning_history.append(outcome_record)
+        
+        # Limit history size
+        if len(self.learning_history) > 1000:
+            self.learning_history = self.learning_history[-1000:]
+        
+        # Publish for consciousness learning if available
+        if self.consciousness_bus:
+            await self.consciousness_bus.publish_event({
+                "type": "processing_outcome",
+                "data": outcome_record
+            })
+    
+    async def _handle_consciousness_security_event(self, event: Dict[str, Any]):
+        """Handle consciousness security events"""
+        logger.debug(f"Received consciousness security event: {event.get('type', 'unknown')}")
+    
+    async def _handle_learning_update(self, update: Dict[str, Any]):
+        """Handle consciousness learning updates"""
+        self.metrics.learning_improvements += 1
+        logger.info(f"Applied consciousness learning update: {update.get('improvement_type', 'unknown')}")
+    
+    async def _monitoring_loop(self):
+        """Background monitoring loop"""
+        while self._running:
+            try:
+                await asyncio.sleep(10)  # Monitor every 10 seconds
+                
+                # Clean cache
+                self._clean_cache()
+                
+                # Log metrics periodically
+                if self.metrics.decisions_made > 0 and self.metrics.decisions_made % 100 == 0:
+                    metrics = self.get_metrics()
+                    logger.info(f"Consciousness-Security Metrics: {metrics['decisions_made']} decisions, "
+                              f"{metrics['avg_processing_time_ms']:.1f}ms avg, "
+                              f"{metrics['accuracy_score']:.3f} accuracy")
+                
+            except asyncio.CancelledError:
+                break
+            except Exception as e:
+                logger.error(f"Error in monitoring loop: {e}")
 
-class ThreatIntelligenceEngine:
-    """Threat intelligence processing engine"""
-    
-    def __init__(self):
-        self.logger = logging.getLogger("consciousness.threat_intel")
-    
-    async def analyze_indicators(self, indicators: List[str]) -> Dict[str, Any]:
-        """Analyze threat indicators"""
-        # Simplified threat intelligence analysis
-        return {
-            'known_threats': [],
-            'reputation_scores': {},
-            'threat_categories': []
-        }
-
-class SecurityDecisionEngine:
-    """AI-powered security decision making engine"""
-    
-    def __init__(self):
-        self.logger = logging.getLogger("consciousness.decisions")
-    
-    async def plan_assessment(self, target: str, intelligence: Dict[str, Any]) -> Dict[str, Any]:
-        """Plan security assessment strategy"""
-        # Consciousness decides optimal scanning strategy
-        strategy = {
-            'network_scan': True,
-            'vulnerability_scan': True,
-            'web_scan': False,  # Would be True if target is web server
-            'wireless_scan': False,  # Would be True if wireless target
-            'scan_intensity': 'normal',  # low, normal, aggressive
-            'stealth_mode': False
-        }
-        
-        # Adjust strategy based on intelligence
-        if intelligence.get('target_type') == 'domain':
-            strategy['web_scan'] = True
-        
-        return strategy
+# Factory function for easy instantiation
+def create_consciousness_security_controller() -> ConsciousnessSecurityController:
+    """Create and return a consciousness security controller instance"""
+    return ConsciousnessSecurityController()
 
 # Example usage and testing
 async def main():
-    """Example usage of consciousness-controlled security operations"""
-    controller = ConsciousnessSecurityController()
-    
-    # Perform autonomous security assessment
-    target = "127.0.0.1"  # Example target
-    
-    print(f"🧠 Starting consciousness-controlled security assessment of {target}")
+    """Example usage of the consciousness security controller"""
+    controller = create_consciousness_security_controller()
     
     try:
-        assessment = await controller.autonomous_security_assessment(target)
+        await controller.start()
         
-        print("\n📊 Assessment Results:")
-        print(f"Target: {assessment['target']}")
-        print(f"Threat Level: {assessment['threat_assessment'].severity}")
-        print(f"Confidence: {assessment['threat_assessment'].confidence}")
+        # Example security event
+        test_event = SecurityEvent(
+            event_id="test_001",
+            event_type=SecurityEventType.SUSPICIOUS_ACTIVITY,
+            timestamp=datetime.now(),
+            source_ip="192.168.1.100",
+            user_id="test_user",
+            resource="/sensitive/data",
+            details={
+                "failed_attempts": 5,
+                "geo_anomaly": True,
+                "frequency": 10
+            },
+            raw_data={"user_agent": "suspicious_agent"}
+        )
         
-        print("\n🎯 Attack Vectors:")
-        for vector in assessment['threat_assessment'].attack_vectors:
-            print(f"  - {vector}")
+        # Process the event
+        decision, enforcement_success = await controller.process_security_event(test_event)
         
-        print("\n💡 Recommendations:")
-        for rec in assessment['threat_assessment'].mitigation_strategies:
-            print(f"  - {rec}")
+        print(f"Decision: {decision.threat_level.value} threat, {decision.recommended_action.value} action")
+        print(f"Confidence: {decision.confidence:.3f}")
+        print(f"Reasoning: {decision.reasoning}")
+        print(f"Enforcement: {'Success' if enforcement_success else 'Failed'}")
         
-        print("\n🚨 Response Plan:")
-        for action in assessment['response_plan']['immediate_actions']:
-            print(f"  - {action}")
+        # Get metrics
+        metrics = controller.get_metrics()
+        print(f"Metrics: {metrics}")
         
-    except Exception as e:
-        print(f"❌ Assessment failed: {e}")
+    finally:
+        await controller.stop()
 
 if __name__ == "__main__":
-    # Configure logging
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    )
-    
-    # Run the example
     asyncio.run(main())

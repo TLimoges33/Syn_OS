@@ -666,7 +666,7 @@ Format your response with clear sections for recommendations, insights, and acti
     def _generate_request_id(self) -> str:
         """Generate unique request ID"""
         timestamp = str(int(time.time() * 1000))
-        random_part = hashlib.md5(f"{timestamp}{self.total_requests}".encode()).hexdigest()[:8]
+        random_part = hashlib.sha256(f"{timestamp}{self.total_requests}".encode()).hexdigest()[:8]
         return f"claude_{timestamp}_{random_part}"
     
     def _update_performance_metrics(self, response: ClaudeResponse):

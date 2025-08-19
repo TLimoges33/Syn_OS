@@ -1,0 +1,92 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - "syn_os_rules.yml"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Syn_OS Services
+  - job_name: 'syn-os-orchestrator'
+    static_configs:
+      - targets: 
+        - 'orchestrator-1:8080'
+        - 'orchestrator-2:8080'
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  - job_name: 'syn-os-consciousness'
+    static_configs:
+      - targets:
+        - 'consciousness-1:8081'
+        - 'consciousness-2:8081'
+    metrics_path: '/metrics'
+    scrape_interval: 5s  # More frequent for consciousness monitoring
+
+  - job_name: 'syn-os-security-dashboard'
+    static_configs:
+      - targets:
+        - 'security-dashboard-1:8083'
+        - 'security-dashboard-2:8083'
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Infrastructure Monitoring
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis-exporter:9121']
+
+  - job_name: 'nats'
+    static_configs:
+      - targets: 
+        - 'nats-1:7777'
+        - 'nats-2:7777'
+        - 'nats-3:7777'
+
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx-exporter:9113']
+
+  # Node Exporter for system metrics
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+  # cAdvisor for container metrics
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+
+  # Blackbox exporter for endpoint monitoring
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - http://nginx/health
+        - http://nginx/api/health
+        - http://nginx/consciousness/health
+        - http://nginx/security/health
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115

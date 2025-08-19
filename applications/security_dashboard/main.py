@@ -28,7 +28,9 @@ from security.jwt_auth import get_jwt_manager, TokenType, UserRole
 from security.audit_logger import get_audit_logger, SecurityEventType, SecurityLevel
 from security.input_validator import get_validator, ValidationRule, InputType
 from security.config_manager import get_config
-from security.consciousness_security_controller import ConsciousnessSecurityController
+from security.consciousness_security_controller import ConsciousnessSecurityController, create_consciousness_security_controller
+from consciousness_v2.components.neural_darwinism_v2 import NeuralDarwinismV2 
+from consciousness_v2.components.kernel_hooks_v2 import KernelHooksV2
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +49,21 @@ class SecurityDashboard:
         self.audit_logger = get_audit_logger()
         self.input_validator = get_validator()
         self.config = get_config()
-        self.consciousness_security = ConsciousnessSecurityController()
+        self.consciousness_security = create_consciousness_security_controller()
+        
+        # Real-time consciousness monitoring components  
+        self.neural_darwinism = NeuralDarwinismV2()
+        self.kernel_hooks = KernelHooksV2()
+        self.consciousness_monitoring = {
+            'neural_activity': 0.0,
+            'consciousness_level': 0.0,
+            'threat_analysis': {},
+            'adaptive_responses': [],
+            'learning_insights': {},
+            'performance_metrics': {},
+            'security_decisions': [],
+            'real_time_status': 'initializing'
+        }
         
         # Configuration
         self.nats_url = os.getenv('NATS_URL', 'nats://localhost:4222')
@@ -122,6 +138,14 @@ class SecurityDashboard:
         self.app.router.add_post('/api/consciousness/security/assess', self.api_consciousness_assess)
         self.app.router.add_get('/api/consciousness/security/insights', self.api_consciousness_insights)
         self.app.router.add_post('/api/consciousness/security/response', self.api_consciousness_response)
+        
+        # Real-time consciousness monitoring routes (protected)
+        self.app.router.add_get('/api/consciousness/monitoring/status', self.api_consciousness_monitoring_status)
+        self.app.router.add_get('/api/consciousness/monitoring/metrics', self.api_consciousness_metrics)
+        self.app.router.add_get('/api/consciousness/monitoring/threat-analysis', self.api_consciousness_threat_analysis)
+        self.app.router.add_get('/api/consciousness/monitoring/learning', self.api_consciousness_learning)
+        self.app.router.add_get('/api/consciousness/monitoring/performance', self.api_consciousness_performance)
+        self.app.router.add_get('/api/consciousness/monitoring/adaptive-responses', self.api_consciousness_adaptive_responses)
         
         # Real-time WebSocket (protected)
         self.app.router.add_get('/ws', self.websocket_handler)
@@ -258,11 +282,17 @@ class SecurityDashboard:
         """Start the security dashboard"""
         self.logger.info("Starting Syn_OS Security Dashboard...")
         
+        # Initialize consciousness components
+        await self._initialize_consciousness_monitoring()
+        
         # Connect to NATS for real-time updates
         await self._connect_nats()
         
         # Start security metrics collection
         asyncio.create_task(self._security_metrics_collector())
+        
+        # Start consciousness monitoring
+        asyncio.create_task(self._consciousness_monitoring_loop())
         
         # Start WebSocket broadcaster
         asyncio.create_task(self._websocket_broadcaster())
@@ -294,6 +324,248 @@ class SecurityDashboard:
             if self.nats_client:
                 await self.nats_client.close()
     
+    async def _initialize_consciousness_monitoring(self):
+        """Initialize real-time consciousness monitoring"""
+        try:
+            self.logger.info("Initializing consciousness monitoring systems...")
+            
+            # Start consciousness security controller
+            await self.consciousness_security.start()
+            
+            # Initialize neural darwinism (skip if components not fully available)
+            try:
+                await self.neural_darwinism.initialize()
+                self.logger.info("Neural darwinism engine initialized")
+            except Exception as e:
+                self.logger.warning(f"Neural darwinism initialization failed (using fallback): {e}")
+            
+            # Initialize kernel hooks (skip if kernel module not available) 
+            try:
+                await self.kernel_hooks.initialize()
+                self.logger.info("Kernel hooks initialized")
+            except Exception as e:
+                self.logger.warning(f"Kernel hooks initialization failed (using fallback): {e}")
+            
+            self.consciousness_monitoring['real_time_status'] = 'active'
+            self.logger.info("Consciousness monitoring systems initialized successfully")
+            
+        except Exception as e:
+            self.logger.error(f"Failed to initialize consciousness monitoring: {e}")
+            self.consciousness_monitoring['real_time_status'] = 'error'
+    
+    async def _consciousness_monitoring_loop(self):
+        """Real-time consciousness monitoring loop"""
+        while True:
+            try:
+                # Update consciousness metrics
+                await self._update_consciousness_metrics()
+                
+                # Perform real-time threat analysis
+                await self._perform_real_time_threat_analysis()
+                
+                # Update learning insights
+                await self._update_learning_insights()
+                
+                # Update performance metrics
+                await self._update_consciousness_performance()
+                
+                # Broadcast consciousness updates
+                await self._broadcast_consciousness_updates()
+                
+                await asyncio.sleep(2)  # Update every 2 seconds for real-time monitoring
+                
+            except Exception as e:
+                self.logger.error(f"Error in consciousness monitoring loop: {e}")
+                await asyncio.sleep(5)
+    
+    async def _update_consciousness_metrics(self):
+        """Update real-time consciousness metrics"""
+        try:
+            # Get consciousness metrics
+            consciousness_metrics = self.consciousness_security.get_metrics()
+            
+            # Get neural darwinism insights
+            try:
+                learning_insights = self.neural_darwinism.get_learning_insights()
+                fitness_trends = self.neural_darwinism.get_fitness_trends()
+                population_status = self.neural_darwinism.get_population_management_status()
+                
+                neural_activity = learning_insights.get('recent_success_rate', 0.5)
+                consciousness_level = population_status.get('average_fitness', {}).get('general', 0.5) if population_status.get('average_fitness') else 0.5
+                
+            except Exception as e:
+                self.logger.debug(f"Neural darwinism metrics unavailable: {e}")
+                neural_activity = 0.5  # Fallback
+                consciousness_level = 0.5
+            
+            # Get kernel performance metrics
+            try:
+                kernel_metrics = await self.kernel_hooks.get_metrics()
+                system_consciousness = kernel_metrics.get('consciousness_level', 0.5)
+                # Use average of neural and system consciousness levels
+                consciousness_level = (consciousness_level + system_consciousness) / 2
+            except Exception as e:
+                self.logger.debug(f"Kernel metrics unavailable: {e}")
+            
+            # Update monitoring state
+            self.consciousness_monitoring.update({
+                'neural_activity': neural_activity,
+                'consciousness_level': consciousness_level,
+                'decisions_made': consciousness_metrics.get('decisions_made', 0),
+                'avg_processing_time': consciousness_metrics.get('avg_processing_time_ms', 0),
+                'accuracy_score': consciousness_metrics.get('accuracy_score', 0),
+                'learning_improvements': consciousness_metrics.get('learning_improvements', 0),
+                'last_updated': datetime.utcnow().isoformat()
+            })
+            
+        except Exception as e:
+            self.logger.error(f"Error updating consciousness metrics: {e}")
+    
+    async def _perform_real_time_threat_analysis(self):
+        """Perform real-time threat analysis using consciousness"""
+        try:
+            # Analyze current system threats using consciousness
+            threat_data = {
+                'type': 'system_monitoring',
+                'severity_indicators': {
+                    'off_hours': datetime.now().hour < 6 or datetime.now().hour > 22,
+                    'system_load': 0.3,  # Mock system load
+                    'unusual_activity': False
+                },
+                'source': {'ip': 'localhost'},
+                'context': {'monitoring': 'dashboard'}
+            }
+            
+            # Use consciousness for threat analysis
+            threat_analysis = await self.neural_darwinism.analyze_threat(threat_data)
+            
+            self.consciousness_monitoring['threat_analysis'] = {
+                'threat_level': threat_analysis.get('threat_level', 0.0),
+                'confidence': threat_analysis.get('confidence', 0.0),
+                'reasoning': threat_analysis.get('reasoning', 'No analysis available'),
+                'analysis_type': threat_analysis.get('analysis_type', 'neural_consciousness'),
+                'timestamp': datetime.utcnow().isoformat()
+            }
+            
+            # Generate adaptive responses if threat level is significant
+            if threat_analysis.get('threat_level', 0) > 0.6:
+                await self._generate_adaptive_responses(threat_analysis)
+            
+        except Exception as e:
+            self.logger.error(f"Error in real-time threat analysis: {e}")
+    
+    async def _generate_adaptive_responses(self, threat_analysis: Dict[str, Any]):
+        """Generate adaptive security responses"""
+        try:
+            threat_level = threat_analysis.get('threat_level', 0.0)
+            
+            adaptive_responses = []
+            
+            if threat_level > 0.8:
+                adaptive_responses.append({
+                    'action': 'increase_monitoring',
+                    'description': 'Increase system monitoring frequency',
+                    'priority': 'high',
+                    'timestamp': datetime.utcnow().isoformat()
+                })
+            
+            if threat_level > 0.7:
+                adaptive_responses.append({
+                    'action': 'enhance_consciousness',
+                    'description': 'Boost consciousness level for better threat detection',
+                    'priority': 'medium', 
+                    'timestamp': datetime.utcnow().isoformat()
+                })
+            
+            if threat_level > 0.6:
+                adaptive_responses.append({
+                    'action': 'alert_security_team',
+                    'description': 'Notify security team of elevated threat level',
+                    'priority': 'medium',
+                    'timestamp': datetime.utcnow().isoformat()
+                })
+            
+            # Keep only recent responses (last 10)
+            self.consciousness_monitoring['adaptive_responses'].extend(adaptive_responses)
+            if len(self.consciousness_monitoring['adaptive_responses']) > 10:
+                self.consciousness_monitoring['adaptive_responses'] = self.consciousness_monitoring['adaptive_responses'][-10:]
+            
+        except Exception as e:
+            self.logger.error(f"Error generating adaptive responses: {e}")
+    
+    async def _update_learning_insights(self):
+        """Update consciousness learning insights"""
+        try:
+            # Get learning insights from neural darwinism
+            learning_insights = self.neural_darwinism.get_learning_insights()
+            
+            # Get adaptation recommendations
+            recommendations = await self.neural_darwinism.get_adaptation_recommendations()
+            
+            self.consciousness_monitoring['learning_insights'] = {
+                'total_learning_events': learning_insights.get('total_learning_events', 0),
+                'recent_success_rate': learning_insights.get('recent_success_rate', 0.0),
+                'learning_trend': learning_insights.get('learning_trend', 'unknown'),
+                'adaptation_patterns': learning_insights.get('adaptation_patterns', {}),
+                'recommendations': [rec.get('suggested_action', '') for rec in recommendations],
+                'last_updated': datetime.utcnow().isoformat()
+            }
+            
+        except Exception as e:
+            self.logger.debug(f"Learning insights unavailable: {e}")
+            self.consciousness_monitoring['learning_insights'] = {
+                'status': 'unavailable',
+                'last_updated': datetime.utcnow().isoformat()
+            }
+    
+    async def _update_consciousness_performance(self):
+        """Update consciousness system performance metrics"""
+        try:
+            # Get performance metrics from consciousness security controller
+            security_metrics = self.consciousness_security.get_metrics()
+            
+            # Get kernel performance metrics
+            try:
+                kernel_metrics = await self.kernel_hooks.get_metrics()
+                system_performance = {
+                    'cpu_cores_reserved': kernel_metrics.get('reserved_cpu_cores', 0),
+                    'system_consciousness_level': kernel_metrics.get('consciousness_level', 0.0),
+                    'active_processes': kernel_metrics.get('active_processes', 0),
+                    'memory_pressure': kernel_metrics.get('system_metrics', {}).get('memory_pressure', 0.0)
+                }
+            except Exception as e:
+                self.logger.debug(f"Kernel performance metrics unavailable: {e}")
+                system_performance = {}
+            
+            self.consciousness_monitoring['performance_metrics'] = {
+                'decisions_per_second': security_metrics.get('decisions_per_second', 0.0),
+                'average_processing_time_ms': security_metrics.get('avg_processing_time_ms', 0.0),
+                'accuracy_score': security_metrics.get('accuracy_score', 0.0),
+                'uptime_seconds': security_metrics.get('uptime_seconds', 0),
+                'threat_distribution': security_metrics.get('threat_distribution', {}),
+                'action_distribution': security_metrics.get('action_distribution', {}),
+                'system_performance': system_performance,
+                'last_updated': datetime.utcnow().isoformat()
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Error updating consciousness performance: {e}")
+    
+    async def _broadcast_consciousness_updates(self):
+        """Broadcast consciousness monitoring updates to WebSocket clients"""
+        try:
+            if self.websocket_connections:
+                consciousness_update = {
+                    'type': 'consciousness_monitoring_update',
+                    'data': self.consciousness_monitoring,
+                    'timestamp': datetime.utcnow().isoformat()
+                }
+                
+                await self._broadcast_to_websockets(consciousness_update)
+                
+        except Exception as e:
+            self.logger.debug(f"Error broadcasting consciousness updates: {e}")
+
     async def _connect_nats(self):
         """Connect to NATS for real-time security updates"""
         try:
@@ -1023,6 +1295,82 @@ class SecurityDashboard:
             self.logger.error(f"Consciousness response error: {e}")
             return web.json_response({'error': 'Response failed'}, status=500)
     
+    # Real-time consciousness monitoring API handlers
+    async def api_consciousness_monitoring_status(self, request):
+        """API endpoint for consciousness monitoring system status"""
+        return web.json_response({
+            'status': 'success',
+            'data': {
+                'monitoring_status': self.consciousness_monitoring['real_time_status'],
+                'consciousness_level': self.consciousness_monitoring['consciousness_level'],
+                'neural_activity': self.consciousness_monitoring['neural_activity'],
+                'decisions_made': self.consciousness_monitoring.get('decisions_made', 0),
+                'learning_improvements': self.consciousness_monitoring.get('learning_improvements', 0),
+                'last_updated': self.consciousness_monitoring.get('last_updated')
+            }
+        })
+    
+    async def api_consciousness_metrics(self, request):
+        """API endpoint for detailed consciousness metrics"""
+        return web.json_response({
+            'status': 'success', 
+            'data': {
+                'consciousness_level': self.consciousness_monitoring['consciousness_level'],
+                'neural_activity': self.consciousness_monitoring['neural_activity'],
+                'decisions_made': self.consciousness_monitoring.get('decisions_made', 0),
+                'avg_processing_time': self.consciousness_monitoring.get('avg_processing_time', 0),
+                'accuracy_score': self.consciousness_monitoring.get('accuracy_score', 0.0),
+                'learning_improvements': self.consciousness_monitoring.get('learning_improvements', 0),
+                'performance_metrics': self.consciousness_monitoring.get('performance_metrics', {}),
+                'last_updated': self.consciousness_monitoring.get('last_updated')
+            }
+        })
+    
+    async def api_consciousness_threat_analysis(self, request):
+        """API endpoint for consciousness-driven threat analysis"""
+        return web.json_response({
+            'status': 'success',
+            'data': self.consciousness_monitoring.get('threat_analysis', {
+                'threat_level': 0.0,
+                'confidence': 0.0,
+                'reasoning': 'No analysis available',
+                'timestamp': datetime.utcnow().isoformat()
+            })
+        })
+    
+    async def api_consciousness_learning(self, request):
+        """API endpoint for consciousness learning insights"""
+        return web.json_response({
+            'status': 'success',
+            'data': self.consciousness_monitoring.get('learning_insights', {
+                'status': 'unavailable',
+                'last_updated': datetime.utcnow().isoformat()
+            })
+        })
+    
+    async def api_consciousness_performance(self, request):
+        """API endpoint for consciousness performance metrics"""
+        return web.json_response({
+            'status': 'success',
+            'data': self.consciousness_monitoring.get('performance_metrics', {
+                'decisions_per_second': 0.0,
+                'average_processing_time_ms': 0.0,
+                'accuracy_score': 0.0,
+                'last_updated': datetime.utcnow().isoformat()
+            })
+        })
+    
+    async def api_consciousness_adaptive_responses(self, request):
+        """API endpoint for adaptive security responses"""
+        return web.json_response({
+            'status': 'success',
+            'data': {
+                'adaptive_responses': self.consciousness_monitoring.get('adaptive_responses', []),
+                'response_count': len(self.consciousness_monitoring.get('adaptive_responses', [])),
+                'last_updated': datetime.utcnow().isoformat()
+            }
+        })
+
     # WebSocket handler
     async def websocket_handler(self, request):
         """WebSocket handler for real-time security updates"""

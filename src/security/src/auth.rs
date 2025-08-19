@@ -1,6 +1,7 @@
 use anyhow::{anyhow, Result};
 use ring::{digest, hmac, rand};
-use ed25519_dalek::{SigningKey, VerifyingKey, Signature, Signer, Verifier};
+use ed25519_dalek::{SigningKey, Signature, Signer, Verifier};
+use rand::rngs::OsRng;
 use std::collections::HashMap;
 use std::sync::{Arc, RwLock};
 
@@ -51,12 +52,12 @@ impl AuthenticationService {
         
         // Generate secure HMAC key - NO hardcoded secrets
         let mut key_bytes = [0u8; 32];
-        ring::rand::fill(&rng, &mut key_bytes).map_err(|_| anyhow!("Failed to generate key"))?;
+        rng.fill(&mut key_bytes).map_err(|_| anyhow!("Failed to generate key"))?;
         let signing_key = hmac::Key::new(hmac::HMAC_SHA256, &key_bytes);
         
         // Generate Ed25519 keypair for digital signatures
-        use rand::rngs::OsRng;
-        let signing_keypair = SigningKey::generate(&mut OsRng);
+        let mut csprng = OsRng;
+        let signing_keypair = SigningKey::generate(&mut csprng);
         
         Ok(Self {
             users: Arc::new(RwLock::new(HashMap::new())),
@@ -169,7 +170,7 @@ impl AuthenticationService {
         // Generate secure salt
         let rng = ring::rand::SystemRandom::new();
         let mut salt = [0u8; 16];
-        ring::rand::fill(&rng, &mut salt).map_err(|_| AuthError::ServiceUnavailable)?;
+        rng.fill(&mut salt).map_err(|_| AuthError::ServiceUnavailable)?;
         
         // Hash password
         let password_hash = self.hash_password(password, &salt)?;

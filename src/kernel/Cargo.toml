@@ -14,12 +14,13 @@ x86_64 = { workspace = true }
 pic8259 = { workspace = true }
 pc-keyboard = { workspace = true }
 linked_list_allocator = { workspace = true }
+lazy_static = { version = "1.5", features = ["spin_no_std"] }
 
-# Error handling - simplified
-anyhow = { workspace = true }
+# Serde for AI interface (no_std compatible)
+serde = { version = "1.0", default-features = false, features = ["alloc", "derive"] }
 
-# Serialization - minimal
-serde = { workspace = true, default-features = false, features = ["derive"] }
+# Additional dependencies for no_std environment
+uart_16550 = "0.2"
 
 [features]
 default = ["ai-integration"]

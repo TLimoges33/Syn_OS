@@ -1,9 +1,10 @@
 use core::sync::atomic::{AtomicBool, Ordering};
 use alloc::collections::VecDeque;
-use alloc::string::String;
+use alloc::string::{String, ToString};
 use alloc::vec::Vec;
 use spin::Mutex;
 use serde::{Deserialize, Serialize};
+use crate::println;
 
 /// AI-Kernel interface with security isolation
 /// This is the critical boundary between AI processing and kernel operations
@@ -217,10 +218,11 @@ impl AIInterface {
         request.data = self.encrypt_data(request.data)?;
 
         // Add to queue
+        let request_id = request.id;
         let mut queue = self.request_queue.lock();
         queue.push_back(request);
         
-        Ok(request.id)
+        Ok(request_id)
     }
 
     /// Get pending AI request for processing
@@ -253,7 +255,7 @@ impl AIInterface {
     /// Process AI request securely
     pub fn process_request_securely(&self, request: SecureAIRequest) -> Result<(), &'static str> {
         // Decrypt and validate data
-        let decrypted_data = self.decrypt_data(request.data)?;
+        let _decrypted_data = self.decrypt_data(request.data)?;
 
         // Process based on request type
         let response = match request.request_type {
@@ -279,7 +281,7 @@ impl AIInterface {
     }
 
     /// Log system event for AI analysis
-    pub fn log_system_event(&self, event: SystemEvent) {
+    pub fn log_system_event(&self, _event: SystemEvent) {
         // Log event for future analysis
         // This is a simplified implementation
     }
@@ -320,13 +322,13 @@ impl AIInterface {
         }
     }
 
-    fn log_ai_decision(&self, response: &SecureAIResponse) {
+    fn log_ai_decision(&self, _response: &SecureAIResponse) {
         // Log AI decision for audit trail
         // This would integrate with security logging
     }
 
     // AI processing methods (simplified implementations)
-    fn process_scheduling_request(&self, request_id: u64, processes: Vec<ProcessInfo>) -> Result<SecureAIResponse, &'static str> {
+    fn process_scheduling_request(&self, request_id: u64, _processes: Vec<ProcessInfo>) -> Result<SecureAIResponse, &'static str> {
         // Simplified AI scheduling logic
         let decision = AIDecision {
             action: DecisionAction::NoAction,
@@ -344,12 +346,16 @@ impl AIInterface {
                 decision_timestamp: 0, // Would use real timestamp
                 input_hash: "placeholder".to_string(),
                 model_version: "v0.1.0".to_string(),
-                validation_checks: vec!["basic_validation".to_string()],
+                validation_checks: {
+                    let mut checks = Vec::new();
+                    checks.push("basic_validation".to_string());
+                    checks
+                },
             },
         })
     }
 
-    fn process_memory_prediction(&self, request_id: u64, process_id: u32) -> Result<SecureAIResponse, &'static str> {
+    fn process_memory_prediction(&self, request_id: u64, _process_id: u32) -> Result<SecureAIResponse, &'static str> {
         // Simplified memory prediction
         let decision = AIDecision {
             action: DecisionAction::NoAction,
@@ -367,12 +373,16 @@ impl AIInterface {
                 decision_timestamp: 0,
                 input_hash: "placeholder".to_string(),
                 model_version: "v0.1.0".to_string(),
-                validation_checks: vec!["basic_validation".to_string()],
+                validation_checks: {
+                    let mut checks = Vec::new();
+                    checks.push("basic_validation".to_string());
+                    checks
+                },
             },
         })
     }
 
-    fn process_anomaly_detection(&self, request_id: u64, system_state: SystemState) -> Result<SecureAIResponse, &'static str> {
+    fn process_anomaly_detection(&self, request_id: u64, _system_state: SystemState) -> Result<SecureAIResponse, &'static str> {
         // Simplified anomaly detection
         let decision = AIDecision {
             action: DecisionAction::NoAction,
@@ -390,12 +400,16 @@ impl AIInterface {
                 decision_timestamp: 0,
                 input_hash: "placeholder".to_string(),
                 model_version: "v0.1.0".to_string(),
-                validation_checks: vec!["basic_validation".to_string()],
+                validation_checks: {
+                    let mut checks = Vec::new();
+                    checks.push("basic_validation".to_string());
+                    checks
+                },
             },
         })
     }
 
-    fn process_threat_assessment(&self, request_id: u64, event: SecurityEvent) -> Result<SecureAIResponse, &'static str> {
+    fn process_threat_assessment(&self, request_id: u64, _event: SecurityEvent) -> Result<SecureAIResponse, &'static str> {
         // Simplified threat assessment
         let decision = AIDecision {
             action: DecisionAction::NoAction,
@@ -413,12 +427,16 @@ impl AIInterface {
                 decision_timestamp: 0,
                 input_hash: "placeholder".to_string(),
                 model_version: "v0.1.0".to_string(),
-                validation_checks: vec!["basic_validation".to_string()],
+                validation_checks: {
+                    let mut checks = Vec::new();
+                    checks.push("basic_validation".to_string());
+                    checks
+                },
             },
         })
     }
 
-    fn process_resource_optimization(&self, request_id: u64, resource_state: ResourceState) -> Result<SecureAIResponse, &'static str> {
+    fn process_resource_optimization(&self, request_id: u64, _resource_state: ResourceState) -> Result<SecureAIResponse, &'static str> {
         // Simplified resource optimization
         let decision = AIDecision {
             action: DecisionAction::NoAction,
@@ -436,7 +454,11 @@ impl AIInterface {
                 decision_timestamp: 0,
                 input_hash: "placeholder".to_string(),
                 model_version: "v0.1.0".to_string(),
-                validation_checks: vec!["basic_validation".to_string()],
+                validation_checks: {
+                    let mut checks = Vec::new();
+                    checks.push("basic_validation".to_string());
+                    checks
+                },
             },
         })
     }

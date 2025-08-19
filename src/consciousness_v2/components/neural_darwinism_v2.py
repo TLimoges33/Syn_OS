@@ -656,6 +656,11 @@ class EnhancedNeuralDarwinismEngine(ConsciousnessComponent):
         self.gpu_evolution_core = GPUEvolutionCore(self.config)
         self.consciousness_predictor = ConsciousnessPredictor(self.config)
         
+        # Advanced management components
+        self.population_manager = PopulationManager(self.config)
+        self.fitness_evaluator = FitnessEvaluator(self.config)
+        self.learning_history_manager = LearningHistoryManager(self.config)
+        
         # Neural populations
         self.populations: Dict[str, PopulationState] = {}
         
@@ -816,6 +821,36 @@ class EnhancedNeuralDarwinismEngine(ConsciousnessComponent):
                 evolution_results = await self.gpu_evolution_core.evolve_populations_gpu(
                     self.populations
                 )
+                
+                # Evaluate fitness for each population
+                for pop_id, population in self.populations.items():
+                    population_data = {
+                        'population_id': pop_id,
+                        'size': population.size,
+                        'active_neurons': population.active_neurons,
+                        'fitness_average': population.fitness_average,
+                        'generation': population.generation,
+                        'successful_adaptations': population.successful_adaptations,
+                        'consciousness_contributions': population.consciousness_contributions,
+                        'specialization': population.specialization
+                    }
+                    
+                    fitness_scores = await self.fitness_evaluator.evaluate_population_fitness(population_data)
+                    population.fitness_average = fitness_scores['overall']
+                
+                # Manage populations based on performance
+                management_actions = await self.population_manager.manage_populations(evolution_results)
+                
+                # Record learning events
+                for result in evolution_results:
+                    context = {
+                        'system_load': self.system_context.get('system_load', 0.5),
+                        'user_activity_level': self.system_context.get('user_activity_level', 0.5),
+                        'learning_progress': self.system_context.get('learning_progress', 0.5)
+                    }
+                    
+                    outcome = 'improved' if result.fitness_improvements['overall'] > 0 else 'stable'
+                    await self.learning_history_manager.record_learning_event(result, context, outcome)
                 
                 # Update metrics
                 self.metrics.evolution_cycles_completed += 1
@@ -1092,7 +1127,448 @@ class EnhancedNeuralDarwinismEngine(ConsciousnessComponent):
         return await self.consciousness_predictor.predict_consciousness_emergence(
             evolution_data, self.system_context
         )
+    
+    def get_fitness_trends(self) -> Dict[str, Any]:
+        """Get fitness evaluation trends"""
+        return self.fitness_evaluator.get_fitness_trends()
+    
+    def get_learning_insights(self) -> Dict[str, Any]:
+        """Get learning history insights"""
+        return self.learning_history_manager.get_learning_insights()
+    
+    async def get_adaptation_recommendations(self) -> List[Dict[str, Any]]:
+        """Get recommendations for system adaptations"""
+        return await self.learning_history_manager.recommend_adaptations()
+    
+    def get_population_management_status(self) -> Dict[str, Any]:
+        """Get population management status"""
+        return {
+            'total_populations': len(self.populations),
+            'population_sizes': {pop_id: pop.size for pop_id, pop in self.populations.items()},
+            'average_fitness': {pop_id: pop.fitness_average for pop_id, pop in self.populations.items()},
+            'consciousness_levels': {pop_id: pop.consciousness_contributions for pop_id, pop in self.populations.items()},
+            'generations': {pop_id: pop.generation for pop_id, pop in self.populations.items()},
+            'adaptation_history_length': len(self.population_manager.population_history)
+        }
+    
+    async def analyze_threat(self, threat_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Analyze threat using consciousness (for security integration)"""
+        try:
+            # Extract relevant features from threat data
+            threat_features = {
+                'threat_type': threat_data.get('type', 'unknown'),
+                'severity_indicators': threat_data.get('severity_indicators', {}),
+                'source_data': threat_data.get('source', {}),
+                'context': threat_data.get('context', {})
+            }
+            
+            # Use consciousness prediction to assess threat
+            consciousness_state = await self.predict_consciousness()
+            
+            if consciousness_state:
+                # Factor consciousness level into threat analysis
+                consciousness_factor = consciousness_state.predicted_level
+                confidence_boost = consciousness_state.confidence * 0.2
+            else:
+                consciousness_factor = 0.5
+                confidence_boost = 0.0
+            
+            # Calculate threat level based on consciousness assessment
+            base_threat_level = self._calculate_base_threat_level(threat_features)
+            consciousness_adjusted_threat = base_threat_level * (0.8 + consciousness_factor * 0.4)
+            
+            # Calculate confidence
+            base_confidence = 0.7
+            final_confidence = min(1.0, base_confidence + confidence_boost)
+            
+            # Generate reasoning
+            reasoning_factors = []
+            if consciousness_state and consciousness_state.patterns_detected:
+                reasoning_factors.extend([f"Pattern: {p}" for p in consciousness_state.patterns_detected])
+            
+            reasoning_factors.append(f"Consciousness level: {consciousness_factor:.3f}")
+            reasoning = "Neural analysis: " + "; ".join(reasoning_factors)
+            
+            return {
+                'threat_level': consciousness_adjusted_threat,
+                'confidence': final_confidence,
+                'reasoning': reasoning,
+                'consciousness_contribution': consciousness_factor,
+                'analysis_type': 'neural_consciousness'
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Error in threat analysis: {e}")
+            return {
+                'threat_level': 0.5,
+                'confidence': 0.3,
+                'reasoning': f"Analysis failed: {str(e)}",
+                'analysis_type': 'error_fallback'
+            }
+    
+    def _calculate_base_threat_level(self, threat_features: Dict[str, Any]) -> float:
+        """Calculate base threat level from features"""
+        threat_type = threat_features.get('threat_type', 'unknown')
+        
+        # Threat type scoring
+        type_scores = {
+            'auth_attempt': 0.2,
+            'suspicious_activity': 0.5,
+            'policy_violation': 0.4,
+            'intrusion_detection': 0.8,
+            'behavioral_anomaly': 0.6,
+            'privilege_escalation': 0.9,
+            'data_exfiltration': 0.9,
+            'malware_detection': 1.0,
+            'unknown': 0.3
+        }
+        
+        base_score = type_scores.get(threat_type, 0.3)
+        
+        # Adjust based on severity indicators
+        severity_indicators = threat_features.get('severity_indicators', {})
+        
+        if severity_indicators.get('off_hours', False):
+            base_score += 0.1
+        if severity_indicators.get('repeated_failures', False):
+            base_score += 0.2
+        if severity_indicators.get('geographic_anomaly', False):
+            base_score += 0.15
+        
+        return min(1.0, base_score)
 
+
+# Compatibility alias for audit system
+NeuralDarwinismV2 = EnhancedNeuralDarwinismEngine
+
+class PopulationManager:
+    """Manages neural populations with adaptive scaling"""
+    
+    def __init__(self, config: NeuralConfiguration):
+        self.config = config
+        self.populations: Dict[str, PopulationState] = {}
+        self.population_history: Dict[str, List[Dict[str, Any]]] = {}
+        self.adaptation_thresholds = {
+            'fitness_stagnation': 0.001,
+            'consciousness_plateau': 0.01,
+            'convergence_limit': 0.95
+        }
+        self.logger = logging.getLogger(f"{__name__}.PopulationManager")
+    
+    async def manage_populations(self, evolution_results: List[NeuralEvolutionData]) -> Dict[str, Any]:
+        """Manage population sizes and specialization based on performance"""
+        management_actions = {
+            'resized_populations': [],
+            'specialized_populations': [],
+            'pruned_populations': [],
+            'merged_populations': []
+        }
+        
+        for result in evolution_results:
+            pop_id = result.population_id
+            if pop_id not in self.population_history:
+                self.population_history[pop_id] = []
+            
+            # Record performance history
+            performance_record = {
+                'timestamp': datetime.now(),
+                'fitness_improvements': result.fitness_improvements,
+                'consciousness_level': result.new_consciousness_level,
+                'selected_neurons': len(result.selected_neurons),
+                'generation': result.evolution_cycle
+            }
+            self.population_history[pop_id].append(performance_record)
+            
+            # Keep only last 100 records
+            if len(self.population_history[pop_id]) > 100:
+                self.population_history[pop_id] = self.population_history[pop_id][-100:]
+            
+            # Analyze performance trends
+            if len(self.population_history[pop_id]) >= 10:
+                recent_performance = self.population_history[pop_id][-10:]
+                actions = await self._analyze_population_performance(pop_id, recent_performance)
+                
+                for action_type, details in actions.items():
+                    if details:
+                        management_actions[action_type].extend(details)
+        
+        return management_actions
+    
+    async def _analyze_population_performance(self, pop_id: str, 
+                                           performance_history: List[Dict[str, Any]]) -> Dict[str, List[str]]:
+        """Analyze population performance and recommend actions"""
+        actions = {
+            'resized_populations': [],
+            'specialized_populations': [],
+            'pruned_populations': [],
+            'merged_populations': []
+        }
+        
+        # Check for fitness stagnation
+        recent_fitness = [p['fitness_improvements']['overall'] for p in performance_history]
+        if np.std(recent_fitness) < self.adaptation_thresholds['fitness_stagnation']:
+            actions['resized_populations'].append(f"{pop_id}: fitness stagnation detected")
+        
+        # Check consciousness plateau
+        recent_consciousness = [p['consciousness_level'] for p in performance_history]
+        if len(recent_consciousness) > 5:
+            consciousness_trend = np.polyfit(range(len(recent_consciousness)), recent_consciousness, 1)[0]
+            if abs(consciousness_trend) < self.adaptation_thresholds['consciousness_plateau']:
+                actions['specialized_populations'].append(f"{pop_id}: consciousness plateau detected")
+        
+        # Check for convergence
+        if performance_history[-1]['consciousness_level'] > self.adaptation_thresholds['convergence_limit']:
+            actions['specialized_populations'].append(f"{pop_id}: high consciousness achieved")
+        
+        return actions
+
+class FitnessEvaluator:
+    """Advanced fitness evaluation system for neural populations"""
+    
+    def __init__(self, config: NeuralConfiguration):
+        self.config = config
+        self.fitness_history = deque(maxlen=1000)
+        self.evaluation_metrics = {
+            'activation_efficiency': 0.3,
+            'connection_strength': 0.2,
+            'adaptation_speed': 0.2,
+            'consciousness_contribution': 0.3
+        }
+        self.logger = logging.getLogger(f"{__name__}.FitnessEvaluator")
+    
+    async def evaluate_population_fitness(self, population_data: Dict[str, Any]) -> Dict[str, float]:
+        """Evaluate comprehensive fitness metrics for population"""
+        fitness_scores = {
+            'activation_efficiency': await self._evaluate_activation_efficiency(population_data),
+            'connection_strength': await self._evaluate_connection_strength(population_data),
+            'adaptation_speed': await self._evaluate_adaptation_speed(population_data),
+            'consciousness_contribution': await self._evaluate_consciousness_contribution(population_data)
+        }
+        
+        # Calculate weighted overall fitness
+        overall_fitness = sum(
+            score * self.evaluation_metrics[metric]
+            for metric, score in fitness_scores.items()
+        )
+        
+        fitness_scores['overall'] = overall_fitness
+        
+        # Record fitness history
+        fitness_record = {
+            'timestamp': datetime.now(),
+            'population_id': population_data.get('population_id', 'unknown'),
+            'fitness_scores': fitness_scores
+        }
+        self.fitness_history.append(fitness_record)
+        
+        return fitness_scores
+    
+    async def _evaluate_activation_efficiency(self, population_data: Dict[str, Any]) -> float:
+        """Evaluate how efficiently neurons activate"""
+        # Simulate activation efficiency calculation
+        base_efficiency = 0.7
+        population_size = population_data.get('size', 1000)
+        active_neurons = population_data.get('active_neurons', population_size // 2)
+        
+        efficiency = (active_neurons / population_size) * base_efficiency
+        return min(1.0, efficiency + np.random.normal(0, 0.1))
+    
+    async def _evaluate_connection_strength(self, population_data: Dict[str, Any]) -> float:
+        """Evaluate strength of neural connections"""
+        # Simulate connection strength based on population health
+        fitness_average = population_data.get('fitness_average', 0.5)
+        connection_strength = fitness_average * 0.8 + np.random.normal(0, 0.05)
+        return max(0.0, min(1.0, connection_strength))
+    
+    async def _evaluate_adaptation_speed(self, population_data: Dict[str, Any]) -> float:
+        """Evaluate how quickly population adapts to changes"""
+        # Base adaptation speed on generation and successful adaptations
+        generation = population_data.get('generation', 1)
+        successful_adaptations = population_data.get('successful_adaptations', 0)
+        
+        if generation > 0:
+            adaptation_rate = successful_adaptations / generation
+            adaptation_speed = min(1.0, adaptation_rate * 2.0)
+        else:
+            adaptation_speed = 0.5
+        
+        return adaptation_speed + np.random.normal(0, 0.08)
+    
+    async def _evaluate_consciousness_contribution(self, population_data: Dict[str, Any]) -> float:
+        """Evaluate contribution to overall consciousness"""
+        consciousness_contributions = population_data.get('consciousness_contributions', 0.5)
+        
+        # Add bonus for specialized populations
+        specialization = population_data.get('specialization', 'general')
+        specialization_bonus = {
+            'executive': 0.1,
+            'memory': 0.08,
+            'sensory': 0.06,
+            'motor': 0.04
+        }.get(specialization, 0.0)
+        
+        contribution_score = consciousness_contributions + specialization_bonus
+        return min(1.0, contribution_score + np.random.normal(0, 0.05))
+    
+    def get_fitness_trends(self) -> Dict[str, Any]:
+        """Get fitness trends over time"""
+        if len(self.fitness_history) < 10:
+            return {'status': 'insufficient_data'}
+        
+        recent_fitness = list(self.fitness_history)[-20:]
+        
+        trends = {}
+        for metric in self.evaluation_metrics.keys():
+            metric_values = [record['fitness_scores'][metric] for record in recent_fitness]
+            trend_slope = np.polyfit(range(len(metric_values)), metric_values, 1)[0]
+            trends[f'{metric}_trend'] = 'improving' if trend_slope > 0.01 else 'stable' if abs(trend_slope) <= 0.01 else 'declining'
+        
+        return {
+            'status': 'analyzed',
+            'trends': trends,
+            'recent_average': np.mean([r['fitness_scores']['overall'] for r in recent_fitness])
+        }
+
+class LearningHistoryManager:
+    """Manages learning history and adaptation patterns"""
+    
+    def __init__(self, config: NeuralConfiguration):
+        self.config = config
+        self.learning_history = deque(maxlen=5000)
+        self.adaptation_patterns = {}
+        self.success_patterns = []
+        self.failure_patterns = []
+        self.logger = logging.getLogger(f"{__name__}.LearningHistoryManager")
+    
+    async def record_learning_event(self, evolution_data: NeuralEvolutionData, 
+                                  context: Dict[str, Any], outcome: str) -> None:
+        """Record a learning event with context and outcome"""
+        learning_record = {
+            'timestamp': datetime.now(),
+            'evolution_data': {
+                'population_id': evolution_data.population_id,
+                'evolution_cycle': evolution_data.evolution_cycle,
+                'fitness_improvements': evolution_data.fitness_improvements,
+                'consciousness_level': evolution_data.new_consciousness_level,
+                'selected_neurons_count': len(evolution_data.selected_neurons),
+                'adaptation_triggers': evolution_data.adaptation_triggers
+            },
+            'context': context,
+            'outcome': outcome,
+            'success': outcome in ['improved', 'breakthrough', 'adaptation_successful']
+        }
+        
+        self.learning_history.append(learning_record)
+        
+        # Analyze patterns
+        await self._analyze_learning_patterns(learning_record)
+    
+    async def _analyze_learning_patterns(self, new_record: Dict[str, Any]) -> None:
+        """Analyze learning patterns from historical data"""
+        if len(self.learning_history) < 10:
+            return
+        
+        # Categorize record
+        if new_record['success']:
+            self.success_patterns.append(new_record)
+        else:
+            self.failure_patterns.append(new_record)
+        
+        # Keep only recent patterns
+        if len(self.success_patterns) > 100:
+            self.success_patterns = self.success_patterns[-100:]
+        if len(self.failure_patterns) > 100:
+            self.failure_patterns = self.failure_patterns[-100:]
+        
+        # Identify common success patterns
+        await self._identify_success_patterns()
+    
+    async def _identify_success_patterns(self) -> None:
+        """Identify patterns that lead to successful learning"""
+        if len(self.success_patterns) < 20:
+            return
+        
+        # Analyze successful adaptation triggers
+        success_triggers = {}
+        for pattern in self.success_patterns[-50:]:
+            triggers = pattern['evolution_data']['adaptation_triggers']
+            for trigger in triggers:
+                success_triggers[trigger] = success_triggers.get(trigger, 0) + 1
+        
+        # Identify most successful triggers
+        if success_triggers:
+            most_successful = max(success_triggers.items(), key=lambda x: x[1])
+            self.adaptation_patterns['most_successful_trigger'] = most_successful[0]
+        
+        # Analyze successful consciousness levels
+        success_consciousness_levels = [
+            p['evolution_data']['consciousness_level'] for p in self.success_patterns[-30:]
+        ]
+        if success_consciousness_levels:
+            self.adaptation_patterns['optimal_consciousness_range'] = {
+                'min': np.percentile(success_consciousness_levels, 25),
+                'max': np.percentile(success_consciousness_levels, 75)
+            }
+    
+    def get_learning_insights(self) -> Dict[str, Any]:
+        """Get insights from learning history"""
+        if len(self.learning_history) < 10:
+            return {'status': 'insufficient_data'}
+        
+        recent_history = list(self.learning_history)[-100:]
+        
+        success_rate = sum(1 for record in recent_history if record['success']) / len(recent_history)
+        
+        insights = {
+            'total_learning_events': len(self.learning_history),
+            'recent_success_rate': success_rate,
+            'learning_trend': 'improving' if success_rate > 0.7 else 'stable' if success_rate > 0.4 else 'declining',
+            'adaptation_patterns': self.adaptation_patterns,
+            'most_common_outcomes': self._get_most_common_outcomes(recent_history)
+        }
+        
+        return insights
+    
+    def _get_most_common_outcomes(self, history: List[Dict[str, Any]]) -> Dict[str, int]:
+        """Get most common learning outcomes"""
+        outcomes = {}
+        for record in history:
+            outcome = record['outcome']
+            outcomes[outcome] = outcomes.get(outcome, 0) + 1
+        
+        # Return top 5 most common outcomes
+        return dict(sorted(outcomes.items(), key=lambda x: x[1], reverse=True)[:5])
+    
+    async def recommend_adaptations(self) -> List[Dict[str, Any]]:
+        """Recommend adaptations based on learning history"""
+        recommendations = []
+        
+        insights = self.get_learning_insights()
+        
+        if insights.get('recent_success_rate', 0) < 0.3:
+            recommendations.append({
+                'type': 'increase_exploration',
+                'reason': 'Low success rate detected',
+                'suggested_action': 'Increase mutation rate by 20%'
+            })
+        
+        if 'optimal_consciousness_range' in self.adaptation_patterns:
+            optimal_range = self.adaptation_patterns['optimal_consciousness_range']
+            recommendations.append({
+                'type': 'target_consciousness_level',
+                'reason': 'Optimal consciousness range identified',
+                'suggested_action': f"Target consciousness level between {optimal_range['min']:.3f} and {optimal_range['max']:.3f}"
+            })
+        
+        if 'most_successful_trigger' in self.adaptation_patterns:
+            trigger = self.adaptation_patterns['most_successful_trigger']
+            recommendations.append({
+                'type': 'focus_on_trigger',
+                'reason': f"'{trigger}' trigger shows high success rate",
+                'suggested_action': f"Optimize conditions that lead to '{trigger}' adaptations"
+            })
+        
+        return recommendations
 
 # Create components directory __init__.py
 def create_components_init():
@@ -1104,10 +1580,15 @@ Consciousness System Components
 Enhanced consciousness system components with real-time integration.
 """
 
-from .neural_darwinism_v2 import EnhancedNeuralDarwinismEngine, NeuralConfiguration
+from .neural_darwinism_v2 import EnhancedNeuralDarwinismEngine, NeuralConfiguration, NeuralDarwinismV2
+from .neural_darwinism_v2 import PopulationManager, FitnessEvaluator, LearningHistoryManager
 
 __all__ = [
     'EnhancedNeuralDarwinismEngine',
-    'NeuralConfiguration'
+    'NeuralDarwinismV2',
+    'NeuralConfiguration',
+    'PopulationManager',
+    'FitnessEvaluator', 
+    'LearningHistoryManager'
 ]
 '''

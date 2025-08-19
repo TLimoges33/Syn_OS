@@ -1,194 +1,237 @@
-# Syn_OS Unified Build System
-.PHONY: help build test clean start stop restart logs status install-deps
+# Syn_OS Production Makefile
+# Provides convenient commands for building, testing, and deploying Syn_OS
+
+.PHONY: help build test deploy clean setup monitoring security-scan docker-build k8s-deploy
 
 # Default target
-help:
-	@echo "Syn_OS Build System"
-	@echo "==================="
+.DEFAULT_GOAL := help
+
+# Variables
+ENVIRONMENT ?= production
+REGISTRY ?= ghcr.io/syn-os
+TAG ?= latest
+KUBECONFIG ?= ~/.kube/config
+
+# Colors for output
+RED := \033[31m
+GREEN := \033[32m
+YELLOW := \033[33m
+BLUE := \033[34m
+NC := \033[0m
+
+# Help target
+help: ## Show this help message
+	@echo "$(GREEN)Syn_OS Production Build System$(NC)"
 	@echo ""
-	@echo "Available targets:"
-	@echo "  build          - Build all services"
-	@echo "  test           - Run all tests"
-	@echo "  clean          - Clean build artifacts"
-	@echo "  start          - Start all services with Docker Compose"
-	@echo "  stop           - Stop all services"
-	@echo "  restart        - Restart all services"
-	@echo "  logs           - Show logs from all services"
-	@echo "  status         - Show status of all services"
-	@echo "  install-deps   - Install development dependencies"
-	@echo "  orchestrator   - Build orchestrator service only"
-	@echo "  consciousness  - Build consciousness system only"
-	@echo "  dev-setup      - Set up development environment"
-	@echo "  integration    - Run integration tests"
+	@echo "$(BLUE)Available targets:$(NC)"
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  $(YELLOW)%-20s$(NC) %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+	@echo ""
+	@echo "$(BLUE)Variables:$(NC)"
+	@echo "  ENVIRONMENT  Target environment (default: production)"
+	@echo "  REGISTRY     Container registry (default: ghcr.io/syn-os)"
+	@echo "  TAG          Image tag (default: latest)"
+	@echo ""
+	@echo "$(BLUE)Examples:$(NC)"
+	@echo "  make setup                    # Setup production environment"
+	@echo "  make build TAG=v1.2.3        # Build with specific tag"
+	@echo "  make deploy ENVIRONMENT=staging  # Deploy to staging"
 
-# Install development dependencies
-install-deps:
-	@echo "Installing Go dependencies..."
-	cd services/orchestrator && go mod download
-	@echo "Installing Python dependencies..."
-	pip install -r requirements.txt
-	pip install -r requirements-nats.txt
-	@echo "Installing NATS CLI..."
-	curl -sf https://binaries.nats.dev/nats-io/natscli/nats@latest | sh
-	sudo mv nats /usr/local/bin/
+# Setup commands
+setup: ## Setup environment and dependencies
+	@echo "$(BLUE)Setting up $(ENVIRONMENT) environment...$(NC)"
+	./scripts/environment-setup.sh -e $(ENVIRONMENT)
 
-# Build all services
-build: orchestrator consciousness
+setup-ssl: ## Setup with SSL certificates
+	@echo "$(BLUE)Setting up $(ENVIRONMENT) environment with SSL...$(NC)"
+	./scripts/environment-setup.sh -e $(ENVIRONMENT) -s
 
-# Build orchestrator service
-orchestrator:
-	@echo "Building orchestrator service..."
-	cd services/orchestrator && go build -o bin/orchestrator ./cmd/orchestrator
-	@echo "Orchestrator built successfully"
+setup-staging: ## Setup staging environment
+	@echo "$(BLUE)Setting up staging environment...$(NC)"
+	./scripts/environment-setup.sh -e staging -s
 
-# Build consciousness system
-consciousness:
-	@echo "Building consciousness system..."
-	python -m py_compile src/consciousness_v2/main.py
-	@echo "Consciousness system validated"
+# Build commands
+build: ## Build all containers
+	@echo "$(BLUE)Building containers...$(NC)"
+	./scripts/build-containers.sh -t $(TAG)
 
-# Run tests
-test: test-orchestrator test-consciousness
+build-push: ## Build and push containers to registry
+	@echo "$(BLUE)Building and pushing containers...$(NC)"
+	./scripts/build-containers.sh -t $(TAG) -r $(REGISTRY) -p
 
-test-orchestrator:
-	@echo "Running orchestrator tests..."
-	cd services/orchestrator && go test ./...
+docker-build: build ## Alias for build
 
-test-consciousness:
-	@echo "Running consciousness tests..."
-	python -m pytest src/consciousness_v2/tests/ -v
+# Test commands
+test: ## Run test suite
+	@echo "$(BLUE)Running tests...$(NC)"
+	@if [ -f "scripts/run-tests.sh" ]; then \
+		./scripts/run-tests.sh; \
+	else \
+		echo "$(YELLOW)No test script found. Skipping tests.$(NC)"; \
+	fi
 
-# Clean build artifacts
-clean:
-	@echo "Cleaning build artifacts..."
-	cd services/orchestrator && rm -rf bin/
-	find . -name "*.pyc" -delete
-	find . -name "__pycache__" -delete
+test-integration: ## Run integration tests
+	@echo "$(BLUE)Running integration tests...$(NC)"
+	docker-compose -f docker-compose.yml -f deploy/docker-compose.production.yml run --rm test-runner
+
+security-scan: ## Run security scans on containers
+	@echo "$(BLUE)Running security scans...$(NC)"
+	./scripts/build-containers.sh -t $(TAG) --skip-build --scan-only
+
+# Deployment commands
+deploy: ## Deploy with Docker Compose
+	@echo "$(BLUE)Deploying to $(ENVIRONMENT) with Docker...$(NC)"
+	./scripts/deploy-production.sh -t docker -e $(ENVIRONMENT) -T $(TAG)
+
+deploy-k8s: ## Deploy with Kubernetes
+	@echo "$(BLUE)Deploying to $(ENVIRONMENT) with Kubernetes...$(NC)"
+	./scripts/deploy-production.sh -t kubernetes -e $(ENVIRONMENT) -T $(TAG)
+
+k8s-deploy: deploy-k8s ## Alias for deploy-k8s
+
+deploy-staging: ## Deploy to staging environment
+	@echo "$(BLUE)Deploying to staging...$(NC)"
+	./scripts/deploy-production.sh -t docker -e staging -T $(TAG)
+
+deploy-force: ## Force deployment without confirmation
+	@echo "$(BLUE)Force deploying to $(ENVIRONMENT)...$(NC)"
+	./scripts/deploy-production.sh -t docker -e $(ENVIRONMENT) -T $(TAG) -f
+
+# Monitoring commands
+monitoring: ## Setup monitoring stack
+	@echo "$(BLUE)Setting up monitoring stack...$(NC)"
+	./scripts/setup-monitoring.sh
+
+monitoring-start: ## Start monitoring stack only
+	@echo "$(BLUE)Starting monitoring stack...$(NC)"
+	docker-compose -f deploy/docker-compose.monitoring.yml up -d
+
+monitoring-stop: ## Stop monitoring stack
+	@echo "$(BLUE)Stopping monitoring stack...$(NC)"
+	docker-compose -f deploy/docker-compose.monitoring.yml down
+
+monitoring-logs: ## Show monitoring logs
+	@echo "$(BLUE)Showing monitoring logs...$(NC)"
+	docker-compose -f deploy/docker-compose.monitoring.yml logs -f
+
+# Management commands
+status: ## Show deployment status
+	@echo "$(BLUE)Deployment Status:$(NC)"
+	@if docker-compose -f docker-compose.yml -f deploy/docker-compose.production.yml ps >/dev/null 2>&1; then \
+		docker-compose -f docker-compose.yml -f deploy/docker-compose.production.yml ps; \
+	else \
+		echo "$(YELLOW)Docker services not running$(NC)"; \
+	fi
+	@echo ""
+	@if kubectl get pods -n syn-os-$(ENVIRONMENT) >/dev/null 2>&1; then \
+		echo "$(BLUE)Kubernetes Status:$(NC)"; \
+		kubectl get pods -n syn-os-$(ENVIRONMENT); \
+	fi
+
+logs: ## Show application logs
+	@echo "$(BLUE)Showing application logs...$(NC)"
+	docker-compose -f docker-compose.yml -f deploy/docker-compose.production.yml logs -f
+
+health: ## Check service health
+	@echo "$(BLUE)Checking service health...$(NC)"
+	@curl -s http://localhost/health || echo "$(RED)Health check failed$(NC)"
+	@echo ""
+
+backup: ## Create backup
+	@echo "$(BLUE)Creating backup...$(NC)"
+	./scripts/backup.sh
+
+restore: ## Restore from backup (requires BACKUP_DIR)
+	@echo "$(BLUE)Restoring from backup...$(NC)"
+	@if [ -z "$(BACKUP_DIR)" ]; then \
+		echo "$(RED)Error: BACKUP_DIR variable required$(NC)"; \
+		echo "Usage: make restore BACKUP_DIR=/path/to/backup"; \
+		exit 1; \
+	fi
+	./scripts/restore.sh $(BACKUP_DIR)
+
+# Cleanup commands
+stop: ## Stop all services
+	@echo "$(BLUE)Stopping services...$(NC)"
+	docker-compose -f docker-compose.yml -f deploy/docker-compose.production.yml down
+
+clean: ## Clean up containers and volumes
+	@echo "$(BLUE)Cleaning up...$(NC)"
+	docker-compose -f docker-compose.yml -f deploy/docker-compose.production.yml down -v
 	docker system prune -f
 
-# Development environment setup
-dev-setup: install-deps
-	@echo "Setting up development environment..."
-	@echo "Creating necessary directories..."
-	mkdir -p logs data/postgres data/redis data/nats
-	@echo "Setting up Git hooks..."
-	cp scripts/pre-commit .git/hooks/pre-commit 2>/dev/null || echo "No pre-commit hook found"
-	chmod +x .git/hooks/pre-commit 2>/dev/null || true
-	@echo "Development environment ready"
+clean-all: ## Clean everything including images
+	@echo "$(BLUE)Cleaning everything...$(NC)"
+	docker-compose -f docker-compose.yml -f deploy/docker-compose.production.yml down -v --rmi all
+	docker system prune -af
 
-# Docker Compose operations
-start:
-	@echo "Starting Syn_OS services..."
-	docker-compose up -d
-	@echo "Services started. Use 'make logs' to view logs or 'make status' to check status"
+# Development commands
+dev: ## Start development environment
+	@echo "$(BLUE)Starting development environment...$(NC)"
+	docker-compose -f docker-compose.yml up -d
 
-stop:
-	@echo "Stopping Syn_OS services..."
-	docker-compose down
+dev-logs: ## Show development logs
+	@echo "$(BLUE)Showing development logs...$(NC)"
+	docker-compose -f docker-compose.yml logs -f
 
-restart: stop start
+dev-clean: ## Clean development environment
+	@echo "$(BLUE)Cleaning development environment...$(NC)"
+	docker-compose -f docker-compose.yml down -v
 
-logs:
-	docker-compose logs -f
+# Utility commands
+shell: ## Open shell in orchestrator container
+	@echo "$(BLUE)Opening shell in orchestrator container...$(NC)"
+	docker exec -it syn_os_orchestrator_1 /bin/sh
 
-status:
-	@echo "Service Status:"
-	@echo "==============="
-	docker-compose ps
+db-shell: ## Open database shell
+	@echo "$(BLUE)Opening database shell...$(NC)"
+	docker exec -it syn_os_postgres_primary psql -U syn_os -d syn_os_$(ENVIRONMENT)
 
-# Integration tests
-integration:
-	@echo "Running integration tests..."
-	@echo "Starting test environment..."
-	docker-compose -f docker-compose.test.yml up -d
-	@echo "Waiting for services to be ready..."
-	sleep 30
-	@echo "Running integration test suite..."
-	python -m pytest tests/integration/ -v
-	@echo "Cleaning up test environment..."
-	docker-compose -f docker-compose.test.yml down
+redis-shell: ## Open Redis CLI
+	@echo "$(BLUE)Opening Redis CLI...$(NC)"
+	docker exec -it syn_os_redis_master redis-cli
 
-# Development shortcuts
-dev-orchestrator:
-	@echo "Starting orchestrator in development mode..."
-	cd services/orchestrator && \
-	ENV=development \
-	NATS_URL=nats://localhost:4222 \
-	POSTGRES_HOST=localhost \
-	REDIS_HOST=localhost \
-	go run ./cmd/orchestrator
+update: ## Update containers to latest versions
+	@echo "$(BLUE)Updating containers...$(NC)"
+	docker-compose -f docker-compose.yml -f deploy/docker-compose.production.yml pull
+	docker-compose -f docker-compose.yml -f deploy/docker-compose.production.yml up -d
 
-dev-consciousness:
-	@echo "Starting consciousness system in development mode..."
-	NATS_URL=nats://localhost:4222 \
-	ORCHESTRATOR_URL=http://localhost:8080 \
-	python -m src.consciousness_v2.main
+# Security commands
+security-check: ## Run comprehensive security checks
+	@echo "$(BLUE)Running security checks...$(NC)"
+	@if [ -f "scripts/security-audit.sh" ]; then \
+		./scripts/security-audit.sh; \
+	else \
+		echo "$(YELLOW)Security audit script not found$(NC)"; \
+	fi
 
-# Database operations
-db-migrate:
-	@echo "Running database migrations..."
-	cd services/orchestrator && go run ./cmd/migrate
+vulnerability-scan: ## Scan for vulnerabilities
+	@echo "$(BLUE)Scanning for vulnerabilities...$(NC)"
+	./scripts/build-containers.sh --skip-build --scan-only
 
-db-reset:
-	@echo "Resetting database..."
-	docker-compose exec postgres psql -U syn_os_user -d syn_os -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
-	$(MAKE) db-migrate
+# CI/CD helpers
+ci-build: ## Build for CI/CD pipeline
+	@echo "$(BLUE)Building for CI/CD...$(NC)"
+	./scripts/build-containers.sh -t $(TAG) -r $(REGISTRY)
 
-# Monitoring and debugging
-monitor:
-	@echo "Opening monitoring dashboard..."
-	@echo "NATS Monitor: http://localhost:8222"
-	@echo "Orchestrator API: http://localhost:8080"
-	@echo "Consciousness Health: http://localhost:8081/health"
+ci-test: ## Run tests for CI/CD pipeline
+	@echo "$(BLUE)Running CI/CD tests...$(NC)"
+	@$(MAKE) test
+	@$(MAKE) security-scan
 
-debug-nats:
-	@echo "NATS debugging information:"
-	nats server info
-	nats stream list
-	nats consumer list
+ci-deploy: ## Deploy for CI/CD pipeline
+	@echo "$(BLUE)Deploying via CI/CD...$(NC)"
+	./scripts/deploy-production.sh -t docker -e $(ENVIRONMENT) -T $(TAG) -f
 
-debug-logs:
-	@echo "Recent logs from all services:"
-	docker-compose logs --tail=50
-
-# Production deployment
-deploy-prod:
-	@echo "Deploying to production..."
-	@echo "Building production images..."
-	docker-compose -f docker-compose.prod.yml build
-	@echo "Starting production services..."
-	docker-compose -f docker-compose.prod.yml up -d
-	@echo "Production deployment complete"
-
-# Backup and restore
-backup:
-	@echo "Creating system backup..."
-	mkdir -p backups/$(shell date +%Y%m%d_%H%M%S)
-	docker-compose exec postgres pg_dump -U syn_os_user syn_os > backups/$(shell date +%Y%m%d_%H%M%S)/postgres.sql
-	docker-compose exec redis redis-cli --rdb backups/$(shell date +%Y%m%d_%H%M%S)/redis.rdb
-	@echo "Backup created in backups/$(shell date +%Y%m%d_%H%M%S)/"
-
-# Security and maintenance
-security-scan:
-	@echo "Running security scans..."
-	docker run --rm -v $(PWD):/app securecodewarrior/docker-security-scan /app
-	python -m safety check -r requirements.txt
-
-update-deps:
-	@echo "Updating dependencies..."
-	cd services/orchestrator && go get -u ./...
-	pip install --upgrade -r requirements.txt
+# Quick commands
+quick-deploy: build deploy ## Quick build and deploy
+quick-update: update ## Quick update and restart
 
 # Documentation
-docs:
-	@echo "Generating documentation..."
-	cd docs && make html
-	@echo "Documentation available at docs/_build/html/index.html"
+docs: ## Generate documentation
+	@echo "$(BLUE)Generating documentation...$(NC)"
+	@echo "$(YELLOW)Documentation generation not implemented yet$(NC)"
 
-# Quick health check
-health:
-	@echo "System Health Check:"
-	@echo "==================="
-	@curl -s http://localhost:8080/health | jq . || echo "Orchestrator: DOWN"
-	@curl -s http://localhost:8081/health | jq . || echo "Consciousness: DOWN"
-	@curl -s http://localhost:8222/healthz || echo "NATS: DOWN"
+# Validation
+validate: ## Validate configuration and deployment
+	@echo "$(BLUE)Validating configuration...$(NC)"
+	@./scripts/deploy-production.sh -t docker -e $(ENVIRONMENT) -T $(TAG) -n

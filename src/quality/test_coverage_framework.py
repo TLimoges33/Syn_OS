@@ -338,23 +338,55 @@ class Test{test_name.replace('_', '').title()}(unittest.TestCase):
     
     def test_initialization(self):
         """Test basic initialization"""
-        # TODO: Implement initialization test
-        self.assertTrue(True, "Placeholder test - implement actual test")
+        # Test framework initialization
+        framework = CoverageFramework()
+        self.assertIsNotNone(framework, "Framework should initialize successfully")
+        self.assertIsInstance(framework.test_results, dict, "Test results should be initialized as dict")
+        self.assertEqual(len(framework.test_results), 0, "Initial test results should be empty")
     
     def test_basic_functionality(self):
         """Test basic functionality"""
-        # TODO: Implement functionality test
-        self.assertTrue(True, "Placeholder test - implement actual test")
+        # Test basic framework functionality
+        framework = CoverageFramework()
+        
+        # Test adding a test result
+        test_result = {
+            "test_name": "sample_test",
+            "status": "passed",
+            "execution_time": 0.1
+        }
+        
+        framework.test_results["sample_test"] = test_result
+        self.assertEqual(len(framework.test_results), 1, "Should have one test result")
+        self.assertEqual(framework.test_results["sample_test"]["status"], "passed", "Test status should be passed")
     
     def test_error_handling(self):
         """Test error handling"""
-        # TODO: Implement error handling test
-        self.assertTrue(True, "Placeholder test - implement actual test")
+        # Test error handling scenarios
+        framework = CoverageFramework()
+        
+        # Test handling of invalid test data
+        try:
+            framework.test_results["invalid_test"] = None
+            # Should handle None values gracefully
+            self.assertIsNone(framework.test_results["invalid_test"], "Should handle None values")
+        except Exception as e:
+            self.fail(f"Framework should handle invalid data gracefully: {e}")
     
     def test_edge_cases(self):
         """Test edge cases"""
-        # TODO: Implement edge case tests
-        self.assertTrue(True, "Placeholder test - implement actual test")
+        # Test edge cases and boundary conditions
+        framework = CoverageFramework()
+        
+        # Test with empty strings
+        framework.test_results[""] = {"status": "edge_case"}
+        self.assertIn("", framework.test_results, "Should handle empty string keys")
+        
+        # Test with large number of results
+        for i in range(1000):
+            framework.test_results[f"test_{i}"] = {"status": "passed", "id": i}
+        
+        self.assertEqual(len(framework.test_results), 1001, "Should handle large number of test results")  # +1 for empty string test
 
 
 class Test{test_name.replace('_', '').title()}Async(unittest.IsolatedAsyncioTestCase):
@@ -370,8 +402,16 @@ class Test{test_name.replace('_', '').title()}Async(unittest.IsolatedAsyncioTest
     
     async def test_async_functionality(self):
         """Test async functionality"""
-        # TODO: Implement async functionality test
-        self.assertTrue(True, "Placeholder async test - implement actual test")
+        # Test async functionality
+        import asyncio
+        
+        async def async_test_operation():
+            await asyncio.sleep(0.01)  # Simulate async operation
+            return "async_result"
+        
+        # Run async test
+        result = asyncio.run(async_test_operation())
+        self.assertEqual(result, "async_result", "Async operation should complete successfully")
 
 
 @pytest.fixture
