@@ -43,20 +43,47 @@ Syn_OS is an experimental research project exploring the integration of security
 
 ```text
 syn-os/
-├── src/                           # Core source code
-│   ├── security/                  # Security framework implementation
-│   ├── consciousness_v2/          # AI consciousness research modules
-│   ├── kernel/                    # Rust-based kernel components
-│   └── ai_integration/            # AI system integrations
-├── applications/                  # User-facing applications
-│   ├── security_dashboard/        # Security monitoring interface
-│   ├── learning_hub/             # Educational security tools
-│   └── web_dashboard/            # Web-based system interface
-├── tests/                        # Testing framework
-├── docs/                         # Comprehensive documentation
-├── deploy/                       # Deployment configurations
-├── scripts/                      # Automation and utility scripts
-└── academic_papers/              # Research documentation
+├── README.md                     # Project documentation
+├── LICENSE                       # MIT License
+├── Cargo.toml                    # Rust workspace configuration
+├── pyproject.toml               # Python project configuration
+├── docker-compose.yml           # Container orchestration
+├── Makefile                     # Build automation
+│
+├── src/                         # Core source code
+│   ├── security/                # Security framework implementation
+│   ├── consciousness_v2/        # AI consciousness research modules
+│   ├── kernel/                  # Rust-based kernel components
+│   └── ai_integration/          # AI system integrations
+│
+├── docs/                        # Organized documentation
+│   ├── research/                # Academic research papers
+│   ├── architecture/            # System architecture documents
+│   ├── guides/                  # User and developer guides
+│   ├── reports/                 # Development reports and audits
+│   └── api/                     # API documentation
+│
+├── config/                      # Configuration management
+│   ├── development/             # Development environment configs
+│   ├── security/                # Security configurations
+│   ├── dependencies/            # Requirements and dependencies
+│   └── docker/                  # Docker-specific configurations
+│
+├── scripts/                     # Organized automation scripts
+│   ├── build/                   # Build automation
+│   ├── development/             # Development environment setup
+│   ├── monitoring/              # Health checks and monitoring
+│   └── deploy/                  # Deployment automation
+│
+├── .devops/                     # Development operations
+│   ├── github/                  # GitHub workflows and CI/CD
+│   ├── docker/                  # Dockerfiles and containers
+│   └── kubernetes/              # Kubernetes deployment configs
+│
+├── tools/                       # Development tools and utilities
+├── tests/                       # Comprehensive testing framework
+├── applications/                # User-facing applications
+└── archive/                     # Legacy code and documentation
 ```
 
 ---
@@ -283,11 +310,11 @@ git clone https://github.com/TLimoges33/Syn_OS.git
 cd Syn_OS
 
 # Setup development environment
-./setup-environment.sh
+./scripts/development/setup-environment.sh
 
 # Install Python dependencies
-pip install -r requirements-security.txt
-pip install -r requirements-ai-integration.txt
+pip install -r config/dependencies/requirements-security.txt
+pip install -r config/dependencies/requirements-ai-integration.txt
 
 # Setup Rust environment
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -304,7 +331,7 @@ python -m pytest tests/ -v
 source venv/bin/activate
 
 # Install development dependencies
-pip install -r requirements-testing.txt
+pip install -r config/dependencies/requirements-testing.txt
 
 # Setup pre-commit hooks (if available)
 pre-commit install
@@ -321,10 +348,10 @@ python tests/test_security.py
 
 | Document | Focus Area | Status |
 |----------|------------|--------|
-| [Neural Darwinism Foundation](NEURAL_DARWINISM_THEORETICAL_FOUNDATION.md) | Consciousness Theory | Complete |
+| [Neural Darwinism Foundation](docs/research/neural-darwinism.md) | Consciousness Theory | Complete |
 | [Security Implementation Plan](docs/CONSCIOUSNESS_SECURITY_IMPLEMENTATION_PLAN.md) | Security Research | In Progress |
-| [Hacking Competitions Framework](HACKING_COMPETITIONS_THEORETICAL_FRAMEWORK.md) | Educational Theory | Complete |
-| [Phase Implementation Summaries](docs/PHASE_3_IMPLEMENTATION_SUMMARY.md) | Development Progress | Ongoing |
+| [Cybersecurity Education Framework](docs/research/cybersecurity-education.md) | Educational Theory | Complete |
+| [Development Phase Reports](docs/reports/development-phases/) | Development Progress | Ongoing |
 
 ### Technical Documentation
 
