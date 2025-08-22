@@ -55,6 +55,8 @@ vault/
 .env.staging
 .env.development
 .env.test
+.env.tokens
+.env.local
 
 # Database files
 *.db
@@ -130,8 +132,34 @@ __pycache__/
 *$py.class
 *.so
 
+# Python virtual environments
+venv/
+venv_*/
+env/
+env_*/
+.venv/
+.env/
+
 # Node.js (if frontend is added)
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Build and distribution files
+dist/
+build/
+
+# Generated reports and results
+results/
+logs/
+test_reports/
+*.json
+!package.json
+!pyproject.toml
+!rust-toolchain.toml
+!Cargo.toml
+
+# MCP configurations
+.mcp.json
+mcp.json
