@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - {{ user.name }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .achievement-badge {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #333;
+            border-radius: 50px;
+            padding: 10px 20px;
+            margin: 5px;
+            display: inline-block;
+            font-weight: bold;
+        }
+        .learning-path {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .module-progress {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #007bff;
+        }
+        .module-progress.completed {
+            border-left-color: #28a745;
+            opacity: 0.8;
+        }
+        .consciousness-insights {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-brain me-2"></i>
+                Security Tutor
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/dashboard/{{ user.user_id }}">
+                    <i class="fas fa-arrow-left me-1"></i>
+                    Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2><i class="fas fa-user-circle me-3"></i>{{ user.name }}</h2>
+                    <p class="mb-2">
+                        <i class="fas fa-graduation-cap me-2"></i>
+                        {{ user.skill_level.value.title() }} Level Learner
+                    </p>
+                    <p class="mb-2">
+                        <i class="fas fa-eye me-2"></i>
+                        {{ user.learning_style.value.title() }} Learning Style
+                    </p>
+                    <p class="mb-0">
+                        <i class="fas fa-calendar me-2"></i>
+                        Member since {{ user.last_active.strftime('%B %Y') }}
+                    </p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="d-flex flex-column align-items-end">
+                        <div class="mb-2">
+                            <span class="badge bg-light text-dark fs-6">
+                                Level {{ (user.total_score // 100) + 1 }}
+                            </span>
+                        </div>
+                        <div class="progress" style="width: 200px; height: 10px;">
+                            <div class="progress-bar bg-warning" 
+                                 style="width: {{ (user.total_score % 100) }}%"></div>
+                        </div>
+                        <small class="mt-1">{{ user.total_score % 100 }}/100 XP to next level</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Left Column - Stats and Achievements -->
+            <div class="col-md-4">
+                <!-- Statistics -->
+                <div class="stat-card">
+                    <i class="fas fa-trophy fa-3x text-warning mb-3"></i>
+                    <h3>{{ user.total_score }}</h3>
+                    <p class="text-muted">Total Score</p>
+                </div>
+
+                <div class="stat-card">
+                    <i class="fas fa-fire fa-3x text-danger mb-3"></i>
+                    <h3>{{ user.current_streak }}</h3>
+                    <p class="text-muted">Day Streak</p>
+                </div>
+
+                <div class="stat-card">
+                    <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                    <h3>{{ user.completed_modules|length }}</h3>
+                    <p class="text-muted">Modules Completed</p>
+                </div>
+
+                <!-- Achievements -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-medal me-2"></i>Achievements</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if user.completed_modules|length > 0 %}
+                        <div class="achievement-badge">
+                            <i class="fas fa-play me-1"></i>First Steps
+                        </div>
+                        {% endif %}
+                        
+                        {% if user.current_streak >= 3 %}
+                        <div class="achievement-badge">
+                            <i class="fas fa-fire me-1"></i>On Fire
+                        </div>
+                        {% endif %}
+                        
+                        {% if user.total_score >= 500 %}
+                        <div class="achievement-badge">
+                            <i class="fas fa-star me-1"></i>High Achiever
+                        </div>
+                        {% endif %}
+                        
+                        {% if user.completed_modules|length >= 2 %}
+                        <div class="achievement-badge">
+                            <i class="fas fa-graduation-cap me-1"></i>Knowledge Seeker
+                        </div>
+                        {% endif %}
+                        
+                        {% if user.completed_modules|length == 0 and user.current_streak == 0 %}
+                        <p class="text-muted">Complete modules to earn achievements!</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Consciousness Insights -->
+                <div class="consciousness-insights mt-4">
+                    <h5><i class="fas fa-brain me-2"></i>Consciousness Insights</h5>
+                    {% if user.consciousness_insights %}
+                    {% for key, value in user.consciousness_insights.items() %}
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>{{ key.replace('_', ' ').title() }}:</span>
+                        <strong>
+                            {% if value is number %}
+                                {{ "%.1f"|format(value * 100) }}%
+                            {% else %}
+                                {{ value }}
+                            {% endif %}
+                        </strong>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p class="mb-0">Start learning to see your consciousness insights!</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Right Column - Learning Progress and Settings -->
+            <div class="col-md-8">
+                <!-- Learning Progress Chart -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5><i class="fas fa-chart-line me-2"></i>Learning Progress</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="progressChart" height="100"></canvas>
+                    </div>
+                </div>
+
+                <!-- Learning Path -->
+                <div class="learning-path">
+                    <h5><i class="fas fa-route me-2"></i>Your Learning Path</h5>
+                    <p class="text-muted">Track your progress through the security training modules</p>
+                    
+                    <div class="module-progress completed">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    Getting Started
+                                </h6>
+                                <small class="text-muted">Account setup and profile creation</small>
+                            </div>
+                            <span class="badge bg-success">Completed</span>
+                        </div>
+                    </div>
+
+                    {% set modules = {
+                        'phishing_basics': {
+                            'title': 'Phishing Attack Recognition',
+                            'description': 'Learn to identify and avoid phishing attempts',
+                            'icon': 'fas fa-fish'
+                        },
+                        'password_security': {
+                            'title': 'Advanced Password Security',
+                            'description': 'Master password creation and management',
+                            'icon': 'fas fa-key'
+                        },
+                        'network_security': {
+                            'title': 'Network Security Fundamentals',
+                            'description': 'Understand network threats and protections',
+                            'icon': 'fas fa-network-wired'
+                        },
+                        'incident_response': {
+                            'title': 'Security Incident Response',
+                            'description': 'Learn to respond to security incidents',
+                            'icon': 'fas fa-exclamation-triangle'
+                        }
+                    } %}
+
+                    {% for module_id, module_info in modules.items() %}
+                    <div class="module-progress {% if module_id in user.completed_modules %}completed{% endif %}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">
+                                    {% if module_id in user.completed_modules %}
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    {% else %}
+                                    <i class="{{ module_info.icon }} text-primary me-2"></i>
+                                    {% endif %}
+                                    {{ module_info.title }}
+                                </h6>
+                                <small class="text-muted">{{ module_info.description }}</small>
+                            </div>
+                            {% if module_id in user.completed_modules %}
+                            <span class="badge bg-success">Completed</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Pending</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Profile Settings -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-cog me-2"></i>Profile Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="profileForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Skill Level</label>
+                                        <select class="form-select" id="skillLevel">
+                                            <option value="beginner" {% if user.skill_level.value == 'beginner' %}selected{% endif %}>Beginner</option>
+                                            <option value="intermediate" {% if user.skill_level.value == 'intermediate' %}selected{% endif %}>Intermediate</option>
+                                            <option value="advanced" {% if user.skill_level.value == 'advanced' %}selected{% endif %}>Advanced</option>
+                                            <option value="expert" {% if user.skill_level.value == 'expert' %}selected{% endif %}>Expert</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Learning Style</label>
+                                        <select class="form-select" id="learningStyle">
+                                            <option value="visual" {% if user.learning_style.value == 'visual' %}selected{% endif %}>Visual</option>
+                                            <option value="auditory" {% if user.learning_style.value == 'auditory' %}selected{% endif %}>Auditory</option>
+                                            <option value="kinesthetic" {% if user.learning_style.value == 'kinesthetic' %}selected{% endif %}>Kinesthetic</option>
+                                            <option value="reading" {% if user.learning_style.value == 'reading' %}selected{% endif %}>Reading/Writing</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Attention Span (minutes)</label>
+                                        <input type="number" class="form-control" id="attentionSpan" 
+                                               value="{{ user.attention_span }}" min="5" max="60">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Preferred Session Length (minutes)</label>
+                                        <input type="number" class="form-control" id="sessionLength" 
+                                               value="{{ user.preferred_session_length }}" min="5" max="60">
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize progress chart
+        const ctx = document.getElementById('progressChart').getContext('2d');
+        
+        // Sample data - in real implementation, this would come from the server
+        const progressData = {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+            datasets: [{
+                label: 'Score',
+                data: [0, {{ user.total_score // 4 }}, {{ user.total_score // 2 }}, {{ user.total_score }}],
+                borderColor: '#007bff',
+                backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                tension: 0.4,
+                fill: true
+            }, {
+                label: 'Modules Completed',
+                data: [0, {{ user.completed_modules|length // 2 }}, {{ user.completed_modules|length }}, {{ user.completed_modules|length }}],
+                borderColor: '#28a745',
+                backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        };
+
+        const progressChart = new Chart(ctx, {
+            type: 'line',
+            data: progressData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Profile form handling
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                skill_level: document.getElementById('skillLevel').value,
+                learning_style: document.getElementById('learningStyle').value,
+                attention_span: parseInt(document.getElementById('attentionSpan').value),
+                preferred_session_length: parseInt(document.getElementById('sessionLength').value)
+            };
+            
+            // In a real implementation, this would send data to the server
+            console.log('Profile update:', formData);
+            
+            // Show success message
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-success alert-dismissible fade show';
+            alert.innerHTML = `
+                <i class="fas fa-check me-2"></i>
+                Profile updated successfully!
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            this.insertBefore(alert, this.firstChild);
+            
+            // Auto-dismiss after 3 seconds
+            setTimeout(() => {
+                alert.remove();
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+[package]
+name = "integration-tests"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+syn-kernel = { path = "../../src/kernel" }
+syn-security = { path = "../../src/security" }
+syn-consciousness = { path = "../../src/consciousness" }
+
+# Testing dependencies
+criterion = { workspace = true }
+proptest = { workspace = true }

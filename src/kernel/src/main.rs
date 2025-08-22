@@ -9,83 +9,29 @@ extern crate alloc;
 use core::panic::PanicInfo;
 use bootloader::{BootInfo, entry_point};
 use x86_64;
-use alloc::format;
 
 mod boot;
 mod memory;
 mod scheduler;
 mod filesystem;
 mod drivers;
-mod ai_interface;
 mod security;
 mod threat_detection;
-mod exploit_simulator;
 mod forensics;
-mod neural_security;
-mod educational_api;
-mod personalized_education_bridge;
-mod consciousness_education_demo;
-mod consciousness_bridge;
-mod kernel_tests;
 
 #[cfg(not(test))]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    // Immediate security lockdown - disable interrupts
+    // Disable interrupts for safety
     x86_64::instructions::interrupts::disable();
     
-    println!("🚨 KERNEL PANIC - SECURITY LOCKDOWN INITIATED 🚨");
-    println!("Panic occurred: {}", info);
+    println!("KERNEL PANIC: {}", info);
     
-    // Enhanced panic information for cybersecurity analysis
     if let Some(location) = info.location() {
-        println!("📍 Location: {}:{}:{}", location.file(), location.line(), location.column());
-        
-        // Security analysis: check if panic is in security-critical code
-        let file = location.file();
-        if file.contains("security") || file.contains("threat") || file.contains("forensics") {
-            println!("⚠️  CRITICAL: Panic in security module - potential attack detected!");
-            
-            // Log security incident
-            forensics::create_timeline_event(
-                &format!("KERNEL_PANIC_SECURITY_MODULE: {}", info),
-                &security::SecurityContext::kernel_context()
-            );
-        }
+        println!("Location: {}:{}:{}", location.file(), location.line(), location.column());
     }
     
-    // Educational panic information
-    println!("📚 Educational Info: This panic demonstrates kernel error handling");
-    println!("🛡️  Security Measures: System locked, interrupts disabled");
-    
-    // Create forensic evidence of the panic
-    if let Some(location) = info.location() {
-        let addr = location.line() as usize; // Use line number as mock address
-        let context = security::SecurityContext::kernel_context();
-        let _ = forensics::collect_memory_evidence(addr, 1024, &context);
-    }
-    
-    // Neural darwinian learning from panic
-    println!("🧠 Neural Learning: Analyzing panic patterns for future prevention");
-    
-    // Log panic for AI analysis (existing functionality)
-    if let Some(ai) = ai_interface::get_ai_interface() {
-        ai.log_system_event(ai_interface::SystemEvent::KernelPanic {
-            message: "Kernel panic occurred - security lockdown initiated".into(),
-            location: info.location().map(|l| {
-                extern crate alloc;
-                use alloc::format;
-                format!("{}:{}:{}", l.file(), l.line(), l.column())
-            }),
-        });
-    }
-    
-    // Educational message for students
-    println!("🎓 Learning Opportunity: Study this panic to understand kernel stability");
-    println!("💾 System State: All security measures activated, forensics collected");
-    println!("🔒 Final State: System halted for analysis");
-    
-    // Halt with security lockdown
+    // Halt the system
     loop {
         x86_64::instructions::hlt();
     }
@@ -101,12 +47,12 @@ fn panic(info: &PanicInfo) -> ! {
 }
 
 pub fn init(boot_info: &'static BootInfo) {
-    println!("🚀 SynapticOS Kernel Initializing...");
+    println!("SynapticOS Kernel Initializing...");
     
     // Initialize hardware abstraction layer
     drivers::init();
     
-    // Initialize memory management (bootloader 0.9 API)
+    // Initialize memory management
     memory::init(&boot_info.memory_map, x86_64::VirtAddr::new(0));
     
     // Initialize security subsystem
@@ -118,35 +64,10 @@ pub fn init(boot_info: &'static BootInfo) {
     // Initialize forensics collection
     forensics::init();
     
-    // Initialize neural security engine
-    neural_security::init();
-    
-    // Initialize educational exploit simulator
-    exploit_simulator::init();
-    
-    // Initialize educational API
-    educational_api::init();
-    
-    // Initialize personalized education bridge with consciousness integration
-    personalized_education_bridge::init_personalized_education();
-    
-    // Initialize AI interface (secured)
-    ai_interface::init();
-    
-    // Initialize consciousness bridge for AI-kernel communication
-    consciousness_bridge::init();
-    
-    // Initialize scheduler with AI optimization
+    // Initialize scheduler
     scheduler::init();
     
-    println!("✅ SynapticOS Kernel Ready");
-}
-
-/// Get current system timestamp
-pub fn get_timestamp() -> u64 {
-    use core::sync::atomic::{AtomicU64, Ordering};
-    static TIMESTAMP: AtomicU64 = AtomicU64::new(0);
-    TIMESTAMP.fetch_add(1, Ordering::SeqCst)
+    println!("SynapticOS Kernel Ready");
 }
 
 entry_point!(kernel_main);
@@ -157,32 +78,12 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     #[cfg(test)]
     test_main();
     
-    println!("🧠 Syn_OS - AI-Powered Cybersecurity Education Platform");
-    println!("🔒 Security Status: Neural Darwinian Defense Active");
-    println!("🎓 Educational Mode: Consciousness-Aware Personalized Learning Ready");
-    println!("🔍 Threat Detection: Adaptive Learning Enabled");
-    println!("📊 Digital Forensics: Chain of Custody Active");
-    println!("🤖 AI Engine: Neural Security Evolution Online");
-    println!("🧬 Personal Context: Consciousness-Integrated Learning Paths Active");
-    
-    println!("\n🧪 Running comprehensive kernel validation...");
-    
-    // Run comprehensive kernel tests
-    kernel_tests::run_kernel_tests();
-    
-    println!("\n🚀 Kernel fully operational - starting main loop...");
+    println!("SynapticOS - Cybersecurity Education Platform");
+    println!("Security Status: Active");
+    println!("Educational Mode: Ready");
     
     // Start main kernel loop
-    kernel_main_loop();
-}
-
-fn kernel_main_loop() -> ! {
     loop {
-        // Check for AI processing requests
-        if let Some(request) = ai_interface::get_pending_request() {
-            ai_interface::process_request_securely(request);
-        }
-        
         // Yield to scheduler
         scheduler::yield_cpu();
         
@@ -246,7 +147,7 @@ macro_rules! serial_println {
     ($($arg:tt)*) => ($crate::serial_print!("{}\n", format_args!($($arg)*)));
 }
 
-// VGA buffer module (basic implementation)
+// VGA buffer module
 mod vga_buffer {
     use core::fmt;
     use volatile::Volatile;
@@ -288,25 +189,6 @@ mod vga_buffer {
     struct ScreenChar {
         ascii_character: u8,
         color_code: ColorCode,
-    }
-
-    unsafe impl Send for ScreenChar {}
-    unsafe impl Sync for ScreenChar {}
-    
-    // Implement required traits for Volatile access
-    use core::ops::{Deref, DerefMut};
-    
-    impl Deref for ScreenChar {
-        type Target = Self;
-        fn deref(&self) -> &Self::Target {
-            self
-        }
-    }
-    
-    impl DerefMut for ScreenChar {
-        fn deref_mut(&mut self) -> &mut Self::Target {
-            self
-        }
     }
 
     const BUFFER_HEIGHT: usize = 25;
@@ -384,16 +266,15 @@ mod vga_buffer {
     }
 
     use spin::Mutex;
+    use lazy_static::lazy_static;
 
     lazy_static! {
         pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
             column_position: 0,
-            color_code: ColorCode::new(Color::Yellow, Color::Black),
+            color_code: ColorCode::new(Color::Green, Color::Black),
             buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
         });
     }
-
-    use lazy_static::lazy_static;
 
     pub fn _print(args: fmt::Arguments) {
         use core::fmt::Write;

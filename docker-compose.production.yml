@@ -1,0 +1,534 @@
+version: "3.8"
+
+services:
+  # NATS Message Bus with JetStream - Production Configuration
+  nats:
+    image: nats:2.10-alpine
+    container_name: syn_os_nats_prod
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+      - "6222:6222"
+    command:
+      [
+        "--jetstream",
+        "--store_dir=/data",
+        "--max_memory_store=4GB",
+        "--max_file_store=50GB",
+        "--http_port=8222",
+        "--cluster_name=syn_os_cluster",
+        "--cluster=nats://0.0.0.0:6222",
+        "--routes=nats://nats:6222",
+        "--no_auth_user=orchestrator",
+        "--auth", 
+        "/etc/nats/auth.conf"
+      ]
+    volumes:
+      - nats_data:/data
+      - ./config/nats/auth.conf:/etc/nats/auth.conf:ro
+    networks:
+      - syn_os_network
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2.0'
+        reservations:
+          memory: 2G
+          cpus: '1.0'
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8222/healthz",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  # PostgreSQL Database - Production Configuration
+  postgres:
+    image: postgres:15-alpine
+    container_name: syn_os_postgres_prod
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-syn_os}
+      POSTGRES_USER: ${POSTGRES_USER:-syn_os_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_SSL_MODE: require
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
+    env_file:
+      - .env.production
+    ports:
+      - "127.0.0.1:5432:5432"  # Bind to localhost only for security
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./services/orchestrator/migrations:/docker-entrypoint-initdb.d
+      - ./config/postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+    networks:
+      - syn_os_network
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 1G
+          cpus: '0.5'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  # Redis Cache - Production Configuration
+  redis:
+    image: redis:7-alpine
+    container_name: syn_os_redis_prod
+    command: >
+      redis-server 
+      --requirepass ${REDIS_PASSWORD}
+      --appendonly yes
+      --appendfsync everysec
+      --maxmemory 1gb
+      --maxmemory-policy allkeys-lru
+    ports:
+      - "127.0.0.1:6379:6379"  # Bind to localhost only for security
+    volumes:
+      - redis_data:/data
+      - ./config/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    networks:
+      - syn_os_network
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+    healthcheck:
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "$REDIS_PASSWORD", "ping"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  # Service Orchestrator (Go) - Production Configuration
+  orchestrator:
+    build:
+      context: ./services/orchestrator
+      dockerfile: Dockerfile
+      target: production
+    image: syn_os/orchestrator:latest
+    container_name: syn_os_orchestrator_prod
+    environment:
+      - ENV=production
+      - NATS_URL=${NATS_URL:-nats://nats:4222}
+      - POSTGRES_HOST=${POSTGRES_HOST:-postgres}
+      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
+      - POSTGRES_DB=${POSTGRES_DB:-syn_os}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - HTTP_PORT=${HTTP_PORT:-8080}
+      - LOG_LEVEL=warn
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - INTERNAL_API_KEY=${INTERNAL_API_KEY}
+    env_file:
+      - .env.production
+    ports:
+      - "127.0.0.1:8080:8080"  # Bind to localhost only, use reverse proxy
+    depends_on:
+      nats:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - syn_os_network
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8080/health",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+  # Consciousness System V2 (Python) - Production Configuration
+  consciousness:
+    build:
+      context: .
+      dockerfile: Dockerfile.consciousness
+      target: production
+    image: syn_os/consciousness:latest
+    container_name: syn_os_consciousness_prod
+    environment:
+      - NATS_URL=${NATS_URL:-nats://nats:4222}
+      - ORCHESTRATOR_URL=${ORCHESTRATOR_URL:-http://orchestrator:8080}
+      - LOG_LEVEL=WARN
+      - CONSCIOUSNESS_MODE=production
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - CONSCIOUSNESS_ENCRYPTION_KEY=${CONSCIOUSNESS_ENCRYPTION_KEY}
+      - LM_STUDIO_API_KEY=${LM_STUDIO_API_KEY}
+    env_file:
+      - .env.production
+    depends_on:
+      nats:
+        condition: service_healthy
+      orchestrator:
+        condition: service_healthy
+    networks:
+      - syn_os_network
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2.0'
+        reservations:
+          memory: 1G
+          cpus: '1.0'
+    volumes:
+      - consciousness_data:/app/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:8081/health')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+
+  # Security Dashboard (Python) - Production Configuration
+  security-dashboard:
+    build:
+      context: ./applications/security_dashboard
+      dockerfile: Dockerfile
+      target: production
+    image: syn_os/security-dashboard:latest
+    container_name: syn_os_security_dashboard_prod
+    environment:
+      - NATS_URL=${NATS_URL:-nats://nats:4222}
+      - ORCHESTRATOR_URL=${ORCHESTRATOR_URL:-http://orchestrator:8080}
+      - CONSCIOUSNESS_URL=${CONSCIOUSNESS_URL:-http://consciousness:8081}
+      - SECURITY_DASHBOARD_PORT=${SECURITY_DASHBOARD_PORT:-8083}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - SIGNING_KEY=${SIGNING_KEY}
+      - LOG_LEVEL=WARN
+    env_file:
+      - .env.production
+    depends_on:
+      nats:
+        condition: service_healthy
+      orchestrator:
+        condition: service_healthy
+      consciousness:
+        condition: service_healthy
+    networks:
+      - syn_os_network
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    volumes:
+      - ./logs/security:/app/logs
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:8083/health')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Learning Hub (Python) - Production Configuration
+  learning-hub:
+    build:
+      context: ./applications/learning_hub
+      dockerfile: Dockerfile
+      target: production
+    image: syn_os/learning-hub:latest
+    container_name: syn_os_learning_hub_prod
+    environment:
+      - NATS_URL=${NATS_URL:-nats://nats:4222}
+      - ORCHESTRATOR_URL=${ORCHESTRATOR_URL:-http://orchestrator:8080}
+      - CONSCIOUSNESS_URL=${CONSCIOUSNESS_URL:-http://consciousness:8081}
+      - LEARNING_HUB_PORT=${LEARNING_HUB_PORT:-8084}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - LOG_LEVEL=WARN
+    env_file:
+      - .env.production
+    depends_on:
+      nats:
+        condition: service_healthy
+      orchestrator:
+        condition: service_healthy
+      consciousness:
+        condition: service_healthy
+    networks:
+      - syn_os_network
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    volumes:
+      - ./logs:/app/logs
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:8084/health')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Security Tutor (Python) - Production Configuration
+  security-tutor:
+    build:
+      context: ./applications/security_tutor
+      dockerfile: Dockerfile
+      target: production
+    image: syn_os/security-tutor:latest
+    container_name: syn_os_security_tutor_prod
+    environment:
+      - NATS_URL=${NATS_URL:-nats://nats:4222}
+      - ORCHESTRATOR_URL=${ORCHESTRATOR_URL:-http://orchestrator:8080}
+      - CONSCIOUSNESS_URL=${CONSCIOUSNESS_URL:-http://consciousness:8081}
+      - SECURITY_TUTOR_PORT=${SECURITY_TUTOR_PORT:-8085}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - LOG_LEVEL=WARN
+    env_file:
+      - .env.production
+    depends_on:
+      nats:
+        condition: service_healthy
+      orchestrator:
+        condition: service_healthy
+      consciousness:
+        condition: service_healthy
+    networks:
+      - syn_os_network
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    volumes:
+      - ./logs:/app/logs
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:8085/health')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Web Dashboard (Python) - Production Configuration
+  web-dashboard:
+    build:
+      context: ./applications/web_dashboard
+      dockerfile: Dockerfile
+      target: production
+    image: syn_os/web-dashboard:latest
+    container_name: syn_os_web_dashboard_prod
+    environment:
+      - NATS_URL=${NATS_URL:-nats://nats:4222}
+      - ORCHESTRATOR_URL=${ORCHESTRATOR_URL:-http://orchestrator:8080}
+      - CONSCIOUSNESS_URL=${CONSCIOUSNESS_URL:-http://consciousness:8081}
+      - WEB_DASHBOARD_PORT=${WEB_DASHBOARD_PORT:-8086}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - LOG_LEVEL=WARN
+    env_file:
+      - .env.production
+    depends_on:
+      nats:
+        condition: service_healthy
+      orchestrator:
+        condition: service_healthy
+      consciousness:
+        condition: service_healthy
+    networks:
+      - syn_os_network
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    volumes:
+      - ./logs:/app/logs
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:8086/health')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Threat Intelligence Dashboard (Python) - Production Configuration
+  threat-intelligence:
+    build:
+      context: ./applications/threat_intelligence_dashboard
+      dockerfile: Dockerfile
+      target: production
+    image: syn_os/threat-intelligence:latest
+    container_name: syn_os_threat_intelligence_prod
+    environment:
+      - NATS_URL=${NATS_URL:-nats://nats:4222}
+      - ORCHESTRATOR_URL=${ORCHESTRATOR_URL:-http://orchestrator:8080}
+      - CONSCIOUSNESS_URL=${CONSCIOUSNESS_URL:-http://consciousness:8081}
+      - THREAT_INTEL_PORT=${THREAT_INTEL_PORT:-8087}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - LOG_LEVEL=WARN
+    env_file:
+      - .env.production
+    depends_on:
+      nats:
+        condition: service_healthy
+      orchestrator:
+        condition: service_healthy
+      consciousness:
+        condition: service_healthy
+    networks:
+      - syn_os_network
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    volumes:
+      - ./logs:/app/logs
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:8087/health')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Reverse Proxy and Load Balancer (Nginx)
+  nginx:
+    image: nginx:alpine
+    container_name: syn_os_nginx_prod
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./config/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./certs:/etc/nginx/certs:ro
+      - ./logs/nginx:/var/log/nginx
+    depends_on:
+      - orchestrator
+      - consciousness
+      - security-dashboard
+      - learning-hub
+      - security-tutor
+      - web-dashboard
+      - threat-intelligence
+    networks:
+      - syn_os_network
+    restart: always
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  nats_data:
+    driver: local
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  consciousness_data:
+    driver: local
+
+networks:
+  syn_os_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+    driver_opts:
+      com.docker.network.bridge.enable_icc: "true"
+      com.docker.network.bridge.enable_ip_masquerade: "true"
+      com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"

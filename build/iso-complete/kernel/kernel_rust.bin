@@ -1,0 +1,21 @@
+/home/diablorain/Syn_OS/target/x86_64-unknown-none/release/deps/kernel-8ceb00f23d977c91.d: src/kernel/src/main.rs src/kernel/src/boot.rs src/kernel/src/memory.rs src/kernel/src/scheduler.rs src/kernel/src/filesystem.rs src/kernel/src/drivers.rs src/kernel/src/ai_interface.rs src/kernel/src/security.rs src/kernel/src/threat_detection.rs src/kernel/src/exploit_simulator.rs src/kernel/src/forensics.rs src/kernel/src/neural_security.rs src/kernel/src/educational_api.rs src/kernel/src/personalized_education_bridge.rs src/kernel/src/consciousness_education_demo.rs src/kernel/src/consciousness_bridge.rs src/kernel/src/kernel_tests.rs
+
+/home/diablorain/Syn_OS/target/x86_64-unknown-none/release/deps/kernel-8ceb00f23d977c91: src/kernel/src/main.rs src/kernel/src/boot.rs src/kernel/src/memory.rs src/kernel/src/scheduler.rs src/kernel/src/filesystem.rs src/kernel/src/drivers.rs src/kernel/src/ai_interface.rs src/kernel/src/security.rs src/kernel/src/threat_detection.rs src/kernel/src/exploit_simulator.rs src/kernel/src/forensics.rs src/kernel/src/neural_security.rs src/kernel/src/educational_api.rs src/kernel/src/personalized_education_bridge.rs src/kernel/src/consciousness_education_demo.rs src/kernel/src/consciousness_bridge.rs src/kernel/src/kernel_tests.rs
+
+src/kernel/src/main.rs:
+src/kernel/src/boot.rs:
+src/kernel/src/memory.rs:
+src/kernel/src/scheduler.rs:
+src/kernel/src/filesystem.rs:
+src/kernel/src/drivers.rs:
+src/kernel/src/ai_interface.rs:
+src/kernel/src/security.rs:
+src/kernel/src/threat_detection.rs:
+src/kernel/src/exploit_simulator.rs:
+src/kernel/src/forensics.rs:
+src/kernel/src/neural_security.rs:
+src/kernel/src/educational_api.rs:
+src/kernel/src/personalized_education_bridge.rs:
+src/kernel/src/consciousness_education_demo.rs:
+src/kernel/src/consciousness_bridge.rs:
+src/kernel/src/kernel_tests.rs:

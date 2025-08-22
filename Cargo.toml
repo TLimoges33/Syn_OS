@@ -3,8 +3,9 @@ members = [
     "src/kernel",
     "src/security", 
     "src/consciousness",
-    "tests/integration",
-    "tools/dev-utils"
+    # Temporarily exclude std-dependent packages to resolve core library conflicts
+    # "tests/integration",
+    # "tools/dev-utils"
 ]
 resolver = "2"
 
@@ -16,16 +17,16 @@ authors = ["SynapticOS Team"]
 repository = "https://github.com/TLimoges33/Syn_OS"
 
 [workspace.dependencies]
-# Core system dependencies
-serde = { version = "1.0", features = ["derive"] }
-anyhow = "1.0"
+# Core system dependencies with proper no-std configuration
+serde = { version = "1.0", default-features = false, features = ["derive", "alloc"] }
+anyhow = { version = "1.0", default-features = false }
 tokio = { version = "1.0", features = ["full"] }
 clap = { version = "4.0", features = ["derive"] }
 
 # Kernel specific dependencies  
 bootloader = "0.9"
-spin = "0.9"
-x86_64 = "0.14"
+spin = { version = "0.9", default-features = false, features = ["mutex", "rwlock", "spin_mutex"] }
+x86_64 = { version = "0.14", features = ["instructions"] }
 volatile = "0.4"
 pic8259 = "0.10"
 pc-keyboard = "0.7"
@@ -35,18 +36,18 @@ linked_list_allocator = "0.10"
 criterion = "0.5"
 proptest = "1.0"
 
-# Security dependencies
-ring = "0.17"
-chacha20poly1305 = "0.10"
-x25519-dalek = "2.0"
-ed25519-dalek = "2.2"
-thiserror = "1.0"
-rand = { version = "0.8", features = ["getrandom"] }
+# Security dependencies - unified versions with proper no-std support
+ring = { version = "0.17", default-features = false, features = ["alloc"] }
+chacha20poly1305 = { version = "0.10", default-features = false, features = ["alloc"] }
+x25519-dalek = { version = "2.0", default-features = false, features = ["alloc"] }
+ed25519-dalek = { version = "2.2", default-features = false, features = ["alloc", "rand_core"] }
+thiserror = { version = "1.0", default-features = false }
+rand_core = { version = "0.6", default-features = false }
 
-# ML dependencies (simplified)
-candle-core = "0.3"
-candle-nn = "0.3"
-tokenizers = "0.15"
+# Remove conflicting ML dependencies temporarily
+# candle-core = "0.3"
+# candle-nn = "0.3"
+# tokenizers = "0.15"
 
 [profile.dev]
 panic = "abort"

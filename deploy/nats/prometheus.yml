@@ -1,0 +1,32 @@
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - alertmanager:9093
+global:
+  evaluation_interval: 15s
+  scrape_interval: 15s
+rule_files:
+- nats-alerts.yml
+scrape_configs:
+- job_name: nats-servers
+  metrics_path: /varz
+  scrape_interval: 10s
+  static_configs:
+  - targets:
+    - nats-0:8222
+    - nats-1:8222
+    - nats-2:8222
+- job_name: nats-jetstream
+  metrics_path: /jsz
+  scrape_interval: 15s
+  static_configs:
+  - targets:
+    - nats-0:8222
+    - nats-1:8222
+    - nats-2:8222
+- job_name: nats-surveyor
+  scrape_interval: 30s
+  static_configs:
+  - targets:
+    - nats-surveyor:7777

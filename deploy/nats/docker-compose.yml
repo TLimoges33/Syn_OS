@@ -1,0 +1,150 @@
+networks:
+  synaptic-network:
+    external: true
+services:
+  nats-0:
+    command:
+    - -c
+    - /etc/nats/nats-server.conf
+    container_name: synaptic-nats-0
+    environment:
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      CONSCIOUSNESS_PASSWORD: ${CONSCIOUSNESS_PASSWORD}
+      ORCHESTRATOR_PASSWORD: ${ORCHESTRATOR_PASSWORD}
+      SECURITY_PASSWORD: ${SECURITY_PASSWORD}
+    healthcheck:
+      interval: 30s
+      retries: 3
+      start_period: 40s
+      test:
+      - CMD
+      - wget
+      - --quiet
+      - --tries=1
+      - --spider
+      - http://localhost:8222/healthz
+      timeout: 10s
+    hostname: nats-0
+    image: nats:2.10-alpine
+    logging:
+      driver: json-file
+      options:
+        max-file: '5'
+        max-size: 100m
+    networks:
+    - synaptic-network
+    ports:
+    - 4222:4222
+    - 8222:8222
+    restart: unless-stopped
+    volumes:
+    - ./config/nats-0.conf:/etc/nats/nats-server.conf
+    - nats-jetstream-0:/data/jetstream
+    - ./certs:/certs:ro
+    - nats-logs-0:/var/log/nats
+  nats-1:
+    command:
+    - -c
+    - /etc/nats/nats-server.conf
+    container_name: synaptic-nats-1
+    environment:
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      CONSCIOUSNESS_PASSWORD: ${CONSCIOUSNESS_PASSWORD}
+      ORCHESTRATOR_PASSWORD: ${ORCHESTRATOR_PASSWORD}
+      SECURITY_PASSWORD: ${SECURITY_PASSWORD}
+    healthcheck:
+      interval: 30s
+      retries: 3
+      start_period: 40s
+      test:
+      - CMD
+      - wget
+      - --quiet
+      - --tries=1
+      - --spider
+      - http://localhost:8222/healthz
+      timeout: 10s
+    hostname: nats-1
+    image: nats:2.10-alpine
+    logging:
+      driver: json-file
+      options:
+        max-file: '5'
+        max-size: 100m
+    networks:
+    - synaptic-network
+    ports:
+    - 4223:4222
+    - 8223:8222
+    restart: unless-stopped
+    volumes:
+    - ./config/nats-1.conf:/etc/nats/nats-server.conf
+    - nats-jetstream-1:/data/jetstream
+    - ./certs:/certs:ro
+    - nats-logs-1:/var/log/nats
+  nats-2:
+    command:
+    - -c
+    - /etc/nats/nats-server.conf
+    container_name: synaptic-nats-2
+    environment:
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      CONSCIOUSNESS_PASSWORD: ${CONSCIOUSNESS_PASSWORD}
+      ORCHESTRATOR_PASSWORD: ${ORCHESTRATOR_PASSWORD}
+      SECURITY_PASSWORD: ${SECURITY_PASSWORD}
+    healthcheck:
+      interval: 30s
+      retries: 3
+      start_period: 40s
+      test:
+      - CMD
+      - wget
+      - --quiet
+      - --tries=1
+      - --spider
+      - http://localhost:8222/healthz
+      timeout: 10s
+    hostname: nats-2
+    image: nats:2.10-alpine
+    logging:
+      driver: json-file
+      options:
+        max-file: '5'
+        max-size: 100m
+    networks:
+    - synaptic-network
+    ports:
+    - 4224:4222
+    - 8224:8222
+    restart: unless-stopped
+    volumes:
+    - ./config/nats-2.conf:/etc/nats/nats-server.conf
+    - nats-jetstream-2:/data/jetstream
+    - ./certs:/certs:ro
+    - nats-logs-2:/var/log/nats
+  nats-surveyor:
+    command:
+    - -s
+    - nats://nats-0:4222,nats://nats-1:4222,nats://nats-2:4222
+    - -c
+    - 5s
+    - --accounts
+    container_name: synaptic-nats-surveyor
+    depends_on:
+    - nats-0
+    - nats-1
+    - nats-2
+    image: natsio/nats-surveyor:latest
+    networks:
+    - synaptic-network
+    ports:
+    - 7777:7777
+    restart: unless-stopped
+version: '3.8'
+volumes:
+  nats-jetstream-0: null
+  nats-jetstream-1: null
+  nats-jetstream-2: null
+  nats-logs-0: null
+  nats-logs-1: null
+  nats-logs-2: null

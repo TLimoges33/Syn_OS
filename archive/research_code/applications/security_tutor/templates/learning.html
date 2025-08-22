@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ module.title }} - Security Tutor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .learning-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .progress-sidebar {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            position: sticky;
+            top: 20px;
+        }
+        .content-area {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .consciousness-monitor {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .attention-pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        .quiz-option {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .quiz-option:hover {
+            border-color: #007bff;
+            background-color: #f8f9fa;
+        }
+        .quiz-option.selected {
+            border-color: #007bff;
+            background-color: #e3f2fd;
+        }
+        .quiz-option.correct {
+            border-color: #28a745;
+            background-color: #d4edda;
+        }
+        .quiz-option.incorrect {
+            border-color: #dc3545;
+            background-color: #f8d7da;
+        }
+        .simulation-area {
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .email-simulation {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .email-header {
+            background: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .email-body {
+            padding: 20px;
+        }
+        .suspicious-element {
+            cursor: pointer;
+            position: relative;
+        }
+        .suspicious-element:hover {
+            background-color: #fff3cd;
+        }
+        .feedback-panel {
+            background: #e8f5e8;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .mistake-indicator {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-brain me-2"></i>
+                Security Tutor
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="javascript:history.back()">
+                    <i class="fas fa-arrow-left me-1"></i>
+                    Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <div class="learning-container">
+            <div class="row">
+                <!-- Progress Sidebar -->
+                <div class="col-md-3">
+                    <div class="progress-sidebar">
+                        <!-- Consciousness Monitor -->
+                        <div class="consciousness-monitor">
+                            <h6 class="mb-3">
+                                <i class="fas fa-brain me-2 attention-pulse"></i>
+                                Consciousness Monitor
+                            </h6>
+                            <div class="mb-2">
+                                <small>Attention Level</small>
+                                <div class="progress progress-sm">
+                                    <div class="progress-bar bg-light" id="attentionProgress" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <small>Engagement</small>
+                                <div class="progress progress-sm">
+                                    <div class="progress-bar bg-light" id="engagementProgress" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            <div class="mb-0">
+                                <small>Cognitive Load</small>
+                                <div class="progress progress-sm">
+                                    <div class="progress-bar bg-light" id="cognitiveProgress" style="width: 45%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Module Progress -->
+                        <div class="mb-4">
+                            <h6>Module Progress</h6>
+                            <div class="progress mb-2">
+                                <div class="progress-bar" id="moduleProgress" style="width: 0%"></div>
+                            </div>
+                            <small class="text-muted">
+                                <span id="progressText">0% Complete</span>
+                            </small>
+                        </div>
+
+                        <!-- Learning Objectives -->
+                        <div class="mb-4">
+                            <h6>Learning Objectives</h6>
+                            <ul class="list-unstyled">
+                                {% for objective in module.learning_objectives %}
+                                <li class="mb-2">
+                                    <i class="fas fa-circle-notch text-muted me-2" id="objective-{{ loop.index0 }}"></i>
+                                    <small>{{ objective }}</small>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <!-- Session Stats -->
+                        <div>
+                            <h6>Session Stats</h6>
+                            <div class="d-flex justify-content-between mb-1">
+                                <small>Time Spent:</small>
+                                <small id="timeSpent">0:00</small>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <small>Mistakes:</small>
+                                <small id="mistakeCount">0</small>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <small>Score:</small>
+                                <small id="currentScore">0</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="col-md-9">
+                    <div class="content-area">
+                        <!-- Module Header -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h2>{{ module.title }}</h2>
+                                <p class="text-muted mb-0">{{ module.description }}</p>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge bg-primary">{{ module.skill_level.value.title() }}</span>
+                                <span class="badge bg-info">{{ module.estimated_duration }} min</span>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Content Area -->
+                        <div id="contentArea">
+                            <!-- Content will be loaded dynamically based on module type -->
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-outline-secondary" id="prevBtn" onclick="previousStep()" disabled>
+                                <i class="fas fa-arrow-left me-2"></i>Previous
+                            </button>
+                            <button class="btn btn-primary" id="nextBtn" onclick="nextStep()">
+                                Next<i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Learning session state
+        let sessionState = {
+            sessionId: new URLSearchParams(window.location.search).get('session_id'),
+            currentStep: 0,
+            totalSteps: 0,
+            startTime: new Date(),
+            mistakes: 0,
+            score: 0,
+            attentionLevel: 0.85,
+            engagementScore: 0.75,
+            cognitiveLoad: 0.45,
+            completedObjectives: []
+        };
+
+        // Module content based on type
+        const moduleContent = {
+            'phishing_basics': [
+                {
+                    type: 'introduction',
+                    title: 'Welcome to Phishing Recognition Training',
+                    content: `
+                        <div class="alert alert-info">
+                            <h5><i class="fas fa-info-circle me-2"></i>What You'll Learn</h5>
+                            <p>Phishing attacks are one of the most common cybersecurity threats. In this module, you'll learn to:</p>
+                            <ul>
+                                <li>Identify suspicious email characteristics</li>
+                                <li>Recognize social engineering tactics</li>
+                                <li>Develop safe email habits</li>
+                            </ul>
+                        </div>
+                        <p>This interactive training adapts to your learning style and attention level. The consciousness system is monitoring your engagement to provide the best learning experience.</p>
+                    `
+                },
+                {
+                    type: 'simulation',
+                    title: 'Email Analysis Simulation',
+                    content: `
+                        <div class="email-simulation">
+                            <div class="email-header">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <strong>From:</strong> <span class="suspicious-element" data-issue="suspicious-sender">security@yourbankk.com</span>
+                                    </div>
+                                    <div>
+                                        <strong>Date:</strong> Today, 2:30 PM
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <strong>Subject:</strong> <span class="suspicious-element" data-issue="urgent-subject">URGENT: Account Suspended - Immediate Action Required</span>
+                                </div>
+                            </div>
+                            <div class="email-body">
+                                <p>Dear Valued Customer,</p>
+                                <p>We have detected <span class="suspicious-element" data-issue="fear-tactic">suspicious activity</span> on your account. Your account has been temporarily suspended for your protection.</p>
+                                <p><span class="suspicious-element" data-issue="urgency">You must verify your account within 24 hours</span> or it will be permanently closed.</p>
+                                <p>Please click the link below to verify your account:</p>
+                                <p><a href="#" class="suspicious-element" data-issue="suspicious-link">https://secure-bank-verification.suspicious-domain.com/verify</a></p>
+                                <p>Thank you for your immediate attention to this matter.</p>
+                                <p>Security Team<br>
+                                <span class="suspicious-element" data-issue="generic-signature">Your Bank</span></p>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <p><strong>Instructions:</strong> Click on any suspicious elements in the email above. Can you find all the red flags?</p>
+                            <div id="suspiciousElements" class="mt-3"></div>
+                        </div>
+                    `
+                },
+                {
+                    type: 'quiz',
+                    title: 'Knowledge Check',
+                    content: `
+                        <div class="quiz-question">
+                            <h5>What is the most reliable way to verify if an email is legitimate?</h5>
+                            <div class="quiz-options mt-3">
+                                <div class="quiz-option p-3 mb-2" data-answer="incorrect">
+                                    Check if the email address looks official
+                                </div>
+                                <div class="quiz-option p-3 mb-2" data-answer="incorrect">
+                                    Look for spelling and grammar mistakes
+                                </div>
+                                <div class="quiz-option p-3 mb-2" data-answer="correct">
+                                    Contact the organization directly through official channels
+                                </div>
+                                <div class="quiz-option p-3 mb-2" data-answer="incorrect">
+                                    Check if the email has official logos
+                                </div>
+                            </div>
+                        </div>
+                    `
+                }
+            ]
+        };
+
+        // Initialize learning session
+        function initializeSession() {
+            const moduleId = '{{ module.module_id }}';
+            const content = moduleContent[moduleId] || [];
+            sessionState.totalSteps = content.length;
+            
+            loadStep(0);
+            updateProgress();
+            startTimeTracking();
+            startConsciousnessMonitoring();
+        }
+
+        // Load specific step content
+        function loadStep(stepIndex) {
+            const moduleId = '{{ module.module_id }}';
+            const content = moduleContent[moduleId] || [];
+            
+            if (stepIndex >= 0 && stepIndex < content.length) {
+                const step = content[stepIndex];
+                document.getElementById('contentArea').innerHTML = `
+                    <h4>${step.title}</h4>
+                    ${step.content}
+                `;
+                
+                sessionState.currentStep = stepIndex;
+                
+                // Setup step-specific interactions
+                if (step.type === 'simulation') {
+                    setupSimulationInteractions();
+                } else if (step.type === 'quiz') {
+                    setupQuizInteractions();
+                }
+                
+                updateNavigationButtons();
+                updateProgress();
+            }
+        }
+
+        // Setup simulation interactions
+        function setupSimulationInteractions() {
+            const suspiciousElements = document.querySelectorAll('.suspicious-element');
+            const foundElements = new Set();
+            
+            suspiciousElements.forEach(element => {
+                element.addEventListener('click', function() {
+                    const issue = this.getAttribute('data-issue');
+                    if (!foundElements.has(issue)) {
+                        foundElements.add(issue);
+                        this.style.backgroundColor = '#d4edda';
+                        this.style.border = '2px solid #28a745';
+                        
+                        showFeedback(issue);
+                        updateEngagement(0.1);
+                        
+                        if (foundElements.size === suspiciousElements.length) {
+                            completeObjective(0);
+                        }
+                    }
+                });
+            });
+        }
+
+        // Setup quiz interactions
+        function setupQuizInteractions() {
+            const options = document.querySelectorAll('.quiz-option');
+            
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove previous selections
+                    options.forEach(opt => opt.classList.remove('selected', 'correct', 'incorrect'));
+                    
+                    // Mark selection
+                    this.classList.add('selected');
+                    
+                    const isCorrect = this.getAttribute('data-answer') === 'correct';
+                    
+                    setTimeout(() => {
+                        if (isCorrect) {
+                            this.classList.add('correct');
+                            sessionState.score += 10;
+                            updateEngagement(0.15);
+                            completeObjective(1);
+                        } else {
+                            this.classList.add('incorrect');
+                            sessionState.mistakes++;
+                            updateMistakes();
+                            
+                            // Show correct answer
+                            const correctOption = document.querySelector('[data-answer="correct"]');
+                            correctOption.classList.add('correct');
+                        }
+                        
+                        updateScore();
+                        
+                        // Enable next button after answer
+                        setTimeout(() => {
+                            document.getElementById('nextBtn').disabled = false;
+                        }, 1500);
+                    }, 500);
+                });
+            });
+        }
+
+        // Show feedback for simulation
+        function showFeedback(issue) {
+            const feedbackMessages = {
+                'suspicious-sender': 'Good catch! The domain has a typo - "yourbankk.com" instead of "yourbank.com"',
+                'urgent-subject': 'Excellent! Urgent language is a common phishing tactic to create pressure',
+                'fear-tactic': 'Well spotted! Creating fear about "suspicious activity" is a manipulation technique',
+                'urgency': 'Great observation! Artificial deadlines pressure victims into hasty decisions',
+                'suspicious-link': 'Perfect! The URL domain doesn\'t match the claimed sender',
+                'generic-signature': 'Nice work! Legitimate emails usually have specific contact information'
+            };
+            
+            const feedback = feedbackMessages[issue] || 'Good observation!';
+            
+            const feedbackDiv = document.getElementById('suspiciousElements');
+            feedbackDiv.innerHTML += `
+                <div class="feedback-panel">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    ${feedback}
+                </div>
+            `;
+        }
+
+        // Navigation functions
+        function nextStep() {
+            if (sessionState.currentStep < sessionState.totalSteps - 1) {
+                loadStep(sessionState.currentStep + 1);
+            } else {
+                completeSession();
+            }
+        }
+
+        function previousStep() {
+            if (sessionState.currentStep > 0) {
+                loadStep(sessionState.currentStep - 1);
+            }
+        }
+
+        function updateNavigationButtons() {
+            document.getElementById('prevBtn').disabled = sessionState.currentStep === 0;
+            document.getElementById('nextBtn').textContent = 
+                sessionState.currentStep === sessionState.totalSteps - 1 ? 'Complete Module' : 'Next';
+        }
+
+        // Progress tracking
+        function updateProgress() {
+            const progress = ((sessionState.currentStep + 1) / sessionState.totalSteps) * 100;
+            document.getElementById('moduleProgress').style.width = progress + '%';
+            document.getElementById('progressText').textContent = Math.round(progress) + '% Complete';
+        }
+
+        function completeObjective(index) {
+            if (!sessionState.completedObjectives.includes(index)) {
+                sessionState.completedObjectives.push(index);
+                const objectiveIcon = document.getElementById(`objective-${index}`);
+                if (objectiveIcon) {
+                    objectiveIcon.className = 'fas fa-check-circle text-success me-2';
+                }
+            }
+        }
+
+        // Consciousness monitoring
+        function startConsciousnessMonitoring() {
+            setInterval(() => {
+                // Simulate consciousness data updates
+                sessionState.attentionLevel = Math.max(0.3, sessionState.attentionLevel + (Math.random() - 0.5) * 0.1);
+                sessionState.engagementScore = Math.max(0.2, sessionState.engagementScore + (Math.random() - 0.5) * 0.05);
+                sessionState.cognitiveLoad = Math.min(0.9, Math.max(0.2, sessionState.cognitiveLoad + (Math.random() - 0.5) * 0.1));
+                
+                updateConsciousnessDisplay();
+                
+                // Send updates to server
+                updateSession();
+            }, 3000);
+        }
+
+        function updateConsciousnessDisplay() {
+            document.getElementById('attentionProgress').style.width = (sessionState.attentionLevel * 100) + '%';
+            document.getElementById('engagementProgress').style.width = (sessionState.engagementScore * 100) + '%';
+            document.getElementById('cognitiveProgress').style.width = (sessionState.cognitiveLoad * 100) + '%';
+        }
+
+        function updateEngagement(boost) {
+            sessionState.engagementScore = Math.min(1.0, sessionState.engagementScore + boost);
+        }
+
+        // Time tracking
+        function startTimeTracking() {
+            setInterval(() => {
+                const elapsed = Math.floor((new Date() - sessionState.startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                document.getElementById('timeSpent').textContent = 
+                    `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // Score and mistake tracking
+        function updateScore() {
+            document.getElementById('currentScore').textContent = sessionState.score;
+        }
+
+        function updateMistakes() {
+            document.getElementById('mistakeCount').textContent = sessionState.mistakes;
+        }
+
+        // Session management
+        function updateSession() {
+            if (!sessionState.sessionId) return;
+            
+            fetch(`/api/sessions/${sessionState.sessionId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    attention_level: sessionState.attentionLevel,
+                    engagement_score: sessionState.engagementScore,
+                    completion_rate: (sessionState.currentStep + 1) / sessionState.totalSteps,
+                    mistakes_made: sessionState.mistakes
+                })
+            }).catch(error => console.error('Error updating session:', error));
+        }
+
+        function completeSession() {
+            if (!sessionState.sessionId) {
+                alert('Session completed!');
+                window.location.href = '/';
+                return;
+            }
+            
+            fetch(`/api/sessions/${sessionState.sessionId}/complete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    completion_rate: 1.0,
+                    final_score: sessionState.score
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(`Module completed! Score: ${sessionState.score}`);
+                    window.location.href = '/dashboard/{{ request.args.get("user_id", "") }}';
+                } else {
+                    alert('Error completing session: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error completing session:', error);
+                alert('Module completed locally!');
+                window.location.href = '/';
+            });
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeSession);
+    </script>
+</body>
+</html>

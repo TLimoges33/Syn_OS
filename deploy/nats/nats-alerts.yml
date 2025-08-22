@@ -1,0 +1,47 @@
+groups:
+- name: nats-alerts
+  rules:
+  - alert: NATSServerDown
+    annotations:
+      description: NATS server {{ $labels.instance }} has been down for more than
+        1 minute.
+      summary: NATS server is down
+    expr: up{job="nats-servers"} == 0
+    for: 1m
+    labels:
+      severity: critical
+  - alert: NATSHighMemoryUsage
+    annotations:
+      description: NATS server {{ $labels.instance }} memory usage is above 1.5GB
+        for more than 5 minutes.
+      summary: NATS server high memory usage
+    expr: nats_core_mem_bytes / (1024*1024*1024) > 1.5
+    for: 5m
+    labels:
+      severity: warning
+  - alert: NATSJetStreamHighStorage
+    annotations:
+      description: NATS JetStream storage usage is above 40GB on {{ $labels.instance
+        }}.
+      summary: NATS JetStream high storage usage
+    expr: nats_jetstream_stats_store_bytes / (1024*1024*1024) > 40
+    for: 2m
+    labels:
+      severity: warning
+  - alert: NATSHighLatency
+    annotations:
+      description: NATS server {{ $labels.instance }} latency is above 100ms for more
+        than 3 minutes.
+      summary: NATS high latency detected
+    expr: nats_core_rtt_nanoseconds / 1000000 > 100
+    for: 3m
+    labels:
+      severity: warning
+  - alert: NATSClusterSplit
+    annotations:
+      description: NATS server {{ $labels.instance }} has fewer than 2 cluster routes.
+      summary: NATS cluster split detected
+    expr: nats_core_route_count < 2
+    for: 1m
+    labels:
+      severity: critical

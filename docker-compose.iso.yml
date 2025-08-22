@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  iso-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile.iso-builder
+    container_name: synos-iso-builder
+    volumes:
+      # Mount the build output directory to persist the ISO
+      - ./build:/workspace/build
+      # Mount logs for debugging
+      - ./logs:/workspace/logs
+    environment:
+      - RUST_BACKTRACE=1
+      - CARGO_TARGET_DIR=/workspace/target
+    working_dir: /workspace
+    command: ["./scripts/build-iso.sh"]
+
+  # Alternative service for interactive debugging
+  iso-builder-debug:
+    build:
+      context: .
+      dockerfile: Dockerfile.iso-builder
+    container_name: synos-iso-builder-debug
+    volumes:
+      - ./build:/workspace/build
+      - ./logs:/workspace/logs
+    environment:
+      - RUST_BACKTRACE=1
+      - CARGO_TARGET_DIR=/workspace/target
+    working_dir: /workspace
+    command: ["/bin/bash"]
+    stdin_open: true
+    tty: true
+
+networks:
+  default:
+    name: synos-iso-network
