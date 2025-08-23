@@ -1,18 +1,23 @@
-/// Memory management with AI optimization
-/// Handles paging, allocation, and AI-driven memory optimization
-
+use crate::consciousness::{
+    emit_consciousness_event, get_consciousness_level, get_timestamp,
+    track_consciousness_memory_allocation, ConsciousnessEventData, ConsciousnessEventType,
+    ConsciousnessKernelEvent,
+};
+/// Memory management with consciousness-aware optimization
+/// Handles paging, allocation, and consciousness-driven memory optimization
+/// Implements Phase 1 consciousness hooks as per Development-Focused Roadmap
 use crate::println;
+use bootloader::bootinfo::{MemoryMap, MemoryRegionType};
+use core::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
+use linked_list_allocator::LockedHeap;
+use spin::Mutex;
 use x86_64::{
     structures::paging::{
-        PageTable, PageTableFlags, PhysFrame, Page, Size4KiB, FrameAllocator,
-        OffsetPageTable, Mapper, mapper::MapToError,
+        mapper::MapToError, FrameAllocator, Mapper, OffsetPageTable, Page, PageTable,
+        PageTableFlags, PhysFrame, Size4KiB,
     },
     PhysAddr, VirtAddr,
 };
-use bootloader::bootinfo::{MemoryMap, MemoryRegionType};
-use linked_list_allocator::LockedHeap;
-use core::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
-use spin::Mutex;
 
 /// Global allocator for kernel heap
 #[global_allocator]
@@ -39,10 +44,8 @@ impl BootInfoFrameAllocator {
 
     fn usable_frames(&self) -> impl Iterator<Item = PhysFrame> {
         let regions = self.memory_map.iter();
-        let usable_regions = regions
-            .filter(|r| r.region_type == MemoryRegionType::Usable);
-        let addr_ranges = usable_regions
-            .map(|r| r.range.start_addr()..r.range.end_addr());
+        let usable_regions = regions.filter(|r| r.region_type == MemoryRegionType::Usable);
+        let addr_ranges = usable_regions.map(|r| r.range.start_addr()..r.range.end_addr());
         let frame_addresses = addr_ranges.flat_map(|r| r.step_by(4096));
         frame_addresses.map(|addr| PhysFrame::containing_address(PhysAddr::new(addr)))
     }
@@ -56,7 +59,7 @@ unsafe impl FrameAllocator<Size4KiB> for BootInfoFrameAllocator {
     }
 }
 
-/// Memory statistics for AI optimization
+/// Consciousness-enhanced memory statistics for AI optimization
 #[derive(Debug, Clone, Copy)]
 pub struct MemoryStats {
     pub total_memory: usize,
@@ -64,18 +67,22 @@ pub struct MemoryStats {
     pub free_memory: usize,
     pub fragmentation_ratio: f32,
     pub allocation_efficiency: f32,
+    pub consciousness_optimization_factor: f64,
+    pub consciousness_allocations: usize,
 }
 
-/// AI-driven memory optimization context
-static MEMORY_OPTIMIZER: Mutex<Option<MemoryOptimizer>> = Mutex::new(None);
+/// Consciousness-driven memory optimization context
+static MEMORY_OPTIMIZER: Mutex<Option<ConsciousnessMemoryOptimizer>> = Mutex::new(None);
 
-struct MemoryOptimizer {
+struct ConsciousnessMemoryOptimizer {
     last_stats: MemoryStats,
     optimization_level: u8,
     fragmentation_threshold: f32,
+    consciousness_allocations: usize,
+    consciousness_optimization_factor: f64,
 }
 
-impl MemoryOptimizer {
+impl ConsciousnessMemoryOptimizer {
     fn new() -> Self {
         Self {
             last_stats: MemoryStats {
@@ -84,59 +91,91 @@ impl MemoryOptimizer {
                 free_memory: 0,
                 fragmentation_ratio: 0.0,
                 allocation_efficiency: 1.0,
+                consciousness_optimization_factor: 1.0,
+                consciousness_allocations: 0,
             },
             optimization_level: 1,
             fragmentation_threshold: 0.3,
+            consciousness_allocations: 0,
+            consciousness_optimization_factor: 1.0,
         }
     }
 
     fn analyze_and_optimize(&mut self, current_stats: MemoryStats) {
+        // Consciousness-enhanced optimization logic
+        let consciousness_level = get_consciousness_level();
+
         if current_stats.fragmentation_ratio > self.fragmentation_threshold {
-            self.trigger_defragmentation();
+            self.trigger_consciousness_defragmentation(consciousness_level);
         }
-        
+
         if current_stats.allocation_efficiency < 0.7 {
-            self.adjust_allocation_strategy();
+            self.adjust_consciousness_allocation_strategy(consciousness_level);
         }
-        
+
+        // Update consciousness-specific metrics
+        self.consciousness_allocations = current_stats.consciousness_allocations;
+        self.consciousness_optimization_factor = current_stats.consciousness_optimization_factor;
+
         self.last_stats = current_stats;
     }
 
-    fn trigger_defragmentation(&self) {
-        println!("🧠 AI: Triggering memory defragmentation");
+    fn trigger_consciousness_defragmentation(&self, consciousness_level: f64) {
+        println!(
+            "🧠 Consciousness-Enhanced Memory: Triggering defragmentation (level: {:.3})",
+            consciousness_level
+        );
+
+        // Emit consciousness memory optimization event
+        emit_consciousness_event(ConsciousnessKernelEvent {
+            event_type: ConsciousnessEventType::MemoryOptimization,
+            timestamp: get_timestamp(),
+            consciousness_level,
+            process_id: None,
+            data: ConsciousnessEventData::Memory {
+                allocated: 0,
+                optimization: consciousness_level,
+            },
+        });
     }
 
-    fn adjust_allocation_strategy(&mut self) {
-        self.optimization_level = (self.optimization_level + 1).min(5);
-        println!("🧠 AI: Adjusting allocation strategy to level {}", self.optimization_level);
+    fn adjust_consciousness_allocation_strategy(&mut self, consciousness_level: f64) {
+        // Higher consciousness levels get more aggressive optimization
+        let consciousness_boost = (consciousness_level * 2.0) as u8;
+        self.optimization_level = (self.optimization_level + 1 + consciousness_boost).min(10);
+
+        println!("🧠 Consciousness-Enhanced Memory: Adjusting allocation strategy to level {} (consciousness: {:.3})", 
+                self.optimization_level, consciousness_level);
     }
 }
 
 /// Initialize memory management subsystem
 pub fn init(memory_map: &'static MemoryMap, _physical_memory_offset: VirtAddr) {
     println!("💾 Initializing memory management...");
-    
+
     // Calculate total memory
     let total_mem = calculate_total_memory(memory_map);
     TOTAL_MEMORY.store(total_mem, Ordering::SeqCst);
-    
+
     // For bootloader 0.9, we use a fixed offset approach
     // In a full implementation, this would be properly configured
     let physical_memory_offset = VirtAddr::new(0x0000_0000_0000_0000);
-    
+
     // Set up page tables
     let mut mapper = unsafe { init_paging(physical_memory_offset) };
     let mut frame_allocator = unsafe { BootInfoFrameAllocator::init(memory_map) };
-    
+
     // Initialize heap
-    init_heap(&mut mapper, &mut frame_allocator)
-        .expect("Heap initialization failed");
-    
-    // Initialize AI memory optimization
-    init_ai_memory_optimization();
-    
+    init_heap(&mut mapper, &mut frame_allocator).expect("Heap initialization failed");
+
+    // Initialize consciousness-enhanced memory optimization
+    init_consciousness_memory_optimization();
+
     MEMORY_INITIALIZED.store(true, Ordering::SeqCst);
-    println!("💾 Memory management initialized ({}MB total)", total_mem / 1024 / 1024);
+    println!(
+        "💾 Memory management initialized ({}MB total)",
+        total_mem / 1024 / 1024
+    );
 }
 
 /// Calculate total available memory
@@ -157,12 +196,12 @@ unsafe fn init_paging(physical_memory_offset: VirtAddr) -> OffsetPageTable<'stat
 /// Get reference to active level 4 page table
 unsafe fn active_level_4_table(physical_memory_offset: VirtAddr) -> &'static mut PageTable {
     use x86_64::registers::control::Cr3;
-    
+
     let (level_4_table_frame, _) = Cr3::read();
     let phys = level_4_table_frame.start_address();
     let virt = physical_memory_offset + phys.as_u64();
     let page_table_ptr: *mut PageTable = virt.as_mut_ptr();
-    
+
     &mut *page_table_ptr
 }
 
@@ -200,25 +239,39 @@ fn init_heap(
     Ok(())
 }
 
-/// Initialize AI-driven memory optimization
-fn init_ai_memory_optimization() {
-    let optimizer = MemoryOptimizer::new();
+/// Initialize consciousness-enhanced memory optimization
+fn init_consciousness_memory_optimization() {
+    let optimizer = ConsciousnessMemoryOptimizer::new();
     *MEMORY_OPTIMIZER.lock() = Some(optimizer);
-    println!("  🧠 AI memory optimization ready");
+    println!("  🧠 Consciousness-enhanced memory optimization ready");
 }
 
-/// Get current memory statistics
+/// Get current consciousness-enhanced memory statistics
 pub fn get_memory_stats() -> MemoryStats {
     let total = TOTAL_MEMORY.load(Ordering::SeqCst);
     let used = USED_MEMORY.load(Ordering::SeqCst);
     let free = total.saturating_sub(used);
-    
+    let _consciousness_level = get_consciousness_level();
+
+    // Get consciousness-specific metrics from optimizer
+    let (consciousness_allocations, consciousness_optimization_factor) =
+        if let Some(ref optimizer) = *MEMORY_OPTIMIZER.lock() {
+            (
+                optimizer.consciousness_allocations,
+                optimizer.consciousness_optimization_factor,
+            )
+        } else {
+            (0, 1.0)
+        };
+
     MemoryStats {
         total_memory: total,
         used_memory: used,
         free_memory: free,
         fragmentation_ratio: calculate_fragmentation_ratio(),
         allocation_efficiency: calculate_allocation_efficiency(used, total),
+        consciousness_optimization_factor,
+        consciousness_allocations,
     }
 }
 
@@ -237,11 +290,56 @@ fn calculate_allocation_efficiency(used: usize, total: usize) -> f32 {
     1.0 - (used as f32 / total as f32)
 }
 
-/// Trigger AI memory optimization analysis
+/// Trigger consciousness-enhanced memory optimization analysis
 pub fn optimize_memory() {
     if let Some(ref mut optimizer) = *MEMORY_OPTIMIZER.lock() {
         let stats = get_memory_stats();
         optimizer.analyze_and_optimize(stats);
+        
+        // Security check: validate memory state after optimization
+        if stats.fragmentation_ratio > 0.8 {
+            println!("🛡️ Security Warning: High memory fragmentation detected: {:.2}", stats.fragmentation_ratio);
+        }
+        
+        // Use consciousness allocation for security-critical optimizations
+        if stats.consciousness_optimization_factor < 0.5 {
+            let kernel_context = crate::security::SecurityContext::kernel_context();
+            
+            // Use secure allocation with security context validation
+            if let Some(_buffer) = secure_alloc(1024, &kernel_context) {
+                println!("🧠 Allocated secure optimization buffer");
+            } else {
+                // Fallback to regular consciousness allocation
+                let _ = consciousness_alloc(1024);
+            }
+        }
+    }
+}
+
+/// Consciousness-aware memory allocation
+pub fn consciousness_alloc(size: usize) -> Option<*mut u8> {
+    use core::alloc::{GlobalAlloc, Layout};
+
+    let layout = Layout::from_size_align(size, 8).ok()?;
+    let ptr = unsafe { ALLOCATOR.alloc(layout) };
+
+    if !ptr.is_null() {
+        update_used_memory(size as isize);
+
+        // Track consciousness-enhanced allocation
+        track_consciousness_memory_allocation(size);
+
+        // Update optimizer consciousness metrics
+        if let Some(ref mut optimizer) = *MEMORY_OPTIMIZER.lock() {
+            optimizer.consciousness_allocations += 1;
+            let consciousness_level = get_consciousness_level();
+            optimizer.consciousness_optimization_factor =
+                (optimizer.consciousness_optimization_factor * 0.9) + (consciousness_level * 0.1);
+        }
+
+        Some(ptr)
+    } else {
+        None
     }
 }
 
@@ -262,17 +360,21 @@ pub fn update_used_memory(delta: isize) {
 }
 
 /// Security function: validate memory access
-pub fn validate_memory_access(addr: VirtAddr, size: usize, context: &crate::security::SecurityContext) -> bool {
+pub fn validate_memory_access(
+    addr: VirtAddr,
+    size: usize,
+    context: &crate::security::SecurityContext,
+) -> bool {
     // Check if the memory access is within allowed bounds for the security context
     if !is_initialized() {
         return false;
     }
-    
+
     // Validate against security context capabilities
     if !context.has_capability(&crate::security::Capability::ReadMemory) {
         return false;
     }
-    
+
     // Additional security checks would go here
     // - Check if address is within allowed memory regions for this context
     // - Validate size doesn't overflow
@@ -286,19 +388,19 @@ pub fn secure_alloc(size: usize, context: &crate::security::SecurityContext) -> 
     if !validate_memory_access(VirtAddr::new(0), size, context) {
         return None;
     }
-    
+
     // Check if context has write capability for allocation
     if !context.has_capability(&crate::security::Capability::WriteMemory) {
         return None;
     }
-    
+
     // Use global allocator for now
     // In a real implementation, this would use context-specific allocators
     use core::alloc::{GlobalAlloc, Layout};
-    
+
     let layout = Layout::from_size_align(size, 8).ok()?;
     let ptr = unsafe { ALLOCATOR.alloc(layout) };
-    
+
     if !ptr.is_null() {
         update_used_memory(size as isize);
         Some(ptr)

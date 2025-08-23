@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=SynapticOS CTF Platform
+Comment=Dynamic cybersecurity challenges with AI consciousness
+Exec=/usr/bin/chromium-browser http://localhost:8086
+Icon=/opt/synapticos/icons/ctf-platform.png
+Terminal=false
+Type=Application
+Categories=Education;Security;Development;Game;
+StartupNotify=true

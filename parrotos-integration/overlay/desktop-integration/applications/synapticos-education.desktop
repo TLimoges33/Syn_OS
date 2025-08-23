@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=SynapticOS Educational Platform
+Comment=AI-powered cybersecurity education with consciousness integration
+Exec=/usr/bin/chromium-browser http://localhost:8001
+Icon=/opt/synapticos/icons/education-platform.png
+Terminal=false
+Type=Application
+Categories=Education;Security;Development;
+StartupNotify=true

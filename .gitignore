@@ -20,6 +20,19 @@ Thumbs.db
 # Logs
 *.log
 
+# Large binary files and ISOs
+*.iso
+*.img
+*.vdi
+*.vmdk
+*.qcow2
+parrotos-integration/base/*.iso
+parrotos-integration/*/base/*.iso
+
+# Large build artifacts
+build/simple-kernel-iso/*.iso
+build/**/*.iso
+
 # Temporary files
 *.tmp
 *.temp

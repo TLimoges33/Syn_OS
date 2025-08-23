@@ -1,0 +1,48 @@
+[Unit]
+Description=SynapticOS Consciousness AI Bridge Daemon
+Documentation=https://github.com/TLimoges33/Syn_OS
+After=network.target nats.service postgresql.service redis.service
+Wants=network.target
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/python3 /opt/synapticos/services/consciousness-ai-bridge/consciousness_ai_bridge.py
+ExecReload=/bin/kill -HUP $MAINPID
+
+# Service management
+Restart=always
+RestartSec=10
+TimeoutStartSec=60
+TimeoutStopSec=30
+
+# Security
+User=synapticos
+Group=synapticos
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectControlGroups=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+RestrictRealtime=true
+RestrictNamespaces=true
+
+# File access
+ReadWritePaths=/var/log/synapticos /var/lib/synapticos
+ConfigurationDirectory=synapticos
+LogsDirectory=synapticos
+StateDirectory=synapticos
+
+# Environment
+Environment=PYTHONPATH=/opt/synapticos/lib
+EnvironmentFile=-/etc/synapticos/consciousness-ai-bridge.env
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=32768
+
+[Install]
+WantedBy=multi-user.target
+Alias=consciousness-ai-bridge.service

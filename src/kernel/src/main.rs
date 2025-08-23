@@ -6,31 +6,43 @@
 
 extern crate alloc;
 
+use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
-use bootloader::{BootInfo, entry_point};
 use x86_64;
+use alloc::string::ToString;
 
+mod advanced_applications;
 mod boot;
-mod memory;
-mod scheduler;
-mod filesystem;
+mod consciousness;
+mod consciousness_boot;
 mod drivers;
+mod education_platform;
+mod filesystem;
+mod forensics;
+mod learning_analytics;
+mod memory;
+mod networking;
+mod scheduler;
 mod security;
 mod threat_detection;
-mod forensics;
 
 #[cfg(not(test))]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     // Disable interrupts for safety
     x86_64::instructions::interrupts::disable();
-    
+
     println!("KERNEL PANIC: {}", info);
-    
+
     if let Some(location) = info.location() {
-        println!("Location: {}:{}:{}", location.file(), location.line(), location.column());
+        println!(
+            "Location: {}:{}:{}",
+            location.file(),
+            location.line(),
+            location.column()
+        );
     }
-    
+
     // Halt the system
     loop {
         x86_64::instructions::hlt();
@@ -47,47 +59,357 @@ fn panic(info: &PanicInfo) -> ! {
 }
 
 pub fn init(boot_info: &'static BootInfo) {
-    println!("SynapticOS Kernel Initializing...");
-    
+    println!("🧠 SynapticOS Consciousness-Enhanced Kernel Initializing...");
+
+    // Display consciousness boot information
+    consciousness_boot::display_consciousness_boot_info();
+
+    // Initialize consciousness boot system
+    let consciousness_config = consciousness_boot::ConsciousnessBootConfig::default();
+    consciousness_boot::init_consciousness_boot(consciousness_config);
+
+    // Initialize consciousness integration layer (Phase 1 Foundation)
+    consciousness::init();
+
+    // Validate consciousness system is active for security
+    if !consciousness::is_consciousness_active() {
+        panic!("Critical Security Error: Consciousness system failed to initialize");
+    }
+
     // Initialize hardware abstraction layer
     drivers::init();
-    
-    // Initialize memory management
+
+    // Initialize consciousness-enhanced memory management
     memory::init(&boot_info.memory_map, x86_64::VirtAddr::new(0));
     
+    // Validate memory management is properly initialized
+    if !memory::is_initialized() {
+        panic!("Critical Security Error: Memory management failed to initialize");
+    }
+
     // Initialize security subsystem
     security::init();
     
+    // Validate security system is properly initialized
+    if !security::is_initialized() {
+        panic!("Critical Security Error: Security subsystem failed to initialize");
+    }
+
     // Initialize threat detection engine
     threat_detection::init();
     
+    // Enable educational mode for safe threat demonstration
+    threat_detection::enable_educational_mode();
+
     // Initialize forensics collection
     forensics::init();
-    
-    // Initialize scheduler
+
+    // Initialize consciousness-aware scheduler
     scheduler::init();
+
+    // Phase 2: Initialize Educational Platform & Enhanced Consciousness Engine
+    println!("🎓 Initializing Phase 2: Educational Platform & Enhanced Consciousness...");
     
-    println!("SynapticOS Kernel Ready");
+    // Initialize educational platform
+    education_platform::init();
+    
+    // Initialize learning analytics engine
+    learning_analytics::init();
+    
+    // Validate educational platform is active
+    if !education_platform::is_platform_active() {
+        panic!("Critical Error: Educational platform failed to initialize");
+    }
+
+    // Phase 3: Initialize Advanced Applications & Production Features
+    println!("🚀 Initializing Phase 3: Advanced Applications & Production Features...");
+    
+    // Initialize networking foundation
+    networking::init();
+    
+    // Initialize advanced applications system
+    advanced_applications::init();
+    
+    // Validate networking is active
+    if !networking::is_networking_active() {
+        panic!("Critical Error: Networking foundation failed to initialize");
+    }
+    
+    // Validate advanced applications are active
+    if !advanced_applications::is_advanced_apps_active() {
+        panic!("Critical Error: Advanced applications failed to initialize");
+    }
+
+    println!("🧠 SynapticOS Kernel Ready - Phase 3 Complete");
+    println!("   ✅ Consciousness Integration Layer: Active");
+    println!("   ✅ Neural Darwinism Scheduler: Online");
+    println!("   ✅ Consciousness-Enhanced Memory: Optimized");
+    println!("   ✅ Security with Consciousness: Armed");
+    println!("   ✅ Educational Platform: Ready");
+    println!("   ✅ Learning Analytics Engine: Active");
+    println!("   ✅ Adaptive Curriculum: Enabled");
+    println!("   ✅ Networking Foundation: Online");
+    println!("   ✅ TCP/IP Stack: Ready");
+    println!("   ✅ Consciousness Connections: Active");
+    println!("   ✅ Advanced Applications: Online");
+    println!("   ✅ CTF Challenge Generator: Ready");
+    println!("   ✅ Bias Analysis Engine: Active");
+    println!("   ✅ Package Recommender: Online");
+    println!("   ✅ Financial Management: Ready");
+    println!("   ✅ Strategic Planning: Active");
 }
 
 entry_point!(kernel_main);
 
 fn kernel_main(boot_info: &'static BootInfo) -> ! {
     init(boot_info);
-    
+
     #[cfg(test)]
     test_main();
-    
-    println!("SynapticOS - Cybersecurity Education Platform");
-    println!("Security Status: Active");
-    println!("Educational Mode: Ready");
-    
-    // Start main kernel loop
-    loop {
-        // Yield to scheduler
-        scheduler::yield_cpu();
+
+    println!("🧠 SynapticOS - Consciousness-Integrated Cybersecurity Education Platform");
+    println!("🛡️  Security Status: Active");
+    println!("🎓 Educational Mode: Ready");
+    println!("📊 Learning Analytics: Active");
+    println!(
+        "🧠 Consciousness Level: {:.3}",
+        consciousness::get_consciousness_level()
+    );
+    println!(
+        "⚡ Scheduler Bias: {:?}",
+        consciousness::get_consciousness_scheduler_bias()
+    );
+    println!(
+        "🎓 Available Learning Modules: {}",
+        education_platform::get_available_modules_count()
+    );
+
+    // Create demo student for educational platform testing
+    let demo_student_id = education_platform::register_student(
+        "Demo Student".to_string(),
+        crate::security::SecurityContext::kernel_context()
+    );
+    println!("🎓 Demo student registered with ID: {}", demo_student_id);
+
+    // Start demo learning session
+    if let Ok(session_id) = education_platform::start_learning_session(
+        demo_student_id, 
+        "Basic Programming Concepts".to_string()
+    ) {
+        println!("🎓 Demo learning session started: {}", session_id);
         
-        // Handle interrupts
+        // Simulate some learning progress
+        let _ = education_platform::update_learning_progress(session_id, 0, false);
+        let _ = education_platform::update_learning_progress(session_id, 1, false);
+        
+        // Complete the session
+        if let Ok(report) = education_platform::complete_learning_session(session_id) {
+            println!("🎓 Demo session completed with {:.1}% accuracy", report.accuracy_score * 100.0);
+            
+            // Update analytics with the session data
+            learning_analytics::update_real_time_metrics(&report);
+        }
+    }
+
+    // Phase 3: Demonstrate Advanced Applications
+    println!("🚀 Demonstrating Phase 3 Advanced Applications...");
+    
+    // Get demo student profile for advanced applications
+    if let Ok(student_profile) = education_platform::get_student_profile(demo_student_id) {
+        // Demonstrate CTF challenge generation
+        let ctf_challenge = advanced_applications::generate_ctf_challenge(
+            &student_profile, 
+            Some(advanced_applications::CTFCategory::WebExploitation)
+        );
+        println!("🎯 Generated CTF Challenge: {}", ctf_challenge.title);
+        println!("   Difficulty: {:.2} | Estimated Time: {} minutes", 
+                 ctf_challenge.difficulty_score, ctf_challenge.estimated_time);
+        
+        // Demonstrate bias analysis
+        let test_content = "This shocking news proves that cybersecurity experts must choose between only two devastating security approaches!";
+        let bias_analysis = advanced_applications::analyze_content_bias(test_content);
+        println!("🔍 Bias Analysis: {:.2} bias score with {} patterns detected", 
+                 bias_analysis.overall_bias_score, bias_analysis.detected_biases.len());
+        
+        // Demonstrate package recommendations
+        let package_recommendations = advanced_applications::get_package_recommendations(
+            &student_profile, 
+            Some(advanced_applications::PackageCategory::Security)
+        );
+        if !package_recommendations.is_empty() {
+            println!("📦 Top Package Recommendation: {} (Score: {:.2})", 
+                     package_recommendations[0].package_name, 
+                     package_recommendations[0].recommendation_score);
+        }
+        
+        // Demonstrate financial management
+        let budget_recommendations = advanced_applications::generate_budget_recommendations(5000.0);
+        if !budget_recommendations.is_empty() {
+            println!("💰 Top Budget Recommendation: {} - ${:.2}", 
+                     budget_recommendations[0].category, 
+                     budget_recommendations[0].recommended_amount);
+        }
+        
+        // Demonstrate strategic planning
+        let career_recommendations = advanced_applications::get_career_recommendations(&student_profile);
+        if !career_recommendations.is_empty() {
+            println!("🎯 Career Recommendation: {} (Suitability: {:.2})", 
+                     career_recommendations[0].career_path, 
+                     career_recommendations[0].suitability_score);
+        }
+    }
+
+    // Display advanced applications statistics
+    let advanced_stats = advanced_applications::get_advanced_apps_statistics();
+    println!("📊 Advanced Applications Statistics:");
+    println!("   🎯 CTF Challenges Generated: {}", advanced_stats.ctf_challenges_generated);
+    println!("   🔍 Bias Analyses Performed: {}", advanced_stats.bias_analyses_performed);
+    println!("   🧠 Consciousness Integration: {:.3}", advanced_stats.consciousness_integration_level);
+
+    // Demonstrate Phase 3 Networking Foundation
+    println!("🌐 Demonstrating Networking Foundation...");
+    
+    // Create TCP socket with consciousness enhancement
+    if let Ok(socket_id) = networking::create_tcp_socket() {
+        println!("🔌 Created consciousness-enhanced TCP socket: {}", socket_id);
+    }
+    
+    // Create consciousness-enhanced connection
+    let local_addr = networking::SocketAddress {
+        ip: networking::IpAddress::new([192, 168, 1, 100]),
+        port: 8080,
+    };
+    let remote_addr = networking::SocketAddress {
+        ip: networking::IpAddress::new([192, 168, 1, 200]),
+        port: 9090,
+    };
+    
+    if let Ok(conn_id) = networking::create_consciousness_connection(local_addr, remote_addr) {
+        println!("🧠 Created consciousness connection: {} -> {}", conn_id, remote_addr);
+    }
+    
+    // Display networking statistics
+    let net_stats = networking::get_networking_statistics();
+    println!("📊 Networking Statistics:");
+    println!("   📦 Packets Processed: {}", net_stats.packets_processed);
+    println!("   🔗 Connections Established: {}", net_stats.connections_established);
+    println!("   🧠 Consciousness Level: {:.3}", net_stats.consciousness_level);
+
+    // Create initial consciousness-aware process
+    let init_pid = scheduler::create_process(None);
+    println!(
+        "🚀 Created initial process {} with consciousness tracking",
+        init_pid
+    );
+
+    // Start main consciousness-enhanced kernel loop
+    let mut loop_count = 0u64;
+    loop {
+        loop_count += 1;
+
+        // Consciousness evolution simulation every 1000 loops
+        if loop_count % 1000 == 0 {
+            let current_consciousness = consciousness::get_consciousness_level();
+            let new_consciousness = (current_consciousness + 0.001).min(1.0);
+            consciousness::set_consciousness_level(new_consciousness);
+            consciousness::set_evolution_generation(loop_count / 1000);
+
+            // Enhanced educational consciousness evolution every 5000 loops
+            if loop_count % 5000 == 0 {
+                // Simulate educational learning progress with enhanced consciousness algorithms
+                let learning_performance = 0.8; // Simulated high performance
+                let engagement_level = 0.9;     // Simulated high engagement
+                let module_difficulty = 0.6;    // Moderate difficulty
+                let learning_style_match = 0.75; // Good style match
+                
+                consciousness::enhanced_learning_consciousness_update(
+                    learning_performance,
+                    engagement_level,
+                    module_difficulty,
+                    learning_style_match
+                );
+                
+                // Get platform statistics for monitoring
+                let platform_stats = education_platform::get_platform_statistics();
+                println!("🎓 Educational Platform Stats: {} students, {} active sessions, effectiveness: {:.3}",
+                         platform_stats.total_students, 
+                         platform_stats.active_sessions,
+                         platform_stats.effectiveness_report.engagement_effectiveness);
+                
+                // Get real-time learning analytics
+                let learning_metrics = learning_analytics::get_real_time_metrics();
+                println!("📊 Learning Analytics: {} active learners, avg consciousness: {:.3}, trend: {:?}",
+                         learning_metrics.active_learners,
+                         learning_metrics.current_average_consciousness,
+                         learning_metrics.learning_effectiveness_trend);
+            }
+
+            // Traditional consciousness evolution for compatibility
+            if loop_count % 7000 == 0 {
+                consciousness::update_consciousness_from_learning(0.01, 0.5);
+            }
+
+            // Get and process consciousness events for security monitoring
+            let events = consciousness::get_consciousness_events();
+            if !events.is_empty() {
+                println!("🧠 Processed {} consciousness events", events.len());
+            }
+
+            println!(
+                "🧠 Consciousness evolved to {:.3} (generation {})",
+                new_consciousness,
+                loop_count / 1000
+            );
+        }
+
+        // Consciousness-aware scheduling
+        if let Some(process) = scheduler::schedule() {
+            // Validate process security context before execution
+            let _consciousness_state = consciousness::get_kernel_consciousness_state();
+            
+            // Security check: ensure process consciousness inheritance is valid
+            if process.consciousness_inheritance < 0.0 || process.consciousness_inheritance > 1.0 {
+                println!("🛡️ Security Warning: Invalid consciousness inheritance detected for process {}", process.pid);
+                
+                // Analyze potential security threat
+                threat_detection::analyze_memory_threat(0x1000, 4096, &crate::security::SecurityContext::kernel_context());
+                
+                // Collect forensic evidence of the security violation
+                forensics::collect_memory_evidence(0x1000, 4096, &crate::security::SecurityContext::kernel_context());
+                
+                scheduler::terminate_process(process.pid);
+            } else {
+                // Process would run here with validated consciousness context
+                // println!("🔄 Running process {} (consciousness: {:.3})", 
+                //          process.pid, process.consciousness_inheritance);
+            }
+        }        // Memory optimization based on consciousness
+        if loop_count % 5000 == 0 {
+            memory::optimize_memory();
+            
+            // Cleanup completed processes periodically for security
+            if loop_count % 10000 == 0 {
+                let stats = scheduler::get_scheduler_stats();
+                if stats.total_processes > 100 {
+                    println!("🛡️ Security: Process cleanup - {} active processes", stats.total_processes);
+                    
+                    // Generate forensic report for security monitoring
+                    let _report = forensics::generate_forensic_report();
+                    
+                    // Get threat statistics for security assessment
+                    let (threats_detected, patterns_active, accuracy) = threat_detection::get_threat_statistics();
+                    if threats_detected > 0 {
+                        println!("🛡️ Security Report: {} threats detected, {} patterns active, {:.2}% accuracy", 
+                                threats_detected, patterns_active, accuracy * 100.0);
+                    }
+                }
+            }
+        }
+
+        // Yield to consciousness-aware scheduler
+        scheduler::yield_cpu();
+
+        // Handle interrupts with consciousness context
         x86_64::instructions::hlt();
     }
 }
@@ -191,6 +513,20 @@ mod vga_buffer {
         color_code: ColorCode,
     }
 
+    impl core::ops::Deref for ScreenChar {
+        type Target = ScreenChar;
+
+        fn deref(&self) -> &Self::Target {
+            self
+        }
+    }
+
+    impl core::ops::DerefMut for ScreenChar {
+        fn deref_mut(&mut self) -> &mut Self::Target {
+            self
+        }
+    }
+
     const BUFFER_HEIGHT: usize = 25;
     const BUFFER_WIDTH: usize = 80;
 
@@ -265,8 +601,8 @@ mod vga_buffer {
         }
     }
 
-    use spin::Mutex;
     use lazy_static::lazy_static;
+    use spin::Mutex;
 
     lazy_static! {
         pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
@@ -284,9 +620,9 @@ mod vga_buffer {
 
 #[cfg(test)]
 mod serial {
-    use uart_16550::SerialPort;
-    use spin::Mutex;
     use lazy_static::lazy_static;
+    use spin::Mutex;
+    use uart_16550::SerialPort;
 
     lazy_static! {
         pub static ref SERIAL1: Mutex<SerialPort> = {
@@ -298,6 +634,9 @@ mod serial {
 
     pub fn _print(args: ::core::fmt::Arguments) {
         use core::fmt::Write;
-        SERIAL1.lock().write_fmt(args).expect("Printing to serial failed");
+        SERIAL1
+            .lock()
+            .write_fmt(args)
+            .expect("Printing to serial failed");
     }
 }

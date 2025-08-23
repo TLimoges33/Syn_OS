@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=SynapticOS Consciousness Dashboard
+Comment=Monitor and control SynapticOS consciousness services
+Exec=/usr/bin/chromium-browser http://localhost:8000
+Icon=/opt/synapticos/icons/consciousness-dashboard.png
+Terminal=false
+Type=Application
+Categories=Education;Security;Development;
+StartupNotify=true

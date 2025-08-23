@@ -1,0 +1,303 @@
+version: "3.8"
+
+services:
+  # NATS Message Bus with JetStream
+  nats:
+    image: docker.io/nats:2.10-alpine
+    container_name: synapticos_nats
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+      - "6222:6222"
+    command:
+      [
+        "--jetstream",
+        "--store_dir=/data",
+        "--max_memory=1GB",
+        "--max_file=10GB",
+        "--http_port=8222",
+      ]
+    volumes:
+      - nats_data:/data
+    networks:
+      - synapticos_network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 2G
+        reservations:
+          cpus: "0.5"
+          memory: 512M
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8222/healthz",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # PostgreSQL Database
+  postgres:
+    image: docker.io/postgres:15-alpine
+    container_name: synapticos_postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-synapticos}
+      POSTGRES_USER: ${POSTGRES_USER:-synos_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secure_password_123}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - synapticos_network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 4G
+        reservations:
+          cpus: "0.5"
+          memory: 1G
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-synos_user} -d ${POSTGRES_DB:-synapticos}",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis Cache
+  redis:
+    image: docker.io/redis:7-alpine
+    container_name: synapticos_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - synapticos_network
+    restart: unless-stopped
+
+  # Vector Database Service
+  vector-db:
+    image: docker.io/qdrant/qdrant:latest
+    container_name: synapticos_vector_db
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - ./data/vector_storage:/qdrant/storage
+    environment:
+      - QDRANT__SERVICE__HTTP_PORT=6333
+      - QDRANT__SERVICE__GRPC_PORT=6334
+    networks:
+      - synapticos_network
+    restart: unless-stopped
+
+  # Consciousness AI Bridge (Our Neural Darwinism Core)
+  consciousness-ai-bridge:
+    build:
+      context: ./services/consciousness-ai-bridge
+      dockerfile: Dockerfile
+    container_name: synapticos_consciousness_bridge
+    ports:
+      - "8082:8082"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-your_key_here}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-your_key_here}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-your_key_here}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-your_key_here}
+      - LM_STUDIO_URL=${LM_STUDIO_URL:-http://localhost:1234}
+      - OLLAMA_URL=${OLLAMA_URL:-http://localhost:11434}
+      - NATS_URL=nats://nats:4222
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./data/consciousness_state:/app/data
+      - ./logs:/app/logs
+    networks:
+      - synapticos_network
+    depends_on:
+      - nats
+      - redis
+    restart: unless-stopped
+
+  # Educational Platform Service (Backend Only)
+  educational-platform:
+    build:
+      context: ./services/educational-platform
+      dockerfile: Dockerfile
+    container_name: synapticos_educational_platform
+    # Removed port mapping - service works as backend daemon
+    environment:
+      - CONSCIOUSNESS_BRIDGE_URL=http://consciousness-ai-bridge:8082
+      - DATABASE_URL=sqlite:///app/data/education.db
+    volumes:
+      - ./data/education:/app/data
+      - ./logs:/app/logs
+    networks:
+      - synapticos_network
+    depends_on:
+      - consciousness-ai-bridge
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
+        reservations:
+          cpus: "0.2"
+          memory: 256M
+
+  # Consciousness Dashboard
+  consciousness-dashboard:
+    build:
+      context: ./services/consciousness-dashboard
+      dockerfile: Dockerfile
+    container_name: synapticos_consciousness_dashboard
+    ports:
+      - "8000:8000"
+    environment:
+      - CONSCIOUSNESS_BRIDGE_URL=http://consciousness-ai-bridge:8082
+      - EDUCATION_SERVICE_URL=http://educational-platform:8084
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - synapticos_network
+    depends_on:
+      - consciousness-ai-bridge
+      - educational-platform
+    restart: unless-stopped
+
+  # Educational Platform GUI
+  education-gui:
+    build:
+      context: ./services/educational-platform
+      dockerfile: Dockerfile.gui
+    container_name: synapticos_education_gui
+    ports:
+      - "8001:8001"
+    environment:
+      - EDUCATION_SERVICE_URL=http://educational-platform:8084
+      - CONSCIOUSNESS_BRIDGE_URL=http://consciousness-ai-bridge:8082
+    volumes:
+      - ./data/education:/app/data
+      - ./logs:/app/logs
+    networks:
+      - synapticos_network
+    depends_on:
+      - educational-platform
+      - consciousness-ai-bridge
+    restart: unless-stopped
+
+  # Advanced Context Engine
+  context-engine:
+    build:
+      context: ./services/context-engine
+      dockerfile: Dockerfile
+    container_name: synapticos_context_engine
+    ports:
+      - "8085:8085"
+    environment:
+      - CONSCIOUSNESS_BRIDGE_URL=http://consciousness-ai-bridge:8082
+      - NATS_URL=nats://nats:4222
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./data/context:/app/data
+      - ./logs:/app/logs
+    networks:
+      - synapticos_network
+    depends_on:
+      - consciousness-ai-bridge
+      - nats
+      - redis
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 2G
+        reservations:
+          cpus: "0.3"
+          memory: 512M
+
+  # CTF Platform - Dynamic Challenge Generator
+  ctf-platform:
+    build:
+      context: ./services/ctf-platform
+      dockerfile: Dockerfile
+    container_name: synapticos_ctf_platform
+    ports:
+      - "8086:8086"
+    environment:
+      - CONSCIOUSNESS_BRIDGE_URL=http://consciousness-ai-bridge:8082
+      - CONTEXT_ENGINE_URL=http://context-engine:8085
+    volumes:
+      - ./data/ctf:/app/data
+      - ./logs:/app/logs
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - synapticos_network
+    depends_on:
+      - consciousness-ai-bridge
+      - context-engine
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 3G
+        reservations:
+          cpus: "0.5"
+          memory: 1G
+
+  # News Intelligence Platform
+  news-intelligence:
+    build:
+      context: ./services/news-intelligence
+      dockerfile: Dockerfile
+    container_name: synapticos_news_intelligence
+    ports:
+      - "8087:8087"
+    environment:
+      - CONSCIOUSNESS_BRIDGE_URL=http://consciousness-ai-bridge:8082
+      - CONTEXT_ENGINE_URL=http://context-engine:8085
+    volumes:
+      - ./data/news:/app/data
+      - ./logs:/app/logs
+    networks:
+      - synapticos_network
+    depends_on:
+      - consciousness-ai-bridge
+      - context-engine
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 2G
+        reservations:
+          cpus: "0.3"
+          memory: 512M
+
+networks:
+  synapticos_network:
+    driver: bridge
+
+volumes:
+  nats_data:
+    driver: local
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local

@@ -1,0 +1,17 @@
+[Unit]
+Description=SynapticOS Educational Platform
+After=network.target synapticos-consciousness-bridge.service
+Requires=synapticos-consciousness-bridge.service
+
+[Service]
+Type=simple
+User=synapticos
+Group=synapticos
+WorkingDirectory=/opt/synapticos/services/educational-platform
+ExecStart=/usr/bin/python3 educational_platform.py
+Restart=always
+RestartSec=10
+Environment=PYTHONPATH=/opt/synapticos/services/educational-platform
+
+[Install]
+WantedBy=multi-user.target

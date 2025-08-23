@@ -17,7 +17,7 @@ tools:
         pre_commit: true
         pre_push: true
         commit_msg: true
-    
+
   languages:
     rust:
       version: "stable"
@@ -34,7 +34,7 @@ tools:
         - "cargo-watch"
         - "cargo-expand"
         - "bootimage"
-    
+
     python:
       version: "3.11"
       virtual_env: true
@@ -46,7 +46,7 @@ tools:
         - "safety"
         - "pytest"
         - "pytest-cov"
-    
+
     c_cpp:
       compiler: "clang"
       version: "latest"
@@ -55,7 +55,7 @@ tools:
         - "lldb"
         - "valgrind"
         - "cppcheck"
-    
+
     go:
       version: "1.21"
       tools:
@@ -66,17 +66,17 @@ tools:
 # Security tools
 security:
   static_analysis:
-    - "bandit"      # Python security
-    - "clippy"      # Rust security
-    - "cppcheck"    # C/C++ security
-  
+    - "bandit" # Python security
+    - "clippy" # Rust security
+    - "cppcheck" # C/C++ security
+
   vulnerability_scanning:
-    - "trivy"       # Container scanning
+    - "trivy" # Container scanning
     - "cargo-audit" # Rust dependencies
-    - "safety"      # Python dependencies
-  
+    - "safety" # Python dependencies
+
   runtime_analysis:
-    - "valgrind"    # Memory analysis
+    - "valgrind" # Memory analysis
     - "address_sanitizer"
     - "undefined_behavior_sanitizer"
 
@@ -86,11 +86,11 @@ containers:
     version: "latest"
     compose: true
     buildx: true
-  
+
   kubernetes:
     kubectl: true
     helm: true
-    kind: true  # Local K8s clusters
+    kind: true # Local K8s clusters
 
 # IDE and Editor Configuration
 editor:
@@ -103,34 +103,36 @@ editor:
         - "ms-python.pylance"
         - "ms-vscode.cpptools"
         - "golang.go"
-      
+
       ai_assistance:
         - "github.copilot"
         - "github.copilot-chat"
         - "continue.continue"
-      
+
       productivity:
         - "eamodio.gitlens"
         - "formulahendry.code-runner"
         - "vadimcn.vscode-lldb"
         - "ms-vscode.hexeditor"
-      
+
       documentation:
         - "yzhang.markdown-all-in-one"
         - "bierner.markdown-mermaid"
         - "hediet.vscode-drawio"
-    
+
     settings:
       rust_analyzer:
-        checkOnSave: "clippy"
+        checkOnSave:
+          command: "clippy"
+          extraArgs: ["--all-targets", "--all-features"]
         cargo_features: "all"
         proc_macro_enable: true
-      
+
       python:
         linting_enabled: true
         pylint_enabled: true
         formatting_provider: "black"
-      
+
       editor:
         format_on_save: true
         code_actions_on_save:
@@ -144,20 +146,20 @@ workflows:
     test: "cargo test --workspace"
     format: "cargo fmt --all"
     lint: "cargo clippy -- -D warnings"
-  
+
   python:
     test: "pytest tests/ -v"
     format: "black src/"
     lint: "pylint src/"
     security: "bandit -r src/"
-  
+
   integration:
     pre_commit:
       - "cargo fmt --all -- --check"
       - "cargo clippy -- -D warnings"
       - "black src/ --check"
       - "pytest tests/"
-    
+
     pre_push:
       - "cargo test --workspace"
       - "cargo audit"
@@ -169,12 +171,12 @@ monitoring:
     build_times: true
     test_coverage: true
     code_quality: true
-  
+
   tools:
     - "htop"
     - "iotop"
     - "time"
-    - "hyperfine"  # Benchmarking
+    - "hyperfine" # Benchmarking
 
 # Environment variables
 env_vars:
@@ -184,7 +186,7 @@ env_vars:
     LOG_LEVEL: "debug"
     ENVIRONMENT: "development"
     SYN_OS_DEV_MODE: "true"
-  
+
   paths:
     - "$HOME/.cargo/bin"
     - "$HOME/.local/bin"
@@ -196,7 +198,7 @@ resources:
     memory: "8GB"
     storage: "20GB"
     cpu_cores: 4
-  
+
   recommended:
     memory: "16GB"
     storage: "50GB"
@@ -209,7 +211,7 @@ health_checks:
     - "python3 --version"
     - "docker --version"
     - "git --version"
-  
+
   periodic:
     - "cargo check"
     - "python -c 'import sys; print(sys.version)'"
@@ -223,25 +225,25 @@ best_practices:
       - "Format with rustfmt"
       - "Test with cargo test"
       - "Document public APIs"
-    
+
     python:
       - "Format with black"
       - "Lint with pylint"
       - "Type check with mypy"
       - "Test with pytest"
-    
+
     security:
       - "Run security audits"
       - "Scan containers"
       - "Use static analysis"
       - "Regular dependency updates"
-  
+
   version_control:
     - "Use conventional commits"
     - "Keep commits atomic"
     - "Write descriptive messages"
     - "Use feature branches"
-  
+
   documentation:
     - "Document APIs"
     - "Update README"

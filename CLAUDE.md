@@ -159,7 +159,7 @@ make dev
 - Shared dependencies for bootloader, x86_64, security crates
 
 ### Container Orchestration
-- `docker-compose.yml` - Development environment
+- `docker/docker-compose.yml` - Development environment
 - `deploy/docker-compose.production.yml` - Production deployment
 - `deploy/docker-compose.ha.yml` - High availability setup
 

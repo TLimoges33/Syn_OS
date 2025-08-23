@@ -1,280 +1,520 @@
-# Syn_OS Consciousness-Aware Cybersecurity Education Platform
-# Docker Compose configuration for development and educational environments
-
-version: '3.8'
+version: "3.8"
 
 services:
-  # Main kernel development environment
-  kernel-dev:
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile.dev
-      target: final
-    container_name: syn-os-kernel-dev
-    hostname: syn-os-dev
-    privileged: true  # Required for kernel development and QEMU
-    volumes:
-      - ../:/workspace/syn_os:cached
-      - kernel-target:/workspace/syn_os/target
-      - consciousness-data:/home/synaptic-dev/consciousness-logs
-      - dev-cargo-cache:/home/synaptic-dev/.cargo
+  # NATS Message Bus with JetStream
+  nats:
+    image: nats:2.10-alpine
+    container_name: syn_os_nats
     ports:
-      - "8080:8080"   # Development server
-      - "8443:8443"   # Secure development server
-      - "3000:3000"   # Live reload server
-      - "9000:9000"   # Code server
-    environment:
-      - RUST_BACKTRACE=1
-      - CONSCIOUSNESS_MODE=development
-      - EDUCATIONAL_MODE=enabled
-      - KERNEL_DEBUG=1
-    networks:
-      - syn-os-network
-    labels:
-      - "edu.synapticos.service=kernel-development"
-      - "edu.synapticos.component=core"
-
-  # Educational sandbox for students
-  educational-sandbox:
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile.educational
-    container_name: syn-os-educational
-    hostname: syn-os-education
-    cap_drop:
-      - ALL
-    cap_add:
-      - NET_ADMIN  # For network simulation
-      - SYS_PTRACE # For debugging exercises
+      - "4222:4222"
+      - "8222:8222"
+      - "6222:6222"
+    command:
+      [
+        "--jetstream",
+        "--store_dir=/data",
+        "--max_memory_store=1GB",
+        "--max_file_store=10GB",
+        "--http_port=8222",
+      ]
     volumes:
-      - educational-challenges:/home/student/challenges:ro
-      - student-progress:/home/student/learning-progress
-      - consciousness-data:/home/student/consciousness-data
-    ports:
-      - "8000:8000"   # Educational web interface
-      - "8001:8001"   # Consciousness monitoring API
-      - "8002:8002"   # Learning analytics dashboard
-    environment:
-      - CONSCIOUSNESS_TRACKING=enabled
-      - EDUCATIONAL_LEVEL=adaptive
-      - SAFE_MODE=true
-      - STUDENT_ID=default
+      - nats_data:/data
     networks:
-      - syn-os-network
-      - educational-network
-    depends_on:
-      - consciousness-monitor
-      - learning-analytics
-    labels:
-      - "edu.synapticos.service=educational-sandbox"
-      - "edu.synapticos.component=education"
-
-  # Consciousness monitoring service
-  consciousness-monitor:
-    image: consciousness-monitor:latest
-    build:
-      context: consciousness-monitor/
-      dockerfile: Dockerfile
-    container_name: syn-os-consciousness
-    hostname: consciousness-monitor
-    volumes:
-      - consciousness-data:/data
-      - ./consciousness-config:/config:ro
-    ports:
-      - "5000:5000"   # Consciousness API
-      - "5001:5001"   # WebSocket interface
-    environment:
-      - CONSCIOUSNESS_DB_PATH=/data/consciousness.db
-      - MONITORING_INTERVAL=1000
-      - NEURAL_ANALYSIS=enabled
-    networks:
-      - syn-os-network
+      - syn_os_network
+    restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8222/healthz",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
-    labels:
-      - "edu.synapticos.service=consciousness-monitoring"
-      - "edu.synapticos.component=analytics"
 
-  # Learning analytics and progress tracking
-  learning-analytics:
-    image: learning-analytics:latest
-    build:
-      context: learning-analytics/
-      dockerfile: Dockerfile
-    container_name: syn-os-analytics
-    hostname: learning-analytics
-    volumes:
-      - student-progress:/data/progress
-      - consciousness-data:/data/consciousness:ro
-      - ./analytics-config:/config:ro
-    ports:
-      - "6000:6000"   # Analytics API
-      - "6001:6001"   # Dashboard interface
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: syn_os_postgres
     environment:
-      - ANALYTICS_DB_PATH=/data/analytics.db
-      - CONSCIOUSNESS_INTEGRATION=enabled
-      - REAL_TIME_PROCESSING=true
-    networks:
-      - syn-os-network
-    depends_on:
-      - consciousness-monitor
-    labels:
-      - "edu.synapticos.service=learning-analytics"
-      - "edu.synapticos.component=analytics"
-
-  # QEMU virtual machine service for kernel testing
-  qemu-service:
-    image: qemu-service:latest
-    build:
-      context: qemu-service/
-      dockerfile: Dockerfile
-    container_name: syn-os-qemu
-    hostname: qemu-service
-    privileged: true
-    volumes:
-      - ../target:/kernels:ro
-      - qemu-images:/images
-      - ./qemu-config:/config:ro
-    ports:
-      - "5900:5900"   # VNC access
-      - "2222:22"     # SSH access to VM
-    environment:
-      - QEMU_MEMORY=2G
-      - QEMU_CPUS=2
-      - VNC_PASSWORD=syn-os-dev
-    networks:
-      - syn-os-network
-    labels:
-      - "edu.synapticos.service=virtual-machine"
-      - "edu.synapticos.component=testing"
-
-  # Database for persistence
-  consciousness-db:
-    image: postgres:15
-    container_name: syn-os-database
-    hostname: consciousness-db
-    environment:
-      - POSTGRES_DB=consciousness
-      - POSTGRES_USER=synaptic
-      - POSTGRES_PASSWORD=neural-security-2024
-    volumes:
-      - consciousness-db-data:/var/lib/postgresql/data
-      - ./database/init:/docker-entrypoint-initdb.d:ro
+      POSTGRES_DB: ${POSTGRES_DB:-syn_os}
+      POSTGRES_USER: ${POSTGRES_USER:-syn_os_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_SSL_MODE: ${POSTGRES_SSL_MODE:-require}
+    env_file:
+      - .env
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./services/orchestrator/migrations:/docker-entrypoint-initdb.d
     networks:
-      - syn-os-network
+      - syn_os_network
+    restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U synaptic -d consciousness"]
+      test: ["CMD-SHELL", "pg_isready -U syn_os_user -d syn_os"]
       interval: 30s
       timeout: 10s
       retries: 3
-    labels:
-      - "edu.synapticos.service=database"
-      - "edu.synapticos.component=storage"
 
-  # Redis for real-time consciousness state caching
-  consciousness-cache:
+  # Redis Cache
+  redis:
     image: redis:7-alpine
-    container_name: syn-os-cache
-    hostname: consciousness-cache
-    volumes:
-      - consciousness-cache-data:/data
-      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    container_name: syn_os_redis
     ports:
       - "6379:6379"
-    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - redis_data:/data
     networks:
-      - syn-os-network
+      - syn_os_network
+    restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 30s
       timeout: 10s
       retries: 3
-    labels:
-      - "edu.synapticos.service=cache"
-      - "edu.synapticos.component=storage"
 
-  # Nginx reverse proxy for educational platform
-  educational-gateway:
-    image: nginx:alpine
-    container_name: syn-os-gateway
-    hostname: educational-gateway
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/ssl:/etc/ssl/certs:ro
-      - educational-static:/usr/share/nginx/html
+  # Service Orchestrator (Go)
+  orchestrator:
+    build:
+      context: ./services/orchestrator
+      dockerfile: Dockerfile
+    container_name: syn_os_orchestrator
+    environment:
+      - ENV=docker
+      - NATS_URL=${NATS_URL:-nats://nats:4222}
+      - POSTGRES_HOST=${POSTGRES_HOST:-postgres}
+      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
+      - POSTGRES_DB=${POSTGRES_DB:-syn_os}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - HTTP_PORT=${HTTP_PORT:-8080}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - INTERNAL_API_KEY=${INTERNAL_API_KEY}
+    env_file:
+      - .env
     ports:
-      - "80:80"
-      - "443:443"
+      - "8080:8080"
     depends_on:
-      - educational-sandbox
-      - learning-analytics
-      - consciousness-monitor
+      nats:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     networks:
-      - syn-os-network
-      - educational-network
-    labels:
-      - "edu.synapticos.service=gateway"
-      - "edu.synapticos.component=infrastructure"
+      - syn_os_network
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8080/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
-# Named volumes for persistent data
+  # Consciousness System V2 (Python)
+  consciousness:
+    build:
+      context: .
+      dockerfile: Dockerfile.consciousness
+    container_name: syn_os_consciousness
+    environment:
+      - NATS_URL=${NATS_URL:-nats://nats:4222}
+      - ORCHESTRATOR_URL=${ORCHESTRATOR_URL:-http://orchestrator:8080}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - CONSCIOUSNESS_MODE=${CONSCIOUSNESS_MODE:-production}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - CONSCIOUSNESS_ENCRYPTION_KEY=${CONSCIOUSNESS_ENCRYPTION_KEY}
+      - LM_STUDIO_API_KEY=${LM_STUDIO_API_KEY}
+    env_file:
+      - .env
+    depends_on:
+      nats:
+        condition: service_healthy
+      orchestrator:
+        condition: service_healthy
+    networks:
+      - syn_os_network
+    restart: unless-stopped
+    volumes:
+      - consciousness_data:/app/data
+      - ./src/consciousness_v2:/app/src/consciousness_v2
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:8081/health')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Security Dashboard (Python)
+  security-dashboard:
+    build:
+      context: ./applications/security_dashboard
+      dockerfile: Dockerfile
+    container_name: syn_os_security_dashboard
+    environment:
+      - NATS_URL=${NATS_URL:-nats://nats:4222}
+      - ORCHESTRATOR_URL=${ORCHESTRATOR_URL:-http://orchestrator:8080}
+      - CONSCIOUSNESS_URL=${CONSCIOUSNESS_URL:-http://consciousness:8081}
+      - SECURITY_DASHBOARD_PORT=${SECURITY_DASHBOARD_PORT:-8083}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - SIGNING_KEY=${SIGNING_KEY}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    env_file:
+      - .env
+    ports:
+      - "8083:8083"
+    depends_on:
+      nats:
+        condition: service_healthy
+      orchestrator:
+        condition: service_healthy
+      consciousness:
+        condition: service_healthy
+    networks:
+      - syn_os_network
+    restart: unless-stopped
+    volumes:
+      - ./src:/app/src
+      - ./logs/security:/app/logs
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:8083/health')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Learning Hub (Python)
+  learning-hub:
+    build:
+      context: ./applications/learning_hub
+      dockerfile: Dockerfile
+    container_name: syn_os_learning_hub
+    environment:
+      - NATS_URL=${NATS_URL:-nats://nats:4222}
+      - ORCHESTRATOR_URL=${ORCHESTRATOR_URL:-http://orchestrator:8080}
+      - CONSCIOUSNESS_URL=${CONSCIOUSNESS_URL:-http://consciousness:8081}
+      - LEARNING_HUB_PORT=${LEARNING_HUB_PORT:-8084}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    env_file:
+      - .env
+    ports:
+      - "8084:8084"
+    depends_on:
+      nats:
+        condition: service_healthy
+      orchestrator:
+        condition: service_healthy
+      consciousness:
+        condition: service_healthy
+    networks:
+      - syn_os_network
+    restart: unless-stopped
+    volumes:
+      - ./src:/app/src
+      - ./logs:/app/logs
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:8084/health')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Security Tutor (Python)
+  security-tutor:
+    build:
+      context: ./applications/security_tutor
+      dockerfile: Dockerfile
+    container_name: syn_os_security_tutor
+    environment:
+      - NATS_URL=${NATS_URL:-nats://nats:4222}
+      - ORCHESTRATOR_URL=${ORCHESTRATOR_URL:-http://orchestrator:8080}
+      - CONSCIOUSNESS_URL=${CONSCIOUSNESS_URL:-http://consciousness:8081}
+      - SECURITY_TUTOR_PORT=${SECURITY_TUTOR_PORT:-8085}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    env_file:
+      - .env
+    ports:
+      - "8085:8085"
+    depends_on:
+      nats:
+        condition: service_healthy
+      orchestrator:
+        condition: service_healthy
+      consciousness:
+        condition: service_healthy
+    networks:
+      - syn_os_network
+    restart: unless-stopped
+    volumes:
+      - ./src:/app/src
+      - ./logs:/app/logs
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:8085/health')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Web Dashboard (Python)
+  web-dashboard:
+    build:
+      context: ./applications/web_dashboard
+      dockerfile: Dockerfile
+    container_name: syn_os_web_dashboard
+    environment:
+      - NATS_URL=${NATS_URL:-nats://nats:4222}
+      - ORCHESTRATOR_URL=${ORCHESTRATOR_URL:-http://orchestrator:8080}
+      - CONSCIOUSNESS_URL=${CONSCIOUSNESS_URL:-http://consciousness:8081}
+      - WEB_DASHBOARD_PORT=${WEB_DASHBOARD_PORT:-8086}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    env_file:
+      - .env
+    ports:
+      - "8086:8086"
+    depends_on:
+      nats:
+        condition: service_healthy
+      orchestrator:
+        condition: service_healthy
+      consciousness:
+        condition: service_healthy
+    networks:
+      - syn_os_network
+    restart: unless-stopped
+    volumes:
+      - ./src:/app/src
+      - ./logs:/app/logs
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:8086/health')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Threat Intelligence Dashboard (Python)
+  threat-intelligence:
+    build:
+      context: ./applications/threat_intelligence_dashboard
+      dockerfile: Dockerfile
+    container_name: syn_os_threat_intelligence
+    environment:
+      - NATS_URL=${NATS_URL:-nats://nats:4222}
+      - ORCHESTRATOR_URL=${ORCHESTRATOR_URL:-http://orchestrator:8080}
+      - CONSCIOUSNESS_URL=${CONSCIOUSNESS_URL:-http://consciousness:8081}
+      - THREAT_INTEL_PORT=${THREAT_INTEL_PORT:-8087}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    env_file:
+      - .env
+    ports:
+      - "8087:8087"
+    depends_on:
+      nats:
+        condition: service_healthy
+      orchestrator:
+        condition: service_healthy
+      consciousness:
+        condition: service_healthy
+    networks:
+      - syn_os_network
+    restart: unless-stopped
+    volumes:
+      - ./src:/app/src
+      - ./logs:/app/logs
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:8087/health')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # NATS Monitoring (Optional)
+  nats-surveyor:
+    image: natsio/nats-surveyor:latest
+    container_name: syn_os_nats_surveyor
+    environment:
+      - NATS_SURVEYOR_SERVER_COUNT=1
+    ports:
+      - "7777:7777"
+    depends_on:
+      - nats
+    networks:
+      - syn_os_network
+    restart: unless-stopped
+
+  # Consciousness AI Bridge
+  consciousness-ai-bridge:
+    build:
+      context: ./services/consciousness-ai-bridge
+      dockerfile: Dockerfile
+    container_name: synapticos-consciousness-bridge
+    ports:
+      - "8082:8082"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      - LM_STUDIO_URL=${LM_STUDIO_URL:-http://localhost:1234}
+      - OLLAMA_URL=${OLLAMA_URL:-http://localhost:11434}
+      - NATS_URL=${NATS_URL:-nats://nats:4222}
+    env_file:
+      - .env
+    volumes:
+      - ./data/consciousness_state:/app/data
+      - ./logs:/app/logs
+    networks:
+      - syn_os_network
+    depends_on:
+      - nats
+      - redis
+    restart: unless-stopped
+
+  # Educational Platform Service
+  educational-platform:
+    build:
+      context: ./services/educational-platform
+      dockerfile: Dockerfile
+    container_name: synapticos-educational-platform
+    ports:
+      - "8084:8084"
+    environment:
+      - CONSCIOUSNESS_BRIDGE_URL=http://consciousness-ai-bridge:8082
+      - DATABASE_URL=sqlite:///app/data/education.db
+    volumes:
+      - ./data/education:/app/data
+      - ./logs:/app/logs
+    networks:
+      - syn_os_network
+    depends_on:
+      - consciousness-ai-bridge
+    restart: unless-stopped
+
+  # Vector Database Service
+  vector-db:
+    image: qdrant/qdrant:latest
+    container_name: synapticos-vector-db
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - ./data/vector_storage:/qdrant/storage
+    environment:
+      - QDRANT__SERVICE__HTTP_PORT=6333
+      - QDRANT__SERVICE__GRPC_PORT=6334
+    networks:
+      - syn_os_network
+    restart: unless-stopped
+
+  # Consciousness Dashboard
+  consciousness-dashboard:
+    build:
+      context: ./services/consciousness-dashboard
+      dockerfile: Dockerfile
+    container_name: synapticos-consciousness-dashboard
+    ports:
+      - "8000:8000"
+    environment:
+      - CONSCIOUSNESS_BRIDGE_URL=http://consciousness-ai-bridge:8082
+      - EDUCATION_SERVICE_URL=http://educational-platform:8084
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - syn_os_network
+    depends_on:
+      - consciousness-ai-bridge
+    restart: unless-stopped
+
+  # Educational Platform GUI
+  education-gui:
+    build:
+      context: ./services/educational-platform
+      dockerfile: Dockerfile.gui
+    container_name: synapticos-education-gui
+    ports:
+      - "8001:8001"
+    environment:
+      - EDUCATION_SERVICE_URL=http://educational-platform:8084
+      - CONSCIOUSNESS_BRIDGE_URL=http://consciousness-ai-bridge:8082
+    volumes:
+      - ./data/education:/app/data
+      - ./logs:/app/logs
+    networks:
+      - syn_os_network
+    depends_on:
+      - educational-platform
+      - consciousness-ai-bridge
+    restart: unless-stopped
+
 volumes:
-  kernel-target:
+  nats_data:
     driver: local
-    labels:
-      - "edu.synapticos.volume=kernel-build-cache"
-  consciousness-data:
+  postgres_data:
     driver: local
-    labels:
-      - "edu.synapticos.volume=consciousness-analytics"
-  educational-challenges:
+  redis_data:
     driver: local
-    labels:
-      - "edu.synapticos.volume=educational-content"
-  student-progress:
+  consciousness_data:
     driver: local
-    labels:
-      - "edu.synapticos.volume=learning-progress"
-  consciousness-db-data:
-    driver: local
-    labels:
-      - "edu.synapticos.volume=database-storage"
-  consciousness-cache-data:
-    driver: local
-    labels:
-      - "edu.synapticos.volume=cache-storage"
-  dev-cargo-cache:
-    driver: local
-    labels:
-      - "edu.synapticos.volume=development-cache"
-  qemu-images:
-    driver: local
-    labels:
-      - "edu.synapticos.volume=virtual-machine-storage"
-  educational-static:
-    driver: local
-    labels:
-      - "edu.synapticos.volume=static-content"
 
-# Network configuration
 networks:
-  syn-os-network:
+  syn_os_network:
     driver: bridge
     ipam:
       config:
         - subnet: 172.20.0.0/16
-    labels:
-      - "edu.synapticos.network=main"
-  
-  educational-network:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.21.0.0/16
-    internal: true  # Isolated network for educational sandboxes
-    labels:
-      - "edu.synapticos.network=educational-isolated"
