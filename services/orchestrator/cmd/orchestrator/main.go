@@ -12,6 +12,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/syn-os/orchestrator/internal/api"
+	"github.com/syn-os/orchestrator/internal/api/middleware"
 	"github.com/syn-os/orchestrator/internal/config"
 	"github.com/syn-os/orchestrator/internal/core"
 	"github.com/syn-os/orchestrator/internal/storage"
@@ -59,6 +60,12 @@ func main() {
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
+
+	// Apply security middleware
+	router.Use(middleware.SecurityHeaders())
+	router.Use(middleware.RateLimit())
+	router.Use(middleware.InputValidation())
+	router.Use(middleware.EnhancedJWTAuth(cfg.Security))
 
 	// Setup API routes
 	api.SetupRoutes(router, orchestrator)

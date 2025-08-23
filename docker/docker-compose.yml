@@ -168,6 +168,100 @@ services:
       timeout: 10s
       retries: 3
 
+  # Ray Distributed Consciousness (High-Performance Cluster)
+  ray-consciousness-head:
+    build:
+      context: ../services/consciousness-ray-distributed
+      dockerfile: Dockerfile
+    container_name: syn_os_ray_consciousness_head
+    command:
+      [
+        "ray",
+        "start",
+        "--head",
+        "--dashboard-host=0.0.0.0",
+        "--dashboard-port=8265",
+        "--port=10001",
+      ]
+    ports:
+      - "8265:8265" # Ray Dashboard
+      - "10001:10001" # Ray Head Port
+    environment:
+      - RAY_DISABLE_IMPORT_WARNING=1
+      - PYTHONPATH=/app
+      - CONSCIOUSNESS_MODE=${CONSCIOUSNESS_MODE:-distributed}
+    env_file:
+      - ../services/consciousness-ray-distributed/ray-consciousness.env
+    volumes:
+      - consciousness_ray_data:/app/data
+      - consciousness_ray_logs:/app/logs
+    networks:
+      - syn_os_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "ray", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  ray-consciousness-worker:
+    build:
+      context: ../services/consciousness-ray-distributed
+      dockerfile: Dockerfile
+    command: ["ray", "start", "--address=ray-consciousness-head:10001"]
+    environment:
+      - RAY_DISABLE_IMPORT_WARNING=1
+      - PYTHONPATH=/app
+    env_file:
+      - ../services/consciousness-ray-distributed/ray-consciousness.env
+    volumes:
+      - consciousness_ray_data:/app/data
+      - consciousness_ray_logs:/app/logs
+    networks:
+      - syn_os_network
+    depends_on:
+      - ray-consciousness-head
+    restart: unless-stopped
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          memory: 2G
+          cpus: "1.0"
+
+  # Ray Consciousness API (Integration Service)
+  ray-consciousness-api:
+    build:
+      context: ../services/consciousness-ray-distributed
+      dockerfile: Dockerfile
+    container_name: syn_os_ray_consciousness_api
+    command: ["python", "ray_consciousness_api.py"]
+    ports:
+      - "8010:8000" # Ray Consciousness API
+      - "9095:9090" # Ray Metrics
+    environment:
+      - RAY_ADDRESS=ray://ray-consciousness-head:10001
+      - PYTHONPATH=/app
+      - CONSCIOUSNESS_URL=${CONSCIOUSNESS_URL:-http://consciousness:8081}
+      - NATS_URL=${NATS_URL:-nats://nats:4222}
+    env_file:
+      - ../services/consciousness-ray-distributed/ray-consciousness.env
+    volumes:
+      - consciousness_ray_data:/app/data
+      - consciousness_ray_logs:/app/logs
+    networks:
+      - syn_os_network
+    depends_on:
+      - ray-consciousness-head
+      - consciousness
+      - nats
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
   # Security Dashboard (Python)
   security-dashboard:
     build:
@@ -178,6 +272,7 @@ services:
       - NATS_URL=${NATS_URL:-nats://nats:4222}
       - ORCHESTRATOR_URL=${ORCHESTRATOR_URL:-http://orchestrator:8080}
       - CONSCIOUSNESS_URL=${CONSCIOUSNESS_URL:-http://consciousness:8081}
+      - RAY_CONSCIOUSNESS_URL=${RAY_CONSCIOUSNESS_URL:-http://ray-consciousness-api:8000}
       - SECURITY_DASHBOARD_PORT=${SECURITY_DASHBOARD_PORT:-8083}
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
       - ENCRYPTION_KEY=${ENCRYPTION_KEY}
@@ -511,6 +606,18 @@ volumes:
     driver: local
   consciousness_data:
     driver: local
+  consciousness_ray_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/syn_os/data/consciousness/ray
+  consciousness_ray_logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/syn_os/logs/consciousness/ray
 
 networks:
   syn_os_network:
