@@ -1,14 +1,14 @@
 # Team-Specific XML Library Configuration
-# Branch: feature/build-release-engineering
+# Branch: feature/quality-assurance-testing
 
 ## Focus Categories
-['cloud_devops', 'tools_utilities', 'frameworks_libraries']
+['tools_utilities', 'frameworks_libraries']
 
 ## Priority Keywords
-['build', 'ci', 'cd', 'docker', 'kubernetes', 'automation']
+['test', 'quality', 'automation', 'coverage', 'mock', 'unit']
 
 ## Integration Notes
-Prioritize build automation and deployment infrastructure tools
+Focus on testing frameworks and quality assurance tools
 
 ## Usage Instructions
 
