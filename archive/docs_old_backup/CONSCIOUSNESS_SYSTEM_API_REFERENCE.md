@@ -2,6 +2,7 @@
 ## Complete API Documentation
 
 ### Table of Contents
+
 1. [REST API Endpoints](#rest-api-endpoints)
 2. [WebSocket API](#websocket-api)
 3. [Python SDK](#python-sdk)
@@ -11,30 +12,44 @@
 7. [Rate Limiting](#rate-limiting)
 8. [Authentication](#authentication)
 
----
+- --
 
 ## REST API Endpoints
 
 ### Base URL
+
 - **Production**: `https://api.synapticos.com/v2`
 - **Development**: `http://localhost:8080/api/v2`
 
 ### Authentication
+
 All API requests require authentication via JWT token in the Authorization header:
+
 ```http
 Authorization: Bearer <jwt_token>
-```
+```text
 
----
+```text
+
+- --
 
 ### System Status Endpoints
 
 #### Get System Status
+
+```http
+
+#### Get System Status
+
 ```http
 GET /consciousness/status
-```
+```text
 
-**Response**:
+```text
+
+* *Response**:
+```json
+
 ```json
 {
   "consciousness_level": 0.8,
@@ -44,14 +59,26 @@ GET /consciousness/status
   "version": "2.0.0",
   "environment": "production"
 }
-```
+```text
+  "version": "2.0.0",
+  "environment": "production"
+}
+
+```text
 
 #### Get Component Status
+
+```http
+
 ```http
 GET /consciousness/components
-```
+```text
 
-**Response**:
+```text
+
+* *Response**:
+```json
+
 ```json
 {
   "components": [
@@ -67,19 +94,42 @@ GET /consciousness/components
     }
   ]
 }
-```
+```text
+      "state": "healthy",
+      "health_score": 0.95,
+      "last_heartbeat": "2024-01-15T10:30:00Z",
+      "response_time_ms": 45.2,
+      "throughput": 150.5,
+      "error_rate": 0.001
+    }
+  ]
+}
+
+```text
 
 #### Get System Metrics
+
+```http
+
 ```http
 GET /consciousness/metrics
-```
+```text
 
-**Query Parameters**:
+```text
+
+* *Query Parameters**:
+
 - `start_time` (optional): ISO 8601 timestamp
 - `end_time` (optional): ISO 8601 timestamp
 - `component_id` (optional): Filter by component
 
-**Response**:
+* *Response**:
+```json
+
+- `component_id` (optional): Filter by component
+
+* *Response**:
+
 ```json
 {
   "metrics": [
@@ -92,18 +142,35 @@ GET /consciousness/metrics
     }
   ]
 }
-```
+```text
+      "event_processing_rate": 1250.5,
+      "neural_evolution_cycles": 42,
+      "active_users": 156
+    }
+  ]
+}
 
----
+```text
+
+- --
 
 ### User Management Endpoints
 
 #### Create User Context
+
+```http
+
+#### Create User Context
+
 ```http
 POST /users/{user_id}/context
-```
+```text
 
-**Request Body**:
+```text
+
+* *Request Body**:
+```json
+
 ```json
 {
   "skill_levels": {
@@ -122,9 +189,25 @@ POST /users/{user_id}/context
     "Improve security awareness"
   ]
 }
-```
+```text
+  },
+  "learning_preferences": {
+    "pace": "normal",
+    "difficulty": "adaptive",
+    "visual_aids": true,
+    "hands_on_preference": 0.8
+  },
+  "goals": [
+    "Complete Python certification",
+    "Improve security awareness"
+  ]
+}
 
-**Response**:
+```text
+
+* *Response**:
+```json
+
 ```json
 {
   "user_id": "user123",
@@ -135,14 +218,27 @@ POST /users/{user_id}/context
     "security_basics_1"
   ]
 }
-```
+```text
+    "python_intermediate_1",
+    "security_basics_1"
+  ]
+}
+
+```text
 
 #### Get User Context
+
+```http
+
 ```http
 GET /users/{user_id}/context
-```
+```text
 
-**Response**:
+```text
+
+* *Response**:
+```json
+
 ```json
 {
   "user_id": "user123",
@@ -165,14 +261,39 @@ GET /users/{user_id}/context
     "progress": 0.65
   }
 }
-```
+```text
+    "python": "intermediate",
+    "security": "beginner"
+  },
+  "current_consciousness_level": 0.75,
+  "total_time_spent": 7200,
+  "achievements": [
+    "first_module_complete",
+    "security_awareness_bronze"
+  ],
+  "current_session": {
+    "session_id": "session456",
+    "start_time": "2024-01-15T10:00:00Z",
+    "current_module": "python_functions",
+    "progress": 0.65
+  }
+}
+
+```text
 
 #### Update User Progress
+
+```http
+
 ```http
 POST /users/{user_id}/progress
-```
+```text
 
-**Request Body**:
+```text
+
+* *Request Body**:
+```json
+
 ```json
 {
   "module_id": "python_functions",
@@ -183,9 +304,17 @@ POST /users/{user_id}/progress
   "score": 0.85,
   "difficulty_rating": "appropriate"
 }
-```
+```text
+  "exercises_total": 12,
+  "score": 0.85,
+  "difficulty_rating": "appropriate"
+}
 
-**Response**:
+```text
+
+* *Response**:
+```json
+
 ```json
 {
   "progress_updated": true,
@@ -199,23 +328,46 @@ POST /users/{user_id}/progress
     "python_error_handling"
   ]
 }
-```
+```text
+    "reason": "consistent_progress"
+  },
+  "next_recommendations": [
+    "python_advanced_functions",
+    "python_error_handling"
+  ]
+}
 
----
+```text
+
+- --
 
 ### Learning Endpoints
 
 #### Get Learning Recommendations
+
+```http
+
+#### Get Learning Recommendations
+
 ```http
 GET /users/{user_id}/recommendations
-```
+```text
 
-**Query Parameters**:
+```text
+
+* *Query Parameters**:
+
 - `domain` (optional): Filter by domain (python, security, networking)
 - `difficulty` (optional): Filter by difficulty level
 - `limit` (optional): Number of recommendations (default: 10)
 
-**Response**:
+* *Response**:
+```json
+
+- `limit` (optional): Number of recommendations (default: 10)
+
+* *Response**:
+
 ```json
 {
   "recommendations": [
@@ -240,23 +392,54 @@ GET /users/{user_id}/recommendations
     "estimated_completion": "2024-02-15T00:00:00Z"
   }
 }
-```
+```text
+      "difficulty": "intermediate",
+      "estimated_duration": 3600,
+      "consciousness_optimized": true,
+      "relevance_score": 0.92,
+      "prerequisites": ["python_basic_functions"],
+      "learning_objectives": [
+        "Master lambda functions",
+        "Understand decorators",
+        "Use higher-order functions"
+      ]
+    }
+  ],
+  "learning_path": {
+    "current_position": 3,
+    "total_modules": 15,
+    "estimated_completion": "2024-02-15T00:00:00Z"
+  }
+}
+
+```text
 
 #### Start Learning Session
+
+```http
+
 ```http
 POST /users/{user_id}/sessions
-```
+```text
 
-**Request Body**:
+```text
+
+* *Request Body**:
+```json
+
 ```json
 {
   "module_id": "python_advanced_functions",
   "learning_mode": "focused",
   "consciousness_level": 0.8
 }
-```
+```text
 
-**Response**:
+```text
+
+* *Response**:
+```json
+
 ```json
 {
   "session_id": "session789",
@@ -271,14 +454,31 @@ POST /users/{user_id}/sessions
     "added_practical_exercises"
   ]
 }
-```
+```text
+    "content_style": "hands_on",
+    "estimated_duration": 3600
+  },
+  "consciousness_adaptations": [
+    "increased_example_complexity",
+    "added_practical_exercises"
+  ]
+}
+
+```text
 
 #### End Learning Session
+
+```http
+
 ```http
 POST /users/{user_id}/sessions/{session_id}/end
-```
+```text
 
-**Request Body**:
+```text
+
+* *Request Body**:
+```json
+
 ```json
 {
   "completion_status": "completed",
@@ -289,9 +489,17 @@ POST /users/{user_id}/sessions/{session_id}/end
     "content_quality": "excellent"
   }
 }
-```
+```text
+    "engagement": "high",
+    "content_quality": "excellent"
+  }
+}
 
-**Response**:
+```text
+
+* *Response**:
+```json
+
 ```json
 {
   "session_ended": true,
@@ -308,18 +516,39 @@ POST /users/{user_id}/sessions/{session_id}/end
     "python_functions_master"
   ]
 }
-```
+```text
+    "exercises_completed": 12,
+    "average_score": 0.88
+  },
+  "skill_updates": {
+    "python": "advanced"
+  },
+  "achievements_unlocked": [
+    "python_functions_master"
+  ]
+}
 
----
+```text
+
+- --
 
 ### Security Assessment Endpoints
 
 #### Generate Security Scenario
+
+```http
+
+#### Generate Security Scenario
+
 ```http
 POST /security/scenarios/generate
-```
+```text
 
-**Request Body**:
+```text
+
+* *Request Body**:
+```json
+
 ```json
 {
   "user_id": "user123",
@@ -330,9 +559,17 @@ POST /security/scenarios/generate
     "company_type": "tech_startup"
   }
 }
-```
+```text
+    "user_role": "developer",
+    "company_type": "tech_startup"
+  }
+}
 
-**Response**:
+```text
+
+* *Response**:
+```json
+
 ```json
 {
   "scenario_id": "scenario456",
@@ -353,14 +590,37 @@ POST /security/scenarios/generate
   ],
   "time_limit_seconds": 300
 }
-```
+```text
+  "content": {
+    "email_subject": "Urgent: Account Verification Required",
+    "email_body": "...",
+    "sender_address": "security@fake-bank.com",
+    "attachments": ["verification_form.pdf"]
+  },
+  "assessment_criteria": [
+    "sender_authenticity",
+    "urgency_tactics",
+    "suspicious_links",
+    "attachment_safety"
+  ],
+  "time_limit_seconds": 300
+}
+
+```text
 
 #### Submit Security Assessment
+
+```http
+
 ```http
 POST /security/scenarios/{scenario_id}/assess
-```
+```text
 
-**Request Body**:
+```text
+
+* *Request Body**:
+```json
+
 ```json
 {
   "user_id": "user123",
@@ -378,9 +638,24 @@ POST /security/scenarios/{scenario_id}/assess
   },
   "time_taken_seconds": 180
 }
-```
+```text
+    "confidence": 0.9,
+    "indicators_identified": [
+      "suspicious_sender_domain",
+      "urgency_language",
+      "request_for_credentials"
+    ],
+    "recommended_action": "delete_and_report",
+    "reasoning": "Multiple phishing indicators present including suspicious domain and urgency tactics"
+  },
+  "time_taken_seconds": 180
+}
 
-**Response**:
+```text
+
+* *Response**:
+```json
+
 ```json
 {
   "assessment_id": "assessment789",
@@ -406,18 +681,48 @@ POST /security/scenarios/{scenario_id}/assess
     "improvement": 0.05
   }
 }
-```
+```text
+    "strengths": [
+      "Correctly identified phishing indicators",
+      "Appropriate recommended action",
+      "Good reasoning provided"
+    ],
+    "improvements": [
+      "Could have noted the suspicious attachment"
+    ]
+  },
+  "consciousness_adaptation": {
+    "difficulty_adjustment": "increase_slightly",
+    "next_scenario_type": "advanced_phishing"
+  },
+  "security_awareness_update": {
+    "previous_level": 0.7,
+    "new_level": 0.75,
+    "improvement": 0.05
+  }
+}
 
----
+```text
+
+- --
 
 ### Neural Darwinism Endpoints
 
 #### Get Population Statistics
+
+```http
+
+#### Get Population Statistics
+
 ```http
 GET /neural/populations
-```
+```text
 
-**Response**:
+```text
+
+* *Response**:
+```json
+
 ```json
 {
   "populations": [
@@ -440,14 +745,39 @@ GET /neural/populations
   "overall_consciousness_level": 0.8,
   "system_intelligence_score": 0.85
 }
-```
+```text
+      "specialization": "executive_control",
+      "fitness_average": 0.78,
+      "diversity_index": 0.65,
+      "generation": 142,
+      "evolution_cycles": 1420,
+      "last_evolution": "2024-01-15T10:25:00Z",
+      "performance_metrics": {
+        "decision_accuracy": 0.82,
+        "response_time": 45.2,
+        "adaptation_rate": 0.15
+      }
+    }
+  ],
+  "overall_consciousness_level": 0.8,
+  "system_intelligence_score": 0.85
+}
+
+```text
 
 #### Trigger Evolution Cycle
+
+```http
+
 ```http
 POST /neural/populations/{population_id}/evolve
-```
+```text
 
-**Request Body**:
+```text
+
+* *Request Body**:
+```json
+
 ```json
 {
   "fitness_feedback": {
@@ -457,9 +787,16 @@ POST /neural/populations/{population_id}/evolve
   },
   "evolution_pressure": 0.3
 }
-```
+```text
+  },
+  "evolution_pressure": 0.3
+}
 
-**Response**:
+```text
+
+* *Response**:
+```json
+
 ```json
 {
   "evolution_triggered": true,
@@ -471,13 +808,25 @@ POST /neural/populations/{population_id}/evolve
     "better_user_adaptation"
   ]
 }
-```
+```text
+    "increased_decision_accuracy",
+    "reduced_response_time",
+    "better_user_adaptation"
+  ]
+}
 
----
+```text
+
+- --
 
 ## WebSocket API
 
 ### Connection
+
+```javascript
+
+### Connection
+
 ```javascript
 const ws = new WebSocket('wss://api.synapticos.com/v2/ws');
 
@@ -488,11 +837,20 @@ ws.onopen = function() {
         token: 'your_jwt_token'
     }));
 };
-```
+```text
+        type: 'authenticate',
+        token: 'your_jwt_token'
+    }));
+};
+
+```text
 
 ### Real-time Events
 
 #### Consciousness Level Updates
+
+```json
+
 ```json
 {
   "type": "consciousness_update",
@@ -503,9 +861,18 @@ ws.onopen = function() {
     "timestamp": "2024-01-15T10:30:00Z"
   }
 }
-```
+```text
+    "reason": "user_engagement_increase",
+    "timestamp": "2024-01-15T10:30:00Z"
+  }
+}
+
+```text
 
 #### Learning Progress Updates
+
+```json
+
 ```json
 {
   "type": "learning_progress",
@@ -519,9 +886,21 @@ ws.onopen = function() {
     "total_exercises": 12
   }
 }
-```
+```text
+    "module_id": "python_functions",
+    "progress": 0.75,
+    "time_spent": 1800,
+    "current_exercise": 8,
+    "total_exercises": 12
+  }
+}
+
+```text
 
 #### System Alerts
+
+```json
+
 ```json
 {
   "type": "system_alert",
@@ -534,45 +913,68 @@ ws.onopen = function() {
     "recommended_action": "check_system_resources"
   }
 }
-```
+```text
+    "component": "neural_darwinism_engine",
+    "message": "Response time increased above threshold",
+    "timestamp": "2024-01-15T10:30:00Z",
+    "recommended_action": "check_system_resources"
+  }
+}
 
----
+```text
+
+- --
 
 ## Python SDK
 
 ### Installation
+
+```bash
+
+### Installation
+
 ```bash
 pip install synapticos-consciousness-sdk
-```
+```text
+
+```text
 
 ### Basic Usage
+
+```python
+
 ```python
 from synapticos import ConsciousnessClient
 
-# Initialize client
+## Initialize client
+
 client = ConsciousnessClient(
     api_url="https://api.synapticos.com/v2",
     api_key="your_api_key"
 )
 
-# Get system status
+## Get system status
+
 status = await client.get_system_status()
 print(f"Consciousness level: {status.consciousness_level}")
 
-# Create user context
+## Create user context
+
 user_context = await client.create_user_context(
     user_id="user123",
     skill_levels={"python": "intermediate"},
     learning_preferences={"pace": "normal"}
 )
 
-# Start learning session
+## Start learning session
+
 session = await client.start_learning_session(
     user_id="user123",
     module_id="python_functions"
 )
 
-# Update progress
+## Update progress
+
 progress = await client.update_progress(
     user_id="user123",
     session_id=session.session_id,
@@ -582,28 +984,72 @@ progress = await client.update_progress(
         "score": 0.85
     }
 )
-```
+```text
+    api_url="https://api.synapticos.com/v2",
+    api_key="your_api_key"
+)
+
+## Get system status
+
+status = await client.get_system_status()
+print(f"Consciousness level: {status.consciousness_level}")
+
+## Create user context
+
+user_context = await client.create_user_context(
+    user_id="user123",
+    skill_levels={"python": "intermediate"},
+    learning_preferences={"pace": "normal"}
+)
+
+## Start learning session
+
+session = await client.start_learning_session(
+    user_id="user123",
+    module_id="python_functions"
+)
+
+## Update progress
+
+progress = await client.update_progress(
+    user_id="user123",
+    session_id=session.session_id,
+    progress_data={
+        "progress_percentage": 75.0,
+        "time_spent_seconds": 1800,
+        "score": 0.85
+    }
+)
+
+```text
 
 ### Advanced Usage
+
 ```python
-# Real-time event streaming
+```python
+
+## Real-time event streaming
+
 async def handle_consciousness_update(event):
     print(f"Consciousness level: {event.consciousness_level}")
 
-# Subscribe to events
+## Subscribe to events
+
 await client.subscribe_to_events(
     event_types=["consciousness_update", "learning_progress"],
     handler=handle_consciousness_update
 )
 
-# Generate security scenario
+## Generate security scenario
+
 scenario = await client.generate_security_scenario(
     user_id="user123",
     scenario_type="phishing",
     difficulty="intermediate"
 )
 
-# Submit assessment
+## Submit assessment
+
 assessment = await client.submit_security_assessment(
     scenario_id=scenario.scenario_id,
     user_id="user123",
@@ -613,13 +1059,43 @@ assessment = await client.submit_security_assessment(
         "confidence": 0.9
     }
 )
-```
+```text
 
----
+## Subscribe to events
+
+await client.subscribe_to_events(
+    event_types=["consciousness_update", "learning_progress"],
+    handler=handle_consciousness_update
+)
+
+## Generate security scenario
+
+scenario = await client.generate_security_scenario(
+    user_id="user123",
+    scenario_type="phishing",
+    difficulty="intermediate"
+)
+
+## Submit assessment
+
+assessment = await client.submit_security_assessment(
+    scenario_id=scenario.scenario_id,
+    user_id="user123",
+    assessment_data={
+        "threat_detected": True,
+        "threat_type": "phishing",
+        "confidence": 0.9
+    }
+)
+
+```text
+
+- --
 
 ## Event Types Reference
 
 ### Core System Events
+
 - `CONSCIOUSNESS_UPDATE`: Consciousness level changes
 - `SYSTEM_STARTUP`: System initialization complete
 - `SYSTEM_SHUTDOWN`: System shutdown initiated
@@ -628,6 +1104,7 @@ assessment = await client.submit_security_assessment(
 - `HEALTH_CHECK`: Component health status update
 
 ### Learning Events
+
 - `LEARNING_SESSION_START`: Learning session initiated
 - `LEARNING_SESSION_END`: Learning session completed
 - `LEARNING_PROGRESS`: Progress update within session
@@ -636,21 +1113,63 @@ assessment = await client.submit_security_assessment(
 - `ACHIEVEMENT_UNLOCKED`: New achievement earned
 
 ### Security Events
+
 - `SECURITY_THREAT_DETECTED`: Security threat identified
 - `SECURITY_ASSESSMENT`: Security assessment completed
 - `SECURITY_TRAINING_COMPLETE`: Security training finished
 - `THREAT_INTELLIGENCE_UPDATE`: New threat data available
 
 ### Performance Events
+
 - `PERFORMANCE_UPDATE`: Performance metrics update
 - `RESOURCE_ALERT`: Resource usage alert
 - `NEURAL_EVOLUTION_COMPLETE`: Neural evolution cycle finished
 
----
+- --
 
 ## Data Models Reference
 
 ### ConsciousnessState
+
+```typescript
+
+### Core System Events
+
+- `CONSCIOUSNESS_UPDATE`: Consciousness level changes
+- `SYSTEM_STARTUP`: System initialization complete
+- `SYSTEM_SHUTDOWN`: System shutdown initiated
+- `COMPONENT_REGISTERED`: New component registered
+- `COMPONENT_UNREGISTERED`: Component unregistered
+- `HEALTH_CHECK`: Component health status update
+
+### Learning Events
+
+- `LEARNING_SESSION_START`: Learning session initiated
+- `LEARNING_SESSION_END`: Learning session completed
+- `LEARNING_PROGRESS`: Progress update within session
+- `SKILL_ASSESSMENT`: Skill level assessment completed
+- `MODULE_COMPLETED`: Learning module finished
+- `ACHIEVEMENT_UNLOCKED`: New achievement earned
+
+### Security Events
+
+- `SECURITY_THREAT_DETECTED`: Security threat identified
+- `SECURITY_ASSESSMENT`: Security assessment completed
+- `SECURITY_TRAINING_COMPLETE`: Security training finished
+- `THREAT_INTELLIGENCE_UPDATE`: New threat data available
+
+### Performance Events
+
+- `PERFORMANCE_UPDATE`: Performance metrics update
+- `RESOURCE_ALERT`: Resource usage alert
+- `NEURAL_EVOLUTION_COMPLETE`: Neural evolution cycle finished
+
+- --
+
+## Data Models Reference
+
+### ConsciousnessState
+
 ```typescript
 interface ConsciousnessState {
   consciousness_level: number;        // 0.0 to 1.0
@@ -662,9 +1181,19 @@ interface ConsciousnessState {
   version: string;
   checksum: string;
 }
-```
+```text
+  user_contexts: UserContextState[];
+  timestamp: string;                 // ISO 8601
+  version: string;
+  checksum: string;
+}
+
+```text
 
 ### UserContextState
+
+```typescript
+
 ```typescript
 interface UserContextState {
   user_id: string;
@@ -677,9 +1206,20 @@ interface UserContextState {
   achievements: string[];
   current_session?: SessionState;
 }
-```
+```text
+  learning_preferences: Record<string, any>;
+  current_consciousness_level: number;
+  total_time_spent: number;         // seconds
+  achievements: string[];
+  current_session?: SessionState;
+}
+
+```text
 
 ### PopulationState
+
+```typescript
+
 ```typescript
 interface PopulationState {
   population_id: string;
@@ -692,9 +1232,20 @@ interface PopulationState {
   last_evolution: string;           // ISO 8601
   performance_metrics: Record<string, number>;
 }
-```
+```text
+  diversity_index: number;          // 0.0 to 1.0
+  generation: number;
+  evolution_cycles: number;
+  last_evolution: string;           // ISO 8601
+  performance_metrics: Record<string, number>;
+}
+
+```text
 
 ### SecurityScenario
+
+```typescript
+
 ```typescript
 interface SecurityScenario {
   scenario_id: string;
@@ -707,13 +1258,22 @@ interface SecurityScenario {
   time_limit_seconds?: number;
   created_at: string;               // ISO 8601
 }
-```
+```text
+  difficulty: string;
+  content: Record<string, any>;
+  assessment_criteria: string[];
+  time_limit_seconds?: number;
+  created_at: string;               // ISO 8601
+}
 
----
+```text
+
+- --
 
 ## Error Codes
 
 ### HTTP Status Codes
+
 - `200 OK`: Request successful
 - `201 Created`: Resource created successfully
 - `400 Bad Request`: Invalid request parameters
@@ -726,6 +1286,24 @@ interface SecurityScenario {
 - `503 Service Unavailable`: Service temporarily unavailable
 
 ### Custom Error Codes
+
+```json
+
+### HTTP Status Codes
+
+- `200 OK`: Request successful
+- `201 Created`: Resource created successfully
+- `400 Bad Request`: Invalid request parameters
+- `401 Unauthorized`: Authentication required
+- `403 Forbidden`: Insufficient permissions
+- `404 Not Found`: Resource not found
+- `409 Conflict`: Resource conflict
+- `429 Too Many Requests`: Rate limit exceeded
+- `500 Internal Server Error`: Server error
+- `503 Service Unavailable`: Service temporarily unavailable
+
+### Custom Error Codes
+
 ```json
 {
   "error": {
@@ -737,9 +1315,17 @@ interface SecurityScenario {
     }
   }
 }
-```
+```text
+      "provided_value": 1.5,
+      "valid_range": "0.0 - 1.0"
+    }
+  }
+}
+
+```text
 
 #### Error Code Reference
+
 - `USER_NOT_FOUND`: User context does not exist
 - `SESSION_NOT_ACTIVE`: Learning session not active
 - `INVALID_SKILL_LEVEL`: Invalid skill level provided
@@ -749,24 +1335,53 @@ interface SecurityScenario {
 - `SECURITY_SCENARIO_EXPIRED`: Security scenario has expired
 - `ASSESSMENT_ALREADY_SUBMITTED`: Assessment already completed
 
----
+- --
 
 ## Rate Limiting
 
 ### Rate Limits
+
 - **General API**: 1000 requests per hour per user
 - **Real-time Events**: 100 connections per user
 - **Learning Progress**: 60 updates per minute per session
 - **Security Assessments**: 10 assessments per hour per user
 
 ### Rate Limit Headers
+
+```http
+
+- `INVALID_SKILL_LEVEL`: Invalid skill level provided
+- `MODULE_NOT_AVAILABLE`: Learning module not available
+- `CONSCIOUSNESS_LEVEL_INVALID`: Invalid consciousness level
+- `NEURAL_POPULATION_ERROR`: Neural population operation failed
+- `SECURITY_SCENARIO_EXPIRED`: Security scenario has expired
+- `ASSESSMENT_ALREADY_SUBMITTED`: Assessment already completed
+
+- --
+
+## Rate Limiting
+
+### Rate Limits
+
+- **General API**: 1000 requests per hour per user
+- **Real-time Events**: 100 connections per user
+- **Learning Progress**: 60 updates per minute per session
+- **Security Assessments**: 10 assessments per hour per user
+
+### Rate Limit Headers
+
 ```http
 X-RateLimit-Limit: 1000
 X-RateLimit-Remaining: 999
 X-RateLimit-Reset: 1642248000
-```
+```text
+
+```text
 
 ### Rate Limit Exceeded Response
+
+```json
+
 ```json
 {
   "error": {
@@ -775,13 +1390,22 @@ X-RateLimit-Reset: 1642248000
     "retry_after": 3600
   }
 }
-```
+```text
+  }
+}
 
----
+```text
+
+- --
 
 ## Authentication
 
 ### JWT Token Structure
+
+```json
+
+### JWT Token Structure
+
 ```json
 {
   "header": {
@@ -796,9 +1420,20 @@ X-RateLimit-Reset: 1642248000
     "consciousness_level": 0.8
   }
 }
-```
+```text
+  "payload": {
+    "sub": "user123",
+    "iat": 1642248000,
+    "exp": 1642251600,
+    "scope": ["consciousness:read", "consciousness:write"],
+    "consciousness_level": 0.8
+  }
+}
+
+```text
 
 ### Scopes
+
 - `consciousness:read`: Read consciousness system data
 - `consciousness:write`: Modify consciousness system data
 - `user:manage`: Manage user contexts and sessions
@@ -807,6 +1442,16 @@ X-RateLimit-Reset: 1642248000
 - `admin:system`: Administrative system access
 
 ### Token Refresh
+
+```http
+
+- `user:manage`: Manage user contexts and sessions
+- `security:assess`: Access security assessment features
+- `neural:monitor`: Monitor neural population data
+- `admin:system`: Administrative system access
+
+### Token Refresh
+
 ```http
 POST /auth/refresh
 Content-Type: application/json
@@ -814,15 +1459,23 @@ Content-Type: application/json
 {
   "refresh_token": "your_refresh_token"
 }
-```
+```text
+}
 
-**Response**:
+```text
+
+* *Response**:
+```json
+
 ```json
 {
   "access_token": "new_jwt_token",
   "token_type": "Bearer",
   "expires_in": 3600
 }
-```
+```text
 
-This comprehensive API reference provides complete documentation for integrating with the SynapticOS Consciousness System V2, enabling developers to build consciousness-aware applications and services.
+```text
+
+This comprehensive API reference provides complete documentation for integrating with the SynapticOS Consciousness
+System V2, enabling developers to build consciousness-aware applications and services.

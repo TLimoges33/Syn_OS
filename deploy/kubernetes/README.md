@@ -4,7 +4,7 @@ This directory contains the Kubernetes configuration files for deploying Syn_OS 
 
 ## Structure
 
-```
+```text
 deploy/kubernetes/
 ├── base/                           # Base Kubernetes manifests
 │   ├── namespace.yaml             # Namespace definitions
@@ -17,39 +17,66 @@ deploy/kubernetes/
 │   └── production/
 │       └── kustomization.yaml     # Production environment
 └── phase4-integration.yaml       # Phase 4 specific deployment
-```
+```text
+│   └── kustomization.yaml         # Base kustomization
+├── overlays/                      # Environment-specific overlays
+│   ├── development/
+│   │   └── kustomization.yaml     # Development environment
+│   └── production/
+│       └── kustomization.yaml     # Production environment
+└── phase4-integration.yaml       # Phase 4 specific deployment
+
+```text
 
 ## Deployment
 
 ### Development Environment
+
+```bash
+
 ```bash
 kubectl apply -k deploy/kubernetes/overlays/development
-```
+```text
+
+```text
 
 ### Production Environment
+
+```bash
+
 ```bash
 kubectl apply -k deploy/kubernetes/overlays/production
-```
+```text
+
+```text
 
 ### Base Resources Only
+
+```bash
+
 ```bash
 kubectl apply -k deploy/kubernetes/base
-```
+```text
+
+```text
 
 ## Components
 
 ### Namespaces
+
 - `synos-core`: Core system components
 - `synos-security`: Security management services
 - `synos-monitoring`: Monitoring and observability
 - `synos-development`: Development environment
 
 ### Core Services
+
 - **syn-os-core**: Main kernel and API services
 - **syn-os-security-manager**: Security policies and threat detection
 - **phase4-integration**: Advanced integration services
 
 ### Security Features
+
 - RBAC with least privilege principle
 - Network policies for inter-service communication
 - Security contexts with non-root users
@@ -57,6 +84,7 @@ kubectl apply -k deploy/kubernetes/base
 - Capability dropping
 
 ### Monitoring
+
 - Liveness and readiness probes
 - Resource limits and requests
 - Service monitors for Prometheus integration
@@ -65,12 +93,14 @@ kubectl apply -k deploy/kubernetes/base
 ## Configuration
 
 All configurations use Kustomize for environment-specific overlays:
+
 - Development: Debug logging, single replicas, development images
 - Production: Optimized performance, multiple replicas, stable images
 
 ## Secrets Management
 
 Secrets are managed through:
+
 - Base64 encoded secrets in manifests (for development)
 - External secret files for production
 - Kubernetes secret objects with proper RBAC
@@ -78,6 +108,7 @@ Secrets are managed through:
 ## Scaling
 
 Horizontal Pod Autoscaler (HPA) is configured for:
+
 - CPU utilization: 70%
 - Memory utilization: 80%
 - Min replicas: 2 (production), 1 (development)
@@ -86,6 +117,65 @@ Horizontal Pod Autoscaler (HPA) is configured for:
 ## Network Policies
 
 Network policies enforce:
+
+- Ingress restrictions based on namespace labels
+- Egress controls for external communications
+- Inter-service communication rules
+
+- `synos-core`: Core system components
+- `synos-security`: Security management services
+- `synos-monitoring`: Monitoring and observability
+- `synos-development`: Development environment
+
+### Core Services
+
+- **syn-os-core**: Main kernel and API services
+- **syn-os-security-manager**: Security policies and threat detection
+- **phase4-integration**: Advanced integration services
+
+### Security Features
+
+- RBAC with least privilege principle
+- Network policies for inter-service communication
+- Security contexts with non-root users
+- Read-only root filesystems
+- Capability dropping
+
+### Monitoring
+
+- Liveness and readiness probes
+- Resource limits and requests
+- Service monitors for Prometheus integration
+- Health check endpoints
+
+## Configuration
+
+All configurations use Kustomize for environment-specific overlays:
+
+- Development: Debug logging, single replicas, development images
+- Production: Optimized performance, multiple replicas, stable images
+
+## Secrets Management
+
+Secrets are managed through:
+
+- Base64 encoded secrets in manifests (for development)
+- External secret files for production
+- Kubernetes secret objects with proper RBAC
+
+## Scaling
+
+Horizontal Pod Autoscaler (HPA) is configured for:
+
+- CPU utilization: 70%
+- Memory utilization: 80%
+- Min replicas: 2 (production), 1 (development)
+- Max replicas: 10
+
+## Network Policies
+
+Network policies enforce:
+
 - Ingress restrictions based on namespace labels
 - Egress controls for external communications
 - Inter-service communication rules

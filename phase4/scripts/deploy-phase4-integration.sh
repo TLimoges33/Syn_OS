@@ -7,6 +7,27 @@
 
 set -euo pipefail
 
+# Source standardized error handling
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+ERROR_HANDLING_PATH="/home/diablorain/Syn_OS/src/common/error_handling.sh"
+
+if [[ -f "$ERROR_HANDLING_PATH" ]]; then
+    source "$ERROR_HANDLING_PATH"
+    # Set service name for error tracking
+    SERVICE_NAME="phase4_deployment"
+    init_error_handling
+else
+    echo "Warning: Standardized error handling not found, using basic error handling"
+    set -euo pipefail
+    handle_error() {
+        echo "❌ Error occurred in deployment script at line $1" >&2
+        echo "❌ Phase 4 integration deployment failed" >&2
+        exit 1
+    }
+    trap 'handle_error $LINENO' ERR
+fi
+
 # Color codes for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -17,24 +38,17 @@ CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 # Configuration
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 NAMESPACE="synos-phase4"
 DEPLOYMENT_TIMEOUT="300s"
 LOG_FILE="/tmp/phase4-deployment-$(date +%Y%m%d-%H%M%S).log"
 
-# Logging function
+# Enhanced logging function with error handling integration
 log() {
-    echo -e "$(date '+%Y-%m-%d %H:%M:%S') $1" | tee -a "$LOG_FILE"
+    local message="$1"
+    local timestamp
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo -e "$timestamp $message" | tee -a "$LOG_FILE"
 }
-
-# Error handling
-handle_error() {
-    log "${RED}❌ Error occurred in deployment script at line $1${NC}"
-    log "${RED}❌ Phase 4 integration deployment failed${NC}"
-    exit 1
-}
-
-trap 'handle_error $LINENO' ERR
 
 # Banner
 print_banner() {
@@ -50,30 +64,48 @@ print_banner() {
     echo -e "${NC}"
 }
 
-# Check prerequisites
+# Check prerequisites with standardized error handling
 check_prerequisites() {
     log "${CYAN}=== CHECKING PREREQUISITES ===${NC}"
     
-    # Check if kubectl is installed and configured
-    if ! command -v kubectl &> /dev/null; then
-        log "${RED}❌ kubectl is not installed${NC}"
-        exit 1
-    fi
-    
-    # Check if kubectl can connect to cluster
-    if ! kubectl cluster-info &> /dev/null; then
-        log "${RED}❌ kubectl cannot connect to Kubernetes cluster${NC}"
-        exit 1
-    fi
-    
-    # Check if helm is installed
-    if ! command -v helm &> /dev/null; then
-        log "${YELLOW}⚠️ helm is not installed. Some features may not be available${NC}"
-    fi
-    
-    # Check if docker is available for building images
-    if ! command -v docker &> /dev/null; then
-        log "${YELLOW}⚠️ docker is not installed. Pre-built images will be used${NC}"
+    # Use standardized error handling if available
+    if command -v require_command &> /dev/null; then
+        # Use standardized validation functions
+        require_command "kubectl" "kubectl"
+        
+        # Check if kubectl can connect to cluster
+        if ! check_service_availability "kubernetes" "kubectl cluster-info"; then
+            log_configuration_error "kubectl cannot connect to Kubernetes cluster" "\"check_command\": \"kubectl cluster-info\""
+            return 1
+        fi
+        
+        # Optional commands with warnings
+        if ! command -v helm &> /dev/null; then
+            log_configuration_error "helm is not installed" "\"severity\": \"warning\", \"impact\": \"some features may not be available\""
+        fi
+        
+        if ! command -v docker &> /dev/null; then
+            log_configuration_error "docker is not installed" "\"severity\": \"warning\", \"impact\": \"pre-built images will be used\""
+        fi
+    else
+        # Fallback to basic error handling
+        if ! command -v kubectl &> /dev/null; then
+            log "${RED}❌ kubectl is not installed${NC}"
+            exit 1
+        fi
+        
+        if ! kubectl cluster-info &> /dev/null; then
+            log "${RED}❌ kubectl cannot connect to Kubernetes cluster${NC}"
+            exit 1
+        fi
+        
+        if ! command -v helm &> /dev/null; then
+            log "${YELLOW}⚠️ helm is not installed. Some features may not be available${NC}"
+        fi
+        
+        if ! command -v docker &> /dev/null; then
+            log "${YELLOW}⚠️ docker is not installed. Pre-built images will be used${NC}"
+        fi
     fi
     
     log "${GREEN}✅ Prerequisites check completed${NC}"

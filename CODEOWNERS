@@ -1,0 +1,7 @@
+# This file designates code owners for critical areas of Syn_OS
+# Format: path @github-username
+
+/phase4/ @TLimoges33
+/scripts/ @TLimoges33
+/src/ @TLimoges33
+/docs/ @TLimoges33

@@ -4,7 +4,46 @@
 
 mod consciousness;
 mod memory;
-mod interrupts;
+mod i    // Start consciousness processing loop
+    consciousness_main_loop()
+}
+
+fn init_kernel_systems() -> KernelResult<()> {
+    unsafe {
+        // Initialize consciousness core
+        CONSCIOUSNESS = Some(ConsciousnessCore::new());
+        if let Some(ref mut consciousness) = CONSCIOUSNESS {
+            consciousness.init().map_err(|_| 
+                KernelError::consciousness_error("Failed to initialize consciousness core")
+            )?;
+            println!("✅ Consciousness engine initialized");
+        }
+        
+        // Initialize AI bridge
+        AI_BRIDGE = Some(KernelAIBridge::new());
+        if let Some(ref mut bridge) = AI_BRIDGE {
+            bridge.init().map_err(|_| 
+                KernelError::ai_bridge_error("Failed to initialize AI bridge")
+            )?;
+            println!("✅ AI bridge initialized");
+        }
+    }
+    
+    // Initialize core systems with consciousness (with error handling)
+    memory::init_with_consciousness().map_err(|_| 
+        KernelError::new("Memory initialization failed", KernelErrorCategory::Memory, ErrorSeverity::Critical)
+    )?;
+    
+    interrupts::init_with_consciousness().map_err(|_| 
+        KernelError::new("Interrupt system initialization failed", KernelErrorCategory::Interrupts, ErrorSeverity::Critical)
+    )?;
+    
+    drivers::init_with_consciousness().map_err(|_| 
+        KernelError::new("Driver initialization failed", KernelErrorCategory::Drivers, ErrorSeverity::High)
+    )?;
+    
+    Ok(())
+}rrupts;
 mod drivers;
 mod ai_bridge;
 
@@ -18,6 +57,60 @@ use core::panic::PanicInfo;
 use bootloader::{BootInfo, entry_point};
 use x86_64;
 
+// Add error handling types
+use core::fmt;
+
+#[derive(Debug, Clone, Copy)]
+pub enum KernelErrorCategory {
+    Consciousness,
+    AIBridge,
+    Memory,
+    Interrupts,
+    Drivers,
+    System,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum ErrorSeverity {
+    Critical,
+    High,
+    Medium,
+    Low,
+}
+
+#[derive(Debug)]
+pub struct KernelError {
+    pub message: &'static str,
+    pub category: KernelErrorCategory,
+    pub severity: ErrorSeverity,
+}
+
+impl fmt::Display for KernelError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "[{:?}:{:?}] {}", self.category, self.severity, self.message)
+    }
+}
+
+impl KernelError {
+    pub fn new(message: &'static str, category: KernelErrorCategory, severity: ErrorSeverity) -> Self {
+        Self { message, category, severity }
+    }
+    
+    pub fn consciousness_error(message: &'static str) -> Self {
+        Self::new(message, KernelErrorCategory::Consciousness, ErrorSeverity::Critical)
+    }
+    
+    pub fn ai_bridge_error(message: &'static str) -> Self {
+        Self::new(message, KernelErrorCategory::AIBridge, ErrorSeverity::High)
+    }
+    
+    pub fn system_error(message: &'static str) -> Self {
+        Self::new(message, KernelErrorCategory::System, ErrorSeverity::Medium)
+    }
+}
+
+type KernelResult<T> = Result<T, KernelError>;
+
 static mut CONSCIOUSNESS: Option<ConsciousnessCore> = None;
 static mut AI_BRIDGE: Option<KernelAIBridge> = None;
 
@@ -25,26 +118,11 @@ static mut AI_BRIDGE: Option<KernelAIBridge> = None;
 pub extern "C" fn kernel_main() -> ! {
     println!("🧠 SynapticOS Kernel - Consciousness Integrated v0.1.0");
     
-    // Initialize consciousness-aware kernel
-    unsafe {
-        CONSCIOUSNESS = Some(ConsciousnessCore::new());
-        AI_BRIDGE = Some(KernelAIBridge::new());
-        
-        if let Some(ref mut consciousness) = CONSCIOUSNESS {
-            consciousness.init().expect("Failed to initialize consciousness");
-            println!("✅ Consciousness engine initialized");
-        }
-        
-        if let Some(ref mut bridge) = AI_BRIDGE {
-            bridge.init().expect("Failed to initialize AI bridge");
-            println!("✅ AI bridge initialized");
-        }
+    // Initialize consciousness-aware kernel with proper error handling
+    if let Err(error) = init_kernel_systems() {
+        println!("❌ Kernel initialization failed: {}", error);
+        panic!("Critical kernel initialization failure");
     }
-    
-    // Initialize core systems with consciousness
-    memory::init_with_consciousness();
-    interrupts::init_with_consciousness();
-    drivers::init_with_consciousness();
     
     println!("🚀 SynapticOS fully operational - entering consciousness loop");
     

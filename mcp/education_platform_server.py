@@ -7,6 +7,7 @@ Provides multi-platform educational integration and learning management
 import asyncio
 import json
 import logging
+import traceback
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Any, Optional
@@ -14,13 +15,53 @@ from typing import Dict, List, Any, Optional
 from mcp.server.fastmcp import FastMCP
 from mcp.types import Tool, TextContent
 
-# Education platform logging
+# Setup structured error logging
+log_dir = Path("/home/diablorain/Syn_OS/logs/errors")
+log_dir.mkdir(parents=True, exist_ok=True)
+
 logging.basicConfig(
-    filename='/home/diablorain/Syn_OS/logs/security/education_platform.log',
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(log_dir / "education_platform_server_errors.log"),
+        logging.StreamHandler()
+    ]
 )
 logger = logging.getLogger('synapticos-education-platform')
+
+class EducationPlatformError(Exception):
+    """Custom exception for education platform errors"""
+    def __init__(self, message: str, error_type: str = "INTEGRATION", context: Optional[Dict] = None):
+        super().__init__(message)
+        self.message = message
+        self.error_type = error_type
+        self.context = context or {}
+        self.timestamp = datetime.now().isoformat()
+    
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "error_type": self.error_type,
+            "message": self.message,
+            "context": self.context,
+            "timestamp": self.timestamp,
+            "traceback": traceback.format_exc()
+        }
+    
+    def log_error(self):
+        logger.error(f"[{self.error_type}] {json.dumps(self.to_dict(), indent=2)}")
+
+def safe_execute_with_logging(func, *args, **kwargs):
+    """Execute function with proper error handling and logging"""
+    try:
+        return func(*args, **kwargs)
+    except Exception as e:
+        error = EducationPlatformError(
+            message=str(e),
+            error_type="EXECUTION_ERROR",
+            context={"function": func.__name__}
+        )
+        error.log_error()
+        raise error
 
 # Initialize MCP server
 mcp = FastMCP("SynapticOS Education Platform Server")
@@ -113,8 +154,17 @@ class EducationPlatformManager:
             logger.info(f"Platform analysis completed: {len(self.supported_platforms)} platforms analyzed")
             
         except Exception as e:
-            logger.error(f"Platform analysis failed: {str(e)}")
-            analysis["error"] = str(e)
+            # Use structured error handling
+            error = EducationPlatformError(
+                message=f"Platform analysis failed: {str(e)}",
+                error_type="ANALYSIS_ERROR",
+                context={
+                    "total_platforms": len(self.supported_platforms),
+                    "operation": "analyze_platform_integration_status"
+                }
+            )
+            error.log_error()
+            analysis["error"] = error.to_dict()
         
         self.platform_history.append(analysis)
         return analysis

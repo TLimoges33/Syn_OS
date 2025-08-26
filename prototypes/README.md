@@ -5,6 +5,7 @@ This directory contains key prototypes extracted from the old SynapticOS reposit
 ## Extracted Components
 
 ### 1. Consciousness System (`/consciousness`)
+
 - **neural_darwinism.py**: Implements Neural Darwinism for consciousness computing
   - Adaptive neural network populations
   - Evolutionary selection mechanisms
@@ -13,6 +14,7 @@ This directory contains key prototypes extracted from the old SynapticOS reposit
   - Based on Gerald Edelman's Theory of Neuronal Group Selection (TNGS)
 
 ### 2. Command Line Interface (`/cli`)
+
 - **synaptic_cli.py**: Main CLI for SynapticOS
   - Service management (start/stop/restart)
   - Consciousness operations
@@ -21,6 +23,7 @@ This directory contains key prototypes extracted from the old SynapticOS reposit
   - Enhanced shell integration
 
 ### 3. Kernel Components (`/kernel`)
+
 - To be populated with kernel module prototypes
 
 ## Integration Plan

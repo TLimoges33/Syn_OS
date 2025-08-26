@@ -10,13 +10,69 @@ import numpy as np
 import logging
 import json
 import time
+import traceback
 from typing import Dict, List, Any, Optional, Tuple
 from datetime import datetime
 import threading
 import queue
+from pathlib import Path
 
-logging.basicConfig(level=logging.INFO)
+# Setup structured error logging
+log_dir = Path("/home/diablorain/Syn_OS/logs/errors")
+log_dir.mkdir(parents=True, exist_ok=True)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(log_dir / "mediapipe_consciousness_errors.log"),
+        logging.StreamHandler()
+    ]
+)
 logger = logging.getLogger(__name__)
+
+class ConsciousnessError(Exception):
+    """Custom exception for consciousness processing errors"""
+    def __init__(self, message: str, error_type: str = "CONSCIOUSNESS", context: Optional[Dict] = None):
+        super().__init__(message)
+        self.message = message
+        self.error_type = error_type
+        self.context = context or {}
+        self.timestamp = datetime.now().isoformat()
+    
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "error_type": self.error_type,
+            "message": self.message,
+            "context": self.context,
+            "timestamp": self.timestamp,
+            "traceback": traceback.format_exc()
+        }
+    
+    def log_error(self):
+        logger.error(f"[{self.error_type}] {json.dumps(self.to_dict(), indent=2)}")
+
+def safe_mediapipe_operation(operation_name: str):
+    """Decorator for safe MediaPipe operations with structured error handling"""
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except Exception as e:
+                error = ConsciousnessError(
+                    message=f"MediaPipe operation '{operation_name}' failed: {str(e)}",
+                    error_type="MEDIAPIPE_ERROR",
+                    context={
+                        "operation": operation_name,
+                        "function": func.__name__,
+                        "args_count": len(args),
+                        "kwargs_keys": list(kwargs.keys())
+                    }
+                )
+                error.log_error()
+                raise error
+        return wrapper
+    return decorator
 
 class ConsciousnessProcessingPipeline:
     """MediaPipe-based consciousness processing pipeline"""
@@ -98,7 +154,18 @@ class ConsciousnessProcessingPipeline:
             return True
             
         except Exception as e:
-            logger.error(f"❌ Failed to initialize consciousness processors: {e}")
+            # Use structured error handling
+            error = ConsciousnessError(
+                message=f"Failed to initialize consciousness processors: {str(e)}",
+                error_type="INITIALIZATION_ERROR",
+                context={
+                    "operation": "initialize_consciousness_processors",
+                    "model_complexity": "1",
+                    "min_detection_confidence": "0.7",
+                    "min_tracking_confidence": "0.5"
+                }
+            )
+            error.log_error()
             return False
     
     def process_consciousness_frame(self, image: np.ndarray) -> Dict[str, Any]:
