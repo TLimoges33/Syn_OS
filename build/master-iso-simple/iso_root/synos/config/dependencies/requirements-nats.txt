@@ -1,3 +1,0 @@
-# NATS dependencies for consciousness_v2 integration
-nats-py>=2.6.0
-asyncio-nats-client>=0.11.5
