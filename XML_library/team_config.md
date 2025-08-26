@@ -1,14 +1,14 @@
 # Team-Specific XML Library Configuration
-# Branch: feature/cybersecurity-zero-trust
+# Branch: feature/system-performance-optimization
 
 ## Focus Categories
-['cybersecurity', 'tools_utilities']
+['os_development', 'tools_utilities']
 
 ## Priority Keywords
-['security', 'crypto', 'auth', 'encryption', 'audit', 'firewall']
+['performance', 'optimization', 'benchmark', 'memory', 'cpu']
 
 ## Integration Notes
-Prioritize enterprise security frameworks and zero-trust architectures
+Focus on system-level performance tools and optimization libraries
 
 ## Usage Instructions
 
