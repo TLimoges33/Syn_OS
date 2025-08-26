@@ -1,0 +1,42 @@
+{
+  "report_metadata": {
+    "timestamp": "2025-08-14T12:52:41.600303",
+    "operation_type": "authentication",
+    "sample_count": 100,
+    "analysis_duration_minutes": 0.04163270394007365
+  },
+  "performance_statistics": {
+    "response_times": {
+      "mean_ms": 15.038273334503174,
+      "median_ms": 15.205621719360352,
+      "p95_ms": 19.33114528656006,
+      "p99_ms": 19.412145614624023,
+      "std_deviation_ms": 3.0046372446374536,
+      "min_ms": 10.196208953857422,
+      "max_ms": 19.516944885253906,
+      "confidence_interval_95": [
+        14.449364434554234,
+        15.627182234452114
+      ]
+    },
+    "throughput": {
+      "operations_per_second": 66.84785787588078,
+      "success_rate": 0.95
+    },
+    "resource_utilization": {
+      "cpu_usage_avg_percent": 28.475,
+      "memory_usage_avg_mb": 6660.57470703125
+    }
+  },
+  "a_plus_evaluation": {
+    "overall_grade": "B",
+    "a_plus_achieved": false,
+    "criteria_met": {
+      "operations_per_second": {
+        "met": false,
+        "value": 66.84785787588078,
+        "threshold": 200,
+        "points": 8
+      },
+      "p95_response_time": {
+        "met": 

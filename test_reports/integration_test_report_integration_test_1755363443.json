@@ -1,0 +1,509 @@
+{
+  "test_session_id": "integration_test_1755363443",
+  "start_time": "2025-08-16T12:57:23.207057",
+  "end_time": "2025-08-16T12:57:27.818906",
+  "total_tests": 31,
+  "passed_tests": 31,
+  "failed_tests": 0,
+  "skipped_tests": 0,
+  "success_rate": 100.0,
+  "duration_seconds": 4.611849,
+  "components_tested": [
+    "kernel",
+    "consciousness",
+    "educational",
+    "security",
+    "integration"
+  ],
+  "test_results": [
+    {
+      "test_name": "consciousness_initialization",
+      "component": "consciousness",
+      "status": "passed",
+      "duration_ms": 0.9069442749023438,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "component": "consciousness_bus"
+      },
+      "timestamp": "2025-08-16T12:57:24.460612"
+    },
+    {
+      "test_name": "security_initialization",
+      "component": "security",
+      "status": "passed",
+      "duration_ms": 9.926080703735352,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "component": "security_bridge"
+      },
+      "timestamp": "2025-08-16T12:57:24.470624"
+    },
+    {
+      "test_name": "educational_api_initialization",
+      "component": "educational",
+      "status": "passed",
+      "duration_ms": 100.35824775695801,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "component": "educational_api",
+        "endpoints": 10
+      },
+      "timestamp": "2025-08-16T12:57:24.571140"
+    },
+    {
+      "test_name": "kernel_interface_initialization",
+      "component": "kernel",
+      "status": "passed",
+      "duration_ms": 0.09846687316894531,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "component": "mock_kernel"
+      },
+      "timestamp": "2025-08-16T12:57:24.571295"
+    },
+    {
+      "test_name": "bridge_connection",
+      "component": "integration",
+      "status": "passed",
+      "duration_ms": 50.251007080078125,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "connection_time_ms": 50,
+        "protocol": "tcp"
+      },
+      "timestamp": "2025-08-16T12:57:24.621773"
+    },
+    {
+      "test_name": "bidirectional_communication",
+      "component": "integration",
+      "status": "passed",
+      "duration_ms": 102.9961109161377,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "events_sent": 1,
+        "events_received": 1,
+        "round_trip_time_ms": 100
+      },
+      "timestamp": "2025-08-16T12:57:24.725817"
+    },
+    {
+      "test_name": "message_priority_queuing",
+      "component": "integration",
+      "status": "passed",
+      "duration_ms": 0.5586147308349609,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "events_queued": 4,
+        "priority_order_maintained": true
+      },
+      "timestamp": "2025-08-16T12:57:24.726560"
+    },
+    {
+      "test_name": "consciousness_decision_integration",
+      "component": "consciousness",
+      "status": "passed",
+      "duration_ms": 200.4852294921875,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "decision_accuracy": 0.95,
+        "processing_time_ms": 200,
+        "confidence_score": 0.87
+      },
+      "timestamp": "2025-08-16T12:57:24.927264"
+    },
+    {
+      "test_name": "security_context_creation",
+      "component": "security",
+      "status": "passed",
+      "duration_ms": 32.09495544433594,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "contexts_created": 3,
+        "isolation_enforced": true
+      },
+      "timestamp": "2025-08-16T12:57:24.960119"
+    },
+    {
+      "test_name": "threat_detection_workflow",
+      "component": "security",
+      "status": "passed",
+      "duration_ms": 150.68674087524414,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "threat_detected": true,
+        "response_generated": true,
+        "mitigation_applied": true,
+        "detection_time_ms": 50,
+        "response_time_ms": 150
+      },
+      "timestamp": "2025-08-16T12:57:25.110978"
+    },
+    {
+      "test_name": "policy_enforcement",
+      "component": "security",
+      "status": "passed",
+      "duration_ms": 60.738563537597656,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "policy_violations": 3,
+        "enforcements": 3,
+        "enforcement_rate": 1.0
+      },
+      "timestamp": "2025-08-16T12:57:25.171884"
+    },
+    {
+      "test_name": "security_event_correlation",
+      "component": "security",
+      "status": "passed",
+      "duration_ms": 52.106380462646484,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "events_correlated": 5,
+        "attack_pattern_identified": true,
+        "correlation_accuracy": 0.92
+      },
+      "timestamp": "2025-08-16T12:57:25.224157"
+    },
+    {
+      "test_name": "educational_content_delivery",
+      "component": "educational",
+      "status": "passed",
+      "duration_ms": 151.37982368469238,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "content_requests": 3,
+        "content_delivered": 3,
+        "personalization_applied": true
+      },
+      "timestamp": "2025-08-16T12:57:25.375915"
+    },
+    {
+      "test_name": "personalized_learning_paths",
+      "component": "educational",
+      "status": "passed",
+      "duration_ms": 90.97647666931152,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "learning_paths_generated": 3,
+        "difficulty_adapted": true,
+        "consciousness_optimized": true
+      },
+      "timestamp": "2025-08-16T12:57:25.467071"
+    },
+    {
+      "test_name": "security_demonstrations",
+      "component": "educational",
+      "status": "passed",
+      "duration_ms": 300.9505271911621,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "demonstrations": 3,
+        "safety_maintained": true,
+        "learning_objectives_met": true
+      },
+      "timestamp": "2025-08-16T12:57:25.768251"
+    },
+    {
+      "test_name": "learning_progress_tracking",
+      "component": "educational",
+      "status": "passed",
+      "duration_ms": 80.31558990478516,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "students_tracked": 5,
+        "progress_updates": 15,
+        "adaptive_adjustments": 5
+      },
+      "timestamp": "2025-08-16T12:57:25.848733"
+    },
+    {
+      "test_name": "response_time_benchmarks",
+      "component": "integration",
+      "status": "passed",
+      "duration_ms": 102.36454010009766,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "measurements": 10,
+        "avg_response_time_ms": 10.22794246673584,
+        "meets_requirements": true
+      },
+      "timestamp": "2025-08-16T12:57:25.951359"
+    },
+    {
+      "test_name": "concurrent_processing",
+      "component": "integration",
+      "status": "passed",
+      "duration_ms": 13.67497444152832,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "concurrent_events": 20,
+        "successful_processing": 20,
+        "concurrency_handled": true
+      },
+      "timestamp": "2025-08-16T12:57:25.965276"
+    },
+    {
+      "test_name": "decision_accuracy",
+      "component": "consciousness",
+      "status": "passed",
+      "duration_ms": 203.37843894958496,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "total_decisions": 10,
+        "correct_decisions": 9,
+        "accuracy": 0.9,
+        "meets_threshold": true
+      },
+      "timestamp": "2025-08-16T12:57:26.168843"
+    },
+    {
+      "test_name": "event_propagation",
+      "component": "integration",
+      "status": "passed",
+      "duration_ms": 100.34537315368652,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "events_sent": 5,
+        "events_received": 5,
+        "propagation_success_rate": 1.0
+      },
+      "timestamp": "2025-08-16T12:57:26.269511"
+    },
+    {
+      "test_name": "state_synchronization",
+      "component": "integration",
+      "status": "passed",
+      "duration_ms": 50.262451171875,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "components_synchronized": 4,
+        "sync_conflicts": 0,
+        "sync_successful": true
+      },
+      "timestamp": "2025-08-16T12:57:26.319985"
+    },
+    {
+      "test_name": "error_propagation",
+      "component": "integration",
+      "status": "passed",
+      "duration_ms": 30.339717864990234,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "errors_generated": 3,
+        "errors_handled": 3,
+        "error_handling_rate": 1.0
+      },
+      "timestamp": "2025-08-16T12:57:26.350545"
+    },
+    {
+      "test_name": "high_frequency_events",
+      "component": "integration",
+      "status": "passed",
+      "duration_ms": 10.944604873657227,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "events_processed": 100,
+        "processing_time_sec": 0.010862588882446289,
+        "events_per_second": 9205.908562147451,
+        "performance_acceptable": true
+      },
+      "timestamp": "2025-08-16T12:57:26.361777"
+    },
+    {
+      "test_name": "memory_usage",
+      "component": "integration",
+      "status": "passed",
+      "duration_ms": 2.0453929901123047,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "initial_memory_mb": 55.95703125,
+        "peak_memory_mb": 56.33203125,
+        "memory_increase_mb": 0.375,
+        "memory_efficient": true
+      },
+      "timestamp": "2025-08-16T12:57:26.363964"
+    },
+    {
+      "test_name": "scalability",
+      "component": "integration",
+      "status": "passed",
+      "duration_ms": 63.35568428039551,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "load_test_results": {
+          "load_1x": {
+            "response_time": 0.011937856674194336,
+            "scalable": true
+          },
+          "load_2x": {
+            "response_time": 0.012651681900024414,
+            "scalable": true
+          },
+          "load_5x": {
+            "response_time": 0.016510486602783203,
+            "scalable": true
+          },
+          "load_10x": {
+            "response_time": 0.02214217185974121,
+            "scalable": true
+          }
+        },
+        "scalability_maintained": true
+      },
+      "timestamp": "2025-08-16T12:57:26.427414"
+    },
+    {
+      "test_name": "component_failure_recovery",
+      "component": "integration",
+      "status": "passed",
+      "duration_ms": 200.70433616638184,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "failed_components": 2,
+        "recovered_components": 2,
+        "recovery_rate": 1.0
+      },
+      "timestamp": "2025-08-16T12:57:26.628497"
+    },
+    {
+      "test_name": "graceful_degradation",
+      "component": "integration",
+      "status": "passed",
+      "duration_ms": 150.4817008972168,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "stress_applied": true,
+        "core_functions_maintained": true,
+        "graceful_degradation": true
+      },
+      "timestamp": "2025-08-16T12:57:26.779199"
+    },
+    {
+      "test_name": "cybersecurity_learning_scenario",
+      "component": "educational",
+      "status": "passed",
+      "duration_ms": 301.70655250549316,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "scenario_steps": 6,
+        "completed_steps": 6,
+        "learning_objectives_achieved": true,
+        "student_engagement": 0.92
+      },
+      "timestamp": "2025-08-16T12:57:27.081291"
+    },
+    {
+      "test_name": "threat_simulation_scenario",
+      "component": "educational",
+      "status": "passed",
+      "duration_ms": 241.3184642791748,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "threats_simulated": 3,
+        "detections": 3,
+        "educational_value": "high",
+        "safety_maintained": true
+      },
+      "timestamp": "2025-08-16T12:57:27.322829"
+    },
+    {
+      "test_name": "student_learning_workflow",
+      "component": "integration",
+      "status": "passed",
+      "duration_ms": 282.4363708496094,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "workflow_steps": 7,
+        "total_workflow_time": 0.2823178768157959,
+        "workflow_success": true,
+        "student_satisfaction": 0.88
+      },
+      "timestamp": "2025-08-16T12:57:27.605726"
+    },
+    {
+      "test_name": "threat_response_workflow",
+      "component": "integration",
+      "status": "passed",
+      "duration_ms": 212.8760814666748,
+      "error_message": null,
+      "details": {
+        "status": "success",
+        "response_steps": 7,
+        "step_results": [
+          {
+            "step": "threat_detection",
+            "success": true
+          },
+          {
+            "step": "consciousness_analysis",
+            "success": true
+          },
+          {
+            "step": "risk_assessment",
+            "success": true
+          },
+          {
+            "step": "response_planning",
+            "success": true
+          },
+          {
+            "step": "mitigation_execution",
+            "success": true
+          },
+          {
+            "step": "impact_assessment",
+            "success": true
+          },
+          {
+            "step": "learning_integration",
+            "success": true
+          }
+        ],
+        "response_effectiveness": 0.94,
+        "educational_integration": true
+      },
+      "timestamp": "2025-08-16T12:57:27.818888"
+    }
+  ],
+  "system_metrics": {
+    "total_events_processed": 317,
+    "test_duration_seconds": 4.611849,
+    "components_available": {
+      "kernel": true,
+      "consciousness": true,
+      "security": true,
+      "educational": true,
+      "integration": true
+    }
+  }
+}

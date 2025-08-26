@@ -1,0 +1,51 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Rust Kernel",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/x86_64-syn_os/debug/syn_os_kernel",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "preLaunchTask": "cargo build kernel"
+        },
+        {
+            "name": "Debug Security Module",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/security_module",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "preLaunchTask": "cargo build security"
+        },
+        {
+            "name": "Debug Python Security Tests",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/tests/test_security.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/src"
+            }
+        },
+        {
+            "name": "Debug Go Orchestrator",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceFolder}/services/orchestrator/main.go",
+            "env": {
+                "ENV": "development"
+            },
+            "args": []
+        }
+    ]
+}

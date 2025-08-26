@@ -1,0 +1,73 @@
+{
+  "report_metadata": {
+    "timestamp": "2025-08-14T13:01:09.887801",
+    "operation_type": "authentication",
+    "sample_count": 100,
+    "analysis_duration_minutes": 0.04213173786799113
+  },
+  "performance_statistics": {
+    "response_times": {
+      "mean_ms": 15.264930725097656,
+      "median_ms": 15.244245529174805,
+      "p95_ms": 19.3922758102417,
+      "p99_ms": 20.61143636703493,
+      "std_deviation_ms": 3.1559959076772115,
+      "min_ms": 10.191917419433594,
+      "max_ms": 23.76556396484375,
+      "confidence_interval_95": [
+        14.646355527192922,
+        15.88350592300239
+      ]
+    },
+    "throughput": {
+      "operations_per_second": 65.86195493132732,
+      "success_rate": 0.95
+    },
+    "resource_utilization": {
+      "cpu_usage_avg_percent": 45.82222222222222,
+      "memory_usage_avg_mb": 5215.731336805556
+    }
+  },
+  "a_plus_evaluation": {
+    "overall_grade": "B",
+    "a_plus_achieved": false,
+    "performance_score": 71,
+    "criteria_met": {
+      "operations_per_second": {
+        "met": false,
+        "value": 65.86195493132732,
+        "threshold": 200.0,
+        "points": 8
+      },
+      "p95_response_time": {
+        "met": true,
+        "value": 19.3922758102417,
+        "threshold": 100.0,
+        "points": 25
+      },
+      "success_rate": {
+        "met": false,
+        "value": 0.95,
+        "threshold": 0.99,
+        "points": 23
+      },
+      "resource_utilization": {
+        "met": false,
+        "value": 0.0,
+        "threshold": 0.0,
+        "points": 15
+      }
+    },
+    "recommendations": [
+      "Improve throughput: 65.9 ops/sec \u2192 target: 200 ops/sec",
+      "Improve success rate: 95.0% \u2192 target: 99.0%",
+      "Optimize memory usage: 5215.7MB \u2192 target: <500MB"
+    ]
+  },
+  "academic_insights": {
+    "statistical_significance": "Medium",
+    "confidence_level": "95%",
+    "methodology": "Academic-grade statistical analysis with confidence intervals",
+    "performance_classification": "B"
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "SynapticOS NATS Monitoring",
+    "tags": [
+      "nats",
+      "synaptic-os",
+      "messaging"
+    ],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "NATS Server Status",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "up{job=\"nats-servers\"}",
+            "legendFormat": "{{ instance }}"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "id": 2,
+        "title": "Messages per Second",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(nats_core_in_msgs[1m])",
+            "legendFormat": "Incoming - {{ instance }}"
+          },
+          {
+            "expr": "rate(nats_core_out_msgs[1m])",
+            "legendFormat": "Outgoing - {{ instance }}"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        }
+      },
+      {
+        "id": 3,
+        "title": "Memory Usage",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "nats_core_mem_bytes / (1024*1024)",
+            "legendFormat": "Memory MB - {{ instance }}"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 8
+        }
+      },
+      {
+        "id": 4,
+        "title": "JetStream Storage",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "nats_jetstream_stats_store_bytes / (1024*1024*1024)",
+            "legendFormat": "Storage GB - {{ instance }}"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 8
+        }
+      },
+      {
+        "id": 5,
+        "title": "Connection Count",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "nats_core_total_connections",
+            "legendFormat": "Connections - {{ instance }}"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 16
+        }
+      },
+      {
+        "id": 6,
+        "title": "Cluster Routes",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "nats_core_route_count",
+            "legendFormat": "Routes - {{ instance }}"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 16
+        }
+      }
+    ],
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "refresh": "10s"
+  }
+}

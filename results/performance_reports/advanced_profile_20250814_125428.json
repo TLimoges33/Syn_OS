@@ -1,0 +1,73 @@
+{
+  "report_metadata": {
+    "timestamp": "2025-08-14T12:54:28.557298",
+    "operation_type": "authentication",
+    "sample_count": 100,
+    "analysis_duration_minutes": 0.041635437806447344
+  },
+  "performance_statistics": {
+    "response_times": {
+      "mean_ms": 14.99518632888794,
+      "median_ms": 14.79792594909668,
+      "p95_ms": 19.34717893600464,
+      "p99_ms": 19.395089149475098,
+      "std_deviation_ms": 2.9899219112623316,
+      "min_ms": 10.21432876586914,
+      "max_ms": 19.62876319885254,
+      "confidence_interval_95": [
+        14.409161634280522,
+        15.581211023495356
+      ]
+    },
+    "throughput": {
+      "operations_per_second": 67.03340047907668,
+      "success_rate": 0.95
+    },
+    "resource_utilization": {
+      "cpu_usage_avg_percent": 26.525,
+      "memory_usage_avg_mb": 6783.22021484375
+    }
+  },
+  "a_plus_evaluation": {
+    "overall_grade": "B",
+    "a_plus_achieved": false,
+    "performance_score": 71,
+    "criteria_met": {
+      "operations_per_second": {
+        "met": false,
+        "value": 67.03340047907668,
+        "threshold": 200.0,
+        "points": 8
+      },
+      "p95_response_time": {
+        "met": true,
+        "value": 19.34717893600464,
+        "threshold": 100.0,
+        "points": 25
+      },
+      "success_rate": {
+        "met": false,
+        "value": 0.95,
+        "threshold": 0.99,
+        "points": 23
+      },
+      "resource_utilization": {
+        "met": false,
+        "value": 0.0,
+        "threshold": 0.0,
+        "points": 15
+      }
+    },
+    "recommendations": [
+      "Improve throughput: 67.0 ops/sec \u2192 target: 200 ops/sec",
+      "Improve success rate: 95.0% \u2192 target: 99.0%",
+      "Optimize memory usage: 6783.2MB \u2192 target: <500MB"
+    ]
+  },
+  "academic_insights": {
+    "statistical_significance": "Medium",
+    "confidence_level": "95%",
+    "methodology": "Academic-grade statistical analysis with confidence intervals",
+    "performance_classification": "B"
+  }
+}

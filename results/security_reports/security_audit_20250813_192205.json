@@ -1,0 +1,42 @@
+{
+  "timestamp": "2025-08-13T19:21:49.579267",
+  "project": "Syn_OS",
+  "version": "2.0.0-Alpha",
+  "auditor": "Academic Security Assessment",
+  "python_security": {
+    "error": "Expecting value: line 1 column 1 (char 0)"
+  },
+  "rust_security": {
+    "vulnerabilities_found": 0,
+    "status": "No vulnerabilities found"
+  },
+  "dependency_security": {
+    "python_vulnerabilities": 9,
+    "raw_output": "\n\n+===========================================================================================================================================================================================+\n\n\nDEPRECATED: this command (`check`) has been DEPRECATED, and will be unsupported beyond 01 June 2024.\n\n\nWe highly encourage switching to the new `scan` command which is easier to use, more powerful, and can be set up to mimic the deprecated command if required.\n\n\n+===========================================================================================================================================================================================+\n\n\n{\n    \"report_meta\": {\n        \"scan_target\": \"environment\",\n        \"scanned\": [\n            \"/home/diablorain/Syn_OS\",\n            \"/usr/lib/python3.11/lib-dynload\",\n            \"/home/diablorain/Syn_OS/venv/lib/python3.11/site-packages\",\n            \"/home/diablorain/Syn_OS/venv/lib/python3.11/site-packages/setuptools/_vendor\",\n            \"/usr/"
+  },
+  "code_quality": {
+    "python_files": 90,
+    "rust_files": 17,
+    "total_python_loc": 72395,
+    "total_rust_loc": 3063,
+    "technical_debt_markers": 70,
+    "avg_lines_per_python_file": 804.39,
+    "avg_lines_per_rust_file": 180.18
+  },
+  "summary": {
+    "total_security_issues": 9,
+    "security_score": 73,
+    "security_grade": "C",
+    "critical_findings": 0,
+    "recommendations": [
+      "Update 9 vulnerable Python dependencies",
+      "Address 70 TODO/FIXME comments in codebase"
+    ],
+    "next_steps": [
+      "Address high-severity Python security issues",
+      "Update Rust dependencies with vulnerabilities",
+      "Implement automated security testing in CI/CD",
+      "Add security testing to development workflow"
+    ]
+  }
+}
