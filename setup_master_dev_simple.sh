@@ -3,47 +3,69 @@
 echo "🎯 Setting up Master Dev Codespace in Dev-Team Repository"
 echo "========================================================"
 
+# Wait for system to be ready
+sleep 5
+
+# Set error handling
+set -e
+
 # Make scripts executable
-chmod +x master_dev_dashboard.py
-chmod +x .devcontainer/setup-master-dev.sh
+chmod +x master_dev_dashboard.py 2>/dev/null || true
+chmod +x .devcontainer/setup-master-dev.sh 2>/dev/null || true
 
 # Configure git for master dev environment
-git config --global user.name "Master Dev Codespace"
-git config --global user.email "master-dev@syn-os.dev"
-git config --global pull.rebase false
+git config --global user.name "Master Dev Codespace" || true
+git config --global user.email "master-dev@syn-os.dev" || true
+git config --global pull.rebase false || true
+git config --global init.defaultBranch main || true
+
+# Ensure Python dependencies are available
+echo "📦 Installing Python dependencies..."
+pip install --user requests python-dateutil || true
 
 # Set up GitHub CLI authentication if available
 if command -v gh &> /dev/null; then
+    echo "🔑 Checking GitHub CLI authentication..."
     if gh auth status >/dev/null 2>&1; then
         echo "✅ GitHub CLI already authenticated"
         export GITHUB_TOKEN=$(gh auth token)
-        echo "export GITHUB_TOKEN=\$(gh auth token)" >> ~/.bashrc
+        echo "export GITHUB_TOKEN=\$(gh auth token)" >> ~/.bashrc || true
     else
         echo "⚠️  Run 'gh auth login' to enable full automation features"
     fi
+else
+    echo "⚠️  GitHub CLI not available"
 fi
 
-# Fetch all branches
+# Fetch all branches safely
 echo "📡 Fetching all branches..."
-git fetch origin
+git fetch origin --all || git fetch origin || true
 
 # Set up helpful aliases
 echo "🔧 Setting up master dev aliases..."
-cat >> ~/.bashrc << 'EOF'
+cat >> ~/.bashrc << 'EOF' || true
 
 # Master Dev Codespace Aliases
-alias dashboard='python3 master_dev_dashboard.py'
-alias teams='git branch -r | grep feature/'
+alias dashboard='python3 dashboard_stable.py'
+alias teams='python3 dashboard_stable.py teams'
+alias recovery='bash fix_codespace_issues.sh all'
+alias help='python3 dashboard_stable.py help'
 
 echo "🎯 Master Dev Codespace Ready!"
 echo "Commands available:"
-echo "  dashboard  - Open master development dashboard"
+echo "  dashboard  - Open stable master development dashboard"
 echo "  teams      - List all team feature branches"
+echo "  recovery   - Fix codespace issues"
+echo "  help       - Show all commands"
 EOF
 
-# Source the new configuration
-source ~/.bashrc
+# Source the new configuration safely
+source ~/.bashrc || true
+
+# Create a status file to indicate successful setup
+touch /tmp/master_dev_setup_complete
 
 echo ""
 echo "✅ Master Dev Codespace Setup Complete!"
-echo "Run 'dashboard' to start monitoring all development teams"
+echo "🎯 Run 'dashboard' to start monitoring all development teams"
+echo "🔧 If you see any extension issues, reload the window: Ctrl+Shift+P → 'Developer: Reload Window'"

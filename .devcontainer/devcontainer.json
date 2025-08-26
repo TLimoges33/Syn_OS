@@ -1,6 +1,6 @@
 {
   "name": "Master Dev Codespace - Syn_OS",
-  "dockerFile": "Dockerfile.master-dev",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
   "customizations": {
     "vscode": {
       "settings": {
@@ -10,47 +10,54 @@
         "git.confirmSync": false,
         "files.autoSave": "afterDelay",
         "python.defaultInterpreterPath": "/usr/bin/python3",
-        "rust-analyzer.server.path": "/usr/local/bin/rust-analyzer",
         "workbench.colorTheme": "GitHub Dark Default",
-        "workbench.startupEditor": "readme"
+        "workbench.startupEditor": "readme",
+        "extensions.autoCheckUpdates": false,
+        "extensions.autoUpdate": false,
+        "remote.extensionKind": {
+          "ms-python.python": ["workspace"],
+          "GitHub.copilot": ["workspace"],
+          "eamodio.gitlens": ["workspace"]
+        }
       },
       "extensions": [
         "ms-python.python",
         "ms-python.vscode-pylance",
-        "rust-lang.rust-analyzer",
         "ms-vscode.vscode-json",
         "GitHub.copilot",
         "GitHub.copilot-chat",
-        "ms-vscode.vscode-terminal",
         "eamodio.gitlens",
-        "github.vscode-pull-request-github",
-        "ms-vscode.remote-repositories",
-        "streetsidesoftware.code-spell-checker"
+        "github.vscode-pull-request-github"
       ]
     }
   },
   "postCreateCommand": "bash setup_master_dev_simple.sh",
   "postStartCommand": "echo '🎯 Master Dev Codespace Ready! Run: dashboard'",
-  "remoteUser": "vscode",
+  "remoteUser": "codespace",
   "workspaceFolder": "/workspaces/Syn_OS-Dev-Team",
-  "mounts": [
-    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
-  ],
   "features": {
-    "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-    "ghcr.io/devcontainers/features/rust:1": {},
+    "ghcr.io/devcontainers/features/git:1": {
+      "ppa": false
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "installDirectlyFromGitHubRelease": true
+    },
     "ghcr.io/devcontainers/features/python:1": {
-      "version": "3.11"
+      "version": "3.11",
+      "installTools": true
     },
     "ghcr.io/devcontainers/features/node:1": {
       "version": "18"
     }
   },
-  "forwardPorts": [
-    3000,
-    8000,
-    8080
-  ]
+  "forwardPorts": [3000, 8000, 8080],
+  "portsAttributes": {
+    "3000": {
+      "label": "Development Server",
+      "onAutoForward": "notify"
+    }
+  },
+  "onCreateCommand": "echo 'Setting up Syn_OS Master Dev Environment...'",
+  "updateContentCommand": "echo 'Updating environment...'",
+  "waitFor": "postCreateCommand"
 }
