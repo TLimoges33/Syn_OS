@@ -1,14 +1,14 @@
 # Team-Specific XML Library Configuration
-# Branch: feature/ai-ml-consciousness-core
+# Branch: feature/cybersecurity-zero-trust
 
 ## Focus Categories
-['ai_ml', 'research_experimental', 'frameworks_libraries']
+['cybersecurity', 'tools_utilities']
 
 ## Priority Keywords
-['neural', 'consciousness', 'ai', 'ml', 'pytorch', 'tensorflow']
+['security', 'crypto', 'auth', 'encryption', 'audit', 'firewall']
 
 ## Integration Notes
-Focus on consciousness modeling and neural darwinism integration
+Prioritize enterprise security frameworks and zero-trust architectures
 
 ## Usage Instructions
 
