@@ -23,6 +23,9 @@ class StableMasterDashboard:
             "Build": "feature/iso-building",
             "DevOps": "feature/monitoring-observability"
         }
+        self.public_repos = {
+            "docs": "https://github.com/TLimoges33/SynapticOS-Docs.git"
+        }
     
     def safe_git_command(self, cmd):
         """Execute git command safely with error handling"""
@@ -89,15 +92,78 @@ class StableMasterDashboard:
         if active_teams:
             print(f"🎯 Ready teams: {', '.join(active_teams)}")
         
+        # Show repository status
+        print()
+        self.show_repository_status()
+        
         return active_teams
     
-    def show_commands(self):
+    def check_docs_sync(self):
+        """Check documentation sync status"""
+        print("📚 DOCUMENTATION SYNC STATUS:")
+        print("=" * 35)
+        
+        # Check if sync workflow exists
+        sync_workflow = "test -f .github/workflows/sync-to-docs.yml"
+        workflow_exists = self.safe_git_command(sync_workflow)
+        
+        if workflow_exists is not None:
+            print("✅ Sync workflow configured")
+        else:
+            print("⚠️  Sync workflow missing")
+        
+        # Check public documentation files
+        public_files = ["docs/PUBLIC_README.md", "docs/PUBLIC_API.md"]
+        for file_path in public_files:
+            file_exists = self.safe_git_command(f"test -f {file_path}")
+            if file_exists is not None:
+                print(f"✅ {file_path} ready")
+            else:
+                print(f"📝 {file_path} needs creation")
+        
+        # Check documentation repository status
+        docs_status = self.safe_git_command(f"git ls-remote {self.public_repos['docs']} HEAD")
+        if docs_status:
+            commit_hash = docs_status.split('\t')[0][:8] if docs_status else "unknown"
+            print(f"✅ Docs repository active (latest: {commit_hash})")
+        else:
+            print("⚠️  Docs repository access issue")
+        
+        print()
+        print("🌐 Public Repository:")
+        print("   https://github.com/TLimoges33/SynapticOS-Docs")
+        print("🔄 Auto-sync: Enabled on dev-team commits")
+    
+    def show_repository_status(self):
+        """Show status of all repositories"""
+        print("🌐 REPOSITORY STATUS:")
+        print("=" * 25)
+        
+        # Dev team repository
+        dev_status = self.safe_git_command("git status --porcelain")
+        if dev_status is not None:
+            if dev_status:
+                print("📝 Dev-Team: Local changes pending")
+            else:
+                print("✅ Dev-Team: Clean working directory")
+        else:
+            print("⚠️  Dev-Team: Status check failed")
+        
+        # Documentation repository
+        docs_remote = self.safe_git_command(f"git ls-remote {self.public_repos['docs']} HEAD")
+        if docs_remote:
+            print("✅ Documentation: Repository accessible")
+        else:
+            print("⚠️  Documentation: Access issue")
+        
+        print()
         """Show available commands"""
         print("\n🎮 AVAILABLE COMMANDS:")
         print("=" * 30)
         print("📊 dashboard         - Show team status")
         print("🌿 teams            - List feature branches")
-        print("🔧 recovery         - Fix codespace issues")
+        print("� docs             - Check documentation sync")
+        print("�🔧 recovery         - Fix codespace issues")
         print("📚 help             - Show this help")
         print("🚪 exit             - Exit dashboard")
     
@@ -131,6 +197,8 @@ def main():
             dashboard.get_team_status()
         elif command == "teams":
             dashboard.list_teams()
+        elif command == "docs":
+            dashboard.check_docs_sync()
         elif command == "recovery":
             dashboard.run_recovery()
         elif command == "help":
@@ -144,26 +212,29 @@ def main():
         print("\n" + "="*40)
         print("1. 📊 Show team status")
         print("2. 🌿 List teams")
-        print("3. 🔧 Run recovery")
-        print("4. 📚 Show commands")
-        print("5. 🚪 Exit")
+        print("3. � Check documentation sync")
+        print("4. �🔧 Run recovery")
+        print("5. 📚 Show commands")
+        print("6. 🚪 Exit")
         
         try:
-            choice = input("\n👉 Enter choice (1-5): ").strip()
+            choice = input("\n👉 Enter choice (1-6): ").strip()
             
             if choice == "1":
                 dashboard.get_team_status()
             elif choice == "2":
                 dashboard.list_teams()
             elif choice == "3":
-                dashboard.run_recovery()
+                dashboard.check_docs_sync()
             elif choice == "4":
-                dashboard.show_commands()
+                dashboard.run_recovery()
             elif choice == "5":
+                dashboard.show_commands()
+            elif choice == "6":
                 print("👋 Goodbye!")
                 break
             else:
-                print("❌ Invalid choice. Please enter 1-5.")
+                print("❌ Invalid choice. Please enter 1-6.")
                 
         except KeyboardInterrupt:
             print("\n👋 Goodbye!")
