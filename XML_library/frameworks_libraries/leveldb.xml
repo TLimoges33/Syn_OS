@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>leveldb</name>
+  <full_name>google/leveldb</full_name>
+  <description>LevelDB is a fast key-value storage library written at Google that provides an ordered mapping from string keys to string values.</description>
+  <url>https://github.com/google/leveldb</url>
+  <clone_url>https://github.com/google/leveldb.git</clone_url>
+  <ssh_url>git@github.com:google/leveldb.git</ssh_url>
+  <metadata>
+    <language>C++</language>
+    <stars>38038</stars>
+    <forks>8050</forks>
+    <watchers>38038</watchers>
+    <size>1672</size>
+    <default_branch>main</default_branch>
+    <created_at>2014-08-27T21:17:52Z</created_at>
+    <updated_at>2025-08-26T18:36:35Z</updated_at>
+    <pushed_at>2025-01-30T17:33:01Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>frameworks_libraries</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>False</has_downloads>
+  </metadata>
+  <license>
+    <name>BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; License</name>
+    <spdx_id>BSD-3-Clause</spdx_id>
+  </license>
+  <owner>
+    <login>google</login>
+    <type>Organization</type>
+    <url>https://github.com/google</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>7</score>
+    <assessment>Excellent potential for integration. High community engagement with 38038 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

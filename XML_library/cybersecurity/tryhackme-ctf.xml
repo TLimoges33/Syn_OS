@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>tryhackme-ctf</name>
+  <full_name>edoardottt/tryhackme-ctf</full_name>
+  <description>TryHackMe CTFs writeups, notes, drafts, scrabbles, files and solutions.</description>
+  <url>https://github.com/edoardottt/tryhackme-ctf</url>
+  <clone_url>https://github.com/edoardottt/tryhackme-ctf.git</clone_url>
+  <ssh_url>git@github.com:edoardottt/tryhackme-ctf.git</ssh_url>
+  <metadata>
+    <language>Shell</language>
+    <stars>237</stars>
+    <forks>38</forks>
+    <watchers>237</watchers>
+    <size>33684</size>
+    <default_branch>main</default_branch>
+    <created_at>2020-11-22T14:57:54Z</created_at>
+    <updated_at>2025-08-08T08:37:55Z</updated_at>
+    <pushed_at>2024-11-10T09:09:13Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>capture</topic>
+    <topic>capture-the-flag</topic>
+    <topic>code</topic>
+    <topic>ctf-challenges</topic>
+    <topic>ctf-competitions</topic>
+    <topic>ctf-solutions</topic>
+    <topic>ctf-writeups</topic>
+    <topic>cyber-security</topic>
+    <topic>cybersecurity</topic>
+    <topic>exploit</topic>
+    <topic>exploitation</topic>
+    <topic>exploits</topic>
+    <topic>hacking</topic>
+    <topic>hacking-tools</topic>
+    <topic>hacktoberfest</topic>
+    <topic>notes</topic>
+    <topic>penetration-testing</topic>
+    <topic>tryhackme</topic>
+    <topic>web-exploitation</topic>
+    <topic>writeups</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>edoardottt</login>
+    <type>User</type>
+    <url>https://github.com/edoardottt</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 237 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

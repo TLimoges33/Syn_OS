@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>RedTeam-OffensiveSecurity</name>
+  <full_name>bigb0sss/RedTeam-OffensiveSecurity</full_name>
+  <description>Tools &amp; Interesting Things for RedTeam Ops</description>
+  <url>https://github.com/bigb0sss/RedTeam-OffensiveSecurity</url>
+  <clone_url>https://github.com/bigb0sss/RedTeam-OffensiveSecurity.git</clone_url>
+  <ssh_url>git@github.com:bigb0sss/RedTeam-OffensiveSecurity.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>2216</stars>
+    <forks>387</forks>
+    <watchers>2216</watchers>
+    <size>581</size>
+    <default_branch>master</default_branch>
+    <created_at>2020-03-25T23:48:59Z</created_at>
+    <updated_at>2025-08-20T10:25:19Z</updated_at>
+    <pushed_at>2025-06-18T00:40:10Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>bigb0sss</login>
+    <type>User</type>
+    <url>https://github.com/bigb0sss</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>7</score>
+    <assessment>Excellent potential for integration. High community engagement with 2216 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

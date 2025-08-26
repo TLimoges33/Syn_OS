@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>bounty-targets-data</name>
+  <full_name>arkadiyt/bounty-targets-data</full_name>
+  <description>This repo contains hourly-updated data dumps of bug bounty platform scopes (like Hackerone/Bugcrowd/Intigriti/etc) that are eligible for reports</description>
+  <url>https://github.com/arkadiyt/bounty-targets-data</url>
+  <clone_url>https://github.com/arkadiyt/bounty-targets-data.git</clone_url>
+  <ssh_url>git@github.com:arkadiyt/bounty-targets-data.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>3444</stars>
+    <forks>628</forks>
+    <watchers>3444</watchers>
+    <size>541293</size>
+    <default_branch>main</default_branch>
+    <created_at>2017-12-04T06:57:56Z</created_at>
+    <updated_at>2025-08-26T20:03:49Z</updated_at>
+    <pushed_at>2025-08-26T20:03:44Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>bounty</topic>
+    <topic>bug</topic>
+    <topic>bugcrowd</topic>
+    <topic>federacy</topic>
+    <topic>hackenproof</topic>
+    <topic>hackerone</topic>
+    <topic>intigriti</topic>
+    <topic>vrp</topic>
+    <topic>yeswehack</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>arkadiyt</login>
+    <type>User</type>
+    <url>https://github.com/arkadiyt</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 3444 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

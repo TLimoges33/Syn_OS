@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>attack-navigator</name>
+  <full_name>mitre-attack/attack-navigator</full_name>
+  <description>Web app that provides basic navigation and annotation of ATT&amp;CK matrices</description>
+  <url>https://github.com/mitre-attack/attack-navigator</url>
+  <clone_url>https://github.com/mitre-attack/attack-navigator.git</clone_url>
+  <ssh_url>git@github.com:mitre-attack/attack-navigator.git</ssh_url>
+  <metadata>
+    <language>TypeScript</language>
+    <stars>2206</stars>
+    <forks>648</forks>
+    <watchers>2206</watchers>
+    <size>49671</size>
+    <default_branch>master</default_branch>
+    <created_at>2018-02-26T18:29:21Z</created_at>
+    <updated_at>2025-08-26T09:37:40Z</updated_at>
+    <pushed_at>2025-08-22T22:55:02Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cti</topic>
+    <topic>cyber-threat-intelligence</topic>
+    <topic>cybersecurity</topic>
+    <topic>mitre-attack</topic>
+    <topic>mitre-corporation</topic>
+  </topics>
+  <license>
+    <name>Apache License 2.0</name>
+    <spdx_id>Apache-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>mitre-attack</login>
+    <type>Organization</type>
+    <url>https://github.com/mitre-attack</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 2206 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

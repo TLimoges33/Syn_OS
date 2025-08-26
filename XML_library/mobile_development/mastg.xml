@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>mastg</name>
+  <full_name>OWASP/mastg</full_name>
+  <description>The OWASP Mobile Application Security Testing Guide (MASTG) is a comprehensive manual for mobile app security testing and reverse engineering. It describes technical processes for verifying the OWASP Mobile Security Weakness Enumeration (MASWE) weaknesses, which are in alignment with the OWASP MASVS.</description>
+  <url>https://github.com/OWASP/mastg</url>
+  <clone_url>https://github.com/OWASP/mastg.git</clone_url>
+  <ssh_url>git@github.com:OWASP/mastg.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>12445</stars>
+    <forks>2489</forks>
+    <watchers>12445</watchers>
+    <size>434870</size>
+    <default_branch>master</default_branch>
+    <created_at>2016-09-30T08:22:29Z</created_at>
+    <updated_at>2025-08-26T20:30:52Z</updated_at>
+    <pushed_at>2025-08-24T10:09:18Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>mobile_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>android</topic>
+    <topic>android-application</topic>
+    <topic>compliancy-checklist</topic>
+    <topic>dynamic-analysis</topic>
+    <topic>hacking</topic>
+    <topic>ios</topic>
+    <topic>ios-app</topic>
+    <topic>mast</topic>
+    <topic>mastg</topic>
+    <topic>mobile-app</topic>
+    <topic>mobile-security</topic>
+    <topic>mstg</topic>
+    <topic>network-analysis</topic>
+    <topic>pentesting</topic>
+    <topic>reverse-engineering</topic>
+    <topic>reverse-enginnering</topic>
+    <topic>runtime-analysis</topic>
+    <topic>static-analysis</topic>
+    <topic>testing-cryptography</topic>
+  </topics>
+  <license>
+    <name>Creative Commons Attribution Share Alike 4.0 International</name>
+    <spdx_id>CC-BY-SA-4.0</spdx_id>
+  </license>
+  <owner>
+    <login>OWASP</login>
+    <type>Organization</type>
+    <url>https://github.com/OWASP</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 12445 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

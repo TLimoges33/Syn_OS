@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>trape</name>
+  <full_name>jofpin/trape</full_name>
+  <description>People tracker on the Internet: OSINT analysis and research tool by Jose Pino</description>
+  <url>https://github.com/jofpin/trape</url>
+  <clone_url>https://github.com/jofpin/trape.git</clone_url>
+  <ssh_url>git@github.com:jofpin/trape.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>8433</stars>
+    <forks>1328</forks>
+    <watchers>8433</watchers>
+    <size>6711</size>
+    <default_branch>master</default_branch>
+    <created_at>2017-10-31T14:03:57Z</created_at>
+    <updated_at>2025-08-26T15:04:01Z</updated_at>
+    <pushed_at>2024-06-20T19:04:00Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>flask</topic>
+    <topic>footprint</topic>
+    <topic>hacking</topic>
+    <topic>hacking-tool</topic>
+    <topic>jose-pino</topic>
+    <topic>osint</topic>
+    <topic>phising</topic>
+    <topic>python</topic>
+    <topic>recognition</topic>
+    <topic>security</topic>
+    <topic>social-engineering</topic>
+    <topic>tracking</topic>
+  </topics>
+  <owner>
+    <login>jofpin</login>
+    <type>User</type>
+    <url>https://github.com/jofpin</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 8433 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

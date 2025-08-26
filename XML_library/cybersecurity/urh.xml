@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>urh</name>
+  <full_name>jopohl/urh</full_name>
+  <description>Universal Radio Hacker: Investigate Wireless Protocols Like A Boss</description>
+  <url>https://github.com/jopohl/urh</url>
+  <clone_url>https://github.com/jopohl/urh.git</clone_url>
+  <ssh_url>git@github.com:jopohl/urh.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>11773</stars>
+    <forks>934</forks>
+    <watchers>11773</watchers>
+    <size>54183</size>
+    <default_branch>master</default_branch>
+    <created_at>2016-04-01T19:43:07Z</created_at>
+    <updated_at>2025-08-26T12:43:14Z</updated_at>
+    <pushed_at>2025-07-31T08:15:33Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>airspy</topic>
+    <topic>bladerf</topic>
+    <topic>hacking</topic>
+    <topic>hackrf</topic>
+    <topic>iot</topic>
+    <topic>limesdr</topic>
+    <topic>python</topic>
+    <topic>qt</topic>
+    <topic>radio</topic>
+    <topic>rtl-sdr</topic>
+    <topic>sdr</topic>
+    <topic>sdrplay</topic>
+    <topic>security</topic>
+    <topic>usrp</topic>
+    <topic>wireless</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>jopohl</login>
+    <type>User</type>
+    <url>https://github.com/jopohl</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 11773 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

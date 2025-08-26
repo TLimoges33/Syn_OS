@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Open-source-tools-for-CTI</name>
+  <full_name>BushidoUK/Open-source-tools-for-CTI</full_name>
+  <description>Public Repository of Open Source Tools for Cyber Threat Intelligence Analysts and Researchers</description>
+  <url>https://github.com/BushidoUK/Open-source-tools-for-CTI</url>
+  <clone_url>https://github.com/BushidoUK/Open-source-tools-for-CTI.git</clone_url>
+  <ssh_url>git@github.com:BushidoUK/Open-source-tools-for-CTI.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>717</stars>
+    <forks>118</forks>
+    <watchers>717</watchers>
+    <size>397</size>
+    <default_branch>master</default_branch>
+    <created_at>2020-01-16T18:23:41Z</created_at>
+    <updated_at>2025-08-23T06:02:56Z</updated_at>
+    <pushed_at>2025-07-21T21:58:36Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cti</topic>
+    <topic>cybersecurity</topic>
+    <topic>infosec</topic>
+    <topic>malware</topic>
+    <topic>osint</topic>
+    <topic>threatintel</topic>
+  </topics>
+  <owner>
+    <login>BushidoUK</login>
+    <type>User</type>
+    <url>https://github.com/BushidoUK</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 717 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

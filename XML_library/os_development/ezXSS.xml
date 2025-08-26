@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>ezXSS</name>
+  <full_name>ssl/ezXSS</full_name>
+  <description>ezXSS is an easy way for penetration testers and bug bounty hunters to test (blind) Cross Site Scripting.</description>
+  <url>https://github.com/ssl/ezXSS</url>
+  <clone_url>https://github.com/ssl/ezXSS.git</clone_url>
+  <ssh_url>git@github.com:ssl/ezXSS.git</ssh_url>
+  <metadata>
+    <language>PHP</language>
+    <stars>2109</stars>
+    <forks>363</forks>
+    <watchers>2109</watchers>
+    <size>5121</size>
+    <default_branch>master</default_branch>
+    <created_at>2017-03-06T19:30:02Z</created_at>
+    <updated_at>2025-08-25T17:59:58Z</updated_at>
+    <pushed_at>2025-08-12T15:38:17Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>os_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>alert</topic>
+    <topic>blind</topic>
+    <topic>blind-xss</topic>
+    <topic>bug</topic>
+    <topic>bugbounty</topic>
+    <topic>easy</topic>
+    <topic>easy-to-use</topic>
+    <topic>payload</topic>
+    <topic>penetration-testing</topic>
+    <topic>php</topic>
+    <topic>redteam</topic>
+    <topic>redteaming</topic>
+    <topic>test</topic>
+    <topic>xss</topic>
+    <topic>xss-attacks</topic>
+    <topic>xss-detection</topic>
+    <topic>xss-exploitation</topic>
+    <topic>xss-injection</topic>
+    <topic>xss-scanner</topic>
+    <topic>xss-vulnerability</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>ssl</login>
+    <type>User</type>
+    <url>https://github.com/ssl</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 2109 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>red_team_tool_countermeasures</name>
+  <full_name>mandiant/red_team_tool_countermeasures</full_name>
+  <description>No description available</description>
+  <url>https://github.com/mandiant/red_team_tool_countermeasures</url>
+  <clone_url>https://github.com/mandiant/red_team_tool_countermeasures.git</clone_url>
+  <ssh_url>git@github.com:mandiant/red_team_tool_countermeasures.git</ssh_url>
+  <metadata>
+    <language>YARA</language>
+    <stars>2666</stars>
+    <forks>845</forks>
+    <watchers>2666</watchers>
+    <size>411</size>
+    <default_branch>master</default_branch>
+    <created_at>2020-12-03T00:31:44Z</created_at>
+    <updated_at>2025-08-05T05:37:37Z</updated_at>
+    <pushed_at>2024-03-05T10:19:46Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>tools_utilities</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <license>
+    <name>BSD 2-Clause &quot;Simplified&quot; License</name>
+    <spdx_id>BSD-2-Clause</spdx_id>
+  </license>
+  <owner>
+    <login>mandiant</login>
+    <type>Organization</type>
+    <url>https://github.com/mandiant</url>
+  </owner>
+  <development_potential>
+    <level>medium</level>
+    <score>6</score>
+    <assessment>Good potential for integration. Moderate community interest with 2666 stars. Suitable for selective implementation.</assessment>
+  </development_potential>
+</repository>

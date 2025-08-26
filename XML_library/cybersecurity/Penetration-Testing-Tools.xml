@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Penetration-Testing-Tools</name>
+  <full_name>mgeeky/Penetration-Testing-Tools</full_name>
+  <description>A collection of more than 170+ tools, scripts, cheatsheets and other loots that I've developed over years for Red Teaming/Pentesting/IT Security audits purposes.</description>
+  <url>https://github.com/mgeeky/Penetration-Testing-Tools</url>
+  <clone_url>https://github.com/mgeeky/Penetration-Testing-Tools.git</clone_url>
+  <ssh_url>git@github.com:mgeeky/Penetration-Testing-Tools.git</ssh_url>
+  <metadata>
+    <language>PowerShell</language>
+    <stars>2771</stars>
+    <forks>536</forks>
+    <watchers>2771</watchers>
+    <size>17555</size>
+    <default_branch>master</default_branch>
+    <created_at>2018-02-02T21:24:03Z</created_at>
+    <updated_at>2025-08-25T01:03:57Z</updated_at>
+    <pushed_at>2023-06-27T19:16:49Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cheatsheets</topic>
+    <topic>exploit</topic>
+    <topic>hacking</topic>
+    <topic>networks</topic>
+    <topic>penetration</topic>
+    <topic>penetration-testing</topic>
+    <topic>pentesting</topic>
+    <topic>red-teaming</topic>
+    <topic>redteam</topic>
+    <topic>scripts</topic>
+    <topic>security</topic>
+    <topic>social-engineering</topic>
+    <topic>testing</topic>
+    <topic>tools</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>mgeeky</login>
+    <type>User</type>
+    <url>https://github.com/mgeeky</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 2771 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

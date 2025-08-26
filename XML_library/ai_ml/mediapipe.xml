@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>mediapipe</name>
+  <full_name>google-ai-edge/mediapipe</full_name>
+  <description>Cross-platform, customizable ML solutions for live and streaming media.</description>
+  <url>https://github.com/google-ai-edge/mediapipe</url>
+  <clone_url>https://github.com/google-ai-edge/mediapipe.git</clone_url>
+  <ssh_url>git@github.com:google-ai-edge/mediapipe.git</ssh_url>
+  <metadata>
+    <language>C++</language>
+    <stars>31096</stars>
+    <forks>5501</forks>
+    <watchers>31096</watchers>
+    <size>604704</size>
+    <default_branch>master</default_branch>
+    <created_at>2019-06-13T19:16:41Z</created_at>
+    <updated_at>2025-08-26T20:00:43Z</updated_at>
+    <pushed_at>2025-08-26T10:08:26Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>android</topic>
+    <topic>audio-processing</topic>
+    <topic>c-plus-plus</topic>
+    <topic>calculator</topic>
+    <topic>computer-vision</topic>
+    <topic>deep-learning</topic>
+    <topic>framework</topic>
+    <topic>graph-based</topic>
+    <topic>graph-framework</topic>
+    <topic>inference</topic>
+    <topic>machine-learning</topic>
+    <topic>mediapipe</topic>
+    <topic>mobile-development</topic>
+    <topic>perception</topic>
+    <topic>pipeline-framework</topic>
+    <topic>stream-processing</topic>
+    <topic>video-processing</topic>
+  </topics>
+  <license>
+    <name>Apache License 2.0</name>
+    <spdx_id>Apache-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>google-ai-edge</login>
+    <type>Organization</type>
+    <url>https://github.com/google-ai-edge</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 31096 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

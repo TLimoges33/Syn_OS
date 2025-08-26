@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>linux-smart-enumeration</name>
+  <full_name>diego-treitos/linux-smart-enumeration</full_name>
+  <description>Linux enumeration tool for pentesting and CTFs with verbosity levels</description>
+  <url>https://github.com/diego-treitos/linux-smart-enumeration</url>
+  <clone_url>https://github.com/diego-treitos/linux-smart-enumeration.git</clone_url>
+  <ssh_url>git@github.com:diego-treitos/linux-smart-enumeration.git</ssh_url>
+  <metadata>
+    <language>Shell</language>
+    <stars>3713</stars>
+    <forks>594</forks>
+    <watchers>3713</watchers>
+    <size>11065</size>
+    <default_branch>master</default_branch>
+    <created_at>2019-02-13T11:02:21Z</created_at>
+    <updated_at>2025-08-24T23:29:30Z</updated_at>
+    <pushed_at>2023-12-25T14:46:47Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>ctfs</topic>
+    <topic>hacking</topic>
+    <topic>hackthebox</topic>
+    <topic>linux-enumeration</topic>
+    <topic>oscp</topic>
+    <topic>pentesting</topic>
+    <topic>privesc</topic>
+    <topic>privilege-escalation</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>diego-treitos</login>
+    <type>User</type>
+    <url>https://github.com/diego-treitos</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 3713 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

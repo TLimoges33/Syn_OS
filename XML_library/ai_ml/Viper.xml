@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Viper</name>
+  <full_name>FunnyWolf/Viper</full_name>
+  <description>Adversary simulation and Red teaming platform with AI</description>
+  <url>https://github.com/FunnyWolf/Viper</url>
+  <clone_url>https://github.com/FunnyWolf/Viper.git</clone_url>
+  <ssh_url>git@github.com:FunnyWolf/Viper.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>4484</stars>
+    <forks>602</forks>
+    <watchers>4484</watchers>
+    <size>66168</size>
+    <default_branch>master</default_branch>
+    <created_at>2020-05-29T12:53:42Z</created_at>
+    <updated_at>2025-08-26T11:55:10Z</updated_at>
+    <pushed_at>2025-08-25T14:36:11Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>agent</topic>
+    <topic>ai</topic>
+    <topic>cobalt-strike</topic>
+    <topic>llm</topic>
+    <topic>mcp-server</topic>
+    <topic>metasploit-framework</topic>
+    <topic>post-exploitation</topic>
+    <topic>red-team-tools</topic>
+    <topic>redteam</topic>
+    <topic>viper</topic>
+  </topics>
+  <owner>
+    <login>FunnyWolf</login>
+    <type>User</type>
+    <url>https://github.com/FunnyWolf</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 4484 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

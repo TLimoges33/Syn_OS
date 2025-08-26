@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>google-research</name>
+  <full_name>google-research/google-research</full_name>
+  <description>Google Research</description>
+  <url>https://github.com/google-research/google-research</url>
+  <clone_url>https://github.com/google-research/google-research.git</clone_url>
+  <ssh_url>git@github.com:google-research/google-research.git</ssh_url>
+  <metadata>
+    <language>Jupyter Notebook</language>
+    <stars>36241</stars>
+    <forks>8162</forks>
+    <watchers>36241</watchers>
+    <size>1148213</size>
+    <default_branch>master</default_branch>
+    <created_at>2018-10-04T18:42:48Z</created_at>
+    <updated_at>2025-08-26T20:06:35Z</updated_at>
+    <pushed_at>2025-08-22T23:33:08Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>ai</topic>
+    <topic>machine-learning</topic>
+    <topic>research</topic>
+  </topics>
+  <license>
+    <name>Apache License 2.0</name>
+    <spdx_id>Apache-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>google-research</login>
+    <type>Organization</type>
+    <url>https://github.com/google-research</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 36241 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

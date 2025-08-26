@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>CheatSheetSeries</name>
+  <full_name>OWASP/CheatSheetSeries</full_name>
+  <description>The OWASP Cheat Sheet Series was created to provide a concise collection of high value information on specific application security topics.</description>
+  <url>https://github.com/OWASP/CheatSheetSeries</url>
+  <clone_url>https://github.com/OWASP/CheatSheetSeries.git</clone_url>
+  <ssh_url>git@github.com:OWASP/CheatSheetSeries.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>30160</stars>
+    <forks>4222</forks>
+    <watchers>30160</watchers>
+    <size>1933538</size>
+    <default_branch>master</default_branch>
+    <created_at>2018-12-21T14:26:43Z</created_at>
+    <updated_at>2025-08-26T19:53:45Z</updated_at>
+    <pushed_at>2025-08-26T13:17:37Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>application-security</topic>
+    <topic>appsec</topic>
+    <topic>best-practices</topic>
+    <topic>cheatsheets</topic>
+    <topic>code</topic>
+    <topic>owasp</topic>
+    <topic>security</topic>
+  </topics>
+  <license>
+    <name>Creative Commons Attribution Share Alike 4.0 International</name>
+    <spdx_id>CC-BY-SA-4.0</spdx_id>
+  </license>
+  <owner>
+    <login>OWASP</login>
+    <type>Organization</type>
+    <url>https://github.com/OWASP</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 30160 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

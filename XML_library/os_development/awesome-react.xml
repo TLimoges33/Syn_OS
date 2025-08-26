@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>awesome-react</name>
+  <full_name>enaqx/awesome-react</full_name>
+  <description>A collection of awesome things regarding React ecosystem</description>
+  <url>https://github.com/enaqx/awesome-react</url>
+  <clone_url>https://github.com/enaqx/awesome-react.git</clone_url>
+  <ssh_url>git@github.com:enaqx/awesome-react.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>69566</stars>
+    <forks>7414</forks>
+    <watchers>69566</watchers>
+    <size>2576</size>
+    <default_branch>master</default_branch>
+    <created_at>2014-08-06T05:31:44Z</created_at>
+    <updated_at>2025-08-26T22:33:38Z</updated_at>
+    <pushed_at>2024-12-06T20:56:37Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>os_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>awesome</topic>
+    <topic>awesome-list</topic>
+    <topic>javascript</topic>
+    <topic>react</topic>
+    <topic>react-apps</topic>
+    <topic>react-native</topic>
+    <topic>react-tutorial</topic>
+    <topic>samples</topic>
+    <topic>tutorial</topic>
+    <topic>typescript</topic>
+  </topics>
+  <owner>
+    <login>enaqx</login>
+    <type>User</type>
+    <url>https://github.com/enaqx</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 69566 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

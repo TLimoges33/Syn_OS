@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>CTF</name>
+  <full_name>Crypto-Cat/CTF</full_name>
+  <description>CTF challenge (mostly pwn) files, scripts etc</description>
+  <url>https://github.com/Crypto-Cat/CTF</url>
+  <clone_url>https://github.com/Crypto-Cat/CTF.git</clone_url>
+  <ssh_url>git@github.com:Crypto-Cat/CTF.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>2004</stars>
+    <forks>397</forks>
+    <watchers>2004</watchers>
+    <size>61989</size>
+    <default_branch>main</default_branch>
+    <created_at>2021-01-25T11:35:20Z</created_at>
+    <updated_at>2025-08-26T11:52:37Z</updated_at>
+    <pushed_at>2025-05-26T13:17:18Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>appsec</topic>
+    <topic>binary-exploitation</topic>
+    <topic>capture-the-flag</topic>
+    <topic>ctf</topic>
+    <topic>ctftime</topic>
+    <topic>cybersecurity</topic>
+    <topic>exploit</topic>
+    <topic>hacking</topic>
+    <topic>infosec</topic>
+    <topic>offsec</topic>
+    <topic>pentesting</topic>
+    <topic>pwn</topic>
+  </topics>
+  <owner>
+    <login>Crypto-Cat</login>
+    <type>User</type>
+    <url>https://github.com/Crypto-Cat</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 2004 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

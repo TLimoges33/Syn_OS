@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>github-cheat-sheet</name>
+  <full_name>tiimgreen/github-cheat-sheet</full_name>
+  <description>A list of cool features of Git and GitHub.</description>
+  <url>https://github.com/tiimgreen/github-cheat-sheet</url>
+  <clone_url>https://github.com/tiimgreen/github-cheat-sheet.git</clone_url>
+  <ssh_url>git@github.com:tiimgreen/github-cheat-sheet.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>52179</stars>
+    <forks>5334</forks>
+    <watchers>52179</watchers>
+    <size>776</size>
+    <default_branch>master</default_branch>
+    <created_at>2014-04-12T16:38:42Z</created_at>
+    <updated_at>2025-08-26T21:03:35Z</updated_at>
+    <pushed_at>2024-04-15T20:15:56Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>tools_utilities</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>awesome</topic>
+    <topic>awesome-list</topic>
+    <topic>git</topic>
+    <topic>github</topic>
+    <topic>list</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>tiimgreen</login>
+    <type>User</type>
+    <url>https://github.com/tiimgreen</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>7</score>
+    <assessment>Excellent potential for integration. High community engagement with 52179 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

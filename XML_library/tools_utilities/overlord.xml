@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>overlord</name>
+  <full_name>qsecure-labs/overlord</full_name>
+  <description>Overlord - Red Teaming Infrastructure Automation</description>
+  <url>https://github.com/qsecure-labs/overlord</url>
+  <clone_url>https://github.com/qsecure-labs/overlord.git</clone_url>
+  <ssh_url>git@github.com:qsecure-labs/overlord.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>627</stars>
+    <forks>75</forks>
+    <watchers>627</watchers>
+    <size>24358</size>
+    <default_branch>master</default_branch>
+    <created_at>2019-09-08T15:59:02Z</created_at>
+    <updated_at>2025-08-18T08:21:27Z</updated_at>
+    <pushed_at>2024-05-28T21:38:05Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>tools_utilities</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>penetration-testing-framework</topic>
+    <topic>pentest</topic>
+    <topic>pentest-tool</topic>
+    <topic>redteam</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>qsecure-labs</login>
+    <type>Organization</type>
+    <url>https://github.com/qsecure-labs</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 627 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

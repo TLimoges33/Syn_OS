@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>RedTeaming-Tactics-and-Techniques</name>
+  <full_name>mantvydasb/RedTeaming-Tactics-and-Techniques</full_name>
+  <description>Red Teaming Tactics and Techniques</description>
+  <url>https://github.com/mantvydasb/RedTeaming-Tactics-and-Techniques</url>
+  <clone_url>https://github.com/mantvydasb/RedTeaming-Tactics-and-Techniques.git</clone_url>
+  <ssh_url>git@github.com:mantvydasb/RedTeaming-Tactics-and-Techniques.git</ssh_url>
+  <metadata>
+    <language>PowerShell</language>
+    <stars>4353</stars>
+    <forks>1098</forks>
+    <watchers>4353</watchers>
+    <size>360619</size>
+    <default_branch>master</default_branch>
+    <created_at>2019-03-02T13:33:33Z</created_at>
+    <updated_at>2025-08-26T19:04:19Z</updated_at>
+    <pushed_at>2024-08-22T07:17:31Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>offensive-security</topic>
+    <topic>oscp</topic>
+    <topic>pentesting</topic>
+    <topic>redteam</topic>
+    <topic>redteam-infrastructure</topic>
+    <topic>redteaming</topic>
+  </topics>
+  <owner>
+    <login>mantvydasb</login>
+    <type>User</type>
+    <url>https://github.com/mantvydasb</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 4353 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

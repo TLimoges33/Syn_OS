@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>web-porfolio</name>
+  <full_name>congchu/web-porfolio</full_name>
+  <description>개발자를 위한 쉽고 빠른 웹 포트폴리오 만들기 </description>
+  <url>https://github.com/congchu/web-porfolio</url>
+  <clone_url>https://github.com/congchu/web-porfolio.git</clone_url>
+  <ssh_url>git@github.com:congchu/web-porfolio.git</ssh_url>
+  <metadata>
+    <language>CSS</language>
+    <stars>126</stars>
+    <forks>344</forks>
+    <watchers>126</watchers>
+    <size>24655</size>
+    <default_branch>main</default_branch>
+    <created_at>2020-11-27T11:12:48Z</created_at>
+    <updated_at>2025-08-21T00:31:48Z</updated_at>
+    <pushed_at>2024-07-15T08:47:20Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>web_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>css</topic>
+    <topic>github-page</topic>
+    <topic>html</topic>
+  </topics>
+  <owner>
+    <login>congchu</login>
+    <type>User</type>
+    <url>https://github.com/congchu</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 126 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

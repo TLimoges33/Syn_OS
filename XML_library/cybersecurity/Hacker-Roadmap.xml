@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Hacker-Roadmap</name>
+  <full_name>Hacking-Notes/Hacker-Roadmap</full_name>
+  <description>A detailed plan to achieve proficiency in hacking and penetration testing, with pathways including obtaining a degree in cybersecurity or earning relevant certifications.</description>
+  <url>https://github.com/Hacking-Notes/Hacker-Roadmap</url>
+  <clone_url>https://github.com/Hacking-Notes/Hacker-Roadmap.git</clone_url>
+  <ssh_url>git@github.com:Hacking-Notes/Hacker-Roadmap.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>1074</stars>
+    <forks>90</forks>
+    <watchers>1074</watchers>
+    <size>125</size>
+    <default_branch>main</default_branch>
+    <created_at>2024-04-16T01:52:27Z</created_at>
+    <updated_at>2025-08-26T13:49:47Z</updated_at>
+    <pushed_at>2025-04-05T16:46:19Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <owner>
+    <login>Hacking-Notes</login>
+    <type>User</type>
+    <url>https://github.com/Hacking-Notes</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>7</score>
+    <assessment>Excellent potential for integration. High community engagement with 1074 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>
