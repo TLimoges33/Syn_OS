@@ -1,14 +1,14 @@
 # Team-Specific XML Library Configuration
-# Branch: feature/system-performance-optimization
+# Branch: feature/build-release-engineering
 
 ## Focus Categories
-['os_development', 'tools_utilities']
+['cloud_devops', 'tools_utilities', 'frameworks_libraries']
 
 ## Priority Keywords
-['performance', 'optimization', 'benchmark', 'memory', 'cpu']
+['build', 'ci', 'cd', 'docker', 'kubernetes', 'automation']
 
 ## Integration Notes
-Focus on system-level performance tools and optimization libraries
+Prioritize build automation and deployment infrastructure tools
 
 ## Usage Instructions
 
