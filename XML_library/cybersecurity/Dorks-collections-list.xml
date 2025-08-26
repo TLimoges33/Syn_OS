@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Dorks-collections-list</name>
+  <full_name>cipher387/Dorks-collections-list</full_name>
+  <description>List of Github repositories and articles with list of dorks for different search engines</description>
+  <url>https://github.com/cipher387/Dorks-collections-list</url>
+  <clone_url>https://github.com/cipher387/Dorks-collections-list.git</clone_url>
+  <ssh_url>git@github.com:cipher387/Dorks-collections-list.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>2378</stars>
+    <forks>365</forks>
+    <watchers>2378</watchers>
+    <size>116</size>
+    <default_branch>main</default_branch>
+    <created_at>2021-09-19T09:29:15Z</created_at>
+    <updated_at>2025-08-25T08:59:36Z</updated_at>
+    <pushed_at>2025-04-11T03:29:15Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>awesome</topic>
+    <topic>awesome-list</topic>
+    <topic>cybersecurity</topic>
+    <topic>hacking</topic>
+    <topic>osint</topic>
+    <topic>pentest</topic>
+  </topics>
+  <owner>
+    <login>cipher387</login>
+    <type>User</type>
+    <url>https://github.com/cipher387</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 2378 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

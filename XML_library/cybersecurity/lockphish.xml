@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>lockphish</name>
+  <full_name>jaykali/lockphish</full_name>
+  <description>Lockphish it's the first tool (07/04/2020) for phishing attacks on the lock screen, designed to grab Windows credentials, Android PIN and iPhone Passcode using a https link.</description>
+  <url>https://github.com/jaykali/lockphish</url>
+  <clone_url>https://github.com/jaykali/lockphish.git</clone_url>
+  <ssh_url>git@github.com:jaykali/lockphish.git</ssh_url>
+  <metadata>
+    <language>HTML</language>
+    <stars>949</stars>
+    <forks>131</forks>
+    <watchers>949</watchers>
+    <size>60</size>
+    <default_branch>master</default_branch>
+    <created_at>2020-07-25T02:59:51Z</created_at>
+    <updated_at>2025-08-25T20:45:18Z</updated_at>
+    <pushed_at>2021-07-27T10:19:02Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>android</topic>
+    <topic>android-hack</topic>
+    <topic>android-hacking</topic>
+    <topic>cybersecurity</topic>
+    <topic>ethical-hacking</topic>
+    <topic>hacking</topic>
+    <topic>hacktoberfest</topic>
+    <topic>hacktoberfest-accepted</topic>
+    <topic>kali-linux</topic>
+    <topic>kali-scripts</topic>
+    <topic>kali-tool</topic>
+    <topic>kali-tools</topic>
+    <topic>kalilinux</topic>
+  </topics>
+  <license>
+    <name>Other</name>
+    <spdx_id>NOASSERTION</spdx_id>
+  </license>
+  <owner>
+    <login>jaykali</login>
+    <type>User</type>
+    <url>https://github.com/jaykali</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 949 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

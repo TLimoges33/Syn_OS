@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Redcloud</name>
+  <full_name>khast3x/Redcloud</full_name>
+  <description>Automated Red Team Infrastructure deployement using Docker</description>
+  <url>https://github.com/khast3x/Redcloud</url>
+  <clone_url>https://github.com/khast3x/Redcloud.git</clone_url>
+  <ssh_url>git@github.com:khast3x/Redcloud.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>1251</stars>
+    <forks>206</forks>
+    <watchers>1251</watchers>
+    <size>83</size>
+    <default_branch>master</default_branch>
+    <created_at>2019-03-10T03:15:46Z</created_at>
+    <updated_at>2025-08-25T08:38:45Z</updated_at>
+    <pushed_at>2022-08-24T16:48:12Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cloud_devops</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>bugbounty</topic>
+    <topic>docker</topic>
+    <topic>hacking</topic>
+    <topic>kali</topic>
+    <topic>metasploit</topic>
+    <topic>offensive</topic>
+    <topic>pentest</topic>
+    <topic>traefik</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>khast3x</login>
+    <type>User</type>
+    <url>https://github.com/khast3x</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>7</score>
+    <assessment>Excellent potential for integration. High community engagement with 1251 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

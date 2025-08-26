@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Awesome-Hacking</name>
+  <full_name>Hack-with-Github/Awesome-Hacking</full_name>
+  <description>A collection of various awesome lists for hackers, pentesters and security researchers</description>
+  <url>https://github.com/Hack-with-Github/Awesome-Hacking</url>
+  <clone_url>https://github.com/Hack-with-Github/Awesome-Hacking.git</clone_url>
+  <ssh_url>git@github.com:Hack-with-Github/Awesome-Hacking.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>96828</stars>
+    <forks>9498</forks>
+    <watchers>96828</watchers>
+    <size>160</size>
+    <default_branch>master</default_branch>
+    <created_at>2016-03-30T15:47:10Z</created_at>
+    <updated_at>2025-08-26T22:36:31Z</updated_at>
+    <pushed_at>2025-01-18T01:48:02Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>android</topic>
+    <topic>awesome</topic>
+    <topic>bug-bounty</topic>
+    <topic>fuzzing</topic>
+    <topic>hacking</topic>
+    <topic>penetration-testing</topic>
+    <topic>pentesting-windows</topic>
+    <topic>reverse-engineering</topic>
+    <topic>security</topic>
+  </topics>
+  <license>
+    <name>Creative Commons Zero v1.0 Universal</name>
+    <spdx_id>CC0-1.0</spdx_id>
+  </license>
+  <owner>
+    <login>Hack-with-Github</login>
+    <type>Organization</type>
+    <url>https://github.com/Hack-with-Github</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>7</score>
+    <assessment>Excellent potential for integration. High community engagement with 96828 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

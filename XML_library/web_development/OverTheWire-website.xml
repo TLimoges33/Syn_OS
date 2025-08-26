@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>OverTheWire-website</name>
+  <full_name>OverTheWireOrg/OverTheWire-website</full_name>
+  <description>OverTheWire website</description>
+  <url>https://github.com/OverTheWireOrg/OverTheWire-website</url>
+  <clone_url>https://github.com/OverTheWireOrg/OverTheWire-website.git</clone_url>
+  <ssh_url>git@github.com:OverTheWireOrg/OverTheWire-website.git</ssh_url>
+  <metadata>
+    <language>C</language>
+    <stars>1105</stars>
+    <forks>391</forks>
+    <watchers>1105</watchers>
+    <size>2478</size>
+    <default_branch>gh-pages</default_branch>
+    <created_at>2012-11-10T19:22:09Z</created_at>
+    <updated_at>2025-08-25T14:47:21Z</updated_at>
+    <pushed_at>2025-08-18T12:17:49Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>web_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>OverTheWireOrg</login>
+    <type>Organization</type>
+    <url>https://github.com/OverTheWireOrg</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>7</score>
+    <assessment>Excellent potential for integration. High community engagement with 1105 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

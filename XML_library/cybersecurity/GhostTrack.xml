@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>GhostTrack</name>
+  <full_name>HunxByts/GhostTrack</full_name>
+  <description>Useful tool to track location or mobile number</description>
+  <url>https://github.com/HunxByts/GhostTrack</url>
+  <clone_url>https://github.com/HunxByts/GhostTrack.git</clone_url>
+  <ssh_url>git@github.com:HunxByts/GhostTrack.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>4979</stars>
+    <forks>575</forks>
+    <watchers>4979</watchers>
+    <size>295</size>
+    <default_branch>main</default_branch>
+    <created_at>2023-04-15T07:20:47Z</created_at>
+    <updated_at>2025-08-26T22:14:29Z</updated_at>
+    <pushed_at>2024-01-11T15:36:46Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cybersecurity</topic>
+    <topic>fyp</topic>
+    <topic>hacking</topic>
+    <topic>hacking-tool</topic>
+    <topic>indonesia</topic>
+    <topic>information</topic>
+    <topic>information-gathering</topic>
+    <topic>ip-geolocation</topic>
+    <topic>linux</topic>
+    <topic>osint</topic>
+    <topic>osint-python</topic>
+    <topic>osint-tool</topic>
+    <topic>pentesting</topic>
+    <topic>phone-number</topic>
+    <topic>python</topic>
+    <topic>python-hacking</topic>
+    <topic>termux</topic>
+    <topic>termux-hacks</topic>
+    <topic>termux-tool</topic>
+  </topics>
+  <owner>
+    <login>HunxByts</login>
+    <type>User</type>
+    <url>https://github.com/HunxByts</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 4979 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

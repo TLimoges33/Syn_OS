@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>awesome-selfhosted</name>
+  <full_name>awesome-selfhosted/awesome-selfhosted</full_name>
+  <description>A list of Free Software network services and web applications which can be hosted on your own servers</description>
+  <url>https://github.com/awesome-selfhosted/awesome-selfhosted</url>
+  <clone_url>https://github.com/awesome-selfhosted/awesome-selfhosted.git</clone_url>
+  <ssh_url>git@github.com:awesome-selfhosted/awesome-selfhosted.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>243821</stars>
+    <forks>11286</forks>
+    <watchers>243821</watchers>
+    <size>16591</size>
+    <default_branch>master</default_branch>
+    <created_at>2015-06-01T02:33:17Z</created_at>
+    <updated_at>2025-08-26T22:49:46Z</updated_at>
+    <pushed_at>2025-08-26T22:22:32Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>os_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>awesome</topic>
+    <topic>awesome-list</topic>
+    <topic>cloud</topic>
+    <topic>free-software</topic>
+    <topic>hosting</topic>
+    <topic>privacy</topic>
+    <topic>self-hosted</topic>
+    <topic>selfhosted</topic>
+  </topics>
+  <license>
+    <name>Other</name>
+    <spdx_id>NOASSERTION</spdx_id>
+  </license>
+  <owner>
+    <login>awesome-selfhosted</login>
+    <type>Organization</type>
+    <url>https://github.com/awesome-selfhosted</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 243821 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

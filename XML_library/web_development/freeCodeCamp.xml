@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>freeCodeCamp</name>
+  <full_name>freeCodeCamp/freeCodeCamp</full_name>
+  <description>freeCodeCamp.org's open-source codebase and curriculum. Learn math, programming, and computer science for free.</description>
+  <url>https://github.com/freeCodeCamp/freeCodeCamp</url>
+  <clone_url>https://github.com/freeCodeCamp/freeCodeCamp.git</clone_url>
+  <ssh_url>git@github.com:freeCodeCamp/freeCodeCamp.git</ssh_url>
+  <metadata>
+    <language>TypeScript</language>
+    <stars>426563</stars>
+    <forks>41316</forks>
+    <watchers>426563</watchers>
+    <size>512630</size>
+    <default_branch>main</default_branch>
+    <created_at>2014-12-24T17:49:19Z</created_at>
+    <updated_at>2025-08-26T22:19:21Z</updated_at>
+    <pushed_at>2025-08-26T18:26:04Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>web_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>careers</topic>
+    <topic>certification</topic>
+    <topic>community</topic>
+    <topic>curriculum</topic>
+    <topic>d3</topic>
+    <topic>education</topic>
+    <topic>freecodecamp</topic>
+    <topic>hacktoberfest</topic>
+    <topic>javascript</topic>
+    <topic>learn-to-code</topic>
+    <topic>math</topic>
+    <topic>nodejs</topic>
+    <topic>nonprofits</topic>
+    <topic>programming</topic>
+    <topic>react</topic>
+    <topic>teachers</topic>
+  </topics>
+  <license>
+    <name>BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; License</name>
+    <spdx_id>BSD-3-Clause</spdx_id>
+  </license>
+  <owner>
+    <login>freeCodeCamp</login>
+    <type>Organization</type>
+    <url>https://github.com/freeCodeCamp</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 426563 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

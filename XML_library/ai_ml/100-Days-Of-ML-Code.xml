@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>100-Days-Of-ML-Code</name>
+  <full_name>Avik-Jain/100-Days-Of-ML-Code</full_name>
+  <description>100 Days of ML Coding</description>
+  <url>https://github.com/Avik-Jain/100-Days-Of-ML-Code</url>
+  <clone_url>https://github.com/Avik-Jain/100-Days-Of-ML-Code.git</clone_url>
+  <ssh_url>git@github.com:Avik-Jain/100-Days-Of-ML-Code.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>48039</stars>
+    <forks>11071</forks>
+    <watchers>48039</watchers>
+    <size>10955</size>
+    <default_branch>master</default_branch>
+    <created_at>2018-07-05T09:11:43Z</created_at>
+    <updated_at>2025-08-26T19:29:08Z</updated_at>
+    <pushed_at>2023-12-29T07:57:53Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>100-days-of-code-log</topic>
+    <topic>100daysofcode</topic>
+    <topic>deep-learning</topic>
+    <topic>implementation</topic>
+    <topic>infographics</topic>
+    <topic>linear-algebra</topic>
+    <topic>linear-regression</topic>
+    <topic>logistic-regression</topic>
+    <topic>machine-learning</topic>
+    <topic>machine-learning-algorithms</topic>
+    <topic>naive-bayes-classifier</topic>
+    <topic>python</topic>
+    <topic>scikit-learn</topic>
+    <topic>siraj-raval</topic>
+    <topic>siraj-raval-challenge</topic>
+    <topic>support-vector-machines</topic>
+    <topic>svm</topic>
+    <topic>tutorial</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>Avik-Jain</login>
+    <type>User</type>
+    <url>https://github.com/Avik-Jain</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 48039 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

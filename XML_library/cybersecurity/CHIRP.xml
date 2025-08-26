@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>CHIRP</name>
+  <full_name>cisagov/CHIRP</full_name>
+  <description>A DFIR tool written in Python.     </description>
+  <url>https://github.com/cisagov/CHIRP</url>
+  <clone_url>https://github.com/cisagov/CHIRP.git</clone_url>
+  <ssh_url>git@github.com:cisagov/CHIRP.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>1052</stars>
+    <forks>92</forks>
+    <watchers>1052</watchers>
+    <size>1172</size>
+    <default_branch>main</default_branch>
+    <created_at>2021-03-18T17:29:55Z</created_at>
+    <updated_at>2025-08-22T13:11:09Z</updated_at>
+    <pushed_at>2021-06-09T20:12:04Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cisa</topic>
+    <topic>cybersecurity</topic>
+    <topic>dfir</topic>
+    <topic>ioc</topic>
+    <topic>python</topic>
+    <topic>yara-python</topic>
+  </topics>
+  <license>
+    <name>Creative Commons Zero v1.0 Universal</name>
+    <spdx_id>CC0-1.0</spdx_id>
+  </license>
+  <owner>
+    <login>cisagov</login>
+    <type>Organization</type>
+    <url>https://github.com/cisagov</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 1052 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

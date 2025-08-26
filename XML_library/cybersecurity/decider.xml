@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>decider</name>
+  <full_name>cisagov/decider</full_name>
+  <description>A web application that assists network defenders, analysts, and researchers in the process of mapping adversary behaviors to the MITRE ATT&amp;CK® framework.</description>
+  <url>https://github.com/cisagov/decider</url>
+  <clone_url>https://github.com/cisagov/decider.git</clone_url>
+  <ssh_url>git@github.com:cisagov/decider.git</ssh_url>
+  <metadata>
+    <language>HTML</language>
+    <stars>1194</stars>
+    <forks>135</forks>
+    <watchers>1194</watchers>
+    <size>29536</size>
+    <default_branch>develop</default_branch>
+    <created_at>2023-02-15T22:49:21Z</created_at>
+    <updated_at>2025-08-22T23:34:40Z</updated_at>
+    <pushed_at>2025-06-19T03:13:59Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cybersecurity</topic>
+    <topic>ttp</topic>
+  </topics>
+  <license>
+    <name>Other</name>
+    <spdx_id>NOASSERTION</spdx_id>
+  </license>
+  <owner>
+    <login>cisagov</login>
+    <type>Organization</type>
+    <url>https://github.com/cisagov</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 1194 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

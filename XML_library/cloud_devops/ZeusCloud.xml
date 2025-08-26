@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>ZeusCloud</name>
+  <full_name>Zeus-Labs/ZeusCloud</full_name>
+  <description>Open Source Cloud Security</description>
+  <url>https://github.com/Zeus-Labs/ZeusCloud</url>
+  <clone_url>https://github.com/Zeus-Labs/ZeusCloud.git</clone_url>
+  <ssh_url>git@github.com:Zeus-Labs/ZeusCloud.git</ssh_url>
+  <metadata>
+    <language>TypeScript</language>
+    <stars>724</stars>
+    <forks>53</forks>
+    <watchers>724</watchers>
+    <size>3019</size>
+    <default_branch>main</default_branch>
+    <created_at>2023-02-09T18:43:35Z</created_at>
+    <updated_at>2025-08-20T10:00:16Z</updated_at>
+    <pushed_at>2023-10-26T16:44:28Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cloud_devops</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>aws</topic>
+    <topic>blueteam</topic>
+    <topic>bugbounty</topic>
+    <topic>ciem</topic>
+    <topic>cis</topic>
+    <topic>cloud</topic>
+    <topic>cloudsecurity</topic>
+    <topic>cnapp</topic>
+    <topic>cspm</topic>
+    <topic>cwpp</topic>
+    <topic>cybersecurity</topic>
+    <topic>devsecops</topic>
+    <topic>infosec</topic>
+    <topic>pentesting</topic>
+    <topic>security</topic>
+    <topic>security-tools</topic>
+  </topics>
+  <license>
+    <name>Apache License 2.0</name>
+    <spdx_id>Apache-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>Zeus-Labs</login>
+    <type>Organization</type>
+    <url>https://github.com/Zeus-Labs</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 724 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

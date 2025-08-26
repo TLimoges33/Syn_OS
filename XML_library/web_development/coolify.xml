@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>coolify</name>
+  <full_name>coollabsio/coolify</full_name>
+  <description>An open-source &amp; self-hostable Heroku / Netlify / Vercel alternative.</description>
+  <url>https://github.com/coollabsio/coolify</url>
+  <clone_url>https://github.com/coollabsio/coolify.git</clone_url>
+  <ssh_url>git@github.com:coollabsio/coolify.git</ssh_url>
+  <metadata>
+    <language>PHP</language>
+    <stars>44599</stars>
+    <forks>2851</forks>
+    <watchers>44599</watchers>
+    <size>42638</size>
+    <default_branch>v4.x</default_branch>
+    <created_at>2021-01-25T20:54:01Z</created_at>
+    <updated_at>2025-08-26T21:11:40Z</updated_at>
+    <pushed_at>2025-08-26T19:47:06Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>web_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>analytics</topic>
+    <topic>couchdb</topic>
+    <topic>databases</topic>
+    <topic>docker</topic>
+    <topic>minio</topic>
+    <topic>mongodb</topic>
+    <topic>mysql</topic>
+    <topic>mysql-database</topic>
+    <topic>nextjs</topic>
+    <topic>nodejs</topic>
+    <topic>php</topic>
+    <topic>postgresql</topic>
+    <topic>reactjs</topic>
+    <topic>redis</topic>
+    <topic>self-hosting</topic>
+    <topic>static</topic>
+    <topic>svelte</topic>
+    <topic>vscode</topic>
+    <topic>vuejs</topic>
+  </topics>
+  <license>
+    <name>Apache License 2.0</name>
+    <spdx_id>Apache-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>coollabsio</login>
+    <type>Organization</type>
+    <url>https://github.com/coollabsio</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 44599 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

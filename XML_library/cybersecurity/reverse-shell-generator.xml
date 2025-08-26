@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>reverse-shell-generator</name>
+  <full_name>0dayCTF/reverse-shell-generator</full_name>
+  <description>Hosted Reverse Shell generator with a ton of functionality. -- (Great for CTFs)</description>
+  <url>https://github.com/0dayCTF/reverse-shell-generator</url>
+  <clone_url>https://github.com/0dayCTF/reverse-shell-generator.git</clone_url>
+  <ssh_url>git@github.com:0dayCTF/reverse-shell-generator.git</ssh_url>
+  <metadata>
+    <language>HTML</language>
+    <stars>3537</stars>
+    <forks>755</forks>
+    <watchers>3537</watchers>
+    <size>1162</size>
+    <default_branch>main</default_branch>
+    <created_at>2021-02-27T00:53:13Z</created_at>
+    <updated_at>2025-08-26T19:58:16Z</updated_at>
+    <pushed_at>2025-06-14T04:08:48Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>ctf</topic>
+    <topic>generator</topic>
+    <topic>hacking</topic>
+    <topic>revshell</topic>
+    <topic>security</topic>
+    <topic>tryhackme</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>0dayCTF</login>
+    <type>User</type>
+    <url>https://github.com/0dayCTF</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 3537 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

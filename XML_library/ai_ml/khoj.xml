@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>khoj</name>
+  <full_name>khoj-ai/khoj</full_name>
+  <description>Your AI second brain. Self-hostable. Get answers from the web or your docs. Build custom agents, schedule automations, do deep research. Turn any online or local LLM into your personal, autonomous AI (gpt, claude, gemini, llama, qwen, mistral). Get started - free.</description>
+  <url>https://github.com/khoj-ai/khoj</url>
+  <clone_url>https://github.com/khoj-ai/khoj.git</clone_url>
+  <ssh_url>git@github.com:khoj-ai/khoj.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>30806</stars>
+    <forks>1781</forks>
+    <watchers>30806</watchers>
+    <size>116861</size>
+    <default_branch>master</default_branch>
+    <created_at>2021-08-16T01:48:44Z</created_at>
+    <updated_at>2025-08-26T22:34:48Z</updated_at>
+    <pushed_at>2025-08-23T19:13:51Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>agent</topic>
+    <topic>ai</topic>
+    <topic>assistant</topic>
+    <topic>chat</topic>
+    <topic>chatgpt</topic>
+    <topic>emacs</topic>
+    <topic>image-generation</topic>
+    <topic>llama3</topic>
+    <topic>llamacpp</topic>
+    <topic>llm</topic>
+    <topic>obsidian</topic>
+    <topic>obsidian-md</topic>
+    <topic>offline-llm</topic>
+    <topic>productivity</topic>
+    <topic>rag</topic>
+    <topic>research</topic>
+    <topic>self-hosted</topic>
+    <topic>semantic-search</topic>
+    <topic>stt</topic>
+    <topic>whatsapp-ai</topic>
+  </topics>
+  <license>
+    <name>GNU Affero General Public License v3.0</name>
+    <spdx_id>AGPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>khoj-ai</login>
+    <type>Organization</type>
+    <url>https://github.com/khoj-ai</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 30806 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

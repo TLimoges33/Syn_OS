@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>atom</name>
+  <full_name>atom/atom</full_name>
+  <description>:atom: The hackable text editor</description>
+  <url>https://github.com/atom/atom</url>
+  <clone_url>https://github.com/atom/atom.git</clone_url>
+  <ssh_url>git@github.com:atom/atom.git</ssh_url>
+  <metadata>
+    <language>JavaScript</language>
+    <stars>60585</stars>
+    <forks>17312</forks>
+    <watchers>60585</watchers>
+    <size>330585</size>
+    <default_branch>master</default_branch>
+    <created_at>2012-01-20T18:18:21Z</created_at>
+    <updated_at>2025-08-26T19:50:58Z</updated_at>
+    <pushed_at>2023-01-03T10:49:48Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>atom</topic>
+    <topic>editor</topic>
+    <topic>electron</topic>
+    <topic>javascript</topic>
+    <topic>linux</topic>
+    <topic>macos</topic>
+    <topic>windows</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>atom</login>
+    <type>Organization</type>
+    <url>https://github.com/atom</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 60585 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

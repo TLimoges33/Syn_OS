@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>CyberSources</name>
+  <full_name>bst04/CyberSources</full_name>
+  <description>A curated list of cybersecurity tools and resources.</description>
+  <url>https://github.com/bst04/CyberSources</url>
+  <clone_url>https://github.com/bst04/CyberSources.git</clone_url>
+  <ssh_url>git@github.com:bst04/CyberSources.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>1690</stars>
+    <forks>195</forks>
+    <watchers>1690</watchers>
+    <size>2301</size>
+    <default_branch>main</default_branch>
+    <created_at>2024-11-06T17:55:58Z</created_at>
+    <updated_at>2025-08-26T13:54:07Z</updated_at>
+    <pushed_at>2025-06-19T16:09:51Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>bst04</login>
+    <type>User</type>
+    <url>https://github.com/bst04</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 1690 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

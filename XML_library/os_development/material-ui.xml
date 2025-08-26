@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>material-ui</name>
+  <full_name>mui/material-ui</full_name>
+  <description>Material UI: Comprehensive React component library that implements Google's Material Design. Free forever.</description>
+  <url>https://github.com/mui/material-ui</url>
+  <clone_url>https://github.com/mui/material-ui.git</clone_url>
+  <ssh_url>git@github.com:mui/material-ui.git</ssh_url>
+  <metadata>
+    <language>TypeScript</language>
+    <stars>96472</stars>
+    <forks>32647</forks>
+    <watchers>96472</watchers>
+    <size>693293</size>
+    <default_branch>master</default_branch>
+    <created_at>2014-08-18T19:11:54Z</created_at>
+    <updated_at>2025-08-26T19:28:12Z</updated_at>
+    <pushed_at>2025-08-26T19:47:11Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>os_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>design-system</topic>
+    <topic>material-design</topic>
+    <topic>material-ui</topic>
+    <topic>react</topic>
+    <topic>react-components</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>mui</login>
+    <type>Organization</type>
+    <url>https://github.com/mui</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 96472 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

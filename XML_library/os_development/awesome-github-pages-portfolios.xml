@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>awesome-github-pages-portfolios</name>
+  <full_name>guilyx/awesome-github-pages-portfolios</full_name>
+  <description>😎 A curated list of awesome github pages porfolio templates 📝</description>
+  <url>https://github.com/guilyx/awesome-github-pages-portfolios</url>
+  <clone_url>https://github.com/guilyx/awesome-github-pages-portfolios.git</clone_url>
+  <ssh_url>git@github.com:guilyx/awesome-github-pages-portfolios.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>320</stars>
+    <forks>31</forks>
+    <watchers>320</watchers>
+    <size>41</size>
+    <default_branch>master</default_branch>
+    <created_at>2020-08-11T18:16:32Z</created_at>
+    <updated_at>2025-08-26T12:53:50Z</updated_at>
+    <pushed_at>2025-05-22T10:37:54Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>os_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <license>
+    <name>Creative Commons Zero v1.0 Universal</name>
+    <spdx_id>CC0-1.0</spdx_id>
+  </license>
+  <owner>
+    <login>guilyx</login>
+    <type>User</type>
+    <url>https://github.com/guilyx</url>
+  </owner>
+  <development_potential>
+    <level>medium</level>
+    <score>6</score>
+    <assessment>Good potential for integration. Moderate community interest with 320 stars. Suitable for selective implementation.</assessment>
+  </development_potential>
+</repository>

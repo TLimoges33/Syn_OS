@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>tensorflow</name>
+  <full_name>tensorflow/tensorflow</full_name>
+  <description>An Open Source Machine Learning Framework for Everyone</description>
+  <url>https://github.com/tensorflow/tensorflow</url>
+  <clone_url>https://github.com/tensorflow/tensorflow.git</clone_url>
+  <ssh_url>git@github.com:tensorflow/tensorflow.git</ssh_url>
+  <metadata>
+    <language>C++</language>
+    <stars>191342</stars>
+    <forks>74799</forks>
+    <watchers>191342</watchers>
+    <size>1193885</size>
+    <default_branch>master</default_branch>
+    <created_at>2015-11-07T01:19:20Z</created_at>
+    <updated_at>2025-08-26T22:46:44Z</updated_at>
+    <pushed_at>2025-08-26T22:46:24Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>deep-learning</topic>
+    <topic>deep-neural-networks</topic>
+    <topic>distributed</topic>
+    <topic>machine-learning</topic>
+    <topic>ml</topic>
+    <topic>neural-network</topic>
+    <topic>python</topic>
+    <topic>tensorflow</topic>
+  </topics>
+  <license>
+    <name>Apache License 2.0</name>
+    <spdx_id>Apache-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>tensorflow</login>
+    <type>Organization</type>
+    <url>https://github.com/tensorflow</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 191342 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

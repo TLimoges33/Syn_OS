@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>google-ctf</name>
+  <full_name>google/google-ctf</full_name>
+  <description>Google CTF</description>
+  <url>https://github.com/google/google-ctf</url>
+  <clone_url>https://github.com/google/google-ctf.git</clone_url>
+  <ssh_url>git@github.com:google/google-ctf.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>4779</stars>
+    <forks>575</forks>
+    <watchers>4779</watchers>
+    <size>694506</size>
+    <default_branch>main</default_branch>
+    <created_at>2018-04-27T15:56:03Z</created_at>
+    <updated_at>2025-08-25T16:21:17Z</updated_at>
+    <pushed_at>2025-08-18T18:55:47Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>ctf</topic>
+    <topic>ctf-challenges</topic>
+    <topic>google</topic>
+    <topic>security</topic>
+  </topics>
+  <license>
+    <name>Apache License 2.0</name>
+    <spdx_id>Apache-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>google</login>
+    <type>Organization</type>
+    <url>https://github.com/google</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 4779 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

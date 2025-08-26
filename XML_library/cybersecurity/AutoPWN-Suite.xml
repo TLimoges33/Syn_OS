@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>AutoPWN-Suite</name>
+  <full_name>GamehunterKaan/AutoPWN-Suite</full_name>
+  <description>AutoPWN Suite is a project for scanning vulnerabilities and exploiting systems automatically.</description>
+  <url>https://github.com/GamehunterKaan/AutoPWN-Suite</url>
+  <clone_url>https://github.com/GamehunterKaan/AutoPWN-Suite.git</clone_url>
+  <ssh_url>git@github.com:GamehunterKaan/AutoPWN-Suite.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>1006</stars>
+    <forks>120</forks>
+    <watchers>1006</watchers>
+    <size>10596</size>
+    <default_branch>main</default_branch>
+    <created_at>2022-05-12T14:06:06Z</created_at>
+    <updated_at>2025-08-22T23:28:23Z</updated_at>
+    <pushed_at>2024-08-08T18:00:35Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cybersecurity</topic>
+    <topic>exploitation</topic>
+    <topic>hacking</topic>
+    <topic>hacking-tools</topic>
+    <topic>infosec</topic>
+    <topic>nmap</topic>
+    <topic>penetration-testing</topic>
+    <topic>pentesting</topic>
+    <topic>python</topic>
+    <topic>python3</topic>
+    <topic>scanner</topic>
+    <topic>scanners</topic>
+    <topic>scanning</topic>
+    <topic>security</topic>
+    <topic>security-tools</topic>
+    <topic>vulnerability-scanners</topic>
+  </topics>
+  <license>
+    <name>Other</name>
+    <spdx_id>NOASSERTION</spdx_id>
+  </license>
+  <owner>
+    <login>GamehunterKaan</login>
+    <type>User</type>
+    <url>https://github.com/GamehunterKaan</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 1006 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

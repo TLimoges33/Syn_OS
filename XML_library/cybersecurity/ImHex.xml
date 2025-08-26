@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>ImHex</name>
+  <full_name>WerWolv/ImHex</full_name>
+  <description>🔍 A Hex Editor for Reverse Engineers, Programmers and people who value their retinas when working at 3 AM.</description>
+  <url>https://github.com/WerWolv/ImHex</url>
+  <clone_url>https://github.com/WerWolv/ImHex.git</clone_url>
+  <ssh_url>git@github.com:WerWolv/ImHex.git</ssh_url>
+  <metadata>
+    <language>C++</language>
+    <stars>50249</stars>
+    <forks>2208</forks>
+    <watchers>50249</watchers>
+    <size>49366</size>
+    <default_branch>master</default_branch>
+    <created_at>2020-11-10T14:27:00Z</created_at>
+    <updated_at>2025-08-26T20:48:20Z</updated_at>
+    <pushed_at>2025-08-26T00:10:49Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>analyzer</topic>
+    <topic>binary-analysis</topic>
+    <topic>c-plus-plus</topic>
+    <topic>cpp</topic>
+    <topic>cybersecurity</topic>
+    <topic>dark-mode</topic>
+    <topic>dcode-2025</topic>
+    <topic>dear-imgui</topic>
+    <topic>disassembler</topic>
+    <topic>forensics</topic>
+    <topic>hacking</topic>
+    <topic>hacktoberfest</topic>
+    <topic>hex-editor</topic>
+    <topic>ips</topic>
+    <topic>mathematical-evaluator</topic>
+    <topic>multi-platform</topic>
+    <topic>pattern-language</topic>
+    <topic>reverse-engineering</topic>
+    <topic>static-analysis</topic>
+    <topic>windows</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v2.0</name>
+    <spdx_id>GPL-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>WerWolv</login>
+    <type>User</type>
+    <url>https://github.com/WerWolv</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 50249 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>h4cker</name>
+  <full_name>The-Art-of-Hacking/h4cker</full_name>
+  <description>This repository is primarily maintained by Omar Santos (@santosomar) and includes thousands of resources related to ethical hacking, bug bounties, digital forensics and incident response (DFIR), artificial intelligence security, vulnerability research, exploit development, reverse engineering, and more.</description>
+  <url>https://github.com/The-Art-of-Hacking/h4cker</url>
+  <clone_url>https://github.com/The-Art-of-Hacking/h4cker.git</clone_url>
+  <ssh_url>git@github.com:The-Art-of-Hacking/h4cker.git</ssh_url>
+  <metadata>
+    <language>Jupyter Notebook</language>
+    <stars>22658</stars>
+    <forks>4272</forks>
+    <watchers>22658</watchers>
+    <size>145569</size>
+    <default_branch>master</default_branch>
+    <created_at>2017-06-19T17:11:19Z</created_at>
+    <updated_at>2025-08-26T22:42:52Z</updated_at>
+    <pushed_at>2025-08-26T04:23:31Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>ai</topic>
+    <topic>ai-security</topic>
+    <topic>artificial-intelligence</topic>
+    <topic>awesome-list</topic>
+    <topic>awesome-lists</topic>
+    <topic>cybersecurity</topic>
+    <topic>ethical-hacking</topic>
+    <topic>exploit</topic>
+    <topic>exploit-development</topic>
+    <topic>exploits</topic>
+    <topic>hacker</topic>
+    <topic>hackers</topic>
+    <topic>hacking</topic>
+    <topic>hacking-series</topic>
+    <topic>penetration-testing</topic>
+    <topic>training</topic>
+    <topic>vulnerability</topic>
+    <topic>vulnerability-assessment</topic>
+    <topic>vulnerability-identification</topic>
+    <topic>vulnerability-management</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>The-Art-of-Hacking</login>
+    <type>Organization</type>
+    <url>https://github.com/The-Art-of-Hacking</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 22658 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

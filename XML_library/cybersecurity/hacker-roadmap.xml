@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>hacker-roadmap</name>
+  <full_name>sundowndev/hacker-roadmap</full_name>
+  <description>A collection of hacking tools, resources and references to practice ethical hacking.</description>
+  <url>https://github.com/sundowndev/hacker-roadmap</url>
+  <clone_url>https://github.com/sundowndev/hacker-roadmap.git</clone_url>
+  <ssh_url>git@github.com:sundowndev/hacker-roadmap.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>14484</stars>
+    <forks>1637</forks>
+    <watchers>14484</watchers>
+    <size>148</size>
+    <default_branch>master</default_branch>
+    <created_at>2018-04-02T12:20:28Z</created_at>
+    <updated_at>2025-08-26T20:54:24Z</updated_at>
+    <pushed_at>2023-10-16T11:21:45Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>exploitation</topic>
+    <topic>frameworks</topic>
+    <topic>hacking</topic>
+    <topic>hacking-tool</topic>
+    <topic>hacktools</topic>
+    <topic>information-gathering</topic>
+    <topic>penetration-testing</topic>
+    <topic>pentest</topic>
+    <topic>pentesting</topic>
+    <topic>post-exploitation</topic>
+    <topic>roadmap</topic>
+    <topic>security</topic>
+    <topic>web-hacking</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>sundowndev</login>
+    <type>User</type>
+    <url>https://github.com/sundowndev</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>7</score>
+    <assessment>Excellent potential for integration. High community engagement with 14484 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>
