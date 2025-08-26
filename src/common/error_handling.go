@@ -45,15 +45,15 @@ type ErrorContext map[string]interface{}
 
 // SynOSError represents a standardized error in Syn_OS
 type SynOSError struct {
-	Message       string         `json:"message"`
-	Category      ErrorCategory  `json:"category"`
-	Severity      ErrorSeverity  `json:"severity"`
-	ErrorCode     string         `json:"error_code"`
-	Context       ErrorContext   `json:"context"`
-	Timestamp     time.Time      `json:"timestamp"`
-	Service       string         `json:"service"`
-	StackTrace    string         `json:"stack_trace,omitempty"`
-	OriginalError error          `json:"original_error,omitempty"`
+	Message       string        `json:"message"`
+	Category      ErrorCategory `json:"category"`
+	Severity      ErrorSeverity `json:"severity"`
+	ErrorCode     string        `json:"error_code"`
+	Context       ErrorContext  `json:"context"`
+	Timestamp     time.Time     `json:"timestamp"`
+	Service       string        `json:"service"`
+	StackTrace    string        `json:"stack_trace,omitempty"`
+	OriginalError error         `json:"original_error,omitempty"`
 }
 
 // Error implements the error interface
@@ -64,11 +64,11 @@ func (e *SynOSError) Error() string {
 // NewError creates a new SynOSError
 func NewError(message string, category ErrorCategory, severity ErrorSeverity, service string) *SynOSError {
 	errorCode := fmt.Sprintf("%s_%s", category, severity)
-	
+
 	// Get stack trace
 	buf := make([]byte, 1024)
 	runtime.Stack(buf, false)
-	
+
 	return &SynOSError{
 		Message:    message,
 		Category:   category,
@@ -126,7 +126,7 @@ func NewErrorHandler(serviceName string) (*ErrorHandler, error) {
 	if err := os.MkdirAll(logDir, 0755); err != nil {
 		return nil, fmt.Errorf("failed to create log directory: %w", err)
 	}
-	
+
 	// Open log file
 	logFile, err := os.OpenFile(
 		filepath.Join(logDir, fmt.Sprintf("%s_errors.log", serviceName)),
@@ -136,17 +136,17 @@ func NewErrorHandler(serviceName string) (*ErrorHandler, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to open log file: %w", err)
 	}
-	
+
 	handler := &ErrorHandler{
 		ServiceName:  serviceName,
 		LogFile:      logFile,
 		ErrorStats:   make(map[ErrorCategory]int64),
 		AlertChannel: make(chan *SynOSError, 100), // Buffered channel for alerts
 	}
-	
+
 	// Start alert processor
 	go handler.processAlerts()
-	
+
 	return handler, nil
 }
 
@@ -154,13 +154,13 @@ func NewErrorHandler(serviceName string) (*ErrorHandler, error) {
 func (h *ErrorHandler) HandleError(err *SynOSError) {
 	// Update statistics
 	h.ErrorStats[err.Category]++
-	
+
 	// Log error
 	logEntry := fmt.Sprintf("%s - %s\n", time.Now().UTC().Format(time.RFC3339), err.ToJSON())
 	if _, writeErr := h.LogFile.WriteString(logEntry); writeErr != nil {
 		log.Printf("Failed to write error to log file: %v", writeErr)
 	}
-	
+
 	// Log to standard logger based on severity
 	switch err.Severity {
 	case SeverityCritical, SeverityHigh:
@@ -170,7 +170,7 @@ func (h *ErrorHandler) HandleError(err *SynOSError) {
 	case SeverityLow, SeverityInfo:
 		log.Printf("INFO: %s", err.Error())
 	}
-	
+
 	// Send alert for critical errors
 	if err.IsCritical() {
 		select {
@@ -193,15 +193,15 @@ func (h *ErrorHandler) processAlerts() {
 		return
 	}
 	defer alertFile.Close()
-	
+
 	for alert := range h.AlertChannel {
-		alertEntry := fmt.Sprintf("%s - CRITICAL ALERT: %s\n", 
+		alertEntry := fmt.Sprintf("%s - CRITICAL ALERT: %s\n",
 			time.Now().UTC().Format(time.RFC3339), alert.ToJSON())
-		
+
 		if _, err := alertFile.WriteString(alertEntry); err != nil {
 			log.Printf("Failed to write critical alert: %v", err)
 		}
-		
+
 		// Here you could integrate with external alerting systems
 		// like PagerDuty, Slack, email, etc.
 		log.Printf("🚨 CRITICAL ALERT: %s", alert.Error())
@@ -295,7 +295,7 @@ func Wrap(err error, category ErrorCategory, service string) *SynOSError {
 	if err == nil {
 		return nil
 	}
-	
+
 	synError := NewError(err.Error(), category, SeverityMedium, service)
 	return synError.WithOriginalError(err)
 }
@@ -305,7 +305,7 @@ func WrapWithMessage(err error, message string, category ErrorCategory, service 
 	if err == nil {
 		return nil
 	}
-	
+
 	synError := NewError(message, category, SeverityMedium, service)
 	return synError.WithOriginalError(err)
 }
@@ -320,14 +320,14 @@ func SafeExecute(fn func() error, service string) (err *SynOSError) {
 				WithContext("panic", true)
 		}
 	}()
-	
+
 	if fnErr := fn(); fnErr != nil {
 		if synErr, ok := fnErr.(*SynOSError); ok {
 			return synErr
 		}
 		return Wrap(fnErr, CategorySystem, service)
 	}
-	
+
 	return nil
 }
 
@@ -336,14 +336,14 @@ func LogAndContinue(err error, handler *ErrorHandler, service string) {
 	if err == nil {
 		return
 	}
-	
+
 	var synErr *SynOSError
 	if se, ok := err.(*SynOSError); ok {
 		synErr = se
 	} else {
 		synErr = Wrap(err, CategorySystem, service)
 	}
-	
+
 	handler.HandleError(synErr)
 }
 
@@ -362,24 +362,24 @@ func Example() {
 		log.Fatal("Failed to create error handler:", err)
 	}
 	defer handler.Close()
-	
+
 	// Create and handle different types of errors
 	authErr := AuthenticationError("Invalid credentials", "auth_service").
 		WithContext("user_id", "12345").
 		WithContext("ip_address", "192.168.1.100")
-	
+
 	handler.HandleError(authErr)
-	
+
 	// Wrap a standard error
 	_, openErr := os.Open("/nonexistent/file")
 	if openErr != nil {
 		synErr := Wrap(openErr, CategoryFilesystem, "file_service").
 			WithContext("operation", "open_file").
 			WithContext("file_path", "/nonexistent/file")
-		
+
 		handler.HandleError(synErr)
 	}
-	
+
 	// Safe execution example
 	if execErr := SafeExecute(func() error {
 		// This would panic
@@ -387,7 +387,7 @@ func Example() {
 	}, "test_service"); execErr != nil {
 		handler.HandleError(execErr)
 	}
-	
+
 	// Print statistics
 	stats := handler.GetErrorStatistics()
 	for category, count := range stats {
