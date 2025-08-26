@@ -1,192 +1,56 @@
 {
-  "name": "Syn_OS Secure Development Environment",
-  "dockerFile": "Dockerfile",
-  "workspaceFolder": "/workspace",
-  "shutdownAction": "stopContainer",
-  
-  "features": {
-    "ghcr.io/devcontainers/features/git:1": {
-      "ppa": true,
-      "version": "latest"
-    },
-    "ghcr.io/devcontainers/features/github-cli:1": {
-      "installDirectlyFromGitHubRelease": true,
-      "version": "latest"
-    },
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "enableNonRootDocker": "true",
-      "moby": "true",
-      "azureDnsAutoDetection": "true",
-      "installDockerBuildx": "true"
-    },
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "18",
-      "nodeGypDependencies": true
-    },
-    "ghcr.io/devcontainers/features/python:1": {
-      "version": "3.11",
-      "installTools": true
-    },
-    "ghcr.io/devcontainers/features/go:1": {
-      "version": "1.21"
-    },
-    "ghcr.io/devcontainers/features/rust:1": {
-      "version": "latest",
-      "profile": "default"
-    }
-  },
-
+  "name": "Master Dev Codespace - Syn_OS",
+  "dockerFile": "Dockerfile.master-dev",
   "customizations": {
     "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "git.autofetch": true,
+        "git.enableSmartCommit": true,
+        "git.confirmSync": false,
+        "files.autoSave": "afterDelay",
+        "python.defaultInterpreterPath": "/usr/bin/python3",
+        "rust-analyzer.server.path": "/usr/local/bin/rust-analyzer",
+        "workbench.colorTheme": "GitHub Dark Default",
+        "workbench.startupEditor": "readme"
+      },
       "extensions": [
-        // Core Language Support
-        "rust-lang.rust-analyzer",
-        "ms-vscode.cpptools",
-        "ms-vscode.cpptools-extension-pack",
-        "golang.go",
         "ms-python.python",
-        "ms-python.pylint",
-        "ms-pyright.pyright",
-        "ms-python.pylance",
-        "ms-vscode.makefile-tools",
-        "twxs.cmake",
-        "ms-vscode.cmake-tools",
-        
-        // Assembly and Low-Level Development
-        "13xforever.language-x86-64-assembly",
-        "maziac.asm-code-lens",
-        "ms-vscode.hexeditor",
-        "ms-vscode.vscode-embedded-tools",
-        
-        // Debugging and Analysis
-        "vadimcn.vscode-lldb",
-        "webfreak.debug",
-        "rogalmic.bash-debug",
-        "ms-vscode.test-adapter-converter",
-        
-        // Documentation and Diagramming
-        "yzhang.markdown-all-in-one",
-        "bierner.markdown-mermaid",
-        "hediet.vscode-drawio",
-        "davidanson.vscode-markdownlint",
-        
-        // Git and Version Control
+        "ms-python.vscode-pylance",
+        "rust-lang.rust-analyzer",
+        "ms-vscode.vscode-json",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "ms-vscode.vscode-terminal",
         "eamodio.gitlens",
         "github.vscode-pull-request-github",
-        "donjayamanne.githistory",
-        "github.vscode-github-actions",
-        
-        // Security and Analysis
-        "snyk-security.snyk-vulnerability-scanner",
-        "streetsidesoftware.code-spell-checker",
-        
-        // Container and Cloud
-        "ms-azuretools.vscode-docker",
-        "ms-azuretools.vscode-containers",
-        "ms-kubernetes-tools.vscode-kubernetes-tools",
-        "ms-azuretools.azure-dev",
-        
-        // Productivity and Code Quality
-        "formulahendry.code-runner",
-        "aaron-bond.better-comments",
-        "esbenp.prettier-vscode",
-        "editorconfig.editorconfig",
-        "emeraldwalk.runonsave",
-        "redhat.vscode-yaml",
-        "tamasfe.even-better-toml",
-        "serayuzgur.crates",
-        
-        // AI Development - Modern Copilot Integration
-        "github.copilot",
-        "github.copilot-chat",
-        "continue.continue",
-        
-        // Database and Data
-        "cweijan.vscode-mysql-client2",
-        "cweijan.dbclient-jdbc",
-        "alexcvzz.vscode-sqlite",
-        "qwtel.sqlite-viewer",
-        
-        // Remote Development and Collaboration
-        "ms-vscode-remote.remote-containers",
-        "ms-vscode-remote.remote-wsl",
-        "ms-vsliveshare.vsliveshare"
-      ],
-      "settings": {
-        "rust-analyzer.checkOnSave.command": "clippy",
-        "rust-analyzer.cargo.features": "all",
-        "rust-analyzer.cargo.loadOutDirsFromCheck": true,
-        "rust-analyzer.procMacro.enable": true,
-        "rust-analyzer.experimental.procAttrMacros": true,
-        "lldb.library": "/usr/lib/x86_64-linux-gnu/liblldb.so",
-        "security.workspace.trust.enabled": false,
-        "extensions.autoUpdate": false,
-        "telemetry.enableCrashReporter": false,
-        "telemetry.enableTelemetry": false,
-        "workbench.enableExperiments": false,
-        "files.associations": {
-          "*.toml": "toml",
-          "*.rs": "rust"
-        }
-      }
+        "ms-vscode.remote-repositories",
+        "streetsidesoftware.code-spell-checker"
+      ]
     }
   },
-
-  "forwardPorts": [3000, 8080, 8443, 9000],
-  "portsAttributes": {
-    "8443": {
-      "label": "Secure Dev Server",
-      "protocol": "https",
-      "requireLocalPort": true,
-      "onAutoForward": "silent"
-    },
-    "3000": {
-      "label": "Frontend Dev",
-      "onAutoForward": "silent"
-    }
-  },
-
-  "secrets": {
-    "GITHUB_TOKEN": {
-      "description": "GitHub Personal Access Token for secure operations",
-      "documentationUrl": "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token"
-    }
-  },
-
-  "containerEnv": {
-    "RUST_BACKTRACE": "1",
-    "CARGO_NET_GIT_FETCH_WITH_CLI": "true",
-    "DEBIAN_FRONTEND": "noninteractive",
-    "TERM": "xterm-256color",
-    "SECURITY_ENABLED": "true",
-    "ENVIRONMENT": "development",
-    "DEVELOPMENT_MODE": "true",
-    "SYN_OS_DEV_ENV": "true"
-  },
-
-  "remoteEnv": {
-    "PATH": "${containerEnv:PATH}:/home/vscode/.cargo/bin:/usr/local/go/bin"
-  },
-
-  "postCreateCommand": "bash .devcontainer/codespace-setup.sh && bash .devcontainer/enhanced-post-create.sh",
-  "postStartCommand": "bash .devcontainer/post-start.sh",
-
+  "postCreateCommand": "bash setup_master_dev_simple.sh",
+  "postStartCommand": "echo '🎯 Master Dev Codespace Ready! Run: dashboard'",
+  "remoteUser": "vscode",
+  "workspaceFolder": "/workspaces/Syn_OS-Dev-Team",
   "mounts": [
-    "source=${localWorkspaceFolder}/.cargo,target=/home/vscode/.cargo,type=bind,consistency=cached",
-    "source=${localWorkspaceFolder}/target,target=/workspace/target,type=bind,consistency=cached"
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
   ],
-
-  "runArgs": [
-    "--security-opt=no-new-privileges:true",
-    "--cap-drop=ALL",
-    "--cap-add=SYS_PTRACE",
-    "--security-opt=seccomp=unconfined",
-    "--privileged=false",
-    "--read-only=false"
-  ],
-
-  "initializeCommand": "echo 'Initializing Syn_OS secure development environment...'",
-  "updateContentCommand": "echo 'Updating development environment...'",
-
-  "remoteUser": "vscode"
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/rust:1": {},
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.11"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "18"
+    }
+  },
+  "forwardPorts": [
+    3000,
+    8000,
+    8080
+  ]
 }
