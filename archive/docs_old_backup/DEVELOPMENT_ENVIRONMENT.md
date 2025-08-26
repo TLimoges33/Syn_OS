@@ -89,9 +89,19 @@ gh codespace create --repo TLimoges33/Syn_OS
 
 ```text
 
+## Or via GitHub web interface
+## https://github.com/TLimoges33/Syn_OS → Code → Codespaces → Create
+
+```text
+```text
+
 ### **Validate Environment**
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Comprehensive validation (90+ checks)
@@ -108,9 +118,20 @@ rustc --version && python3 --version && go version && node --version
 
 ```text
 
+## Quick validation
+
+rustc --version && python3 --version && go version && node --version
+
+```text
+```text
+
 ### **Security Setup**
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Initialize security monitoring
@@ -127,11 +148,22 @@ bash ~/.local/bin/security-scan
 
 ```text
 
+## Run security scan
+
+bash ~/.local/bin/security-scan
+
+```text
+```text
+
 ## 🔧 Development Workflows
 
 ### **Rust Kernel Development**
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Create new kernel module
@@ -164,9 +196,36 @@ cargo audit && cargo deny check
 
 ```text
 
+## Cross-compile for kernel
+
+cargo kbuild
+
+## Test in QEMU
+
+cargo krun
+
+## Security audit
+
+cargo audit && cargo deny check
+
+```text
+## Test in QEMU
+
+cargo krun
+
+## Security audit
+
+cargo audit && cargo deny check
+
+```text
+
 ### **Multi-Language Project**
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Start file watching
@@ -191,9 +250,28 @@ cargo flamegraph --bin my-binary
 
 ```text
 
+## Run security scan
+
+audit
+
+## Performance profiling
+
+cargo flamegraph --bin my-binary
+
+```text
+## Performance profiling
+
+cargo flamegraph --bin my-binary
+
+```text
+
 ### **Container Development**
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Build secure container
@@ -218,11 +296,30 @@ kubectl apply -f deployment.yaml
 
 ```text
 
+## Security scan
+
+trivy image syn-os-module
+
+## Kubernetes deployment
+
+kubectl apply -f deployment.yaml
+
+```text
+## Kubernetes deployment
+
+kubectl apply -f deployment.yaml
+
+```text
+
 ## 🔍 Available Commands
 
 ### **Development Shortcuts**
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Rust
@@ -245,6 +342,24 @@ ga      # git add
 gc      # git commit
 gp      # git push
 ```text
+
+rt      # cargo test
+rc      # cargo check
+rw      # cargo watch
+
+## Python
+
+py      # python3
+pytest  # python3 -m pytest
+
+## Git
+
+gs      # git status
+ga      # git add
+gc      # git commit
+gp      # git push
+
+```text
 rt      # cargo test
 rc      # cargo check
 rw      # cargo watch
@@ -263,7 +378,22 @@ gp      # git push
 
 ```text
 
+py      # python3
+pytest  # python3 -m pytest
+
+## Git
+
+gs      # git status
+ga      # git add
+gc      # git commit
+gp      # git push
+
+```text
+
 ### **Security Commands**
+
+```bash
+```bash
 
 ```bash
 
@@ -275,7 +405,13 @@ scan               # Quick container scan
 
 ```text
 
+```text
+```text
+
 ### **Project Creation**
+
+```bash
+```bash
 
 ```bash
 
@@ -283,6 +419,9 @@ scan               # Quick container scan
 new-rust-project <name>    # Create Rust project with security setup
 ```text
 
+```text
+
+```text
 ```text
 
 ## 📊 Performance Benchmarks
@@ -384,6 +523,97 @@ new-rust-project <name>    # Create Rust project with security setup
 
 ```bash
 
+- **Initial codespace creation**: ~3-5 minutes
+- **Post-create script execution**: ~5-8 minutes
+- **Total ready time**: ~8-13 minutes
+
+### **Tool Coverage**
+
+- **✅ 70+ VS Code extensions**: Complete development ecosystem
+- **✅ 40+ command-line tools**: Comprehensive toolchain
+- **✅ 90%+ success rate**: Validated working environment
+- **✅ Multi-architecture support**: x86_64, ARM64, WASM
+
+## 🛡️ Security Features
+
+### **Built-in Security**
+
+- **Zero-trust container**: Non-root user, capability dropping
+- **Pre-commit hooks**: Automated security scanning
+- **Secret detection**: Prevents credential leaks
+- **Dependency scanning**: Multi-language vulnerability detection
+- **Container hardening**: Security-focused Dockerfile
+
+### **Compliance Ready**
+
+- **SOC 2 Type II**: Security controls implemented
+- **ISO 27001**: Information security management
+- **NIST Framework**: Cybersecurity framework alignment
+
+## 🔄 CI/CD Integration
+
+### **GitHub Actions**
+
+- **Security Fortress**: 5-stage security validation
+- **Codespace Prebuilds**: Automated container builds
+- **Compliance Validation**: Automated compliance checking
+
+### **Pre-commit Hooks**
+
+- Code formatting (Black, Prettier, rustfmt)
+- Security scanning (Bandit, cargo-audit)
+- Secret detection (detect-secrets)
+- Lint checking (ESLint, Clippy, Pylint)
+
+## 📈 Monitoring & Observability
+
+### **Real-time Monitoring**
+
+```bash
+### **Tool Coverage**
+
+- **✅ 70+ VS Code extensions**: Complete development ecosystem
+- **✅ 40+ command-line tools**: Comprehensive toolchain
+- **✅ 90%+ success rate**: Validated working environment
+- **✅ Multi-architecture support**: x86_64, ARM64, WASM
+
+## 🛡️ Security Features
+
+### **Built-in Security**
+
+- **Zero-trust container**: Non-root user, capability dropping
+- **Pre-commit hooks**: Automated security scanning
+- **Secret detection**: Prevents credential leaks
+- **Dependency scanning**: Multi-language vulnerability detection
+- **Container hardening**: Security-focused Dockerfile
+
+### **Compliance Ready**
+
+- **SOC 2 Type II**: Security controls implemented
+- **ISO 27001**: Information security management
+- **NIST Framework**: Cybersecurity framework alignment
+
+## 🔄 CI/CD Integration
+
+### **GitHub Actions**
+
+- **Security Fortress**: 5-stage security validation
+- **Codespace Prebuilds**: Automated container builds
+- **Compliance Validation**: Automated compliance checking
+
+### **Pre-commit Hooks**
+
+- Code formatting (Black, Prettier, rustfmt)
+- Security scanning (Bandit, cargo-audit)
+- Secret detection (detect-secrets)
+- Lint checking (ESLint, Clippy, Pylint)
+
+## 📈 Monitoring & Observability
+
+### **Real-time Monitoring**
+
+```bash
+
 ## View security logs
 
 tail -f .logs/tunnel/security.log
@@ -406,9 +636,28 @@ netstat -tuln
 
 ```text
 
+## Monitor system resources
+
+htop
+
+## Network monitoring
+
+netstat -tuln
+
+```text
+## Network monitoring
+
+netstat -tuln
+
+```text
+
 ### **Performance Analysis**
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## CPU profiling
@@ -429,6 +678,21 @@ cargo flamegraph --bin my-binary
 
 valgrind --tool=memcheck ./my-binary
 
+## Rust-specific profiling
+
+cargo flamegraph --bin my-binary
+
+```text
+
+## Memory analysis
+
+valgrind --tool=memcheck ./my-binary
+
+## Rust-specific profiling
+
+cargo flamegraph --bin my-binary
+
+```text
 ## Rust-specific profiling
 
 cargo flamegraph --bin my-binary
@@ -463,11 +727,61 @@ cargo flamegraph --bin my-binary
 ### **Common Issues**
 
 ## Codespace creation fails:
+
 ```bash
 1. **Run security scans** before every commit
 2. **Use pre-commit hooks** for automated validation
 3. **Scan dependencies** regularly with `audit`
 4. **Follow zero-trust principles** in all code
+
+### **Performance Optimization**
+
+1. **Profile before optimizing** with flamegraph
+2. **Use cargo-watch** for rapid iteration
+3. **Run benchmarks** with criterion.rs
+4. **Monitor memory usage** with valgrind
+
+### **Code Quality**
+
+1. **Enable all clippy lints** for Rust
+2. **Use static analysis** tools (cppcheck, bandit)
+3. **Maintain high test coverage** (>90%)
+4. **Document all public APIs**
+
+## 🆘 Troubleshooting
+
+### **Common Issues**
+
+## Codespace creation fails:
+
+```bash
+
+1. **Run security scans** before every commit
+2. **Use pre-commit hooks** for automated validation
+3. **Scan dependencies** regularly with `audit`
+4. **Follow zero-trust principles** in all code
+
+### **Performance Optimization**
+
+1. **Profile before optimizing** with flamegraph
+2. **Use cargo-watch** for rapid iteration
+3. **Run benchmarks** with criterion.rs
+4. **Monitor memory usage** with valgrind
+
+### **Code Quality**
+
+1. **Enable all clippy lints** for Rust
+2. **Use static analysis** tools (cppcheck, bandit)
+3. **Maintain high test coverage** (>90%)
+4. **Document all public APIs**
+
+## 🆘 Troubleshooting
+
+### **Common Issues**
+
+## Codespace creation fails:
+
+```bash
 
 ### **Performance Optimization**
 
@@ -504,9 +818,18 @@ gh repo view TLimoges33/Syn_OS
 
 ```text
 
+## Try web interface
+## https://github.com/TLimoges33/Syn_OS
+
+```text
+```text
+
 ## Tools not working:
+
+```bash
 ```bash
 
+```bash
 ```bash
 
 ## Re-run post-create script
@@ -523,9 +846,19 @@ bash .devcontainer/validate-tools.sh
 
 ```text
 
+## Validate environment
+
+bash .devcontainer/validate-tools.sh
+
+```text
+```text
+
 ## Permission issues:
+
+```bash
 ```bash
 
+```bash
 ```bash
 
 ## Fix permissions
@@ -533,6 +866,9 @@ bash .devcontainer/validate-tools.sh
 sudo chown -R vscode:vscode /workspace
 ```text
 
+```text
+
+```text
 ```text
 
 ### **Performance Issues**
@@ -560,6 +896,50 @@ Your Syn_OS development environment is now configured with:
 - **Comprehensive monitoring**
 
 ## Happy coding! 🚀
+
+- **Network issues**: Check tunnel configuration
+
+## 📚 Additional Resources
+
+- **CLAUDE.md**: AI assistant guidance
+- **SECURITY.md**: Security policies and procedures
+- **PROJECT_STRUCTURE.md**: Architecture overview
+- **CONTRIBUTING.md**: Development guidelines
+
+## 🎉 Ready to Develop!
+
+Your Syn_OS development environment is now configured with:
+
+- **Quantum chess level sophistication**
+- **Extreme security precautions**
+- **Enterprise-grade tooling**
+- **Multi-language support**
+- **Performance optimization tools**
+- **Comprehensive monitoring**
+
+## Happy coding! 🚀
+- **Network issues**: Check tunnel configuration
+
+## 📚 Additional Resources
+
+- **CLAUDE.md**: AI assistant guidance
+- **SECURITY.md**: Security policies and procedures
+- **PROJECT_STRUCTURE.md**: Architecture overview
+- **CONTRIBUTING.md**: Development guidelines
+
+## 🎉 Ready to Develop!
+
+Your Syn_OS development environment is now configured with:
+
+- **Quantum chess level sophistication**
+- **Extreme security precautions**
+- **Enterprise-grade tooling**
+- **Multi-language support**
+- **Performance optimization tools**
+- **Comprehensive monitoring**
+
+## Happy coding! 🚀
+
 - **Network issues**: Check tunnel configuration
 
 ## 📚 Additional Resources

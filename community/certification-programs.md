@@ -299,4 +299,5 @@ consciousness-integrated computing, AI-enhanced cybersecurity, and advanced educ
 * Syn_OS Certification Programs - Pioneering professional development in consciousness-integrated computing*
 
 ## Ready to become a certified consciousness computing professional?
+
 Start your journey today: certification@syn-os.org

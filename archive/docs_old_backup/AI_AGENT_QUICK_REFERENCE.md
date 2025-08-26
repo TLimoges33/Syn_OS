@@ -33,6 +33,9 @@ git checkout -b feature/parrotos-fork
 
 ```text
 
+```text
+```text
+
 - --
 
 ## Agent 2: Kernel Development
@@ -52,12 +55,44 @@ git checkout -b feature/parrotos-fork
 4. Test kernel module loading
 
 * *Key Commands**:
+
+```bash
+* *Branch**: `feature/kernel-customization`
+* *Primary Files**:
+
+- `kernel/synapticos/core.c`
+- `include/linux/synapticos.h`
+- `kernel/synapticos/Kconfig`
+
+* *Day 1 Tasks**:
+
+1. Set up kernel build environment
+2. Create microprocess API headers
+3. Implement basic AI hooks
+4. Test kernel module loading
+
+* *Key Commands**:
+
 ```bash
 
 * *Branch**: `feature/kernel-customization`
 * *Primary Files**:
 
 - `kernel/synapticos/core.c`
+- `include/linux/synapticos.h`
+- `kernel/synapticos/Kconfig`
+
+* *Day 1 Tasks**:
+
+1. Set up kernel build environment
+2. Create microprocess API headers
+3. Implement basic AI hooks
+4. Test kernel module loading
+
+* *Key Commands**:
+
+```bash
+
 - `include/linux/synapticos.h`
 - `kernel/synapticos/Kconfig`
 
@@ -79,6 +114,9 @@ insmod synapticos_core.ko
 
 ```text
 
+```text
+```text
+
 - --
 
 ## Agent 3: LM Studio Integration
@@ -98,12 +136,44 @@ insmod synapticos_core.ko
 4. Set up systemd service
 
 * *Key Commands**:
+
+```bash
+* *Branch**: `feature/consciousness-system`
+* *Primary Files**:
+
+- `packages/consciousness/synapticos_consciousness/lm_studio.py`
+- `packages/consciousness/requirements.txt`
+- `/etc/systemd/system/synapticos-consciousness.service`
+
+* *Day 1 Tasks**:
+
+1. Create LM Studio client
+2. Implement model management
+3. Build inference pipeline
+4. Set up systemd service
+
+* *Key Commands**:
+
 ```bash
 
 * *Branch**: `feature/consciousness-system`
 * *Primary Files**:
 
 - `packages/consciousness/synapticos_consciousness/lm_studio.py`
+- `packages/consciousness/requirements.txt`
+- `/etc/systemd/system/synapticos-consciousness.service`
+
+* *Day 1 Tasks**:
+
+1. Create LM Studio client
+2. Implement model management
+3. Build inference pipeline
+4. Set up systemd service
+
+* *Key Commands**:
+
+```bash
+
 - `packages/consciousness/requirements.txt`
 - `/etc/systemd/system/synapticos-consciousness.service`
 
@@ -125,6 +195,9 @@ sudo systemctl start synapticos-consciousness
 
 ```text
 
+```text
+```text
+
 - --
 
 ## Agent 4: Personal Context Engine
@@ -144,6 +217,24 @@ sudo systemctl start synapticos-consciousness
 4. Create CLI tools
 
 * *Key Commands**:
+
+```bash
+* *Branch**: `feature/context-engine`
+* *Primary Files**:
+
+- `packages/consciousness/synapticos_consciousness/context_engine.py`
+- `packages/consciousness/synapticos_consciousness/security_tutor.py`
+- `/usr/local/bin/synapticos-context`
+
+* *Day 1 Tasks**:
+
+1. Create user profiling system
+2. Implement skill tracking
+3. Build tutorial framework
+4. Create CLI tools
+
+* *Key Commands**:
+
 ```bash
 
 * *Branch**: `feature/context-engine`
@@ -163,12 +254,29 @@ sudo systemctl start synapticos-consciousness
 * *Key Commands**:
 
 ```bash
+
+- `packages/consciousness/synapticos_consciousness/security_tutor.py`
+- `/usr/local/bin/synapticos-context`
+
+* *Day 1 Tasks**:
+
+1. Create user profiling system
+2. Implement skill tracking
+3. Build tutorial framework
+4. Create CLI tools
+
+* *Key Commands**:
+
+```bash
 cd packages/consciousness
 python -m synapticos_consciousness.context_engine init
 synapticos-context profile
 synapticos-context skills
 ```text
 
+```text
+
+```text
 ```text
 
 - --
@@ -232,6 +340,59 @@ synapticos-context skills
 
 ```bash
 
+### Morning (10 AM EST Standup)
+
+- [ ] Pull latest changes from main
+- [ ] Review assigned tasks
+- [ ] Check integration points with other agents
+- [ ] Update project board
+
+### Development
+
+- [ ] Write tests first (TDD)
+- [ ] Implement features
+- [ ] Run security scans
+- [ ] Update documentation
+
+### Evening
+
+- [ ] Commit changes with clear messages
+- [ ] Push to feature branch
+- [ ] Create PR if ready for review
+- [ ] Update tomorrow's plan
+
+- --
+
+## 🔧 Common Commands
+
+### Git Workflow
+
+```bash
+- [ ] Check integration points with other agents
+- [ ] Update project board
+
+### Development
+
+- [ ] Write tests first (TDD)
+- [ ] Implement features
+- [ ] Run security scans
+- [ ] Update documentation
+
+### Evening
+
+- [ ] Commit changes with clear messages
+- [ ] Push to feature branch
+- [ ] Create PR if ready for review
+- [ ] Update tomorrow's plan
+
+- --
+
+## 🔧 Common Commands
+
+### Git Workflow
+
+```bash
+
 ## Start new feature
 
 git checkout main
@@ -244,6 +405,7 @@ git add .
 git commit -m "feat: implement X for Y reason"
 git push origin feature/your-feature
 ```text
+
 git checkout -b feature/your-feature
 
 ## Commit changes
@@ -253,10 +415,27 @@ git commit -m "feat: implement X for Y reason"
 git push origin feature/your-feature
 
 ```text
+git checkout -b feature/your-feature
+
+## Commit changes
+
+git add .
+git commit -m "feat: implement X for Y reason"
+git push origin feature/your-feature
+
+```text
+git commit -m "feat: implement X for Y reason"
+git push origin feature/your-feature
+
+```text
 
 ### Testing
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Python tests
@@ -281,9 +460,28 @@ make test-modules
 
 ```text
 
+## Kernel tests
+
+make test-modules
+
+## Integration tests
+
+./scripts/run-integration-tests.sh
+
+```text
+## Integration tests
+
+./scripts/run-integration-tests.sh
+
+```text
+
 ### Building
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Build packages
@@ -312,6 +510,23 @@ make modules
 
 ```text
 
+## Build kernel modules
+
+cd kernel
+make modules
+
+## Build ISO
+
+./scripts/build-iso.sh
+
+```text
+
+## Build ISO
+
+./scripts/build-iso.sh
+
+```text
+
 - --
 
 ## 🚨 Troubleshooting
@@ -321,6 +536,11 @@ make modules
 ```bash
 ### LM Studio Connection Issues
 
+```bash
+
+### LM Studio Connection Issues
+
+```bash
 ```bash
 
 ## Check if LM Studio is running
@@ -337,9 +557,20 @@ sudo systemctl restart lmstudio
 
 ```text
 
+## Restart service
+
+sudo systemctl restart lmstudio
+
+```text
+```text
+
 ### Kernel Module Problems
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Check kernel logs
@@ -358,9 +589,22 @@ insmod synapticos_core.ko debug=1
 
 ```text
 
+## Remove and reload module
+
+rmmod synapticos_core
+insmod synapticos_core.ko debug=1
+
+```text
+
+```text
+
 ### Context Engine Database
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Reset database
@@ -369,6 +613,9 @@ rm /var/lib/synapticos/context.db
 python -m synapticos_consciousness.context_engine init
 ```text
 
+```text
+
+```text
 ```text
 
 - --
@@ -416,6 +663,90 @@ python -m synapticos_consciousness.context_engine init
 - Tutorial completion: >90%
 - Skill improvement: Measurable
 - System stability: 99.9% uptime
+
+### Agent 1 ↔ Agent 2
+
+- Kernel patches location: `patches/`
+- Build configuration: `config/kernel.conf`
+
+### Agent 2 ↔ Agent 3
+
+- AI callback registration
+- Process inspection API
+
+### Agent 3 ↔ Agent 4
+
+- Shared LM Studio client
+- User context for prompts
+
+### All Agents
+
+- Integration tests: `tests/integration/`
+- CI/CD pipeline: `.github/workflows/`
+
+- --
+
+## 📊 Success Metrics
+
+### Performance
+
+- AI inference: <100ms
+- Kernel overhead: <5%
+- Memory usage: <500MB for AI
+
+### Quality
+
+- Test coverage: >80%
+- Security scan: 0 critical issues
+- Documentation: 100% API coverage
+
+### User Experience
+
+- Tutorial completion: >90%
+- Skill improvement: Measurable
+- System stability: 99.9% uptime
+### Agent 1 ↔ Agent 2
+
+- Kernel patches location: `patches/`
+- Build configuration: `config/kernel.conf`
+
+### Agent 2 ↔ Agent 3
+
+- AI callback registration
+- Process inspection API
+
+### Agent 3 ↔ Agent 4
+
+- Shared LM Studio client
+- User context for prompts
+
+### All Agents
+
+- Integration tests: `tests/integration/`
+- CI/CD pipeline: `.github/workflows/`
+
+- --
+
+## 📊 Success Metrics
+
+### Performance
+
+- AI inference: <100ms
+- Kernel overhead: <5%
+- Memory usage: <500MB for AI
+
+### Quality
+
+- Test coverage: >80%
+- Security scan: 0 critical issues
+- Documentation: 100% API coverage
+
+### User Experience
+
+- Tutorial completion: >90%
+- Skill improvement: Measurable
+- System stability: 99.9% uptime
+
 ### Agent 1 ↔ Agent 2
 
 - Kernel patches location: `patches/`

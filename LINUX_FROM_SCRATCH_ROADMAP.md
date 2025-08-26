@@ -68,5 +68,6 @@ critical phases, technical milestones, and best practices.
 - --
 
 * This roadmap is the unified, authoritative guide for building, maintaining, and evolving Syn_OS as a
+
 consciousness-integrated Linux distribution. All historical and current achievements, technical plans, and best
 practices are represented here.*

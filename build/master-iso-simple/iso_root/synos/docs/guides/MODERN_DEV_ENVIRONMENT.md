@@ -54,11 +54,49 @@ Development Environment
     ├── Docker (containerization)
     └── CI/CD (GitHub Actions)
 ```text
+
 │   └── Go 1.21+
 │
 ├── Development Tools
 │   ├── VS Code (optimized config)
 │   ├── Git (with hooks)
+│   ├── Docker (with compose)
+│   └── QEMU (kernel development)
+│
+├── Security Tools
+│   ├── Static Analysis (clippy, bandit, cppcheck)
+│   ├── Vulnerability Scanning (trivy, cargo-audit)
+│   ├── Runtime Analysis (valgrind, sanitizers)
+│   └── Code Quality (formatting, linting)
+│
+└── Build System
+    ├── Cargo (Rust)
+    ├── Make (system builds)
+    ├── Docker (containerization)
+    └── CI/CD (GitHub Actions)
+
+```text
+│   └── Go 1.21+
+│
+├── Development Tools
+│   ├── VS Code (optimized config)
+│   ├── Git (with hooks)
+│   ├── Docker (with compose)
+│   └── QEMU (kernel development)
+│
+├── Security Tools
+│   ├── Static Analysis (clippy, bandit, cppcheck)
+│   ├── Vulnerability Scanning (trivy, cargo-audit)
+│   ├── Runtime Analysis (valgrind, sanitizers)
+│   └── Code Quality (formatting, linting)
+│
+└── Build System
+    ├── Cargo (Rust)
+    ├── Make (system builds)
+    ├── Docker (containerization)
+    └── CI/CD (GitHub Actions)
+
+```text
 │   ├── Docker (with compose)
 │   └── QEMU (kernel development)
 │
@@ -81,6 +119,10 @@ Development Environment
 ### Automated Setup (Recommended)
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Run the modern setup script
@@ -90,11 +132,18 @@ Development Environment
 
 ```text
 
+```text
+```text
+
 ### Manual Setup
 
 #### 1. Environment Cleanup
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Remove old Claude/Kilo dependencies
@@ -103,13 +152,22 @@ rm -rf .claude .kilocode
 find . -name "*claude*" -name "*.json" -delete
 find . -name "*kilo*" -name "*.json" -delete
 ```text
+
 find . -name "*kilo*" -name "*.json" -delete
 
+```text
+find . -name "*kilo*" -name "*.json" -delete
+
+```text
 ```text
 
 #### 2. Core Tools Installation
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Update system
@@ -148,9 +206,42 @@ rustup component add rust-src llvm-tools-preview clippy rustfmt
 
 ```text
 
+## Install build essentials
+
+sudo apt install -y build-essential cmake ninja-build pkg-config \
+    curl wget git git-lfs unzip jq tree htop
+
+## Install Rust
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source ~/.cargo/env
+
+## Configure Rust for kernel development
+
+rustup target add x86_64-unknown-none i686-unknown-none
+rustup component add rust-src llvm-tools-preview clippy rustfmt
+
+```text
+
+## Install Rust
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source ~/.cargo/env
+
+## Configure Rust for kernel development
+
+rustup target add x86_64-unknown-none i686-unknown-none
+rustup component add rust-src llvm-tools-preview clippy rustfmt
+
+```text
+
 #### 3. Language Environments
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Python development
@@ -169,6 +260,7 @@ sudo apt install -y llvm clang clang-tools gdb lldb valgrind cppcheck
 sudo apt install -y golang-go
 go install golang.org/x/tools/gopls@latest
 ```text
+
 source .venv/bin/activate
 pip install -r config/dependencies/requirements-security.txt
 
@@ -182,10 +274,35 @@ sudo apt install -y golang-go
 go install golang.org/x/tools/gopls@latest
 
 ```text
+source .venv/bin/activate
+pip install -r config/dependencies/requirements-security.txt
+
+## C/C++ development
+
+sudo apt install -y llvm clang clang-tools gdb lldb valgrind cppcheck
+
+## Go development
+
+sudo apt install -y golang-go
+go install golang.org/x/tools/gopls@latest
+
+```text
+sudo apt install -y llvm clang clang-tools gdb lldb valgrind cppcheck
+
+## Go development
+
+sudo apt install -y golang-go
+go install golang.org/x/tools/gopls@latest
+
+```text
 
 #### 4. Security Tools
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Container security
@@ -210,11 +327,30 @@ pip install bandit safety
 
 ```text
 
+## Rust security
+
+cargo install cargo-audit cargo-deny
+
+## Python security
+
+pip install bandit safety
+
+```text
+## Python security
+
+pip install bandit safety
+
+```text
+
 ## Development Workflow
 
 ### Daily Development
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Activate environment
@@ -239,6 +375,29 @@ cargo audit          # Security audit
 
 syn-build    # Alias for: cargo build --target x86_64-unknown-none
 syn-test     # Alias for: cargo test --workspace
+syn-run      # Alias for: cargo run --target x86_64-unknown-none
+
+## Code quality
+
+cargo fmt --all      # Format code
+cargo clippy         # Lint code
+cargo audit          # Security audit
+
+```text
+
+## Build and test
+
+syn-build    # Alias for: cargo build --target x86_64-unknown-none
+syn-test     # Alias for: cargo test --workspace
+syn-run      # Alias for: cargo run --target x86_64-unknown-none
+
+## Code quality
+
+cargo fmt --all      # Format code
+cargo clippy         # Lint code
+cargo audit          # Security audit
+
+```text
 syn-run      # Alias for: cargo run --target x86_64-unknown-none
 
 ## Code quality
@@ -284,6 +443,33 @@ The development environment automatically runs these checks:
 
 ```bash
 
+1. **Code Formatting:**
+   - Rust: `cargo fmt --all --check`
+   - Python: `black src/ --check`
+
+2. **Linting:**
+   - Rust: `cargo clippy -- -D warnings`
+   - Python: `pylint src/`
+
+3. **Security:**
+   - Rust: `cargo audit`
+   - Python: `bandit -r src/`
+
+### Testing Strategy
+
+```bash
+1. **Linting:**
+   - Rust: `cargo clippy -- -D warnings`
+   - Python: `pylint src/`
+
+2. **Security:**
+   - Rust: `cargo audit`
+   - Python: `bandit -r src/`
+
+### Testing Strategy
+
+```bash
+
 ## Unit tests
 
 cargo test
@@ -305,6 +491,31 @@ cargo bench
 
 cargo test --test integration
 
+## Security tests
+
+bandit -r src/
+cargo audit
+
+## Performance tests
+
+cargo bench
+
+```text
+
+## Integration tests
+
+cargo test --test integration
+
+## Security tests
+
+bandit -r src/
+cargo audit
+
+## Performance tests
+
+cargo bench
+
+```text
 ## Security tests
 
 bandit -r src/
@@ -343,11 +554,54 @@ cargo bench
 ### Key Settings
 
 ```json
+## Essential Language Support:
+
+- `rust-lang.rust-analyzer` - Rust language server
+- `ms-python.python` - Python support
+- `ms-python.pylance` - Python language server
+- `ms-vscode.cpptools` - C/C++ support
+- `golang.go` - Go support
+
+## AI Assistance (Modern Standard):
+
+- `github.copilot` - GitHub Copilot (industry standard)
+- `github.copilot-chat` - Interactive AI assistance
+- `continue.continue` - Open-source AI coding
+
+## Development Tools:
+
+- `vadimcn.vscode-lldb` - Native debugging
+- `ms-vscode.hexeditor` - Binary editing
+- `eamodio.gitlens` - Git integration
+
+### Key Settings
+
+```json
 
 ## Essential Language Support:
 
 - `rust-lang.rust-analyzer` - Rust language server
 - `ms-python.python` - Python support
+- `ms-python.pylance` - Python language server
+- `ms-vscode.cpptools` - C/C++ support
+- `golang.go` - Go support
+
+## AI Assistance (Modern Standard):
+
+- `github.copilot` - GitHub Copilot (industry standard)
+- `github.copilot-chat` - Interactive AI assistance
+- `continue.continue` - Open-source AI coding
+
+## Development Tools:
+
+- `vadimcn.vscode-lldb` - Native debugging
+- `ms-vscode.hexeditor` - Binary editing
+- `eamodio.gitlens` - Git integration
+
+### Key Settings
+
+```json
+
 - `ms-python.pylance` - Python language server
 - `ms-vscode.cpptools` - C/C++ support
 - `golang.go` - Go support
@@ -375,9 +629,15 @@ cargo bench
     "telemetry.telemetryLevel": "off"
 }
 ```text
+
     "telemetry.telemetryLevel": "off"
 }
 
+```text
+    "telemetry.telemetryLevel": "off"
+}
+
+```text
 ```text
 
 ## Performance Optimization
@@ -385,6 +645,10 @@ cargo bench
 ### Build Performance
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Parallel builds
@@ -405,6 +669,21 @@ export RUSTFLAGS="-C link-arg=-fuse-ld=lld"
 
 export CARGO_INCREMENTAL=1
 
+## Fast linker (if available)
+
+export RUSTFLAGS="-C link-arg=-fuse-ld=lld"
+
+```text
+
+## Incremental compilation
+
+export CARGO_INCREMENTAL=1
+
+## Fast linker (if available)
+
+export RUSTFLAGS="-C link-arg=-fuse-ld=lld"
+
+```text
 ## Fast linker (if available)
 
 export RUSTFLAGS="-C link-arg=-fuse-ld=lld"
@@ -432,6 +711,19 @@ export RUSTFLAGS="-C link-arg=-fuse-ld=lld"
 
 ```yaml
 
+- **Optimized dependencies:** Fast debug builds
+- **Smart file watching:** Excludes build artifacts
+
+## Security Configuration
+
+### Static Analysis
+
+```yaml
+
+### Static Analysis
+
+```yaml
+
 ## .github/workflows/security.yml (excerpt)
 
 - name: Security Audit
@@ -441,11 +733,19 @@ export RUSTFLAGS="-C link-arg=-fuse-ld=lld"
     bandit -r src/
     trivy fs .
 ```text
+
   run: |
     cargo audit
     bandit -r src/
     trivy fs .
 
+```text
+  run: |
+    cargo audit
+    bandit -r src/
+    trivy fs .
+
+```text
 ```text
 
 ### Development Security
@@ -460,11 +760,29 @@ export RUSTFLAGS="-C link-arg=-fuse-ld=lld"
 ### Common Issues
 
 ## 1. Rust analyzer not working:
+
 ```bash
 - **Secure development practices**
 - **Regular security audits**
 
 ## Troubleshooting
+
+### Common Issues
+
+## 1. Rust analyzer not working:
+
+```bash
+
+- **Secure development practices**
+- **Regular security audits**
+
+## Troubleshooting
+
+### Common Issues
+
+## 1. Rust analyzer not working:
+
+```bash
 
 ### Common Issues
 
@@ -479,9 +797,15 @@ code --command rust-analyzer.restartServer
 
 ```text
 
+```text
+```text
+
 ## 2. Python environment issues:
+
+```bash
 ```bash
 
+```bash
 ```bash
 
 ## Recreate virtual environment
@@ -491,14 +815,23 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r config/dependencies/requirements-security.txt
 ```text
+
 source .venv/bin/activate
 pip install -r config/dependencies/requirements-security.txt
 
 ```text
+source .venv/bin/activate
+pip install -r config/dependencies/requirements-security.txt
+
+```text
+```text
 
 ## 3. Build failures:
+
+```bash
 ```bash
 
+```bash
 ```bash
 
 ## Clean and rebuild
@@ -509,9 +842,16 @@ cargo build --target x86_64-unknown-none
 
 ```text
 
+```text
+```text
+
 ### Health Check
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Run environment health check
@@ -534,11 +874,28 @@ docker --version
 
 ```text
 
+## Manual verification
+
+rustc --version
+python3 --version
+git --version
+docker --version
+
+```text
+git --version
+docker --version
+
+```text
+
 ## Environment Variables
 
 ### Development Configuration
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Syn_OS specific
@@ -559,11 +916,37 @@ export CARGO_INCREMENTAL=1
 export SECURITY_ENABLED=true
 export AUDIT_LOGGING=true
 ```text
+
 export CARGO_TERM_COLOR=always
 export LOG_LEVEL=debug
 
 ## Performance
 
+export CARGO_BUILD_JOBS=8
+export RUST_TEST_THREADS=8
+export CARGO_INCREMENTAL=1
+
+## Security
+
+export SECURITY_ENABLED=true
+export AUDIT_LOGGING=true
+
+```text
+export CARGO_TERM_COLOR=always
+export LOG_LEVEL=debug
+
+## Performance
+
+export CARGO_BUILD_JOBS=8
+export RUST_TEST_THREADS=8
+export CARGO_INCREMENTAL=1
+
+## Security
+
+export SECURITY_ENABLED=true
+export AUDIT_LOGGING=true
+
+```text
 export CARGO_BUILD_JOBS=8
 export RUST_TEST_THREADS=8
 export CARGO_INCREMENTAL=1
@@ -608,11 +991,66 @@ export AUDIT_LOGGING=true
 1. **Always format before commit:**
 
    ```bash
+- `.claude/` directory and configuration
+- `.kilocode/` directory and MCP configs
+- VS Code Kilo extension references
+- External API dependencies
+- Non-standard development workflows
+
+### What Was Added
+
+- Modern GitHub Copilot integration
+- Optimized Rust analyzer configuration
+- Security-first development tools
+- Performance-optimized build settings
+- Industry-standard development practices
+
+### Migration Steps
+
+1. ✅ Remove old dependencies
+2. ✅ Update VS Code configuration
+3. ✅ Install modern toolchain
+4. ✅ Configure security tools
+5. ✅ Set up development workflows
+
+## Best Practices
+
+### Code Quality
+
+1. **Always format before commit:**
+
+   ```bash
 
 - `.claude/` directory and configuration
 - `.kilocode/` directory and MCP configs
 - VS Code Kilo extension references
 - External API dependencies
+- Non-standard development workflows
+
+### What Was Added
+
+- Modern GitHub Copilot integration
+- Optimized Rust analyzer configuration
+- Security-first development tools
+- Performance-optimized build settings
+- Industry-standard development practices
+
+### Migration Steps
+
+1. ✅ Remove old dependencies
+2. ✅ Update VS Code configuration
+3. ✅ Install modern toolchain
+4. ✅ Configure security tools
+5. ✅ Set up development workflows
+
+## Best Practices
+
+### Code Quality
+
+1. **Always format before commit:**
+
+   ```bash
+
 - Non-standard development workflows
 
 ### What Was Added
@@ -644,7 +1082,13 @@ export AUDIT_LOGGING=true
 
 ```text
 
+```text
+```text
+
 1. **Run security audits:**
+
+   ```bash
+   ```bash
 
    ```bash
 
@@ -655,7 +1099,13 @@ export AUDIT_LOGGING=true
 
 ```text
 
+```text
+```text
+
 1. **Use type checking:**
+
+   ```bash
+   ```bash
 
    ```bash
 
@@ -666,12 +1116,81 @@ export AUDIT_LOGGING=true
 
 ```text
 
+```text
+```text
+
 ### Development Workflow
 
 1. **Feature branches:** Use descriptive branch names
 2. **Atomic commits:** One logical change per commit
 3. **Conventional commits:** Follow standard format
 4. **Pre-commit hooks:** Automatically enforced
+
+### Security
+
+1. **Regular audits:** Weekly dependency checks
+2. **Static analysis:** Run on every commit
+3. **Container scanning:** Scan Docker images
+4. **Dependency updates:** Monthly security updates
+
+## Future Improvements
+
+### Planned Enhancements
+
+- [ ] Automated dependency updates
+- [ ] Enhanced security scanning
+- [ ] Performance monitoring
+- [ ] Advanced debugging tools
+- [ ] Container optimization
+
+### Community Contributions
+
+- Code quality improvements
+- Security tool additions
+- Performance optimizations
+- Documentation updates
+
+- --
+
+* Last Updated: August 19, 2025*
+* Environment Version: 2025.08*
+* Status: Production Ready*
+
+1. **Conventional commits:** Follow standard format
+2. **Pre-commit hooks:** Automatically enforced
+
+### Security
+
+1. **Regular audits:** Weekly dependency checks
+2. **Static analysis:** Run on every commit
+3. **Container scanning:** Scan Docker images
+4. **Dependency updates:** Monthly security updates
+
+## Future Improvements
+
+### Planned Enhancements
+
+- [ ] Automated dependency updates
+- [ ] Enhanced security scanning
+- [ ] Performance monitoring
+- [ ] Advanced debugging tools
+- [ ] Container optimization
+
+### Community Contributions
+
+- Code quality improvements
+- Security tool additions
+- Performance optimizations
+- Documentation updates
+
+- --
+
+* Last Updated: August 19, 2025*
+* Environment Version: 2025.08*
+* Status: Production Ready*
+
+1. **Conventional commits:** Follow standard format
+2. **Pre-commit hooks:** Automatically enforced
 
 ### Security
 

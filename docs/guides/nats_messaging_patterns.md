@@ -11,6 +11,7 @@ This document defines the messaging patterns used for service-to-service communi
 ### Request Response
 
 * *Pattern:** req-reply
+
 ## Use Cases:
 
 - API calls between services
@@ -26,6 +27,7 @@ This document defines the messaging patterns used for service-to-service communi
 ### Publish Subscribe
 
 * *Pattern:** pub-sub
+
 ## Use Cases:
 
 - Event notifications
@@ -41,6 +43,7 @@ This document defines the messaging patterns used for service-to-service communi
 ### Work Queue
 
 * *Pattern:** queue
+
 ## Use Cases:
 
 - Background processing
@@ -56,6 +59,7 @@ This document defines the messaging patterns used for service-to-service communi
 ### Streaming
 
 * *Pattern:** stream
+
 ## Use Cases:
 
 - Real-time data
@@ -81,12 +85,21 @@ nats.publish('CONSCIOUSNESS.EVENTS.state_change', {
     neural_activity: 0.85
 });
 ```text
+
     neural_activity: 0.85
 });
 
 ```text
+    neural_activity: 0.85
+});
+
+```text
+```text
 
 ### Security Alert Processing
+
+```javascript
+```javascript
 
 ```javascript
 
@@ -100,7 +113,13 @@ nats.subscribe('SECURITY.ALERTS.*', (msg) => {
 
 ```text
 
+```text
+```text
+
 ### Orchestrator Commands
+
+```javascript
+```javascript
 
 ```javascript
 
@@ -114,10 +133,33 @@ const response = await nats.request('ORCHESTRATOR.COMMANDS.restart_service', {
 
 ```text
 
+```text
+```text
+
 ## Error Handling
 
 - All messaging includes automatic retry with exponential backoff
 - Dead letter queues for failed message processing
+- Circuit breakers for service protection
+- Comprehensive logging and monitoring
+
+## Monitoring
+
+- Message throughput metrics
+- Error rates and retry counts
+- Service health indicators
+- Performance latency tracking
+
+- Circuit breakers for service protection
+- Comprehensive logging and monitoring
+
+## Monitoring
+
+- Message throughput metrics
+- Error rates and retry counts
+- Service health indicators
+- Performance latency tracking
+
 - Circuit breakers for service protection
 - Comprehensive logging and monitoring
 

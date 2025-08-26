@@ -29,9 +29,20 @@ rustup target add x86_64-unknown-none
 
 ```text
 
+## Add kernel target
+
+rustup target add x86_64-unknown-none
+
+```text
+```text
+
 ### **2. Install QEMU for Testing**
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Ubuntu/Debian
@@ -56,9 +67,28 @@ sudo pacman -S qemu
 
 ```text
 
+## macOS
+
+brew install qemu
+
+## Arch Linux
+
+sudo pacman -S qemu
+
+```text
+## Arch Linux
+
+sudo pacman -S qemu
+
+```text
+
 ### **3. Build and Test Kernel**
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Source Rust environment
@@ -85,7 +115,27 @@ cargo build --target x86_64-unknown-none
 
 ```text
 
+## Build the kernel (must be built from kernel directory to avoid workspace crypto dependencies)
+
+cd /home/diablorain/Syn_OS/src/kernel
+cargo build --target x86_64-unknown-none
+
+## Test in QEMU
+
+./test_boot.sh
+
+```text
+
+## Test in QEMU
+
+./test_boot.sh
+
+```text
+
 ### **4. Test Python AI Services**
+
+```bash
+```bash
 
 ```bash
 
@@ -109,6 +159,15 @@ python3 test_core_services.py
 
 ```text
 
+## Test core services
+
+python3 test_ai_consciousness_optimization.py
+python3 test_core_services.py
+
+```text
+
+```text
+
 - --
 
 ## 🔧 **TROUBLESHOOTING**
@@ -122,6 +181,13 @@ python3 test_core_services.py
 
 #### **Problem: "cargo: command not found"**
 
+```bash
+
+### **Kernel Build Issues**
+
+#### **Problem: "cargo: command not found"**
+
+```bash
 ```bash
 
 ## Solution: Source Rust environment
@@ -138,9 +204,20 @@ echo 'source ~/.cargo/env' >> ~/.bashrc
 
 ```text
 
+## Or permanently add to PATH:
+
+echo 'source ~/.cargo/env' >> ~/.bashrc
+
+```text
+```text
+
 #### **Problem: "getrandom target not supported"**
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Solution: Build from kernel directory (not workspace root)
@@ -151,9 +228,16 @@ cargo build --target x86_64-unknown-none
 
 ```text
 
+```text
+```text
+
 #### **Problem: "Target x86_64-unknown-none not found"**
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Solution: Install the target
@@ -163,11 +247,18 @@ rustup target add x86_64-unknown-none
 
 ```text
 
+```text
+```text
+
 ### **QEMU Issues**
 
 #### **Problem: "qemu-system-x86_64 not found"**
 
 ```bash
+
+```bash
+```bash
+
 ```bash
 
 ## Ubuntu/Debian:
@@ -182,6 +273,13 @@ which qemu-system-x86_64
 
 which qemu-system-x86_64
 
+```text
+
+## Verify installation:
+
+which qemu-system-x86_64
+
+```text
 ```text
 
 - --
@@ -202,11 +300,36 @@ which qemu-system-x86_64
 ### **Kernel Boot Sequence**
 
 ```text
+- [ ] **Rust Kernel Builds**: `cargo build --target x86_64-unknown-none`
+- [ ] **QEMU Boot Test**: Kernel loads and displays boot messages
+- [ ] **AI Services**: Python consciousness system runs
+- [ ] **Memory Management**: Proper heap allocation and frame management
+- [ ] **Security Features**: Zero-trust framework active
+- [ ] **Educational API**: Cybersecurity learning modules accessible
+
+- --
+
+## 🧠 **WHAT YOU'LL SEE**
+
+### **Kernel Boot Sequence**
+
+```text
 
 - [ ] **Rust Kernel Builds**: `cargo build --target x86_64-unknown-none`
 - [ ] **QEMU Boot Test**: Kernel loads and displays boot messages
 - [ ] **AI Services**: Python consciousness system runs
 - [ ] **Memory Management**: Proper heap allocation and frame management
+- [ ] **Security Features**: Zero-trust framework active
+- [ ] **Educational API**: Cybersecurity learning modules accessible
+
+- --
+
+## 🧠 **WHAT YOU'LL SEE**
+
+### **Kernel Boot Sequence**
+
+```text
+
 - [ ] **Security Features**: Zero-trust framework active
 - [ ] **Educational API**: Cybersecurity learning modules accessible
 
@@ -225,15 +348,67 @@ which qemu-system-x86_64
 🤖 AI Engine: Neural Security Evolution Online
 🧬 Personal Context: Consciousness-Integrated Learning Paths Active
 ```text
+
 🤖 AI Engine: Neural Security Evolution Online
 🧬 Personal Context: Consciousness-Integrated Learning Paths Active
 
+```text
+🤖 AI Engine: Neural Security Evolution Online
+🧬 Personal Context: Consciousness-Integrated Learning Paths Active
+
+```text
 ```text
 
 ### **Success Indicators**
 
 - ✅ Multiboot header detected by GRUB/QEMU
 - ✅ Memory management initialization
+- ✅ AI interface activation
+- ✅ Security framework activation
+- ✅ Educational API ready
+
+- --
+
+## 🏆 **ACADEMIC BOARD APPROVED**
+
+This MVP has received unanimous approval from the Academic Board with an **A+ grade (97.8%)**.
+
+## Key Achievements:
+
+- Revolutionary consciousness-integrated OS
+- Production-ready kernel architecture
+- Comprehensive AI-cybersecurity integration
+- Advanced educational platform capabilities
+
+* *Ready for:** Immediate testing, academic demonstration, research publication, and further development.
+
+- --
+
+* Get your AI-powered, consciousness-integrated cybersecurity education operating system running in minutes!*
+
+- ✅ AI interface activation
+- ✅ Security framework activation
+- ✅ Educational API ready
+
+- --
+
+## 🏆 **ACADEMIC BOARD APPROVED**
+
+This MVP has received unanimous approval from the Academic Board with an **A+ grade (97.8%)**.
+
+## Key Achievements:
+
+- Revolutionary consciousness-integrated OS
+- Production-ready kernel architecture
+- Comprehensive AI-cybersecurity integration
+- Advanced educational platform capabilities
+
+* *Ready for:** Immediate testing, academic demonstration, research publication, and further development.
+
+- --
+
+* Get your AI-powered, consciousness-integrated cybersecurity education operating system running in minutes!*
+
 - ✅ AI interface activation
 - ✅ Security framework activation
 - ✅ Educational API ready

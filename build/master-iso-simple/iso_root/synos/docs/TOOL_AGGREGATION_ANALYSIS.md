@@ -192,15 +192,41 @@ deb https://deb.parrotsec.org/parrot parrot main contrib non-free
 deb https://blackarch.org/blackarch/$arch blackarch
 deb https://synapt-repo.ai/packages stable main  # Custom packages
 ```text
+
 deb https://blackarch.org/blackarch/$arch blackarch
 deb https://synapt-repo.ai/packages stable main  # Custom packages
 
+```text
+deb https://blackarch.org/blackarch/$arch blackarch
+deb https://synapt-repo.ai/packages stable main  # Custom packages
+
+```text
 ```text
 
 ### **Package Conflict Resolution**
 
 - Priority system: Syn_OS custom > BlackArch > Kali > ParrotOS > Debian
 - Automated dependency resolution with AI assistance
+- Containerized tool isolation when conflicts exist
+
+### **Total Tool Count Estimate**
+
+- Kali Linux: ~600 security tools
+- BlackArch: ~2,800 security tools
+- ParrotOS: ~500+ security tools
+- **Total Unique Tools**: ~3,500+ (after deduplication)
+- **Custom AI Tools**: ~50+ (to be developed)
+- **GRAND TOTAL**: ~3,550+ security tools
+- Containerized tool isolation when conflicts exist
+
+### **Total Tool Count Estimate**
+
+- Kali Linux: ~600 security tools
+- BlackArch: ~2,800 security tools
+- ParrotOS: ~500+ security tools
+- **Total Unique Tools**: ~3,500+ (after deduplication)
+- **Custom AI Tools**: ~50+ (to be developed)
+- **GRAND TOTAL**: ~3,550+ security tools
 - Containerized tool isolation when conflicts exist
 
 ### **Total Tool Count Estimate**

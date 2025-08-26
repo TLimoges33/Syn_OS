@@ -201,4 +201,5 @@
 * Syn_OS Enterprise Services - Pioneering consciousness-integrated computing for the enterprise*
 
 ## Ready to deploy the world's first consciousness-integrated Linux distribution in your organization?
+
 Contact our enterprise team today: enterprise@syn-os.org

@@ -214,9 +214,20 @@ await orchestrator.get_character_profile(character_id)
 
 ```text
 
+## Get character profile
+
+await orchestrator.get_character_profile(character_id)
+
+```text
+```text
+
 ### Quest Management
 
 ```python
+
+```python
+```python
+
 ```python
 
 ## Get available quests
@@ -233,9 +244,20 @@ await orchestrator.start_quest(character_id, quest_id, acknowledge_warnings=True
 
 ```text
 
+## Start quest with ethical acknowledgment
+
+await orchestrator.start_quest(character_id, quest_id, acknowledge_warnings=True)
+
+```text
+```text
+
 ### Leaderboards
 
 ```python
+
+```python
+```python
+
 ```python
 
 ## Get all leaderboards
@@ -252,9 +274,20 @@ await leaderboard_system.get_character_rank(character_id, "experience", "all_tim
 
 ```text
 
+## Get character rank
+
+await leaderboard_system.get_character_rank(character_id, "experience", "all_time")
+
+```text
+```text
+
 ### Clan Operations
 
 ```python
+
+```python
+```python
+
 ```python
 
 ## Create clan
@@ -269,6 +302,13 @@ await orchestrator.join_clan(character_id, clan_id)
 
 await orchestrator.join_clan(character_id, clan_id)
 
+```text
+
+## Join clan
+
+await orchestrator.join_clan(character_id, clan_id)
+
+```text
 ```text
 
 ## Database Schema
@@ -401,6 +441,136 @@ await orchestrator.join_clan(character_id, clan_id)
 - --
 
 * The Syn_OS Gamified Learning System is designed to create ethical, knowledgeable, and responsible cybersecurity
+
+professionals through engaging, game-based education that emphasizes legal compliance and ethical behavior.*
+
+1. **characters**: Character data and progression
+2. **quests**: Quest definitions and metadata
+3. **achievements**: Achievement system data
+4. **clans**: Clan information and membership
+5. **quest_progress**: Individual quest progress tracking
+6. **quest_completions**: Historical completion records
+7. **quest_ratings**: User ratings and feedback
+8. **leaderboard_snapshots**: Historical ranking data
+9. **clan_wars**: Clan competition records
+10. **competitions**: System-wide competitions
+
+## Security and Compliance
+
+### Legal Safeguards
+
+- **Authorization Requirements**: All activities require proper authorization
+- **Legal Disclaimers**: Comprehensive warnings about unauthorized use
+- **Lab Environment Enforcement**: Mandatory use of authorized test systems
+- **Audit Logging**: Complete activity tracking for compliance
+
+### Ethical Guidelines
+
+1. Always obtain proper authorization before testing systems
+2. Respect privacy and confidentiality of encountered data
+3. Use skills to protect and defend, not to harm
+4. Continuously educate yourself on legal and ethical boundaries
+5. Share knowledge responsibly and help others learn ethically
+6. Report vulnerabilities through proper disclosure channels
+7. Maintain professional integrity in all security activities
+8. Consider the broader impact of actions on society
+
+### Educational Focus
+
+- **White Hat Emphasis**: System promotes ethical hacking practices
+- **Legal Education**: Comprehensive coverage of relevant laws and regulations
+- **Professional Development**: Alignment with industry certifications and standards
+- **Responsible Disclosure**: Training on proper vulnerability reporting
+
+## Integration with Syn_OS
+
+### Consciousness Integration
+
+- **Consciousness-Aware Progression**: Character development influenced by system consciousness state
+- **Adaptive Learning**: Quest difficulty and content adapted based on consciousness analysis
+- **Ethical Reinforcement**: Consciousness system reinforces ethical behavior patterns
+
+### Security Tool Integration
+
+- **Authorized Tool Access**: Tools unlocked based on skill progression and ethical standing
+- **Safety Mechanisms**: Built-in safeguards prevent unauthorized use
+- **Educational Context**: All tools presented with proper educational framing
+
+## Future Enhancements
+
+### Planned Features
+
+1. **VR/AR Integration**: Immersive learning environments
+2. **AI Mentorship**: Personalized guidance from AI tutors
+3. **Industry Partnerships**: Real-world internship and job placement
+4. **Certification Integration**: Direct pathway to industry certifications
+5. **Global Competitions**: International cybersecurity competitions
+6. **Research Projects**: Collaborative security research opportunities
+
+### Expansion Areas
+
+- **Mobile Application**: Companion app for progress tracking
+- **Offline Capabilities**: Downloadable content for offline learning
+- **Multi-Language Support**: Internationalization for global users
+- **Advanced Analytics**: Detailed learning analytics and insights
+- **Community Features**: Forums, mentorship programs, study groups
+
+## Getting Started
+
+### For Learners
+
+1. Create a character and choose your specialization
+2. Complete the "First Steps in Cybersecurity" tutorial
+3. Read and acknowledge ethical guidelines
+4. Set up your virtual lab environment
+5. Join or create a clan for collaborative learning
+6. Begin your cybersecurity journey with guided quests
+
+### For Educators
+
+1. Review the ethical guidelines and legal compliance features
+2. Set up supervised learning environments
+3. Create custom quests for your curriculum
+4. Monitor student progress through the dashboard
+5. Facilitate clan-based team learning activities
+6. Integrate with existing educational systems
+
+### For Organizations
+
+1. Deploy Syn_OS in authorized training environments
+2. Customize quest content for organizational needs
+3. Implement compliance monitoring and reporting
+4. Establish mentorship programs with experienced professionals
+5. Track employee skill development and certification progress
+6. Conduct authorized red team exercises and training
+
+## Support and Resources
+
+### Documentation
+
+- **API Reference**: Complete API documentation
+- **Quest Creation Guide**: How to create custom learning content
+- **Deployment Guide**: Installation and configuration instructions
+- **Troubleshooting**: Common issues and solutions
+
+### Community
+
+- **Forums**: Community discussion and support
+- **Discord Server**: Real-time chat and collaboration
+- **GitHub Repository**: Open source contributions and issues
+- **Educational Partnerships**: Academic institution collaborations
+
+### Legal and Compliance
+
+- **Terms of Service**: Legal terms and conditions
+- **Privacy Policy**: Data protection and privacy practices
+- **Compliance Documentation**: Regulatory compliance information
+- **Legal Resources**: Information about cybersecurity laws and regulations
+
+- --
+
+* The Syn_OS Gamified Learning System is designed to create ethical, knowledgeable, and responsible cybersecurity
+
 professionals through engaging, game-based education that emphasizes legal compliance and ethical behavior.*
 1. **characters**: Character data and progression
 2. **quests**: Quest definitions and metadata
@@ -528,4 +698,134 @@ professionals through engaging, game-based education that emphasizes legal compl
 - --
 
 * The Syn_OS Gamified Learning System is designed to create ethical, knowledgeable, and responsible cybersecurity
+
+professionals through engaging, game-based education that emphasizes legal compliance and ethical behavior.*
+
+1. **characters**: Character data and progression
+2. **quests**: Quest definitions and metadata
+3. **achievements**: Achievement system data
+4. **clans**: Clan information and membership
+5. **quest_progress**: Individual quest progress tracking
+6. **quest_completions**: Historical completion records
+7. **quest_ratings**: User ratings and feedback
+8. **leaderboard_snapshots**: Historical ranking data
+9. **clan_wars**: Clan competition records
+10. **competitions**: System-wide competitions
+
+## Security and Compliance
+
+### Legal Safeguards
+
+- **Authorization Requirements**: All activities require proper authorization
+- **Legal Disclaimers**: Comprehensive warnings about unauthorized use
+- **Lab Environment Enforcement**: Mandatory use of authorized test systems
+- **Audit Logging**: Complete activity tracking for compliance
+
+### Ethical Guidelines
+
+1. Always obtain proper authorization before testing systems
+2. Respect privacy and confidentiality of encountered data
+3. Use skills to protect and defend, not to harm
+4. Continuously educate yourself on legal and ethical boundaries
+5. Share knowledge responsibly and help others learn ethically
+6. Report vulnerabilities through proper disclosure channels
+7. Maintain professional integrity in all security activities
+8. Consider the broader impact of actions on society
+
+### Educational Focus
+
+- **White Hat Emphasis**: System promotes ethical hacking practices
+- **Legal Education**: Comprehensive coverage of relevant laws and regulations
+- **Professional Development**: Alignment with industry certifications and standards
+- **Responsible Disclosure**: Training on proper vulnerability reporting
+
+## Integration with Syn_OS
+
+### Consciousness Integration
+
+- **Consciousness-Aware Progression**: Character development influenced by system consciousness state
+- **Adaptive Learning**: Quest difficulty and content adapted based on consciousness analysis
+- **Ethical Reinforcement**: Consciousness system reinforces ethical behavior patterns
+
+### Security Tool Integration
+
+- **Authorized Tool Access**: Tools unlocked based on skill progression and ethical standing
+- **Safety Mechanisms**: Built-in safeguards prevent unauthorized use
+- **Educational Context**: All tools presented with proper educational framing
+
+## Future Enhancements
+
+### Planned Features
+
+1. **VR/AR Integration**: Immersive learning environments
+2. **AI Mentorship**: Personalized guidance from AI tutors
+3. **Industry Partnerships**: Real-world internship and job placement
+4. **Certification Integration**: Direct pathway to industry certifications
+5. **Global Competitions**: International cybersecurity competitions
+6. **Research Projects**: Collaborative security research opportunities
+
+### Expansion Areas
+
+- **Mobile Application**: Companion app for progress tracking
+- **Offline Capabilities**: Downloadable content for offline learning
+- **Multi-Language Support**: Internationalization for global users
+- **Advanced Analytics**: Detailed learning analytics and insights
+- **Community Features**: Forums, mentorship programs, study groups
+
+## Getting Started
+
+### For Learners
+
+1. Create a character and choose your specialization
+2. Complete the "First Steps in Cybersecurity" tutorial
+3. Read and acknowledge ethical guidelines
+4. Set up your virtual lab environment
+5. Join or create a clan for collaborative learning
+6. Begin your cybersecurity journey with guided quests
+
+### For Educators
+
+1. Review the ethical guidelines and legal compliance features
+2. Set up supervised learning environments
+3. Create custom quests for your curriculum
+4. Monitor student progress through the dashboard
+5. Facilitate clan-based team learning activities
+6. Integrate with existing educational systems
+
+### For Organizations
+
+1. Deploy Syn_OS in authorized training environments
+2. Customize quest content for organizational needs
+3. Implement compliance monitoring and reporting
+4. Establish mentorship programs with experienced professionals
+5. Track employee skill development and certification progress
+6. Conduct authorized red team exercises and training
+
+## Support and Resources
+
+### Documentation
+
+- **API Reference**: Complete API documentation
+- **Quest Creation Guide**: How to create custom learning content
+- **Deployment Guide**: Installation and configuration instructions
+- **Troubleshooting**: Common issues and solutions
+
+### Community
+
+- **Forums**: Community discussion and support
+- **Discord Server**: Real-time chat and collaboration
+- **GitHub Repository**: Open source contributions and issues
+- **Educational Partnerships**: Academic institution collaborations
+
+### Legal and Compliance
+
+- **Terms of Service**: Legal terms and conditions
+- **Privacy Policy**: Data protection and privacy practices
+- **Compliance Documentation**: Regulatory compliance information
+- **Legal Resources**: Information about cybersecurity laws and regulations
+
+- --
+
+* The Syn_OS Gamified Learning System is designed to create ethical, knowledgeable, and responsible cybersecurity
+
 professionals through engaging, game-based education that emphasizes legal compliance and ethical behavior.*

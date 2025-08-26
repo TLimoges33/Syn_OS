@@ -58,11 +58,101 @@ syn_os/
 │   └── terraform/         # Infrastructure as code
 └── vendor/                 # Third-party dependencies
 ```text
+
 ├── .gitlab/                     # GitLab specific files (if using)
 │   └── ci/                     # CI/CD templates
 ├── docs/                       # Documentation
 │   ├── architecture/          # Architecture documents
 │   ├── api/                   # API documentation
+│   ├── guides/                # User and developer guides
+│   ├── security/              # Security documentation
+│   └── images/                # Documentation images
+├── synapticos-overlay/         # Main SynapticOS code
+│   ├── consciousness/         # AI consciousness system
+│   ├── context-engine/        # Personal context tracking
+│   ├── kernel-mods/           # Kernel modifications
+│   ├── lm-studio/            # LM Studio integration
+│   ├── security/             # Security framework
+│   ├── security-tutor/       # Educational modules
+│   ├── services/             # Core services
+│   ├── dashboard/            # Web dashboard
+│   ├── cli/                  # Command-line interface
+│   ├── api-gateway/          # Kong configuration
+│   └── config/               # Global configuration
+├── parrot-base/              # ParrotOS base (submodule)
+├── tests/                    # Test suites
+│   ├── unit/                # Unit tests
+│   ├── integration/         # Integration tests
+│   ├── e2e/                 # End-to-end tests
+│   ├── security/            # Security tests
+│   └── performance/         # Performance tests
+├── scripts/                  # Build and utility scripts
+│   ├── build/              # Build scripts
+│   ├── deploy/             # Deployment scripts
+│   ├── dev/                # Development utilities
+│   └── test/               # Test runners
+├── tools/                   # Development tools
+│   ├── generators/         # Code generators
+│   ├── analyzers/          # Code analyzers
+│   └── migrations/         # Migration tools
+├── config/                  # Configuration templates
+│   ├── development/        # Dev environment configs
+│   ├── staging/            # Staging configs
+│   └── production/         # Production configs
+├── deployments/            # Deployment configurations
+│   ├── docker/            # Docker files
+│   ├── kubernetes/        # K8s manifests
+│   └── terraform/         # Infrastructure as code
+└── vendor/                 # Third-party dependencies
+
+```text
+├── .gitlab/                     # GitLab specific files (if using)
+│   └── ci/                     # CI/CD templates
+├── docs/                       # Documentation
+│   ├── architecture/          # Architecture documents
+│   ├── api/                   # API documentation
+│   ├── guides/                # User and developer guides
+│   ├── security/              # Security documentation
+│   └── images/                # Documentation images
+├── synapticos-overlay/         # Main SynapticOS code
+│   ├── consciousness/         # AI consciousness system
+│   ├── context-engine/        # Personal context tracking
+│   ├── kernel-mods/           # Kernel modifications
+│   ├── lm-studio/            # LM Studio integration
+│   ├── security/             # Security framework
+│   ├── security-tutor/       # Educational modules
+│   ├── services/             # Core services
+│   ├── dashboard/            # Web dashboard
+│   ├── cli/                  # Command-line interface
+│   ├── api-gateway/          # Kong configuration
+│   └── config/               # Global configuration
+├── parrot-base/              # ParrotOS base (submodule)
+├── tests/                    # Test suites
+│   ├── unit/                # Unit tests
+│   ├── integration/         # Integration tests
+│   ├── e2e/                 # End-to-end tests
+│   ├── security/            # Security tests
+│   └── performance/         # Performance tests
+├── scripts/                  # Build and utility scripts
+│   ├── build/              # Build scripts
+│   ├── deploy/             # Deployment scripts
+│   ├── dev/                # Development utilities
+│   └── test/               # Test runners
+├── tools/                   # Development tools
+│   ├── generators/         # Code generators
+│   ├── analyzers/          # Code analyzers
+│   └── migrations/         # Migration tools
+├── config/                  # Configuration templates
+│   ├── development/        # Dev environment configs
+│   ├── staging/            # Staging configs
+│   └── production/         # Production configs
+├── deployments/            # Deployment configurations
+│   ├── docker/            # Docker files
+│   ├── kubernetes/        # K8s manifests
+│   └── terraform/         # Infrastructure as code
+└── vendor/                 # Third-party dependencies
+
+```text
 │   ├── guides/                # User and developer guides
 │   ├── security/              # Security documentation
 │   └── images/                # Documentation images
@@ -111,6 +201,9 @@ syn_os/
 ### Service Orchestrator
 
 ```text
+```text
+
+```text
 
 ```text
 synapticos-overlay/services/orchestrator/
@@ -153,6 +246,7 @@ synapticos-overlay/services/orchestrator/
 ├── go.sum
 └── README.md
 ```text
+
 │   ├── api/                     # API handlers
 │   │   ├── handlers.go
 │   │   ├── middleware.go
@@ -189,8 +283,78 @@ synapticos-overlay/services/orchestrator/
 └── README.md
 
 ```text
+│   ├── api/                     # API handlers
+│   │   ├── handlers.go
+│   │   ├── middleware.go
+│   │   └── routes.go
+│   ├── config/                  # Configuration
+│   │   ├── config.go
+│   │   └── validation.go
+│   ├── core/                    # Core business logic
+│   │   ├── orchestrator.go
+│   │   ├── service_manager.go
+│   │   └── health_checker.go
+│   ├── models/                  # Data models
+│   │   ├── service.go
+│   │   └── health.go
+│   └── storage/                 # Data persistence
+│       ├── interface.go
+│       └── memory.go
+├── pkg/                         # Public packages
+│   └── client/
+│       └── client.go
+├── api/                         # API definitions
+│   └── openapi.yaml
+├── configs/                     # Configuration files
+│   └── default.yaml
+├── deployments/                 # Deployment files
+│   ├── Dockerfile
+│   └── docker-compose.yml
+├── tests/                       # Component tests
+│   ├── unit/
+│   └── integration/
+├── Makefile
+├── go.mod
+├── go.sum
+└── README.md
+
+```text
+│   │   ├── config.go
+│   │   └── validation.go
+│   ├── core/                    # Core business logic
+│   │   ├── orchestrator.go
+│   │   ├── service_manager.go
+│   │   └── health_checker.go
+│   ├── models/                  # Data models
+│   │   ├── service.go
+│   │   └── health.go
+│   └── storage/                 # Data persistence
+│       ├── interface.go
+│       └── memory.go
+├── pkg/                         # Public packages
+│   └── client/
+│       └── client.go
+├── api/                         # API definitions
+│   └── openapi.yaml
+├── configs/                     # Configuration files
+│   └── default.yaml
+├── deployments/                 # Deployment files
+│   ├── Dockerfile
+│   └── docker-compose.yml
+├── tests/                       # Component tests
+│   ├── unit/
+│   └── integration/
+├── Makefile
+├── go.mod
+├── go.sum
+└── README.md
+
+```text
 
 ### Message Bus
+
+```text
+```text
 
 ```text
 
@@ -224,6 +388,7 @@ synapticos-overlay/services/message-bus/
 ├── docker-compose.yml
 └── README.md
 ```text
+
 ├── clients/                    # Client libraries
 │   ├── python/
 │   │   ├── __init__.py
@@ -249,8 +414,56 @@ synapticos-overlay/services/message-bus/
 └── README.md
 
 ```text
+├── clients/                    # Client libraries
+│   ├── python/
+│   │   ├── __init__.py
+│   │   ├── client.py
+│   │   ├── events.py
+│   │   └── requirements.txt
+│   ├── go/
+│   │   ├── client.go
+│   │   ├── events.go
+│   │   └── go.mod
+│   └── javascript/
+│       ├── index.js
+│       ├── events.js
+│       └── package.json
+├── schemas/                    # Event schemas
+│   ├── events.proto           # Protobuf definitions
+│   ├── events.json            # JSON Schema
+│   └── generated/             # Generated code
+├── scripts/
+│   ├── setup.sh
+│   └── test-connection.sh
+├── docker-compose.yml
+└── README.md
+
+```text
+│   │   └── requirements.txt
+│   ├── go/
+│   │   ├── client.go
+│   │   ├── events.go
+│   │   └── go.mod
+│   └── javascript/
+│       ├── index.js
+│       ├── events.js
+│       └── package.json
+├── schemas/                    # Event schemas
+│   ├── events.proto           # Protobuf definitions
+│   ├── events.json            # JSON Schema
+│   └── generated/             # Generated code
+├── scripts/
+│   ├── setup.sh
+│   └── test-connection.sh
+├── docker-compose.yml
+└── README.md
+
+```text
 
 ### Security Framework
+
+```text
+```text
 
 ```text
 
@@ -294,6 +507,7 @@ synapticos-overlay/security/
 ├── Dockerfile
 └── README.md
 ```text
+
 │   │   ├── jwt.rs
 │   │   ├── oauth.rs
 │   │   └── mfa.rs
@@ -329,8 +543,76 @@ synapticos-overlay/security/
 └── README.md
 
 ```text
+│   │   ├── jwt.rs
+│   │   ├── oauth.rs
+│   │   └── mfa.rs
+│   ├── authz/                  # Authorization module
+│   │   ├── mod.rs
+│   │   ├── rbac.rs
+│   │   ├── policies.rs
+│   │   └── evaluator.rs
+│   ├── crypto/                 # Cryptography module
+│   │   ├── mod.rs
+│   │   ├── encryption.rs
+│   │   ├── hashing.rs
+│   │   └── keys.rs
+│   ├── api/                    # API module
+│   │   ├── mod.rs
+│   │   ├── handlers.rs
+│   │   └── middleware.rs
+│   └── storage/                # Storage backends
+│       ├── mod.rs
+│       ├── vault.rs
+│       └── redis.rs
+├── tests/
+│   ├── unit/
+│   └── integration/
+├── benches/                    # Benchmarks
+│   └── crypto_bench.rs
+├── examples/                   # Usage examples
+│   ├── basic_auth.rs
+│   └── jwt_validation.rs
+├── Cargo.toml
+├── Cargo.lock
+├── Dockerfile
+└── README.md
+
+```text
+│   │   ├── rbac.rs
+│   │   ├── policies.rs
+│   │   └── evaluator.rs
+│   ├── crypto/                 # Cryptography module
+│   │   ├── mod.rs
+│   │   ├── encryption.rs
+│   │   ├── hashing.rs
+│   │   └── keys.rs
+│   ├── api/                    # API module
+│   │   ├── mod.rs
+│   │   ├── handlers.rs
+│   │   └── middleware.rs
+│   └── storage/                # Storage backends
+│       ├── mod.rs
+│       ├── vault.rs
+│       └── redis.rs
+├── tests/
+│   ├── unit/
+│   └── integration/
+├── benches/                    # Benchmarks
+│   └── crypto_bench.rs
+├── examples/                   # Usage examples
+│   ├── basic_auth.rs
+│   └── jwt_validation.rs
+├── Cargo.toml
+├── Cargo.lock
+├── Dockerfile
+└── README.md
+
+```text
 
 ### Neural Darwinism Engine
+
+```text
+```text
 
 ```text
 
@@ -370,6 +652,7 @@ synapticos-overlay/consciousness/
 ├── Makefile
 └── README.md
 ```text
+
 │   ├── selection.py           # Selection mechanisms
 │   ├── evolution.py           # Evolution algorithms
 │   └── emergence.py           # Emergence detection
@@ -401,8 +684,68 @@ synapticos-overlay/consciousness/
 └── README.md
 
 ```text
+│   ├── selection.py           # Selection mechanisms
+│   ├── evolution.py           # Evolution algorithms
+│   └── emergence.py           # Emergence detection
+├── api/
+│   ├── __init__.py
+│   ├── app.py                # FastAPI application
+│   ├── routes.py             # API routes
+│   ├── models.py             # Pydantic models
+│   └── dependencies.py       # Dependency injection
+├── services/
+│   ├── __init__.py
+│   ├── consciousness_service.py
+│   └── message_handler.py
+├── config/
+│   ├── __init__.py
+│   └── settings.py
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   └── conftest.py
+├── scripts/
+│   ├── train_model.py
+│   └── evaluate.py
+├── requirements.txt
+├── requirements-dev.txt
+├── Dockerfile
+├── docker-compose.yml
+├── Makefile
+└── README.md
+
+```text
+│   ├── app.py                # FastAPI application
+│   ├── routes.py             # API routes
+│   ├── models.py             # Pydantic models
+│   └── dependencies.py       # Dependency injection
+├── services/
+│   ├── __init__.py
+│   ├── consciousness_service.py
+│   └── message_handler.py
+├── config/
+│   ├── __init__.py
+│   └── settings.py
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   └── conftest.py
+├── scripts/
+│   ├── train_model.py
+│   └── evaluate.py
+├── requirements.txt
+├── requirements-dev.txt
+├── Dockerfile
+├── docker-compose.yml
+├── Makefile
+└── README.md
+
+```text
 
 ### Context Engine
+
+```text
+```text
 
 ```text
 
@@ -438,6 +781,7 @@ synapticos-overlay/context-engine/
 ├── Dockerfile
 └── README.md
 ```text
+
 │   │   ├── __init__.py
 │   │   ├── user.py
 │   │   ├── skill.py
@@ -465,8 +809,60 @@ synapticos-overlay/context-engine/
 └── README.md
 
 ```text
+│   │   ├── __init__.py
+│   │   ├── user.py
+│   │   ├── skill.py
+│   │   └── activity.py
+│   ├── trackers/              # Tracking modules
+│   │   ├── __init__.py
+│   │   ├── skill_tracker.py
+│   │   ├── activity_tracker.py
+│   │   └── progress_tracker.py
+│   ├── storage/               # Storage layer
+│   │   ├── __init__.py
+│   │   ├── interface.py
+│   │   ├── postgres.py
+│   │   └── redis.py
+│   └── api/                   # API layer
+│       ├── __init__.py
+│       ├── app.py
+│       └── routes.py
+├── migrations/                # Database migrations
+│   └── alembic/
+├── tests/
+├── config/
+├── requirements.txt
+├── Dockerfile
+└── README.md
+
+```text
+│   │   ├── __init__.py
+│   │   ├── skill_tracker.py
+│   │   ├── activity_tracker.py
+│   │   └── progress_tracker.py
+│   ├── storage/               # Storage layer
+│   │   ├── __init__.py
+│   │   ├── interface.py
+│   │   ├── postgres.py
+│   │   └── redis.py
+│   └── api/                   # API layer
+│       ├── __init__.py
+│       ├── app.py
+│       └── routes.py
+├── migrations/                # Database migrations
+│   └── alembic/
+├── tests/
+├── config/
+├── requirements.txt
+├── Dockerfile
+└── README.md
+
+```text
 
 ### Security Tutor
+
+```text
+```text
 
 ```text
 
@@ -499,6 +895,7 @@ synapticos-overlay/security-tutor/
 ├── docker-compose.yml
 └── README.md
 ```text
+
 │   │   ├── lessons/          # Lesson content
 │   │   ├── labs/             # Interactive labs
 │   │   ├── assessment/       # Skill assessment
@@ -523,8 +920,54 @@ synapticos-overlay/security-tutor/
 └── README.md
 
 ```text
+│   │   ├── lessons/          # Lesson content
+│   │   ├── labs/             # Interactive labs
+│   │   ├── assessment/       # Skill assessment
+│   │   └── api/
+│   ├── tests/
+│   └── requirements.txt
+├── frontend/
+│   ├── src/
+│   │   ├── components/       # React components
+│   │   ├── pages/           # Page components
+│   │   ├── services/        # API services
+│   │   ├── hooks/           # Custom hooks
+│   │   └── utils/
+│   ├── public/
+│   ├── package.json
+│   └── tsconfig.json
+├── content/                  # Educational content
+│   ├── lessons/
+│   ├── exercises/
+│   └── solutions/
+├── docker-compose.yml
+└── README.md
+
+```text
+│   └── requirements.txt
+├── frontend/
+│   ├── src/
+│   │   ├── components/       # React components
+│   │   ├── pages/           # Page components
+│   │   ├── services/        # API services
+│   │   ├── hooks/           # Custom hooks
+│   │   └── utils/
+│   ├── public/
+│   ├── package.json
+│   └── tsconfig.json
+├── content/                  # Educational content
+│   ├── lessons/
+│   ├── exercises/
+│   └── solutions/
+├── docker-compose.yml
+└── README.md
+
+```text
 
 ### Testing Structure
+
+```text
+```text
 
 ```text
 
@@ -556,6 +999,7 @@ tests/
 ├── conftest.py             # Pytest configuration
 └── Makefile
 ```text
+
 │   └── services/
 ├── integration/
 │   ├── api/
@@ -579,8 +1023,52 @@ tests/
 └── Makefile
 
 ```text
+│   └── services/
+├── integration/
+│   ├── api/
+│   ├── message-bus/
+│   └── workflows/
+├── e2e/
+│   ├── scenarios/
+│   └── fixtures/
+├── security/
+│   ├── penetration/
+│   ├── vulnerability/
+│   └── compliance/
+├── performance/
+│   ├── load/
+│   ├── stress/
+│   └── benchmarks/
+├── fixtures/                 # Test data
+├── mocks/                   # Mock services
+├── utils/                   # Test utilities
+├── conftest.py             # Pytest configuration
+└── Makefile
+
+```text
+├── e2e/
+│   ├── scenarios/
+│   └── fixtures/
+├── security/
+│   ├── penetration/
+│   ├── vulnerability/
+│   └── compliance/
+├── performance/
+│   ├── load/
+│   ├── stress/
+│   └── benchmarks/
+├── fixtures/                 # Test data
+├── mocks/                   # Mock services
+├── utils/                   # Test utilities
+├── conftest.py             # Pytest configuration
+└── Makefile
+
+```text
 
 ### Configuration Structure
+
+```text
+```text
 
 ```text
 
@@ -602,6 +1090,7 @@ config/
 └── schemas/                # Configuration schemas
     └── config.schema.json
 ```text
+
 ├── development/
 │   ├── services.override.yaml
 │   └── .env.example
@@ -615,8 +1104,32 @@ config/
     └── config.schema.json
 
 ```text
+├── development/
+│   ├── services.override.yaml
+│   └── .env.example
+├── staging/
+│   ├── services.override.yaml
+│   └── secrets.encrypted
+├── production/
+│   ├── services.override.yaml
+│   └── secrets.encrypted
+└── schemas/                # Configuration schemas
+    └── config.schema.json
+
+```text
+│   └── secrets.encrypted
+├── production/
+│   ├── services.override.yaml
+│   └── secrets.encrypted
+└── schemas/                # Configuration schemas
+    └── config.schema.json
+
+```text
 
 ### Scripts Structure
+
+```text
+```text
 
 ```text
 
@@ -643,11 +1156,43 @@ scripts/
     ├── lint-all.sh         # Run linters
     └── format-code.sh      # Format code
 ```text
+
 ├── deploy/
 │   ├── deploy-local.sh     # Local deployment
 │   ├── deploy-staging.sh   # Staging deployment
 │   └── deploy-prod.sh      # Production deployment
 ├── dev/
+│   ├── setup-dev.sh        # Setup dev environment
+│   ├── reset-db.sh         # Reset databases
+│   └── generate-certs.sh   # Generate certificates
+├── test/
+│   ├── run-unit.sh         # Run unit tests
+│   ├── run-integration.sh  # Run integration tests
+│   └── run-security.sh     # Run security tests
+└── utils/
+    ├── check-deps.sh       # Check dependencies
+    ├── lint-all.sh         # Run linters
+    └── format-code.sh      # Format code
+
+```text
+├── deploy/
+│   ├── deploy-local.sh     # Local deployment
+│   ├── deploy-staging.sh   # Staging deployment
+│   └── deploy-prod.sh      # Production deployment
+├── dev/
+│   ├── setup-dev.sh        # Setup dev environment
+│   ├── reset-db.sh         # Reset databases
+│   └── generate-certs.sh   # Generate certificates
+├── test/
+│   ├── run-unit.sh         # Run unit tests
+│   ├── run-integration.sh  # Run integration tests
+│   └── run-security.sh     # Run security tests
+└── utils/
+    ├── check-deps.sh       # Check dependencies
+    ├── lint-all.sh         # Run linters
+    └── format-code.sh      # Format code
+
+```text
 │   ├── setup-dev.sh        # Setup dev environment
 │   ├── reset-db.sh         # Reset databases
 │   └── generate-certs.sh   # Generate certificates
@@ -698,6 +1243,38 @@ Every component directory should contain:
 ### IDE Configuration
 
 ```text
+1. Use lowercase with underscores for Python files: `context_engine.py`
+2. Use lowercase with hyphens for directories: `context-engine/`
+3. Use PascalCase for Go files with types: `ServiceManager.go`
+4. Use lowercase for Go files with functions: `handlers.go`
+5. Use kebab-case for config files: `nats-cluster.conf`
+6. Use UPPERCASE for documentation: `README.md`, `LICENSE`
+
+### Component Naming
+
+- Services: `service-name/`
+- Tests: `test_component_name.py` or `component_test.go`
+- Configs: `component.yaml` or `component.conf`
+- Docker: `Dockerfile.component` or just `Dockerfile`
+
+## Standard Files in Each Component
+
+Every component directory should contain:
+
+1. `README.md` - Component documentation
+2. `Dockerfile` - Container definition
+3. `Makefile` - Build commands
+4. `.gitignore` - Git ignore rules
+5. `LICENSE` - License file (if different from root)
+6. `CHANGELOG.md` - Version history
+7. `requirements.txt` or `go.mod` - Dependencies
+8. `.env.example` - Environment variables example
+
+## Development Workflow Files
+
+### IDE Configuration
+
+```text
 
 1. Use lowercase with underscores for Python files: `context_engine.py`
 2. Use lowercase with hyphens for directories: `context-engine/`
@@ -705,6 +1282,35 @@ Every component directory should contain:
 4. Use lowercase for Go files with functions: `handlers.go`
 5. Use kebab-case for config files: `nats-cluster.conf`
 6. Use UPPERCASE for documentation: `README.md`, `LICENSE`
+
+### Component Naming
+
+- Services: `service-name/`
+- Tests: `test_component_name.py` or `component_test.go`
+- Configs: `component.yaml` or `component.conf`
+- Docker: `Dockerfile.component` or just `Dockerfile`
+
+## Standard Files in Each Component
+
+Every component directory should contain:
+
+1. `README.md` - Component documentation
+2. `Dockerfile` - Container definition
+3. `Makefile` - Build commands
+4. `.gitignore` - Git ignore rules
+5. `LICENSE` - License file (if different from root)
+6. `CHANGELOG.md` - Version history
+7. `requirements.txt` or `go.mod` - Dependencies
+8. `.env.example` - Environment variables example
+
+## Development Workflow Files
+
+### IDE Configuration
+
+```text
+
+1. Use kebab-case for config files: `nats-cluster.conf`
+2. Use UPPERCASE for documentation: `README.md`, `LICENSE`
 
 ### Component Naming
 
@@ -746,7 +1352,16 @@ Every component directory should contain:
 
 ```text
 
+.idea/
+└── # IntelliJ IDEA settings
+
+```text
+```text
+
 ### Git Configuration
+
+```text
+```text
 
 ```text
 
@@ -759,7 +1374,13 @@ Every component directory should contain:
 
 ```text
 
+```text
+```text
+
 ### CI/CD Files
+
+```text
+```text
 
 ```text
 
@@ -779,7 +1400,16 @@ Jenkinsfile
 
 ```text
 
+.gitlab-ci.yml
+Jenkinsfile
+
+```text
+```text
+
 ## Security Files
+
+```text
+```text
 
 ```text
 
@@ -791,6 +1421,9 @@ security/
 └── compliance/           # Compliance reports
 ```text
 
+```text
+
+```text
 ```text
 
 This structure provides a solid foundation for the Syn_OS project, ensuring consistency, maintainability, and scalability across all components.

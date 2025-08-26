@@ -10,7 +10,9 @@
 ## 🎯 MISSION STATEMENT
 
 Syn_OS represents a complete reimagining of operating system design, combining **security-first architecture** with
+
 * *consciousness-integrated intelligence** to create a system that achieves academic excellence while maintaining
+
 practical utility.
 
 ### Core Mission

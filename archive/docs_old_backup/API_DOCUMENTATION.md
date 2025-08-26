@@ -25,7 +25,13 @@ Authorization: Bearer <your-jwt-token>
 
 ```text
 
+```text
+```text
+
 ### Obtaining a Token
+
+```http
+```http
 
 ```http
 
@@ -38,12 +44,22 @@ Content-Type: application/json
     "password": "your_password"
 }
 ```text
+
     "password": "your_password"
 }
 
 ```text
+    "password": "your_password"
+}
+
+```text
+```text
 
 ## Response:
+
+```json
+```json
+
 ```json
 
 ```json
@@ -57,14 +73,25 @@ Content-Type: application/json
     }
 }
 ```text
+
         "username": "your_username",
         "role": "admin"
     }
 }
 
 ```text
+        "username": "your_username",
+        "role": "admin"
+    }
+}
+
+```text
+```text
 
 ### Refreshing Tokens
+
+```http
+```http
 
 ```http
 
@@ -75,6 +102,9 @@ Authorization: Bearer <your-jwt-token>
 
 ```text
 
+```text
+```text
+
 ## Service Orchestrator API
 
 ### Service Management
@@ -82,8 +112,13 @@ Authorization: Bearer <your-jwt-token>
 #### List Services
 
 ```http
+#### List Services
+
+```http
 
 #### List Services
+
+```http
 
 ```http
 GET /api/v1/services
@@ -92,7 +127,14 @@ Authorization: Bearer <token>
 
 ```text
 
+```text
+```text
+
 ## Response:
+
+```json
+```json
+
 ```json
 
 ```json
@@ -116,6 +158,7 @@ Authorization: Bearer <token>
     "per_page": 10
 }
 ```text
+
             "type": "python",
             "status": "running",
             "health": "healthy",
@@ -132,8 +175,38 @@ Authorization: Bearer <token>
 }
 
 ```text
+            "type": "python",
+            "status": "running",
+            "health": "healthy",
+            "port": 8081,
+            "cpu_usage": 15.2,
+            "memory_usage": 256.7,
+            "created_at": "2024-01-01T10:00:00Z",
+            "updated_at": "2024-01-01T12:00:00Z"
+        }
+    ],
+    "total": 1,
+    "page": 1,
+    "per_page": 10
+}
+
+```text
+            "memory_usage": 256.7,
+            "created_at": "2024-01-01T10:00:00Z",
+            "updated_at": "2024-01-01T12:00:00Z"
+        }
+    ],
+    "total": 1,
+    "page": 1,
+    "per_page": 10
+}
+
+```text
 
 #### Get Service Details
+
+```http
+```http
 
 ```http
 
@@ -144,7 +217,14 @@ Authorization: Bearer <token>
 
 ```text
 
+```text
+```text
+
 ## Response:
+
+```json
+```json
+
 ```json
 
 ```json
@@ -170,6 +250,7 @@ Authorization: Bearer <token>
     "updated_at": "2024-01-01T12:00:00Z"
 }
 ```text
+
     "health": "healthy",
     "configuration": {
         "port": 8081,
@@ -188,8 +269,42 @@ Authorization: Bearer <token>
 }
 
 ```text
+    "health": "healthy",
+    "configuration": {
+        "port": 8081,
+        "environment": "production",
+        "log_level": "info"
+    },
+    "metrics": {
+        "cpu_usage": 15.2,
+        "memory_usage": 256.7,
+        "requests_per_second": 45.3,
+        "error_rate": 0.01
+    },
+    "dependencies": ["postgres", "redis", "nats"],
+    "created_at": "2024-01-01T10:00:00Z",
+    "updated_at": "2024-01-01T12:00:00Z"
+}
+
+```text
+    },
+    "metrics": {
+        "cpu_usage": 15.2,
+        "memory_usage": 256.7,
+        "requests_per_second": 45.3,
+        "error_rate": 0.01
+    },
+    "dependencies": ["postgres", "redis", "nats"],
+    "created_at": "2024-01-01T10:00:00Z",
+    "updated_at": "2024-01-01T12:00:00Z"
+}
+
+```text
 
 #### Create Service
+
+```http
+```http
 
 ```http
 
@@ -209,6 +324,7 @@ Content-Type: application/json
     "dependencies": ["postgres"]
 }
 ```text
+
     "name": "new-service",
     "type": "go",
     "configuration": {
@@ -220,8 +336,28 @@ Content-Type: application/json
 }
 
 ```text
+    "name": "new-service",
+    "type": "go",
+    "configuration": {
+        "port": 8084,
+        "environment": "production",
+        "replicas": 2
+    },
+    "dependencies": ["postgres"]
+}
+
+```text
+        "replicas": 2
+    },
+    "dependencies": ["postgres"]
+}
+
+```text
 
 #### Update Service
+
+```http
+```http
 
 ```http
 
@@ -237,6 +373,14 @@ Content-Type: application/json
     }
 }
 ```text
+
+    "configuration": {
+        "replicas": 3,
+        "log_level": "debug"
+    }
+}
+
+```text
     "configuration": {
         "replicas": 3,
         "log_level": "debug"
@@ -245,7 +389,12 @@ Content-Type: application/json
 
 ```text
 
+```text
+
 #### Delete Service
+
+```http
+```http
 
 ```http
 
@@ -256,9 +405,15 @@ Authorization: Bearer <token>
 
 ```text
 
+```text
+```text
+
 ### Service Control
 
 #### Start Service
+
+```http
+```http
 
 ```http
 
@@ -269,7 +424,13 @@ Authorization: Bearer <token>
 
 ```text
 
+```text
+```text
+
 #### Stop Service
+
+```http
+```http
 
 ```http
 
@@ -280,7 +441,13 @@ Authorization: Bearer <token>
 
 ```text
 
+```text
+```text
+
 #### Restart Service
+
+```http
+```http
 
 ```http
 
@@ -291,7 +458,13 @@ Authorization: Bearer <token>
 
 ```text
 
+```text
+```text
+
 #### Scale Service
+
+```http
+```http
 
 ```http
 
@@ -304,14 +477,23 @@ Content-Type: application/json
     "replicas": 5
 }
 ```text
+
     "replicas": 5
 }
 
+```text
+    "replicas": 5
+}
+
+```text
 ```text
 
 ### Health Monitoring
 
 #### System Health
+
+```http
+```http
 
 ```http
 
@@ -321,7 +503,14 @@ GET /api/v1/health
 
 ```text
 
+```text
+```text
+
 ## Response:
+
+```json
+```json
+
 ```json
 
 ```json
@@ -344,6 +533,7 @@ GET /api/v1/health
     }
 }
 ```text
+
         "consciousness": "healthy",
         "postgres": "healthy",
         "redis": "healthy",
@@ -359,8 +549,36 @@ GET /api/v1/health
 }
 
 ```text
+        "consciousness": "healthy",
+        "postgres": "healthy",
+        "redis": "healthy",
+        "nats": "healthy"
+    },
+    "metrics": {
+        "total_services": 5,
+        "running_services": 5,
+        "cpu_usage": 25.3,
+        "memory_usage": 1024.5,
+        "disk_usage": 45.2
+    }
+}
+
+```text
+    "metrics": {
+        "total_services": 5,
+        "running_services": 5,
+        "cpu_usage": 25.3,
+        "memory_usage": 1024.5,
+        "disk_usage": 45.2
+    }
+}
+
+```text
 
 #### Service Health
+
+```http
+```http
 
 ```http
 
@@ -371,9 +589,15 @@ Authorization: Bearer <token>
 
 ```text
 
+```text
+```text
+
 ### Event Management
 
 #### List Events
+
+```http
+```http
 
 ```http
 
@@ -384,7 +608,14 @@ Authorization: Bearer <token>
 
 ```text
 
+```text
+```text
+
 ## Response:
+
+```json
+```json
+
 ```json
 
 ```json
@@ -407,6 +638,7 @@ Authorization: Bearer <token>
     "per_page": 50
 }
 ```text
+
             "service_id": "service-uuid",
             "data": {
                 "service_name": "consciousness-system",
@@ -422,8 +654,36 @@ Authorization: Bearer <token>
 }
 
 ```text
+            "service_id": "service-uuid",
+            "data": {
+                "service_name": "consciousness-system",
+                "port": 8081
+            },
+            "timestamp": "2024-01-01T12:00:00Z",
+            "processed": true
+        }
+    ],
+    "total": 1,
+    "page": 1,
+    "per_page": 50
+}
+
+```text
+            "timestamp": "2024-01-01T12:00:00Z",
+            "processed": true
+        }
+    ],
+    "total": 1,
+    "page": 1,
+    "per_page": 50
+}
+
+```text
 
 #### Create Event
+
+```http
+```http
 
 ```http
 
@@ -441,11 +701,25 @@ Content-Type: application/json
     }
 }
 ```text
+
     "type": "custom_event",
     "service_id": "service-uuid",
     "data": {
         "message": "Custom event data",
         "priority": "high"
+    }
+}
+
+```text
+    "type": "custom_event",
+    "service_id": "service-uuid",
+    "data": {
+        "message": "Custom event data",
+        "priority": "high"
+    }
+}
+
+```text
     }
 }
 
@@ -458,8 +732,13 @@ Content-Type: application/json
 #### Get Consciousness State
 
 ```http
+#### Get Consciousness State
+
+```http
 
 #### Get Consciousness State
+
+```http
 
 ```http
 GET /api/v1/consciousness/state
@@ -468,7 +747,14 @@ Authorization: Bearer <token>
 
 ```text
 
+```text
+```text
+
 ## Response:
+
+```json
+```json
+
 ```json
 
 ```json
@@ -490,6 +776,7 @@ Authorization: Bearer <token>
     "timestamp": "2024-01-01T12:00:00Z"
 }
 ```text
+
     "memory_usage": {
         "working_memory": 0.65,
         "long_term_memory": 0.23,
@@ -504,8 +791,34 @@ Authorization: Bearer <token>
 }
 
 ```text
+    "memory_usage": {
+        "working_memory": 0.65,
+        "long_term_memory": 0.23,
+        "episodic_memory": 0.18
+    },
+    "emotional_state": {
+        "valence": 0.7,
+        "arousal": 0.4,
+        "dominance": 0.8
+    },
+    "timestamp": "2024-01-01T12:00:00Z"
+}
+
+```text
+    "emotional_state": {
+        "valence": 0.7,
+        "arousal": 0.4,
+        "dominance": 0.8
+    },
+    "timestamp": "2024-01-01T12:00:00Z"
+}
+
+```text
 
 #### Update Consciousness Parameters
+
+```http
+```http
 
 ```http
 
@@ -520,16 +833,27 @@ Content-Type: application/json
     "memory_consolidation_rate": 0.1
 }
 ```text
+
     "learning_rate": 0.01,
     "attention_threshold": 0.5,
     "memory_consolidation_rate": 0.1
 }
 
 ```text
+    "learning_rate": 0.01,
+    "attention_threshold": 0.5,
+    "memory_consolidation_rate": 0.1
+}
+
+```text
+```text
 
 ### Cognitive Processes
 
 #### List Active Processes
+
+```http
+```http
 
 ```http
 
@@ -540,7 +864,14 @@ Authorization: Bearer <token>
 
 ```text
 
+```text
+```text
+
 ## Response:
+
+```json
+```json
+
 ```json
 
 ```json
@@ -565,6 +896,7 @@ Authorization: Bearer <token>
     "active_processes": 1
 }
 ```text
+
             "status": "active",
             "priority": 0.8,
             "cpu_usage": 15.2,
@@ -582,8 +914,40 @@ Authorization: Bearer <token>
 }
 
 ```text
+            "status": "active",
+            "priority": 0.8,
+            "cpu_usage": 15.2,
+            "memory_usage": 64.3,
+            "started_at": "2024-01-01T11:30:00Z",
+            "data": {
+                "input_patterns": 156,
+                "recognized_patterns": 142,
+                "accuracy": 0.91
+            }
+        }
+    ],
+    "total_processes": 1,
+    "active_processes": 1
+}
+
+```text
+            "data": {
+                "input_patterns": 156,
+                "recognized_patterns": 142,
+                "accuracy": 0.91
+            }
+        }
+    ],
+    "total_processes": 1,
+    "active_processes": 1
+}
+
+```text
 
 #### Start Cognitive Process
+
+```http
+```http
 
 ```http
 
@@ -601,6 +965,7 @@ Content-Type: application/json
     }
 }
 ```text
+
     "type": "learning_session",
     "priority": 0.7,
     "parameters": {
@@ -610,8 +975,24 @@ Content-Type: application/json
 }
 
 ```text
+    "type": "learning_session",
+    "priority": 0.7,
+    "parameters": {
+        "dataset": "security_patterns",
+        "epochs": 100
+    }
+}
+
+```text
+    }
+}
+
+```text
 
 #### Stop Cognitive Process
+
+```http
+```http
 
 ```http
 
@@ -622,9 +1003,15 @@ Authorization: Bearer <token>
 
 ```text
 
+```text
+```text
+
 ### Memory Management
 
 #### Query Memory
+
+```http
+```http
 
 ```http
 
@@ -635,7 +1022,14 @@ Authorization: Bearer <token>
 
 ```text
 
+```text
+```text
+
 ## Response:
+
+```json
+```json
+
 ```json
 
 ```json
@@ -658,6 +1052,7 @@ Authorization: Bearer <token>
     "total": 1
 }
 ```text
+
             "content": {
                 "event": "security_incident_detected",
                 "context": "user_login_anomaly",
@@ -673,8 +1068,36 @@ Authorization: Bearer <token>
 }
 
 ```text
+            "content": {
+                "event": "security_incident_detected",
+                "context": "user_login_anomaly",
+                "timestamp": "2024-01-01T11:45:00Z",
+                "confidence": 0.92
+            },
+            "associations": ["security", "anomaly", "user_behavior"],
+            "importance": 0.85,
+            "created_at": "2024-01-01T11:45:00Z"
+        }
+    ],
+    "total": 1
+}
+
+```text
+            },
+            "associations": ["security", "anomaly", "user_behavior"],
+            "importance": 0.85,
+            "created_at": "2024-01-01T11:45:00Z"
+        }
+    ],
+    "total": 1
+}
+
+```text
 
 #### Store Memory
+
+```http
+```http
 
 ```http
 
@@ -694,11 +1117,29 @@ Content-Type: application/json
     "importance": 0.7
 }
 ```text
+
     "type": "semantic",
     "content": {
         "concept": "new_security_pattern",
         "definition": "Pattern description",
         "examples": ["example1", "example2"]
+    },
+    "associations": ["security", "pattern", "detection"],
+    "importance": 0.7
+}
+
+```text
+    "type": "semantic",
+    "content": {
+        "concept": "new_security_pattern",
+        "definition": "Pattern description",
+        "examples": ["example1", "example2"]
+    },
+    "associations": ["security", "pattern", "detection"],
+    "importance": 0.7
+}
+
+```text
     },
     "associations": ["security", "pattern", "detection"],
     "importance": 0.7
@@ -711,6 +1152,9 @@ Content-Type: application/json
 #### Get Learning Status
 
 ```http
+```http
+
+```http
 
 ```http
 GET /api/v1/consciousness/learning
@@ -719,7 +1163,14 @@ Authorization: Bearer <token>
 
 ```text
 
+```text
+```text
+
 ## Response:
+
+```json
+```json
+
 ```json
 
 ```json
@@ -742,6 +1193,7 @@ Authorization: Bearer <token>
     "adaptation_rate": 0.08
 }
 ```text
+
         "progress": 0.65,
         "accuracy": 0.89,
         "started_at": "2024-01-01T10:00:00Z"
@@ -757,8 +1209,36 @@ Authorization: Bearer <token>
 }
 
 ```text
+        "progress": 0.65,
+        "accuracy": 0.89,
+        "started_at": "2024-01-01T10:00:00Z"
+    },
+    "recent_improvements": [
+        {
+            "skill": "threat_detection",
+            "improvement": 0.12,
+            "timestamp": "2024-01-01T11:30:00Z"
+        }
+    ],
+    "adaptation_rate": 0.08
+}
+
+```text
+        {
+            "skill": "threat_detection",
+            "improvement": 0.12,
+            "timestamp": "2024-01-01T11:30:00Z"
+        }
+    ],
+    "adaptation_rate": 0.08
+}
+
+```text
 
 #### Trigger Learning Session
+
+```http
+```http
 
 ```http
 
@@ -777,11 +1257,27 @@ Content-Type: application/json
     }
 }
 ```text
+
     "type": "supervised_learning",
     "dataset": "security_incidents",
     "parameters": {
         "learning_rate": 0.01,
         "batch_size": 32,
+        "epochs": 50
+    }
+}
+
+```text
+    "type": "supervised_learning",
+    "dataset": "security_incidents",
+    "parameters": {
+        "learning_rate": 0.01,
+        "batch_size": 32,
+        "epochs": 50
+    }
+}
+
+```text
         "epochs": 50
     }
 }
@@ -795,8 +1291,13 @@ Content-Type: application/json
 #### Get Dashboard Overview
 
 ```http
+#### Get Dashboard Overview
+
+```http
 
 #### Get Dashboard Overview
+
+```http
 
 ```http
 GET /api/v1/dashboard/overview
@@ -805,7 +1306,14 @@ Authorization: Bearer <token>
 
 ```text
 
+```text
+```text
+
 ## Response:
+
+```json
+```json
+
 ```json
 
 ```json
@@ -828,6 +1336,7 @@ Authorization: Bearer <token>
     }
 }
 ```text
+
     "alerts": 1,
     "performance": {
         "cpu_usage": 25.3,
@@ -843,8 +1352,36 @@ Authorization: Bearer <token>
 }
 
 ```text
+    "alerts": 1,
+    "performance": {
+        "cpu_usage": 25.3,
+        "memory_usage": 1024.5,
+        "disk_usage": 45.2,
+        "network_io": 156.7
+    },
+    "consciousness_metrics": {
+        "awareness_level": 0.85,
+        "cognitive_load": 0.42,
+        "learning_progress": 0.78
+    }
+}
+
+```text
+        "network_io": 156.7
+    },
+    "consciousness_metrics": {
+        "awareness_level": 0.85,
+        "cognitive_load": 0.42,
+        "learning_progress": 0.78
+    }
+}
+
+```text
 
 #### Get Real-time Metrics
+
+```http
+```http
 
 ```http
 
@@ -855,9 +1392,15 @@ Authorization: Bearer <token>
 
 ```text
 
+```text
+```text
+
 ### User Management
 
 #### List Users
+
+```http
+```http
 
 ```http
 
@@ -868,7 +1411,14 @@ Authorization: Bearer <token>
 
 ```text
 
+```text
+```text
+
 ## Response:
+
+```json
+```json
+
 ```json
 
 ```json
@@ -886,6 +1436,7 @@ Authorization: Bearer <token>
     "total": 1
 }
 ```text
+
             "email": "admin@example.com",
             "role": "admin",
             "last_login": "2024-01-01T11:30:00Z",
@@ -896,8 +1447,26 @@ Authorization: Bearer <token>
 }
 
 ```text
+            "email": "admin@example.com",
+            "role": "admin",
+            "last_login": "2024-01-01T11:30:00Z",
+            "created_at": "2024-01-01T00:00:00Z"
+        }
+    ],
+    "total": 1
+}
+
+```text
+    ],
+    "total": 1
+}
+
+```text
 
 #### Create User
+
+```http
+```http
 
 ```http
 
@@ -913,11 +1482,21 @@ Content-Type: application/json
     "role": "user"
 }
 ```text
+
     "username": "newuser",
     "email": "newuser@example.com",
     "password": "secure_password",
     "role": "user"
 }
+
+```text
+    "username": "newuser",
+    "email": "newuser@example.com",
+    "password": "secure_password",
+    "role": "user"
+}
+
+```text
 
 ```text
 
@@ -928,8 +1507,13 @@ Content-Type: application/json
 #### Start Learning Session
 
 ```http
+#### Start Learning Session
+
+```http
 
 #### Start Learning Session
+
+```http
 
 ```http
 POST /api/v1/tutor/sessions
@@ -942,14 +1526,26 @@ Content-Type: application/json
     "user_id": "user-uuid"
 }
 ```text
+
     "topic": "network_security",
     "difficulty": "intermediate",
     "user_id": "user-uuid"
 }
 
 ```text
+    "topic": "network_security",
+    "difficulty": "intermediate",
+    "user_id": "user-uuid"
+}
+
+```text
+```text
 
 ## Response:
+
+```json
+```json
+
 ```json
 
 ```json
@@ -965,6 +1561,7 @@ Content-Type: application/json
     }
 }
 ```text
+
     "consciousness_adaptation": {
         "user_skill_level": 0.65,
         "recommended_approach": "hands_on_practice",
@@ -973,8 +1570,22 @@ Content-Type: application/json
 }
 
 ```text
+    "consciousness_adaptation": {
+        "user_skill_level": 0.65,
+        "recommended_approach": "hands_on_practice",
+        "personalization_factors": ["visual_learner", "prefers_examples"]
+    }
+}
+
+```text
+}
+
+```text
 
 #### Get Session Progress
+
+```http
+```http
 
 ```http
 
@@ -985,7 +1596,14 @@ Authorization: Bearer <token>
 
 ```text
 
+```text
+```text
+
 ## Response:
+
+```json
+```json
+
 ```json
 
 ```json
@@ -1003,6 +1621,7 @@ Authorization: Bearer <token>
     }
 }
 ```text
+
     "score": 85,
     "time_spent": 810,
     "consciousness_feedback": {
@@ -1013,10 +1632,28 @@ Authorization: Bearer <token>
 }
 
 ```text
+    "score": 85,
+    "time_spent": 810,
+    "consciousness_feedback": {
+        "engagement_level": 0.8,
+        "comprehension_rate": 0.75,
+        "suggested_adjustments": ["increase_practical_examples"]
+    }
+}
+
+```text
+        "suggested_adjustments": ["increase_practical_examples"]
+    }
+}
+
+```text
 
 ### Assessment and Feedback
 
 #### Submit Answer
+
+```http
+```http
 
 ```http
 
@@ -1031,14 +1668,25 @@ Content-Type: application/json
     "time_taken": 45
 }
 ```text
+
     "question_id": "question-uuid",
     "answer": "user_answer_content",
     "time_taken": 45
 }
 
 ```text
+    "question_id": "question-uuid",
+    "answer": "user_answer_content",
+    "time_taken": 45
+}
+
+```text
+```text
 
 #### Get Personalized Feedback
+
+```http
+```http
 
 ```http
 
@@ -1049,6 +1697,9 @@ Authorization: Bearer <token>
 
 ```text
 
+```text
+```text
+
 ## WebSocket APIs
 
 ### Real-time Updates
@@ -1056,8 +1707,13 @@ Authorization: Bearer <token>
 #### Connect to Dashboard Updates
 
 ```javascript
+#### Connect to Dashboard Updates
+
+```javascript
 
 #### Connect to Dashboard Updates
+
+```javascript
 
 ```javascript
 const ws = new WebSocket('ws://localhost:8083/ws/dashboard');
@@ -1067,11 +1723,19 @@ ws.onmessage = function(event) {
     console.log('Dashboard update:', data);
 };
 ```text
+
 };
 
 ```text
+};
+
+```text
+```text
 
 #### Connect to Consciousness Stream
+
+```javascript
+```javascript
 
 ```javascript
 
@@ -1083,13 +1747,21 @@ ws.onmessage = function(event) {
     console.log('Consciousness update:', data);
 };
 ```text
+
 };
 
+```text
+};
+
+```text
 ```text
 
 ## Error Handling
 
 ### Standard Error Response
+
+```json
+```json
 
 ```json
 
@@ -1104,11 +1776,19 @@ ws.onmessage = function(event) {
     }
 }
 ```text
+
         "timestamp": "2024-01-01T12:00:00Z",
         "request_id": "req-uuid"
     }
 }
 
+```text
+        "timestamp": "2024-01-01T12:00:00Z",
+        "request_id": "req-uuid"
+    }
+}
+
+```text
 ```text
 
 ### Common Error Codes
@@ -1133,11 +1813,44 @@ API endpoints are rate-limited to prevent abuse:
 Rate limit headers are included in responses:
 
 ```http
+- `NOT_FOUND` (404): Resource not found
+- `INVALID_REQUEST` (400): Malformed request
+- `RATE_LIMITED` (429): Too many requests
+- `INTERNAL_ERROR` (500): Server error
+- `SERVICE_UNAVAILABLE` (503): Service temporarily unavailable
+
+## Rate Limiting
+
+API endpoints are rate-limited to prevent abuse:
+
+- **Authentication endpoints**: 5 requests per minute
+- **Read operations**: 100 requests per minute
+- **Write operations**: 50 requests per minute
+- **WebSocket connections**: 10 concurrent connections per user
+
+Rate limit headers are included in responses:
+
+```http
 
 - `NOT_FOUND` (404): Resource not found
 - `INVALID_REQUEST` (400): Malformed request
 - `RATE_LIMITED` (429): Too many requests
 - `INTERNAL_ERROR` (500): Server error
+- `SERVICE_UNAVAILABLE` (503): Service temporarily unavailable
+
+## Rate Limiting
+
+API endpoints are rate-limited to prevent abuse:
+
+- **Authentication endpoints**: 5 requests per minute
+- **Read operations**: 100 requests per minute
+- **Write operations**: 50 requests per minute
+- **WebSocket connections**: 10 concurrent connections per user
+
+Rate limit headers are included in responses:
+
+```http
+
 - `SERVICE_UNAVAILABLE` (503): Service temporarily unavailable
 
 ## Rate Limiting
@@ -1159,9 +1872,15 @@ X-RateLimit-Reset: 1640995200
 
 ```text
 
+```text
+```text
+
 ## SDK and Client Libraries
 
 ### Python SDK
+
+```python
+```python
 
 ```python
 
@@ -1188,6 +1907,25 @@ session = client.tutor.start_session(
     difficulty="intermediate"
 )
 ```text
+
+)
+
+## List services
+
+services = client.services.list()
+
+## Get consciousness state
+
+state = client.consciousness.get_state()
+
+## Start learning session
+
+session = client.tutor.start_session(
+    topic="network_security",
+    difficulty="intermediate"
+)
+
+```text
 )
 
 ## List services
@@ -1207,7 +1945,23 @@ session = client.tutor.start_session(
 
 ```text
 
+## Get consciousness state
+
+state = client.consciousness.get_state()
+
+## Start learning session
+
+session = client.tutor.start_session(
+    topic="network_security",
+    difficulty="intermediate"
+)
+
+```text
+
 ### JavaScript SDK
+
+```javascript
+```javascript
 
 ```javascript
 
@@ -1231,6 +1985,7 @@ const session = await client.tutor.startSession({
     difficulty: 'intermediate'
 });
 ```text
+
 });
 
 // List services
@@ -1246,8 +2001,36 @@ const session = await client.tutor.startSession({
 });
 
 ```text
+});
+
+// List services
+const services = await client.services.list();
+
+// Get consciousness state
+const state = await client.consciousness.getState();
+
+// Start learning session
+const session = await client.tutor.startSession({
+    topic: 'network_security',
+    difficulty: 'intermediate'
+});
+
+```text
+// Get consciousness state
+const state = await client.consciousness.getState();
+
+// Start learning session
+const session = await client.tutor.startSession({
+    topic: 'network_security',
+    difficulty: 'intermediate'
+});
+
+```text
 
 ### Go SDK
+
+```go
+```go
 
 ```go
 
@@ -1299,11 +2082,52 @@ func main() {
 
 ```text
 
+func main() {
+    client := synos.NewClient(&synos.Config{
+        BaseURL: "http://localhost:8080",
+        Token:   "your-jwt-token",
+    })
+
+    // List services
+    services, err := client.Services.List()
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // Get consciousness state
+    state, err := client.Consciousness.GetState()
+    if err != nil {
+        log.Fatal(err)
+    }
+}
+
+```text
+    })
+
+    // List services
+    services, err := client.Services.List()
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // Get consciousness state
+    state, err := client.Consciousness.GetState()
+    if err != nil {
+        log.Fatal(err)
+    }
+}
+
+```text
+
 ## Integration Examples
 
 ### Monitoring Integration
 
 ```python
+
+```python
+```python
+
 ```python
 
 ## Prometheus metrics integration
@@ -1352,9 +2176,50 @@ def update_metrics():
 
 ```text
 
+## Define metrics
+
+consciousness_awareness = Gauge('consciousness_awareness_level', 'Current awareness level')
+service_health = Gauge('service_health_status', 'Service health status', ['service_name'])
+
+def update_metrics():
+    # Get consciousness state
+    response = requests.get('http://localhost:8081/api/v1/consciousness/state')
+    state = response.json()
+    consciousness_awareness.set(state['awareness_level'])
+
+    # Get service health
+    response = requests.get('http://localhost:8080/api/v1/services')
+    services = response.json()['services']
+
+    for service in services:
+        health_value = 1 if service['health'] == 'healthy' else 0
+        service_health.labels(service_name=service['name']).set(health_value)
+
+```text
+
+def update_metrics():
+    # Get consciousness state
+    response = requests.get('http://localhost:8081/api/v1/consciousness/state')
+    state = response.json()
+    consciousness_awareness.set(state['awareness_level'])
+
+    # Get service health
+    response = requests.get('http://localhost:8080/api/v1/services')
+    services = response.json()['services']
+
+    for service in services:
+        health_value = 1 if service['health'] == 'healthy' else 0
+        service_health.labels(service_name=service['name']).set(health_value)
+
+```text
+
 ### Alerting Integration
 
 ```python
+
+```python
+```python
+
 ```python
 
 ## Slack alerting integration
@@ -1437,6 +2302,77 @@ def monitor_consciousness():
 
 ```text
 
+def send_alert(message, severity='info'):
+    webhook_url = 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+
+    color_map = {
+        'info': '#36a64f',
+        'warning': '#ff9900',
+        'error': '#ff0000'
+    }
+
+    payload = {
+        'attachments': [{
+            'color': color_map.get(severity, '#36a64f'),
+            'text': message,
+            'title': f'Syn_OS Alert ({severity.upper()})',
+            'timestamp': int(time.time())
+        }]
+    }
+
+    requests.post(webhook_url, data=json.dumps(payload))
+
+## Monitor consciousness state changes
+
+def monitor_consciousness():
+    ws = websocket.WebSocket()
+    ws.connect('ws://localhost:8081/ws/consciousness')
+
+    while True:
+        message = ws.recv()
+        data = json.loads(message)
+
+        if data['awareness_level'] < 0.3:
+            send_alert(
+                f"Consciousness awareness level critically low: {data['awareness_level']}",
+                severity='error'
+            )
+
+```text
+        'info': '#36a64f',
+        'warning': '#ff9900',
+        'error': '#ff0000'
+    }
+
+    payload = {
+        'attachments': [{
+            'color': color_map.get(severity, '#36a64f'),
+            'text': message,
+            'title': f'Syn_OS Alert ({severity.upper()})',
+            'timestamp': int(time.time())
+        }]
+    }
+
+    requests.post(webhook_url, data=json.dumps(payload))
+
+## Monitor consciousness state changes
+
+def monitor_consciousness():
+    ws = websocket.WebSocket()
+    ws.connect('ws://localhost:8081/ws/consciousness')
+
+    while True:
+        message = ws.recv()
+        data = json.loads(message)
+
+        if data['awareness_level'] < 0.3:
+            send_alert(
+                f"Consciousness awareness level critically low: {data['awareness_level']}",
+                severity='error'
+            )
+
+```text
+
 ## Best Practices
 
 ### Authentication
@@ -1485,6 +2421,96 @@ def monitor_consciousness():
 - Performance optimizations
 
 For the latest API updates and changes, refer to the project's changelog and release notes.
+
+- Always use HTTPS in production
+- Implement token refresh logic
+- Store tokens securely
+- Use appropriate token expiration times
+
+### Error Handling
+
+- Implement retry logic with exponential backoff
+- Handle rate limiting gracefully
+- Log errors with sufficient context
+- Provide meaningful error messages to users
+
+### Performance
+
+- Use pagination for large datasets
+- Implement caching where appropriate
+- Use WebSockets for real-time updates
+- Monitor API response times
+
+### Security
+
+- Validate all input data
+- Use parameterized queries
+- Implement proper access controls
+- Audit API usage regularly
+
+## Changelog
+
+### v1.0.0 (2024-01-01)
+
+- Initial API release
+- Service orchestrator endpoints
+- Consciousness system integration
+- Authentication and authorization
+- WebSocket support for real-time updates
+
+### v1.1.0 (TBD)
+
+- Enhanced consciousness learning APIs
+- Improved error handling
+- Additional monitoring endpoints
+- Performance optimizations
+
+For the latest API updates and changes, refer to the project's changelog and release notes.
+- Always use HTTPS in production
+- Implement token refresh logic
+- Store tokens securely
+- Use appropriate token expiration times
+
+### Error Handling
+
+- Implement retry logic with exponential backoff
+- Handle rate limiting gracefully
+- Log errors with sufficient context
+- Provide meaningful error messages to users
+
+### Performance
+
+- Use pagination for large datasets
+- Implement caching where appropriate
+- Use WebSockets for real-time updates
+- Monitor API response times
+
+### Security
+
+- Validate all input data
+- Use parameterized queries
+- Implement proper access controls
+- Audit API usage regularly
+
+## Changelog
+
+### v1.0.0 (2024-01-01)
+
+- Initial API release
+- Service orchestrator endpoints
+- Consciousness system integration
+- Authentication and authorization
+- WebSocket support for real-time updates
+
+### v1.1.0 (TBD)
+
+- Enhanced consciousness learning APIs
+- Improved error handling
+- Additional monitoring endpoints
+- Performance optimizations
+
+For the latest API updates and changes, refer to the project's changelog and release notes.
+
 - Always use HTTPS in production
 - Implement token refresh logic
 - Store tokens securely
