@@ -140,11 +140,11 @@ Game Patterns → Consciousness Training → AI Learning Acceleration
 - `/home/diablorain/Syn_OS/config/synos_consciousness_prompts.json` - Prompt configurations
 
 ### **MediaPipe Integration:**
-- `/home/diablorain/Syn_OS/integrate_mediapipe_consciousness.py` - Consciousness pipelines
+- `/home/diablorain/Syn_OS/phase4/integration/integrate_mediapipe_consciousness.py` - Consciousness pipelines
 - `/home/diablorain/Syn_OS/results/mediapipe_consciousness_test.json` - Processing analytics
 
 ### **GameBoy Integration:**
-- `/home/diablorain/Syn_OS/integrate_gameboy_consciousness_patterns.py` - Game development patterns
+- `/home/diablorain/Syn_OS/phase4/integration/integrate_gameboy_consciousness_patterns.py` - Game development patterns
 - `/home/diablorain/Syn_OS/results/gameboy_consciousness_patterns.json` - Training metrics
 
 ---

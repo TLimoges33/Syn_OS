@@ -430,3 +430,5 @@ main() {
 
 # Run main function
 main "$@"
+ 
+ # Moved to /home/diablorain/Syn_OS/phase4/scripts/deploy-phase4-integration.sh
