@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>berty</name>
+  <full_name>berty/berty</full_name>
+  <description>Berty is a secure peer-to-peer messaging app that works with or without internet access, cellular data or trust in the network</description>
+  <url>https://github.com/berty/berty</url>
+  <clone_url>https://github.com/berty/berty.git</clone_url>
+  <ssh_url>git@github.com:berty/berty.git</ssh_url>
+  <metadata>
+    <language>TypeScript</language>
+    <stars>8407</stars>
+    <forks>439</forks>
+    <watchers>8407</watchers>
+    <size>271832</size>
+    <default_branch>master</default_branch>
+    <created_at>2018-07-16T05:21:19Z</created_at>
+    <updated_at>2025-08-26T16:58:37Z</updated_at>
+    <pushed_at>2025-08-22T07:10:59Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>mobile_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>android</topic>
+    <topic>berty</topic>
+    <topic>censorship</topic>
+    <topic>crdt</topic>
+    <topic>cybersecurity</topic>
+    <topic>encryption</topic>
+    <topic>gomobile</topic>
+    <topic>ios</topic>
+    <topic>ipfs</topic>
+    <topic>libp2p</topic>
+    <topic>messaging</topic>
+    <topic>mobile-app</topic>
+    <topic>monorepo</topic>
+    <topic>offline-first</topic>
+    <topic>orbitdb</topic>
+    <topic>p2p</topic>
+    <topic>privacy</topic>
+    <topic>react-native</topic>
+    <topic>surveillance</topic>
+  </topics>
+  <license>
+    <name>Other</name>
+    <spdx_id>NOASSERTION</spdx_id>
+  </license>
+  <owner>
+    <login>berty</login>
+    <type>Organization</type>
+    <url>https://github.com/berty</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 8407 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

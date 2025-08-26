@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>90DaysOfCyberSecurity</name>
+  <full_name>farhanashrafdev/90DaysOfCyberSecurity</full_name>
+  <description>This repository contains a 90-day cybersecurity study plan, along with resources and materials for learning various cybersecurity concepts and technologies. The plan is organized into daily tasks, covering topics such as Network+, Security+, Linux, Python, Traffic Analysis, Git, ELK, AWS, Azure, and Hacking. The repository also includes a `LEARN.md</description>
+  <url>https://github.com/farhanashrafdev/90DaysOfCyberSecurity</url>
+  <clone_url>https://github.com/farhanashrafdev/90DaysOfCyberSecurity.git</clone_url>
+  <ssh_url>git@github.com:farhanashrafdev/90DaysOfCyberSecurity.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>11332</stars>
+    <forks>1267</forks>
+    <watchers>11332</watchers>
+    <size>71</size>
+    <default_branch>main</default_branch>
+    <created_at>2023-01-22T14:42:29Z</created_at>
+    <updated_at>2025-08-26T18:12:15Z</updated_at>
+    <pushed_at>2025-05-18T01:08:34Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>communityexchange</topic>
+    <topic>cybersecurity</topic>
+    <topic>ethical-hacking</topic>
+    <topic>hacktoberfest</topic>
+    <topic>learn</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>farhanashrafdev</login>
+    <type>User</type>
+    <url>https://github.com/farhanashrafdev</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 11332 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

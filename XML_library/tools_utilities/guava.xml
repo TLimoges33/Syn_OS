@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>guava</name>
+  <full_name>google/guava</full_name>
+  <description>Google core libraries for Java</description>
+  <url>https://github.com/google/guava</url>
+  <clone_url>https://github.com/google/guava.git</clone_url>
+  <ssh_url>git@github.com:google/guava.git</ssh_url>
+  <metadata>
+    <language>Java</language>
+    <stars>51047</stars>
+    <forks>11054</forks>
+    <watchers>51047</watchers>
+    <size>564698</size>
+    <default_branch>master</default_branch>
+    <created_at>2014-05-29T16:23:17Z</created_at>
+    <updated_at>2025-08-26T22:42:00Z</updated_at>
+    <pushed_at>2025-08-26T00:48:44Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>tools_utilities</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>guava</topic>
+    <topic>java</topic>
+  </topics>
+  <license>
+    <name>Apache License 2.0</name>
+    <spdx_id>Apache-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>google</login>
+    <type>Organization</type>
+    <url>https://github.com/google</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 51047 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

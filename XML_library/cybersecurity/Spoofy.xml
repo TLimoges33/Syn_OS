@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Spoofy</name>
+  <full_name>MattKeeley/Spoofy</full_name>
+  <description>Spoofy is a program that checks if a list of domains can be spoofed based on SPF and DMARC records.</description>
+  <url>https://github.com/MattKeeley/Spoofy</url>
+  <clone_url>https://github.com/MattKeeley/Spoofy.git</clone_url>
+  <ssh_url>git@github.com:MattKeeley/Spoofy.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>712</stars>
+    <forks>71</forks>
+    <watchers>712</watchers>
+    <size>1010</size>
+    <default_branch>main</default_branch>
+    <created_at>2022-09-20T19:01:34Z</created_at>
+    <updated_at>2025-08-24T17:01:50Z</updated_at>
+    <pushed_at>2025-07-27T22:16:31Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>application-security</topic>
+    <topic>appsec</topic>
+    <topic>cybersecurity</topic>
+    <topic>deliverability</topic>
+    <topic>dmarc</topic>
+    <topic>email-security</topic>
+    <topic>emails</topic>
+    <topic>infosec</topic>
+    <topic>penetration-testing</topic>
+    <topic>penetration-testing-tools</topic>
+    <topic>pentesting</topic>
+    <topic>phishing</topic>
+    <topic>python</topic>
+    <topic>python3</topic>
+    <topic>redteam</topic>
+    <topic>security</topic>
+    <topic>spf</topic>
+  </topics>
+  <license>
+    <name>Other</name>
+    <spdx_id>NOASSERTION</spdx_id>
+  </license>
+  <owner>
+    <login>MattKeeley</login>
+    <type>User</type>
+    <url>https://github.com/MattKeeley</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 712 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

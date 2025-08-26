@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>subzy</name>
+  <full_name>PentestPad/subzy</full_name>
+  <description>Subdomain takeover vulnerability checker</description>
+  <url>https://github.com/PentestPad/subzy</url>
+  <clone_url>https://github.com/PentestPad/subzy.git</clone_url>
+  <ssh_url>git@github.com:PentestPad/subzy.git</ssh_url>
+  <metadata>
+    <language>Go</language>
+    <stars>1314</stars>
+    <forks>187</forks>
+    <watchers>1314</watchers>
+    <size>12322</size>
+    <default_branch>master</default_branch>
+    <created_at>2019-03-01T21:41:57Z</created_at>
+    <updated_at>2025-08-26T08:03:08Z</updated_at>
+    <pushed_at>2024-09-10T13:59:44Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>bugbounty</topic>
+    <topic>cybersecurity</topic>
+    <topic>security-research</topic>
+    <topic>security-vulnerability</topic>
+    <topic>subdomain-takeover</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v2.0</name>
+    <spdx_id>GPL-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>PentestPad</login>
+    <type>Organization</type>
+    <url>https://github.com/PentestPad</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 1314 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

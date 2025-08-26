@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>tome</name>
+  <full_name>runebookai/tome</full_name>
+  <description>a magical LLM desktop client that makes it easy for *anyone* to use LLMs and MCP</description>
+  <url>https://github.com/runebookai/tome</url>
+  <clone_url>https://github.com/runebookai/tome.git</clone_url>
+  <ssh_url>git@github.com:runebookai/tome.git</ssh_url>
+  <metadata>
+    <language>Svelte</language>
+    <stars>441</stars>
+    <forks>31</forks>
+    <watchers>441</watchers>
+    <size>58329</size>
+    <default_branch>main</default_branch>
+    <created_at>2025-04-25T19:43:08Z</created_at>
+    <updated_at>2025-08-26T17:23:47Z</updated_at>
+    <pushed_at>2025-08-25T17:03:18Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>gemini</topic>
+    <topic>llm</topic>
+    <topic>llm-client</topic>
+    <topic>llms</topic>
+    <topic>local-llm</topic>
+    <topic>localai</topic>
+    <topic>mcp</topic>
+    <topic>mcp-client</topic>
+    <topic>mcp-clients</topic>
+    <topic>no-code</topic>
+    <topic>ollama</topic>
+    <topic>openai</topic>
+    <topic>qwen3</topic>
+  </topics>
+  <license>
+    <name>Apache License 2.0</name>
+    <spdx_id>Apache-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>runebookai</login>
+    <type>Organization</type>
+    <url>https://github.com/runebookai</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 441 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

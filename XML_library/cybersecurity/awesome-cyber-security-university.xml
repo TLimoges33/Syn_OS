@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>awesome-cyber-security-university</name>
+  <full_name>brootware/awesome-cyber-security-university</full_name>
+  <description>🎓 Because Education should be free. Contributions welcome! 🕵️ </description>
+  <url>https://github.com/brootware/awesome-cyber-security-university</url>
+  <clone_url>https://github.com/brootware/awesome-cyber-security-university.git</clone_url>
+  <ssh_url>git@github.com:brootware/awesome-cyber-security-university.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>2351</stars>
+    <forks>231</forks>
+    <watchers>2351</watchers>
+    <size>212</size>
+    <default_branch>main</default_branch>
+    <created_at>2022-03-31T11:14:50Z</created_at>
+    <updated_at>2025-08-26T20:55:02Z</updated_at>
+    <pushed_at>2025-08-09T12:09:44Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>awesome</topic>
+    <topic>awesome-list</topic>
+    <topic>courses</topic>
+    <topic>curriculum</topic>
+    <topic>cyber-security</topic>
+    <topic>cybersecurity</topic>
+    <topic>education</topic>
+    <topic>educational-project</topic>
+    <topic>free</topic>
+    <topic>hacking</topic>
+    <topic>learning-by-doing</topic>
+  </topics>
+  <license>
+    <name>Creative Commons Zero v1.0 Universal</name>
+    <spdx_id>CC0-1.0</spdx_id>
+  </license>
+  <owner>
+    <login>brootware</login>
+    <type>User</type>
+    <url>https://github.com/brootware</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 2351 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

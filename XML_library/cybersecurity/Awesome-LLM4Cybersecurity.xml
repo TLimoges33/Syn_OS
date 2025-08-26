@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Awesome-LLM4Cybersecurity</name>
+  <full_name>tmylla/Awesome-LLM4Cybersecurity</full_name>
+  <description>An overview of LLMs for cybersecurity.</description>
+  <url>https://github.com/tmylla/Awesome-LLM4Cybersecurity</url>
+  <clone_url>https://github.com/tmylla/Awesome-LLM4Cybersecurity.git</clone_url>
+  <ssh_url>git@github.com:tmylla/Awesome-LLM4Cybersecurity.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>1019</stars>
+    <forks>108</forks>
+    <watchers>1019</watchers>
+    <size>1286</size>
+    <default_branch>main</default_branch>
+    <created_at>2024-01-22T05:53:00Z</created_at>
+    <updated_at>2025-08-26T08:27:05Z</updated_at>
+    <pushed_at>2025-05-08T05:14:12Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <owner>
+    <login>tmylla</login>
+    <type>User</type>
+    <url>https://github.com/tmylla</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>7</score>
+    <assessment>Excellent potential for integration. High community engagement with 1019 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

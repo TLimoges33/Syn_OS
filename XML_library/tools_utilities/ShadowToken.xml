@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>ShadowToken</name>
+  <full_name>xorganic/ShadowToken</full_name>
+  <description>Red Teaming tool for privilege escalation and stealth detection evasion using token manipulation and fileless injection techniques.</description>
+  <url>https://github.com/xorganic/ShadowToken</url>
+  <clone_url>https://github.com/xorganic/ShadowToken.git</clone_url>
+  <ssh_url>git@github.com:xorganic/ShadowToken.git</ssh_url>
+  <metadata>
+    <language>C++</language>
+    <stars>4</stars>
+    <forks>0</forks>
+    <watchers>4</watchers>
+    <size>302</size>
+    <default_branch>main</default_branch>
+    <created_at>2024-11-09T23:09:08Z</created_at>
+    <updated_at>2025-08-22T22:03:27Z</updated_at>
+    <pushed_at>2025-06-10T08:31:52Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>tools_utilities</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>c2-communication</topic>
+    <topic>detection-evasion</topic>
+    <topic>fileless-injection</topic>
+    <topic>privilege-escalation</topic>
+    <topic>red-teaming</topic>
+    <topic>token-manipulation</topic>
+    <topic>uac-bypass</topic>
+  </topics>
+  <owner>
+    <login>xorganic</login>
+    <type>User</type>
+    <url>https://github.com/xorganic</url>
+  </owner>
+  <development_potential>
+    <level>medium</level>
+    <score>4</score>
+    <assessment>Good potential for integration. Moderate community interest with 4 stars. Suitable for selective implementation.</assessment>
+  </development_potential>
+</repository>

@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>dify</name>
+  <full_name>langgenius/dify</full_name>
+  <description>Production-ready platform for agentic workflow development.</description>
+  <url>https://github.com/langgenius/dify</url>
+  <clone_url>https://github.com/langgenius/dify.git</clone_url>
+  <ssh_url>git@github.com:langgenius/dify.git</ssh_url>
+  <metadata>
+    <language>TypeScript</language>
+    <stars>112152</stars>
+    <forks>17132</forks>
+    <watchers>112152</watchers>
+    <size>114072</size>
+    <default_branch>main</default_branch>
+    <created_at>2023-04-12T07:40:24Z</created_at>
+    <updated_at>2025-08-26T22:17:19Z</updated_at>
+    <pushed_at>2025-08-26T18:09:31Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>agent</topic>
+    <topic>agentic-ai</topic>
+    <topic>agentic-framework</topic>
+    <topic>agentic-workflow</topic>
+    <topic>ai</topic>
+    <topic>automation</topic>
+    <topic>gemini</topic>
+    <topic>genai</topic>
+    <topic>gpt</topic>
+    <topic>gpt-4</topic>
+    <topic>llm</topic>
+    <topic>low-code</topic>
+    <topic>mcp</topic>
+    <topic>nextjs</topic>
+    <topic>no-code</topic>
+    <topic>openai</topic>
+    <topic>orchestration</topic>
+    <topic>python</topic>
+    <topic>rag</topic>
+    <topic>workflow</topic>
+  </topics>
+  <license>
+    <name>Other</name>
+    <spdx_id>NOASSERTION</spdx_id>
+  </license>
+  <owner>
+    <login>langgenius</login>
+    <type>Organization</type>
+    <url>https://github.com/langgenius</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 112152 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

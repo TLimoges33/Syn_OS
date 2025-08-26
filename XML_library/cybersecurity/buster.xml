@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>buster</name>
+  <full_name>sham00n/buster</full_name>
+  <description>An advanced tool for email reconnaissance</description>
+  <url>https://github.com/sham00n/buster</url>
+  <clone_url>https://github.com/sham00n/buster.git</clone_url>
+  <ssh_url>git@github.com:sham00n/buster.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>1128</stars>
+    <forks>193</forks>
+    <watchers>1128</watchers>
+    <size>760</size>
+    <default_branch>master</default_branch>
+    <created_at>2019-06-03T16:31:38Z</created_at>
+    <updated_at>2025-08-26T18:42:30Z</updated_at>
+    <pushed_at>2020-03-26T16:41:38Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cybersecurity</topic>
+    <topic>emails</topic>
+    <topic>infosec</topic>
+    <topic>inteligence</topic>
+    <topic>osint</topic>
+    <topic>penetration-testing</topic>
+    <topic>recon</topic>
+    <topic>social-accounts</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>sham00n</login>
+    <type>User</type>
+    <url>https://github.com/sham00n</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 1128 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

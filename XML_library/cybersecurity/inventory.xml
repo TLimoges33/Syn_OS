@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>inventory</name>
+  <full_name>trickest/inventory</full_name>
+  <description>Asset inventory of over 800 public bug bounty programs.</description>
+  <url>https://github.com/trickest/inventory</url>
+  <clone_url>https://github.com/trickest/inventory.git</clone_url>
+  <ssh_url>git@github.com:trickest/inventory.git</ssh_url>
+  <metadata>
+    <language>Shell</language>
+    <stars>1445</stars>
+    <forks>262</forks>
+    <watchers>1445</watchers>
+    <size>19003569</size>
+    <default_branch>main</default_branch>
+    <created_at>2022-02-28T13:58:05Z</created_at>
+    <updated_at>2025-08-21T19:39:23Z</updated_at>
+    <pushed_at>2025-02-14T20:23:58Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>bug-bounty</topic>
+    <topic>bugbounty</topic>
+    <topic>bugbountytips</topic>
+    <topic>fuzzing</topic>
+    <topic>hacking</topic>
+    <topic>infosec</topic>
+    <topic>osint</topic>
+    <topic>osint-resources</topic>
+    <topic>osint-tool</topic>
+    <topic>penetration-testing</topic>
+    <topic>pentest-tool</topic>
+    <topic>pentesting</topic>
+    <topic>recon</topic>
+    <topic>reconnaissance</topic>
+    <topic>red-team</topic>
+    <topic>security</topic>
+    <topic>security-tools</topic>
+    <topic>software-security</topic>
+    <topic>threat-intelligence</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>trickest</login>
+    <type>Organization</type>
+    <url>https://github.com/trickest</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 1445 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

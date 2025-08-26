@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>awesome-courses</name>
+  <full_name>prakhar1989/awesome-courses</full_name>
+  <description>:books: List of awesome university courses for learning Computer Science!</description>
+  <url>https://github.com/prakhar1989/awesome-courses</url>
+  <clone_url>https://github.com/prakhar1989/awesome-courses.git</clone_url>
+  <ssh_url>git@github.com:prakhar1989/awesome-courses.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>62431</stars>
+    <forks>8232</forks>
+    <watchers>62431</watchers>
+    <size>1401</size>
+    <default_branch>master</default_branch>
+    <created_at>2014-11-15T18:36:49Z</created_at>
+    <updated_at>2025-08-26T22:50:03Z</updated_at>
+    <pushed_at>2023-05-04T12:49:34Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>education</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>awesome</topic>
+    <topic>awesome-list</topic>
+    <topic>computer-science</topic>
+    <topic>courses</topic>
+  </topics>
+  <owner>
+    <login>prakhar1989</login>
+    <type>User</type>
+    <url>https://github.com/prakhar1989</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 62431 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

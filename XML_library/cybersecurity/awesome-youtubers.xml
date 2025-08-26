@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>awesome-youtubers</name>
+  <full_name>JoseDeFreitas/awesome-youtubers</full_name>
+  <description>An awesome list of awesome YouTubers that teach about technology. Tutorials about web development, computer science, machine learning, game development, cybersecurity, and more.</description>
+  <url>https://github.com/JoseDeFreitas/awesome-youtubers</url>
+  <clone_url>https://github.com/JoseDeFreitas/awesome-youtubers.git</clone_url>
+  <ssh_url>git@github.com:JoseDeFreitas/awesome-youtubers.git</ssh_url>
+  <metadata>
+    <language>Markdown</language>
+    <stars>6815</stars>
+    <forks>473</forks>
+    <watchers>6815</watchers>
+    <size>1088</size>
+    <default_branch>main</default_branch>
+    <created_at>2020-08-25T14:18:15Z</created_at>
+    <updated_at>2025-08-26T15:01:27Z</updated_at>
+    <pushed_at>2025-03-01T12:52:34Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>awesome</topic>
+    <topic>awesome-list</topic>
+    <topic>list</topic>
+    <topic>youtube</topic>
+    <topic>youtubers</topic>
+  </topics>
+  <license>
+    <name>Creative Commons Zero v1.0 Universal</name>
+    <spdx_id>CC0-1.0</spdx_id>
+  </license>
+  <owner>
+    <login>JoseDeFreitas</login>
+    <type>User</type>
+    <url>https://github.com/JoseDeFreitas</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 6815 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

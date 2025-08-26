@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Privilege-Escalation</name>
+  <full_name>Ignitetechnologies/Privilege-Escalation</full_name>
+  <description>This cheasheet is aimed at the CTF Players and Beginners to help them understand the fundamentals of Privilege Escalation with examples.</description>
+  <url>https://github.com/Ignitetechnologies/Privilege-Escalation</url>
+  <clone_url>https://github.com/Ignitetechnologies/Privilege-Escalation.git</clone_url>
+  <ssh_url>git@github.com:Ignitetechnologies/Privilege-Escalation.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>3470</stars>
+    <forks>642</forks>
+    <watchers>3470</watchers>
+    <size>178</size>
+    <default_branch>master</default_branch>
+    <created_at>2019-08-23T06:51:28Z</created_at>
+    <updated_at>2025-08-26T02:52:38Z</updated_at>
+    <pushed_at>2023-02-11T20:47:44Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cheatsheet</topic>
+    <topic>ctf</topic>
+    <topic>ctf-challenges</topic>
+    <topic>ctf-writeups</topic>
+    <topic>hack</topic>
+    <topic>hacking</topic>
+    <topic>oscp</topic>
+    <topic>oscp-journey</topic>
+    <topic>oscp-prep</topic>
+    <topic>privilege-escalation</topic>
+    <topic>vulnhub</topic>
+  </topics>
+  <owner>
+    <login>Ignitetechnologies</login>
+    <type>User</type>
+    <url>https://github.com/Ignitetechnologies</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 3470 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

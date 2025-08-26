@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>bounty-targets</name>
+  <full_name>arkadiyt/bounty-targets</full_name>
+  <description>This project crawls bug bounty platform scopes (like Hackerone/Bugcrowd/Intigriti/etc) hourly and dumps them into the bounty-targets-data repo</description>
+  <url>https://github.com/arkadiyt/bounty-targets</url>
+  <clone_url>https://github.com/arkadiyt/bounty-targets.git</clone_url>
+  <ssh_url>git@github.com:arkadiyt/bounty-targets.git</ssh_url>
+  <metadata>
+    <language>Ruby</language>
+    <stars>690</stars>
+    <forks>124</forks>
+    <watchers>690</watchers>
+    <size>474</size>
+    <default_branch>main</default_branch>
+    <created_at>2017-12-03T21:45:17Z</created_at>
+    <updated_at>2025-08-22T17:49:35Z</updated_at>
+    <pushed_at>2025-07-11T02:55:17Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>bounty</topic>
+    <topic>bug</topic>
+    <topic>bugcrowd</topic>
+    <topic>federacy</topic>
+    <topic>hackenproof</topic>
+    <topic>hackerone</topic>
+    <topic>intigriti</topic>
+    <topic>vrp</topic>
+    <topic>yeswehack</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>arkadiyt</login>
+    <type>User</type>
+    <url>https://github.com/arkadiyt</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>7</score>
+    <assessment>Excellent potential for integration. High community engagement with 690 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

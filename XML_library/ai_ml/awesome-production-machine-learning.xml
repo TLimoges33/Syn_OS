@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>awesome-production-machine-learning</name>
+  <full_name>EthicalML/awesome-production-machine-learning</full_name>
+  <description>A curated list of awesome open source libraries to deploy, monitor, version and scale your machine learning</description>
+  <url>https://github.com/EthicalML/awesome-production-machine-learning</url>
+  <clone_url>https://github.com/EthicalML/awesome-production-machine-learning.git</clone_url>
+  <ssh_url>git@github.com:EthicalML/awesome-production-machine-learning.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>19047</stars>
+    <forks>2401</forks>
+    <watchers>19047</watchers>
+    <size>2981</size>
+    <default_branch>master</default_branch>
+    <created_at>2018-08-15T14:28:41Z</created_at>
+    <updated_at>2025-08-26T21:28:17Z</updated_at>
+    <pushed_at>2025-08-24T05:05:44Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>awesome</topic>
+    <topic>awesome-list</topic>
+    <topic>data-mining</topic>
+    <topic>deep-learning</topic>
+    <topic>explainability</topic>
+    <topic>interpretability</topic>
+    <topic>large-scale-machine-learning</topic>
+    <topic>large-scale-ml</topic>
+    <topic>machine-learning</topic>
+    <topic>machine-learning-operations</topic>
+    <topic>ml-operations</topic>
+    <topic>ml-ops</topic>
+    <topic>mlops</topic>
+    <topic>privacy-preserving</topic>
+    <topic>privacy-preserving-machine-learning</topic>
+    <topic>privacy-preserving-ml</topic>
+    <topic>production-machine-learning</topic>
+    <topic>production-ml</topic>
+    <topic>responsible-ai</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>EthicalML</login>
+    <type>Organization</type>
+    <url>https://github.com/EthicalML</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 19047 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>athena</name>
+  <full_name>Athena-OS/athena</full_name>
+  <description>Athena OS is a Arch/Nix-based distro focused on Cybersecurity. Learn, practice and enjoy with any hacking tool!</description>
+  <url>https://github.com/Athena-OS/athena</url>
+  <clone_url>https://github.com/Athena-OS/athena.git</clone_url>
+  <ssh_url>git@github.com:Athena-OS/athena.git</ssh_url>
+  <metadata>
+    <language>Shell</language>
+    <stars>1150</stars>
+    <forks>96</forks>
+    <watchers>1150</watchers>
+    <size>938024</size>
+    <default_branch>main</default_branch>
+    <created_at>2022-06-14T21:39:15Z</created_at>
+    <updated_at>2025-08-26T09:27:01Z</updated_at>
+    <pushed_at>2025-08-26T09:26:58Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>archlinux</topic>
+    <topic>cybersecurity</topic>
+    <topic>hacking</topic>
+    <topic>learning</topic>
+    <topic>linux</topic>
+    <topic>os</topic>
+    <topic>payload</topic>
+    <topic>pentesting</topic>
+    <topic>security</topic>
+    <topic>security-tools</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>Athena-OS</login>
+    <type>Organization</type>
+    <url>https://github.com/Athena-OS</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 1150 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

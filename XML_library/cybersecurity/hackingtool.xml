@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>hackingtool</name>
+  <full_name>Z4nzu/hackingtool</full_name>
+  <description>ALL IN ONE Hacking Tool For Hackers</description>
+  <url>https://github.com/Z4nzu/hackingtool</url>
+  <clone_url>https://github.com/Z4nzu/hackingtool.git</clone_url>
+  <ssh_url>git@github.com:Z4nzu/hackingtool.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>53384</stars>
+    <forks>5772</forks>
+    <watchers>53384</watchers>
+    <size>1367</size>
+    <default_branch>master</default_branch>
+    <created_at>2020-04-11T09:21:31Z</created_at>
+    <updated_at>2025-08-26T21:39:11Z</updated_at>
+    <pushed_at>2025-03-03T15:17:19Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>allinonehackingtool</topic>
+    <topic>besthackingtool</topic>
+    <topic>ctf-tools</topic>
+    <topic>ddos-attack-tool</topic>
+    <topic>hacker</topic>
+    <topic>hacking</topic>
+    <topic>linux</topic>
+    <topic>password-attack</topic>
+    <topic>steganography</topic>
+    <topic>web-attack</topic>
+    <topic>wireless-attack</topic>
+    <topic>xss-attacks</topic>
+    <topic>xss-detection</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>Z4nzu</login>
+    <type>User</type>
+    <url>https://github.com/Z4nzu</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 53384 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Malcolm</name>
+  <full_name>cisagov/Malcolm</full_name>
+  <description>Malcolm is a powerful, easily deployable network traffic analysis tool suite for full packet capture artifacts (PCAP files), Zeek logs and Suricata alerts.</description>
+  <url>https://github.com/cisagov/Malcolm</url>
+  <clone_url>https://github.com/cisagov/Malcolm.git</clone_url>
+  <ssh_url>git@github.com:cisagov/Malcolm.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>2198</stars>
+    <forks>381</forks>
+    <watchers>2198</watchers>
+    <size>238520</size>
+    <default_branch>main</default_branch>
+    <created_at>2019-05-13T18:35:51Z</created_at>
+    <updated_at>2025-08-26T22:32:18Z</updated_at>
+    <pushed_at>2025-08-07T21:23:49Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>arkime</topic>
+    <topic>cybersecurity</topic>
+    <topic>infosec</topic>
+    <topic>network-security</topic>
+    <topic>network-traffic-analysis</topic>
+    <topic>networksecurity</topic>
+    <topic>networktrafficanalysis</topic>
+    <topic>opensearch</topic>
+    <topic>opensearch-dashboards</topic>
+    <topic>pcap</topic>
+    <topic>security</topic>
+    <topic>suricata</topic>
+    <topic>zeek</topic>
+  </topics>
+  <license>
+    <name>Other</name>
+    <spdx_id>NOASSERTION</spdx_id>
+  </license>
+  <owner>
+    <login>cisagov</login>
+    <type>Organization</type>
+    <url>https://github.com/cisagov</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 2198 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

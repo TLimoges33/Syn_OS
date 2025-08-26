@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>RecoverPy</name>
+  <full_name>PabloLec/RecoverPy</full_name>
+  <description>Interactively find and recover deleted or :point_right: overwritten :point_left: files from your terminal</description>
+  <url>https://github.com/PabloLec/RecoverPy</url>
+  <clone_url>https://github.com/PabloLec/RecoverPy.git</clone_url>
+  <ssh_url>git@github.com:PabloLec/RecoverPy.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>1560</stars>
+    <forks>81</forks>
+    <watchers>1560</watchers>
+    <size>15733</size>
+    <default_branch>main</default_branch>
+    <created_at>2021-02-24T14:42:33Z</created_at>
+    <updated_at>2025-08-26T20:07:00Z</updated_at>
+    <pushed_at>2025-08-11T18:23:45Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cli</topic>
+    <topic>console</topic>
+    <topic>cybersecurity</topic>
+    <topic>data</topic>
+    <topic>data-recovery</topic>
+    <topic>files</topic>
+    <topic>forensics</topic>
+    <topic>hacking</topic>
+    <topic>linux</topic>
+    <topic>macos</topic>
+    <topic>pentesting</topic>
+    <topic>python</topic>
+    <topic>python3</topic>
+    <topic>recovery</topic>
+    <topic>search</topic>
+    <topic>search-interface</topic>
+    <topic>terminal</topic>
+    <topic>textual</topic>
+    <topic>tool</topic>
+    <topic>tui</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>PabloLec</login>
+    <type>User</type>
+    <url>https://github.com/PabloLec</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 1560 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

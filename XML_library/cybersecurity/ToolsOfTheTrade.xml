@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>ToolsOfTheTrade</name>
+  <full_name>cjbarber/ToolsOfTheTrade</full_name>
+  <description>Tools of The Trade, from Hacker News.</description>
+  <url>https://github.com/cjbarber/ToolsOfTheTrade</url>
+  <clone_url>https://github.com/cjbarber/ToolsOfTheTrade.git</clone_url>
+  <ssh_url>git@github.com:cjbarber/ToolsOfTheTrade.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>16811</stars>
+    <forks>1286</forks>
+    <watchers>16811</watchers>
+    <size>1552</size>
+    <default_branch>master</default_branch>
+    <created_at>2014-05-29T04:11:33Z</created_at>
+    <updated_at>2025-08-26T19:28:49Z</updated_at>
+    <pushed_at>2024-08-03T06:59:58Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <license>
+    <name>Other</name>
+    <spdx_id>NOASSERTION</spdx_id>
+  </license>
+  <owner>
+    <login>cjbarber</login>
+    <type>User</type>
+    <url>https://github.com/cjbarber</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 16811 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>
