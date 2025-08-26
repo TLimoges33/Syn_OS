@@ -23,6 +23,20 @@ git config --global init.defaultBranch main || true
 echo "📦 Installing Python dependencies..."
 pip install --user requests python-dateutil || true
 
+# Install Claude Desktop if not already present
+echo "🤖 Installing Claude Desktop..."
+if ! command -v claude &> /dev/null; then
+    echo "Setting up Claude Desktop installation..."
+    # Copy the Claude installer to temp location
+    cp install-claude.sh /tmp/install-claude.sh || true
+    chmod +x /tmp/install-claude.sh || true
+    
+    # Run the Claude installer
+    bash /tmp/install-claude.sh || echo "⚠️  Claude Desktop installation requires manual setup - use 'setup-claude' command"
+else
+    echo "✅ Claude Desktop already installed"
+fi
+
 # Set up GitHub CLI authentication if available
 if command -v gh &> /dev/null; then
     echo "🔑 Checking GitHub CLI authentication..."
@@ -50,12 +64,15 @@ alias dashboard='python3 dashboard_stable.py'
 alias teams='python3 dashboard_stable.py teams'
 alias recovery='bash fix_codespace_issues.sh all'
 alias help='python3 dashboard_stable.py help'
+alias claude='bash claude-launcher.sh'
+alias setup-claude='bash /tmp/install-claude.sh'
 
 echo "🎯 Master Dev Codespace Ready!"
 echo "Commands available:"
 echo "  dashboard  - Open stable master development dashboard"
 echo "  teams      - List all team feature branches"
 echo "  recovery   - Fix codespace issues"
+echo "  claude     - Launch Claude Desktop (with VNC support)"
 echo "  help       - Show all commands"
 EOF
 

@@ -48,13 +48,26 @@
     },
     "ghcr.io/devcontainers/features/node:1": {
       "version": "18"
+    },
+    "ghcr.io/devcontainers/features/desktop-lite:1": {
+      "password": "vscode",
+      "webPort": "6080",
+      "vncPort": "5901"
     }
   },
-  "forwardPorts": [3000, 8000, 8080],
+  "forwardPorts": [3000, 5901, 6080, 8000, 8080],
   "portsAttributes": {
     "3000": {
       "label": "Development Server",
       "onAutoForward": "notify"
+    },
+    "5901": {
+      "label": "VNC Server",
+      "onAutoForward": "notify"
+    },
+    "6080": {
+      "label": "Web VNC",
+      "onAutoForward": "openBrowser"
     }
   },
   "onCreateCommand": "echo 'Setting up Syn_OS Master Dev Environment...'",
