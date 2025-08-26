@@ -1,14 +1,14 @@
 # Team-Specific XML Library Configuration
-# Branch: feature/quality-assurance-testing
+# Branch: feature/devops-operations-infrastructure
 
 ## Focus Categories
-['tools_utilities', 'frameworks_libraries']
+['cloud_devops', 'tools_utilities']
 
 ## Priority Keywords
-['test', 'quality', 'automation', 'coverage', 'mock', 'unit']
+['devops', 'infrastructure', 'monitoring', 'logging', 'metrics']
 
 ## Integration Notes
-Focus on testing frameworks and quality assurance tools
+Prioritize infrastructure management and operations tools
 
 ## Usage Instructions
 
