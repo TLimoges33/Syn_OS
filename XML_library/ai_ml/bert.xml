@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>bert</name>
+  <full_name>google-research/bert</full_name>
+  <description>TensorFlow code and pre-trained models for BERT</description>
+  <url>https://github.com/google-research/bert</url>
+  <clone_url>https://github.com/google-research/bert.git</clone_url>
+  <ssh_url>git@github.com:google-research/bert.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>39454</stars>
+    <forks>9702</forks>
+    <watchers>39454</watchers>
+    <size>317</size>
+    <default_branch>master</default_branch>
+    <created_at>2018-10-25T22:57:34Z</created_at>
+    <updated_at>2025-08-26T19:28:38Z</updated_at>
+    <pushed_at>2024-07-23T23:39:41Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>google</topic>
+    <topic>natural-language-processing</topic>
+    <topic>natural-language-understanding</topic>
+    <topic>nlp</topic>
+    <topic>tensorflow</topic>
+  </topics>
+  <license>
+    <name>Apache License 2.0</name>
+    <spdx_id>Apache-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>google-research</login>
+    <type>Organization</type>
+    <url>https://github.com/google-research</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 39454 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

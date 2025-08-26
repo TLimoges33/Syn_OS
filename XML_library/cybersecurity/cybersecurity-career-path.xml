@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>cybersecurity-career-path</name>
+  <full_name>rezaduty/cybersecurity-career-path</full_name>
+  <description>Cybersecurity Career Path</description>
+  <url>https://github.com/rezaduty/cybersecurity-career-path</url>
+  <clone_url>https://github.com/rezaduty/cybersecurity-career-path.git</clone_url>
+  <ssh_url>git@github.com:rezaduty/cybersecurity-career-path.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>1658</stars>
+    <forks>189</forks>
+    <watchers>1658</watchers>
+    <size>1027</size>
+    <default_branch>master</default_branch>
+    <created_at>2020-06-19T18:26:21Z</created_at>
+    <updated_at>2025-08-26T17:29:53Z</updated_at>
+    <pushed_at>2025-08-10T18:04:03Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cyber-threat-analyst</topic>
+    <topic>cybersecurity-career-path</topic>
+    <topic>digital-forensics</topic>
+    <topic>pentesting</topic>
+    <topic>roadmap</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>rezaduty</login>
+    <type>User</type>
+    <url>https://github.com/rezaduty</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 1658 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

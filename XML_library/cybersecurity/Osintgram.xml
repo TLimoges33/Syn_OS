@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Osintgram</name>
+  <full_name>Datalux/Osintgram</full_name>
+  <description>Osintgram is a OSINT tool on Instagram. It offers an interactive shell to perform analysis on Instagram account of any users by its nickname</description>
+  <url>https://github.com/Datalux/Osintgram</url>
+  <clone_url>https://github.com/Datalux/Osintgram.git</clone_url>
+  <ssh_url>git@github.com:Datalux/Osintgram.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>11229</stars>
+    <forks>2479</forks>
+    <watchers>11229</watchers>
+    <size>3490</size>
+    <default_branch>master</default_branch>
+    <created_at>2019-06-07T23:23:40Z</created_at>
+    <updated_at>2025-08-26T21:04:08Z</updated_at>
+    <pushed_at>2025-08-25T12:00:48Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>analysis</topic>
+    <topic>hacking</topic>
+    <topic>information-gathering</topic>
+    <topic>instagram</topic>
+    <topic>instagram-account</topic>
+    <topic>instagram-api</topic>
+    <topic>nickname</topic>
+    <topic>osint</topic>
+    <topic>osint-python</topic>
+    <topic>penetration-testing</topic>
+    <topic>python</topic>
+    <topic>python3</topic>
+    <topic>tool</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>Datalux</login>
+    <type>User</type>
+    <url>https://github.com/Datalux</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 11229 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>ja4</name>
+  <full_name>FoxIO-LLC/ja4</full_name>
+  <description>JA4+ is a suite of network fingerprinting standards</description>
+  <url>https://github.com/FoxIO-LLC/ja4</url>
+  <clone_url>https://github.com/FoxIO-LLC/ja4.git</clone_url>
+  <ssh_url>git@github.com:FoxIO-LLC/ja4.git</ssh_url>
+  <metadata>
+    <language>Rust</language>
+    <stars>1446</stars>
+    <forks>131</forks>
+    <watchers>1446</watchers>
+    <size>15600</size>
+    <default_branch>main</default_branch>
+    <created_at>2023-09-22T15:22:46Z</created_at>
+    <updated_at>2025-08-26T21:04:30Z</updated_at>
+    <pushed_at>2025-08-26T20:20:08Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cybersecurity</topic>
+    <topic>ja3</topic>
+    <topic>ja3-fingerprint</topic>
+    <topic>ja4</topic>
+    <topic>ja4-fingerprint</topic>
+    <topic>ja4h</topic>
+    <topic>ja4x</topic>
+    <topic>jarm</topic>
+    <topic>network-analysis</topic>
+    <topic>network-forensics</topic>
+  </topics>
+  <license>
+    <name>Other</name>
+    <spdx_id>NOASSERTION</spdx_id>
+  </license>
+  <owner>
+    <login>FoxIO-LLC</login>
+    <type>Organization</type>
+    <url>https://github.com/FoxIO-LLC</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 1446 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

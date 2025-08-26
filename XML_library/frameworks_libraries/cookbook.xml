@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>cookbook</name>
+  <full_name>google-gemini/cookbook</full_name>
+  <description>Examples and guides for using the Gemini API</description>
+  <url>https://github.com/google-gemini/cookbook</url>
+  <clone_url>https://github.com/google-gemini/cookbook.git</clone_url>
+  <ssh_url>git@github.com:google-gemini/cookbook.git</ssh_url>
+  <metadata>
+    <language>Jupyter Notebook</language>
+    <stars>14429</stars>
+    <forks>2024</forks>
+    <watchers>14429</watchers>
+    <size>661155</size>
+    <default_branch>main</default_branch>
+    <created_at>2024-03-13T18:19:23Z</created_at>
+    <updated_at>2025-08-26T22:54:01Z</updated_at>
+    <pushed_at>2025-08-26T13:03:40Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>frameworks_libraries</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>gemini</topic>
+    <topic>gemini-api</topic>
+  </topics>
+  <license>
+    <name>Apache License 2.0</name>
+    <spdx_id>Apache-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>google-gemini</login>
+    <type>Organization</type>
+    <url>https://github.com/google-gemini</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 14429 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

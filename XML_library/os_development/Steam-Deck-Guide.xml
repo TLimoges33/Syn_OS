@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Steam-Deck-Guide</name>
+  <full_name>mikeroyal/Steam-Deck-Guide</full_name>
+  <description>Steam Deck Guide. Learn all about the Tools, Accessories, Games, Emulators, and Gaming Tips that will make your Steam Deck an awesome Gaming Handheld or a Portable Computer Workstation. </description>
+  <url>https://github.com/mikeroyal/Steam-Deck-Guide</url>
+  <clone_url>https://github.com/mikeroyal/Steam-Deck-Guide.git</clone_url>
+  <ssh_url>git@github.com:mikeroyal/Steam-Deck-Guide.git</ssh_url>
+  <metadata>
+    <language>Rust</language>
+    <stars>2084</stars>
+    <forks>56</forks>
+    <watchers>2084</watchers>
+    <size>416</size>
+    <default_branch>main</default_branch>
+    <created_at>2021-11-21T21:27:10Z</created_at>
+    <updated_at>2025-08-26T04:15:11Z</updated_at>
+    <pushed_at>2025-06-27T02:04:19Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>os_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>controller</topic>
+    <topic>dxvk</topic>
+    <topic>emulation</topic>
+    <topic>file-sharing</topic>
+    <topic>gamepad</topic>
+    <topic>games</topic>
+    <topic>gaming</topic>
+    <topic>nixos</topic>
+    <topic>optimization</topic>
+    <topic>plugins</topic>
+    <topic>proton</topic>
+    <topic>retrogaming</topic>
+    <topic>steam</topic>
+    <topic>steam-deck</topic>
+    <topic>steamdeck</topic>
+    <topic>steamos</topic>
+    <topic>synchronization</topic>
+    <topic>windows-11</topic>
+    <topic>wine</topic>
+    <topic>xbox</topic>
+  </topics>
+  <owner>
+    <login>mikeroyal</login>
+    <type>User</type>
+    <url>https://github.com/mikeroyal</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 2084 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

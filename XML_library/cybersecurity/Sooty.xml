@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Sooty</name>
+  <full_name>TheresAFewConors/Sooty</full_name>
+  <description>The SOC Analysts all-in-one CLI tool to automate and speed up workflow.</description>
+  <url>https://github.com/TheresAFewConors/Sooty</url>
+  <clone_url>https://github.com/TheresAFewConors/Sooty.git</clone_url>
+  <ssh_url>git@github.com:TheresAFewConors/Sooty.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>1416</stars>
+    <forks>216</forks>
+    <watchers>1416</watchers>
+    <size>8645</size>
+    <default_branch>master</default_branch>
+    <created_at>2019-06-06T10:23:11Z</created_at>
+    <updated_at>2025-08-26T13:02:08Z</updated_at>
+    <pushed_at>2024-09-25T14:52:20Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>analysis</topic>
+    <topic>analysts</topic>
+    <topic>automation</topic>
+    <topic>cybersecurity</topic>
+    <topic>dns</topic>
+    <topic>hash</topic>
+    <topic>phishing</topic>
+    <topic>proofpoint-decoder</topic>
+    <topic>python</topic>
+    <topic>reputation-check</topic>
+    <topic>security</topic>
+    <topic>security-automation</topic>
+    <topic>soc</topic>
+    <topic>soc-analysts</topic>
+    <topic>urlscan</topic>
+    <topic>workflow</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>TheresAFewConors</login>
+    <type>User</type>
+    <url>https://github.com/TheresAFewConors</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 1416 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Koth-TryHackMe-Tricks</name>
+  <full_name>MatheuZSecurity/Koth-TryHackMe-Tricks</full_name>
+  <description>Koth - TryHackMe Tricks</description>
+  <url>https://github.com/MatheuZSecurity/Koth-TryHackMe-Tricks</url>
+  <clone_url>https://github.com/MatheuZSecurity/Koth-TryHackMe-Tricks.git</clone_url>
+  <ssh_url>git@github.com:MatheuZSecurity/Koth-TryHackMe-Tricks.git</ssh_url>
+  <metadata>
+    <language>Shell</language>
+    <stars>178</stars>
+    <forks>28</forks>
+    <watchers>178</watchers>
+    <size>2527</size>
+    <default_branch>master</default_branch>
+    <created_at>2021-08-23T15:10:58Z</created_at>
+    <updated_at>2025-07-24T12:55:45Z</updated_at>
+    <pushed_at>2023-11-05T17:07:49Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <license>
+    <name>GNU General Public License v2.0</name>
+    <spdx_id>GPL-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>MatheuZSecurity</login>
+    <type>User</type>
+    <url>https://github.com/MatheuZSecurity</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>7</score>
+    <assessment>Excellent potential for integration. High community engagement with 178 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

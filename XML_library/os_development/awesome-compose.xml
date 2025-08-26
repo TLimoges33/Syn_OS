@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>awesome-compose</name>
+  <full_name>docker/awesome-compose</full_name>
+  <description>Awesome Docker Compose samples</description>
+  <url>https://github.com/docker/awesome-compose</url>
+  <clone_url>https://github.com/docker/awesome-compose.git</clone_url>
+  <ssh_url>git@github.com:docker/awesome-compose.git</ssh_url>
+  <metadata>
+    <language>HTML</language>
+    <stars>40986</stars>
+    <forks>7625</forks>
+    <watchers>40986</watchers>
+    <size>8282</size>
+    <default_branch>master</default_branch>
+    <created_at>2020-02-13T08:51:42Z</created_at>
+    <updated_at>2025-08-26T22:05:16Z</updated_at>
+    <pushed_at>2025-07-22T05:26:19Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>os_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>awesome</topic>
+    <topic>awesome-list</topic>
+    <topic>docker-compose</topic>
+  </topics>
+  <license>
+    <name>Creative Commons Zero v1.0 Universal</name>
+    <spdx_id>CC0-1.0</spdx_id>
+  </license>
+  <owner>
+    <login>docker</login>
+    <type>Organization</type>
+    <url>https://github.com/docker</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 40986 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

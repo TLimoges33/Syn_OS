@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>awesome-cybersecurity-blueteam</name>
+  <full_name>fabacab/awesome-cybersecurity-blueteam</full_name>
+  <description>:computer:🛡️ A curated collection of awesome resources, tools, and other shiny things for cybersecurity blue teams.</description>
+  <url>https://github.com/fabacab/awesome-cybersecurity-blueteam</url>
+  <clone_url>https://github.com/fabacab/awesome-cybersecurity-blueteam.git</clone_url>
+  <ssh_url>git@github.com:fabacab/awesome-cybersecurity-blueteam.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>4858</stars>
+    <forks>742</forks>
+    <watchers>4858</watchers>
+    <size>288</size>
+    <default_branch>main</default_branch>
+    <created_at>2018-07-23T18:26:16Z</created_at>
+    <updated_at>2025-08-26T21:21:02Z</updated_at>
+    <pushed_at>2024-07-15T08:05:27Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>awesome-list</topic>
+    <topic>blue-team</topic>
+    <topic>computer-security</topic>
+    <topic>cybersecurity</topic>
+    <topic>defensive-security</topic>
+    <topic>infosec</topic>
+    <topic>security</topic>
+  </topics>
+  <owner>
+    <login>fabacab</login>
+    <type>User</type>
+    <url>https://github.com/fabacab</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>7</score>
+    <assessment>Excellent potential for integration. High community engagement with 4858 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>suricata</name>
+  <full_name>OISF/suricata</full_name>
+  <description>Suricata is a network Intrusion Detection System, Intrusion Prevention System and Network Security Monitoring engine developed by the OISF and the Suricata community.</description>
+  <url>https://github.com/OISF/suricata</url>
+  <clone_url>https://github.com/OISF/suricata.git</clone_url>
+  <ssh_url>git@github.com:OISF/suricata.git</ssh_url>
+  <metadata>
+    <language>C</language>
+    <stars>5512</stars>
+    <forks>1568</forks>
+    <watchers>5512</watchers>
+    <size>81403</size>
+    <default_branch>master</default_branch>
+    <created_at>2012-08-14T08:30:06Z</created_at>
+    <updated_at>2025-08-26T18:17:40Z</updated_at>
+    <pushed_at>2025-08-22T21:26:56Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cybersecurity</topic>
+    <topic>ids</topic>
+    <topic>intrusion-detection-system</topic>
+    <topic>intrusion-prevention-system</topic>
+    <topic>ips</topic>
+    <topic>network-monitor</topic>
+    <topic>network-monitoring</topic>
+    <topic>nsm</topic>
+    <topic>security</topic>
+    <topic>suricata</topic>
+    <topic>threat-hunting</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v2.0</name>
+    <spdx_id>GPL-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>OISF</login>
+    <type>Organization</type>
+    <url>https://github.com/OISF</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 5512 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

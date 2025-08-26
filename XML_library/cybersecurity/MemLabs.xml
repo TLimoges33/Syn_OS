@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>MemLabs</name>
+  <full_name>stuxnet999/MemLabs</full_name>
+  <description>Educational, CTF-styled labs for individuals interested in Memory Forensics</description>
+  <url>https://github.com/stuxnet999/MemLabs</url>
+  <clone_url>https://github.com/stuxnet999/MemLabs.git</clone_url>
+  <ssh_url>git@github.com:stuxnet999/MemLabs.git</ssh_url>
+  <metadata>
+    <language>Shell</language>
+    <stars>1755</stars>
+    <forks>214</forks>
+    <watchers>1755</watchers>
+    <size>562</size>
+    <default_branch>master</default_branch>
+    <created_at>2019-08-22T04:18:14Z</created_at>
+    <updated_at>2025-08-26T12:35:04Z</updated_at>
+    <pushed_at>2021-03-08T15:54:40Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>ctf</topic>
+    <topic>ctf-challenges</topic>
+    <topic>cybersecurity</topic>
+    <topic>dfir</topic>
+    <topic>digital-forensics</topic>
+    <topic>forensics</topic>
+    <topic>memory-forensics</topic>
+    <topic>security</topic>
+    <topic>windows</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>stuxnet999</login>
+    <type>User</type>
+    <url>https://github.com/stuxnet999</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 1755 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

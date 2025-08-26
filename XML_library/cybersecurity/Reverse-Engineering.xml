@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Reverse-Engineering</name>
+  <full_name>mytechnotalent/Reverse-Engineering</full_name>
+  <description>A FREE comprehensive reverse engineering tutorial covering x86, x64, 32-bit/64-bit ARM, 8-bit AVR and 32-bit RISC-V architectures.</description>
+  <url>https://github.com/mytechnotalent/Reverse-Engineering</url>
+  <clone_url>https://github.com/mytechnotalent/Reverse-Engineering.git</clone_url>
+  <ssh_url>git@github.com:mytechnotalent/Reverse-Engineering.git</ssh_url>
+  <metadata>
+    <language>Assembly</language>
+    <stars>12584</stars>
+    <forks>1145</forks>
+    <watchers>12584</watchers>
+    <size>277119</size>
+    <default_branch>main</default_branch>
+    <created_at>2020-02-14T12:53:45Z</created_at>
+    <updated_at>2025-08-26T13:45:45Z</updated_at>
+    <pushed_at>2025-08-24T23:06:57Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>arm</topic>
+    <topic>assembly</topic>
+    <topic>assembly-language</topic>
+    <topic>assembly-language-programming</topic>
+    <topic>avr</topic>
+    <topic>c</topic>
+    <topic>c-plus-plus</topic>
+    <topic>cyber-security</topic>
+    <topic>cybersecurity</topic>
+    <topic>go</topic>
+    <topic>golang</topic>
+    <topic>hacking</topic>
+    <topic>malware</topic>
+    <topic>reverse-engineering</topic>
+    <topic>reverse-engineering-tutorial</topic>
+    <topic>risc-v</topic>
+    <topic>riscv</topic>
+    <topic>rust</topic>
+    <topic>x64</topic>
+    <topic>x86</topic>
+  </topics>
+  <license>
+    <name>Apache License 2.0</name>
+    <spdx_id>Apache-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>mytechnotalent</login>
+    <type>User</type>
+    <url>https://github.com/mytechnotalent</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 12584 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

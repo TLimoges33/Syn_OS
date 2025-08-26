@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>hacker101</name>
+  <full_name>Hacker0x01/hacker101</full_name>
+  <description>Source code for Hacker101.com - a free online web and mobile security class.</description>
+  <url>https://github.com/Hacker0x01/hacker101</url>
+  <clone_url>https://github.com/Hacker0x01/hacker101.git</clone_url>
+  <ssh_url>git@github.com:Hacker0x01/hacker101.git</ssh_url>
+  <metadata>
+    <language>SCSS</language>
+    <stars>14194</stars>
+    <forks>2613</forks>
+    <watchers>14194</watchers>
+    <size>27356</size>
+    <default_branch>master</default_branch>
+    <created_at>2017-11-27T18:57:00Z</created_at>
+    <updated_at>2025-08-26T13:29:23Z</updated_at>
+    <pushed_at>2025-02-22T06:59:37Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>clickjacking</topic>
+    <topic>csrf</topic>
+    <topic>education</topic>
+    <topic>hacker101</topic>
+    <topic>hackerone</topic>
+    <topic>hacking</topic>
+    <topic>mobile-security</topic>
+    <topic>security</topic>
+    <topic>session-fixation</topic>
+    <topic>sql-injection</topic>
+    <topic>unchecked-redirects</topic>
+    <topic>vulnerability</topic>
+    <topic>web-security</topic>
+    <topic>xss</topic>
+  </topics>
+  <license>
+    <name>Other</name>
+    <spdx_id>NOASSERTION</spdx_id>
+  </license>
+  <owner>
+    <login>Hacker0x01</login>
+    <type>Organization</type>
+    <url>https://github.com/Hacker0x01</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 14194 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

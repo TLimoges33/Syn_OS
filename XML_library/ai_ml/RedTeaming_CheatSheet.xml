@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>RedTeaming_CheatSheet</name>
+  <full_name>0xJs/RedTeaming_CheatSheet</full_name>
+  <description>Pentesting cheatsheet with all the commands I learned during my learning journey. Will try to to keep it up-to-date.</description>
+  <url>https://github.com/0xJs/RedTeaming_CheatSheet</url>
+  <clone_url>https://github.com/0xJs/RedTeaming_CheatSheet.git</clone_url>
+  <ssh_url>git@github.com:0xJs/RedTeaming_CheatSheet.git</ssh_url>
+  <metadata>
+    <language>C++</language>
+    <stars>1453</stars>
+    <forks>245</forks>
+    <watchers>1453</watchers>
+    <size>94960</size>
+    <default_branch>main</default_branch>
+    <created_at>2021-12-27T17:14:00Z</created_at>
+    <updated_at>2025-08-26T16:56:01Z</updated_at>
+    <pushed_at>2025-08-24T15:26:32Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>0xJs</login>
+    <type>User</type>
+    <url>https://github.com/0xJs</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 1453 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

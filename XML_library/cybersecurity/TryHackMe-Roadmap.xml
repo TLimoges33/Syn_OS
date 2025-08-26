@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>TryHackMe-Roadmap</name>
+  <full_name>rng70/TryHackMe-Roadmap</full_name>
+  <description>a list of 350+ Free TryHackMe rooms to start learning cybersecurity with THM</description>
+  <url>https://github.com/rng70/TryHackMe-Roadmap</url>
+  <clone_url>https://github.com/rng70/TryHackMe-Roadmap.git</clone_url>
+  <ssh_url>git@github.com:rng70/TryHackMe-Roadmap.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>822</stars>
+    <forks>395</forks>
+    <watchers>822</watchers>
+    <size>37</size>
+    <default_branch>main</default_branch>
+    <created_at>2023-01-10T20:05:14Z</created_at>
+    <updated_at>2025-08-26T19:19:59Z</updated_at>
+    <pushed_at>2023-12-25T08:11:28Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>active-directory</topic>
+    <topic>android</topic>
+    <topic>ctf</topic>
+    <topic>forensics</topic>
+    <topic>linux</topic>
+    <topic>malware-analysis</topic>
+    <topic>privile</topic>
+    <topic>reverse-engineering</topic>
+    <topic>web</topic>
+    <topic>wifi-hacking</topic>
+    <topic>windows</topic>
+  </topics>
+  <owner>
+    <login>rng70</login>
+    <type>User</type>
+    <url>https://github.com/rng70</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 822 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

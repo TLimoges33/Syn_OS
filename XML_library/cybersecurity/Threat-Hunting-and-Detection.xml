@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Threat-Hunting-and-Detection</name>
+  <full_name>Cyb3r-Monk/Threat-Hunting-and-Detection</full_name>
+  <description>Repository for threat hunting and detection queries, etc. for Defender for Endpoint and Microsoft Sentinel in KQL(Kusto Query Language).</description>
+  <url>https://github.com/Cyb3r-Monk/Threat-Hunting-and-Detection</url>
+  <clone_url>https://github.com/Cyb3r-Monk/Threat-Hunting-and-Detection.git</clone_url>
+  <ssh_url>git@github.com:Cyb3r-Monk/Threat-Hunting-and-Detection.git</ssh_url>
+  <metadata>
+    <language>Jupyter Notebook</language>
+    <stars>748</stars>
+    <forks>107</forks>
+    <watchers>748</watchers>
+    <size>417</size>
+    <default_branch>main</default_branch>
+    <created_at>2020-11-02T11:30:51Z</created_at>
+    <updated_at>2025-08-26T22:33:57Z</updated_at>
+    <pushed_at>2025-03-14T10:47:52Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cybersecurity</topic>
+    <topic>defender-for-endpoint</topic>
+    <topic>detection-engineering</topic>
+    <topic>dfir</topic>
+    <topic>kql</topic>
+    <topic>kusto-language</topic>
+    <topic>microsoft-sentinel</topic>
+    <topic>threat-detection</topic>
+    <topic>threat-hunting</topic>
+  </topics>
+  <license>
+    <name>BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; License</name>
+    <spdx_id>BSD-3-Clause</spdx_id>
+  </license>
+  <owner>
+    <login>Cyb3r-Monk</login>
+    <type>User</type>
+    <url>https://github.com/Cyb3r-Monk</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 748 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>atomic-red-team</name>
+  <full_name>redcanaryco/atomic-red-team</full_name>
+  <description>Small and highly portable detection tests based on MITRE's ATT&amp;CK.</description>
+  <url>https://github.com/redcanaryco/atomic-red-team</url>
+  <clone_url>https://github.com/redcanaryco/atomic-red-team.git</clone_url>
+  <ssh_url>git@github.com:redcanaryco/atomic-red-team.git</ssh_url>
+  <metadata>
+    <language>C</language>
+    <stars>10916</stars>
+    <forks>2951</forks>
+    <watchers>10916</watchers>
+    <size>544282</size>
+    <default_branch>master</default_branch>
+    <created_at>2017-10-11T17:23:32Z</created_at>
+    <updated_at>2025-08-26T14:15:18Z</updated_at>
+    <pushed_at>2025-08-25T23:53:52Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>tools_utilities</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>mitre</topic>
+    <topic>mitre-attack</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>redcanaryco</login>
+    <type>Organization</type>
+    <url>https://github.com/redcanaryco</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 10916 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

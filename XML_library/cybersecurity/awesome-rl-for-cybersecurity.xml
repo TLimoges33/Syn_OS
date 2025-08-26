@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>awesome-rl-for-cybersecurity</name>
+  <full_name>Limmen/awesome-rl-for-cybersecurity</full_name>
+  <description>A curated list of resources dedicated to reinforcement learning applied to cyber security. </description>
+  <url>https://github.com/Limmen/awesome-rl-for-cybersecurity</url>
+  <clone_url>https://github.com/Limmen/awesome-rl-for-cybersecurity.git</clone_url>
+  <ssh_url>git@github.com:Limmen/awesome-rl-for-cybersecurity.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>913</stars>
+    <forks>133</forks>
+    <watchers>913</watchers>
+    <size>9067</size>
+    <default_branch>master</default_branch>
+    <created_at>2021-12-14T13:22:31Z</created_at>
+    <updated_at>2025-08-26T04:20:30Z</updated_at>
+    <pushed_at>2025-07-23T02:43:31Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <license>
+    <name>Other</name>
+    <spdx_id>NOASSERTION</spdx_id>
+  </license>
+  <owner>
+    <login>Limmen</login>
+    <type>User</type>
+    <url>https://github.com/Limmen</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 913 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

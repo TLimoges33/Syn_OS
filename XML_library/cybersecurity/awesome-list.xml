@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>awesome-list</name>
+  <full_name>0xor0ne/awesome-list</full_name>
+  <description>Cybersecurity oriented awesome list</description>
+  <url>https://github.com/0xor0ne/awesome-list</url>
+  <clone_url>https://github.com/0xor0ne/awesome-list.git</clone_url>
+  <ssh_url>git@github.com:0xor0ne/awesome-list.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>2250</stars>
+    <forks>224</forks>
+    <watchers>2250</watchers>
+    <size>504</size>
+    <default_branch>main</default_branch>
+    <created_at>2022-05-06T18:02:07Z</created_at>
+    <updated_at>2025-08-26T18:41:08Z</updated_at>
+    <pushed_at>2025-08-24T10:26:58Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>awesome</topic>
+    <topic>awesome-list</topic>
+    <topic>cybersecurity</topic>
+    <topic>exploitation</topic>
+    <topic>reverse-engineering</topic>
+  </topics>
+  <license>
+    <name>Creative Commons Attribution Share Alike 4.0 International</name>
+    <spdx_id>CC-BY-SA-4.0</spdx_id>
+  </license>
+  <owner>
+    <login>0xor0ne</login>
+    <type>User</type>
+    <url>https://github.com/0xor0ne</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>7</score>
+    <assessment>Excellent potential for integration. High community engagement with 2250 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

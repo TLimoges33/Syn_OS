@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>awesome-mcp-servers</name>
+  <full_name>punkpeye/awesome-mcp-servers</full_name>
+  <description>A collection of MCP servers.</description>
+  <url>https://github.com/punkpeye/awesome-mcp-servers</url>
+  <clone_url>https://github.com/punkpeye/awesome-mcp-servers.git</clone_url>
+  <ssh_url>git@github.com:punkpeye/awesome-mcp-servers.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>67676</stars>
+    <forks>5492</forks>
+    <watchers>67676</watchers>
+    <size>4757</size>
+    <default_branch>main</default_branch>
+    <created_at>2024-11-30T04:49:10Z</created_at>
+    <updated_at>2025-08-26T22:05:10Z</updated_at>
+    <pushed_at>2025-08-26T14:10:55Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>ai</topic>
+    <topic>mcp</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>punkpeye</login>
+    <type>User</type>
+    <url>https://github.com/punkpeye</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 67676 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

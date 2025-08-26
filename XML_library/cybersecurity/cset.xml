@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>cset</name>
+  <full_name>cisagov/cset</full_name>
+  <description>Cybersecurity Evaluation Tool</description>
+  <url>https://github.com/cisagov/cset</url>
+  <clone_url>https://github.com/cisagov/cset.git</clone_url>
+  <ssh_url>git@github.com:cisagov/cset.git</ssh_url>
+  <metadata>
+    <language>TSQL</language>
+    <stars>1652</stars>
+    <forks>298</forks>
+    <watchers>1652</watchers>
+    <size>2318580</size>
+    <default_branch>develop</default_branch>
+    <created_at>2019-05-15T17:09:53Z</created_at>
+    <updated_at>2025-08-25T13:46:15Z</updated_at>
+    <pushed_at>2025-08-26T15:08:59Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cset</topic>
+    <topic>security-audit</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>cisagov</login>
+    <type>Organization</type>
+    <url>https://github.com/cisagov</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 1652 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

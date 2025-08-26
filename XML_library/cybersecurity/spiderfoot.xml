@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>spiderfoot</name>
+  <full_name>smicallef/spiderfoot</full_name>
+  <description>SpiderFoot automates OSINT for threat intelligence and mapping your attack surface.</description>
+  <url>https://github.com/smicallef/spiderfoot</url>
+  <clone_url>https://github.com/smicallef/spiderfoot.git</clone_url>
+  <ssh_url>git@github.com:smicallef/spiderfoot.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>15145</stars>
+    <forks>2574</forks>
+    <watchers>15145</watchers>
+    <size>16768</size>
+    <default_branch>master</default_branch>
+    <created_at>2012-04-28T07:10:13Z</created_at>
+    <updated_at>2025-08-26T20:25:41Z</updated_at>
+    <pushed_at>2024-12-15T13:13:03Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>attacksurface</topic>
+    <topic>cti</topic>
+    <topic>cybersecurity</topic>
+    <topic>footprinting</topic>
+    <topic>hacking</topic>
+    <topic>information-gathering</topic>
+    <topic>information-security</topic>
+    <topic>infosec</topic>
+    <topic>intelligence-gathering</topic>
+    <topic>osint</topic>
+    <topic>osint-framework</topic>
+    <topic>osint-reconnaissance</topic>
+    <topic>osint-tool</topic>
+    <topic>pentesting</topic>
+    <topic>python</topic>
+    <topic>recon</topic>
+    <topic>security-tools</topic>
+    <topic>threat-intelligence</topic>
+    <topic>threatintel</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>smicallef</login>
+    <type>User</type>
+    <url>https://github.com/smicallef</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 15145 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>redteam-research</name>
+  <full_name>blackarrowsec/redteam-research</full_name>
+  <description>Collection of PoC and offensive techniques used by the BlackArrow Red Team</description>
+  <url>https://github.com/blackarrowsec/redteam-research</url>
+  <clone_url>https://github.com/blackarrowsec/redteam-research.git</clone_url>
+  <ssh_url>git@github.com:blackarrowsec/redteam-research.git</ssh_url>
+  <metadata>
+    <language>C</language>
+    <stars>1134</stars>
+    <forks>190</forks>
+    <watchers>1134</watchers>
+    <size>2360</size>
+    <default_branch>master</default_branch>
+    <created_at>2020-09-14T13:57:04Z</created_at>
+    <updated_at>2025-08-16T18:48:03Z</updated_at>
+    <pushed_at>2024-07-19T21:22:52Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>research_experimental</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>redteam</topic>
+    <topic>research</topic>
+  </topics>
+  <owner>
+    <login>blackarrowsec</login>
+    <type>Organization</type>
+    <url>https://github.com/blackarrowsec</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 1134 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

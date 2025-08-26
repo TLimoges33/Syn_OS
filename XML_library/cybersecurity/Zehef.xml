@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Zehef</name>
+  <full_name>N0rz3/Zehef</full_name>
+  <description>Zehef is an osint tool to track emails</description>
+  <url>https://github.com/N0rz3/Zehef</url>
+  <clone_url>https://github.com/N0rz3/Zehef.git</clone_url>
+  <ssh_url>git@github.com:N0rz3/Zehef.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>898</stars>
+    <forks>96</forks>
+    <watchers>898</watchers>
+    <size>1204</size>
+    <default_branch>master</default_branch>
+    <created_at>2023-06-13T17:58:32Z</created_at>
+    <updated_at>2025-08-26T19:43:12Z</updated_at>
+    <pushed_at>2024-11-13T15:26:30Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>account-checker</topic>
+    <topic>breach-check</topic>
+    <topic>cybersecurity</topic>
+    <topic>email-osint</topic>
+    <topic>osint</topic>
+    <topic>osint-python</topic>
+    <topic>osint-tool</topic>
+    <topic>osint-tools</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>N0rz3</login>
+    <type>User</type>
+    <url>https://github.com/N0rz3</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 898 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

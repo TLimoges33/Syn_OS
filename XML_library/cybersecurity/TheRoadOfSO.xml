@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>TheRoadOfSO</name>
+  <full_name>satan1a/TheRoadOfSO</full_name>
+  <description>学习安全运营的记录 | The knowledge base of security operation</description>
+  <url>https://github.com/satan1a/TheRoadOfSO</url>
+  <clone_url>https://github.com/satan1a/TheRoadOfSO.git</clone_url>
+  <ssh_url>git@github.com:satan1a/TheRoadOfSO.git</ssh_url>
+  <metadata>
+    <language>HTML</language>
+    <stars>828</stars>
+    <forks>174</forks>
+    <watchers>828</watchers>
+    <size>22836</size>
+    <default_branch>master</default_branch>
+    <created_at>2020-03-21T02:36:53Z</created_at>
+    <updated_at>2025-08-25T07:19:23Z</updated_at>
+    <pushed_at>2023-08-27T07:56:29Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cybersecurity</topic>
+    <topic>knowledge-base</topic>
+    <topic>security-analysis</topic>
+    <topic>security-operation</topic>
+    <topic>security-operations</topic>
+    <topic>soc</topic>
+    <topic>threat-analysis</topic>
+    <topic>wiki</topic>
+  </topics>
+  <owner>
+    <login>satan1a</login>
+    <type>User</type>
+    <url>https://github.com/satan1a</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 828 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

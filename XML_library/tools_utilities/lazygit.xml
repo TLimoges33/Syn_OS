@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>lazygit</name>
+  <full_name>jesseduffield/lazygit</full_name>
+  <description>simple terminal UI for git commands</description>
+  <url>https://github.com/jesseduffield/lazygit</url>
+  <clone_url>https://github.com/jesseduffield/lazygit.git</clone_url>
+  <ssh_url>git@github.com:jesseduffield/lazygit.git</ssh_url>
+  <metadata>
+    <language>Go</language>
+    <stars>64055</stars>
+    <forks>2207</forks>
+    <watchers>64055</watchers>
+    <size>150155</size>
+    <default_branch>master</default_branch>
+    <created_at>2018-05-19T00:53:06Z</created_at>
+    <updated_at>2025-08-26T21:40:32Z</updated_at>
+    <pushed_at>2025-08-26T12:02:54Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>tools_utilities</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cli</topic>
+    <topic>git</topic>
+    <topic>terminal</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>jesseduffield</login>
+    <type>User</type>
+    <url>https://github.com/jesseduffield</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 64055 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

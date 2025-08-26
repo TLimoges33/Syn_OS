@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>RedTiger-Tools</name>
+  <full_name>loxy0dev/RedTiger-Tools</full_name>
+  <description>RedTiger-Tools is a free multi-tool with many features in the areas of Cybersecurity, Pentesting, OSINT, Network Scanning, Discord and Ethical Hacking. (For educational purposes only)</description>
+  <url>https://github.com/loxy0dev/RedTiger-Tools</url>
+  <clone_url>https://github.com/loxy0dev/RedTiger-Tools.git</clone_url>
+  <ssh_url>git@github.com:loxy0dev/RedTiger-Tools.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>1490</stars>
+    <forks>282</forks>
+    <watchers>1490</watchers>
+    <size>185112</size>
+    <default_branch>main</default_branch>
+    <created_at>2023-12-12T20:19:21Z</created_at>
+    <updated_at>2025-08-26T18:58:21Z</updated_at>
+    <pushed_at>2025-07-21T01:38:23Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>database</topic>
+    <topic>email</topic>
+    <topic>linux</topic>
+    <topic>osint</topic>
+    <topic>sql</topic>
+    <topic>tool</topic>
+    <topic>tools</topic>
+    <topic>windows</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>loxy0dev</login>
+    <type>User</type>
+    <url>https://github.com/loxy0dev</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 1490 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

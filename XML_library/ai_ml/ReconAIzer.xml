@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>ReconAIzer</name>
+  <full_name>hisxo/ReconAIzer</full_name>
+  <description>A Burp Suite extension to add OpenAI (GPT) on Burp and help you with your Bug Bounty recon to discover endpoints, params, URLs, subdomains and more!</description>
+  <url>https://github.com/hisxo/ReconAIzer</url>
+  <clone_url>https://github.com/hisxo/ReconAIzer.git</clone_url>
+  <ssh_url>git@github.com:hisxo/ReconAIzer.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>882</stars>
+    <forks>114</forks>
+    <watchers>882</watchers>
+    <size>44</size>
+    <default_branch>main</default_branch>
+    <created_at>2023-03-31T21:21:39Z</created_at>
+    <updated_at>2025-08-14T03:03:23Z</updated_at>
+    <pushed_at>2023-05-03T03:03:41Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>bugbounty</topic>
+    <topic>burp-extensions</topic>
+    <topic>burpsuite</topic>
+    <topic>gpt-4</topic>
+    <topic>openai</topic>
+    <topic>openai-api</topic>
+    <topic>openai-chatgpt</topic>
+  </topics>
+  <owner>
+    <login>hisxo</login>
+    <type>User</type>
+    <url>https://github.com/hisxo</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 882 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

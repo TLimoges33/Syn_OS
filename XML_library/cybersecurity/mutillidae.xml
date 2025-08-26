@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>mutillidae</name>
+  <full_name>webpwnized/mutillidae</full_name>
+  <description>OWASP Mutillidae II is a free, open-source, deliberately vulnerable web application providing a target for web-security training. This is an easy-to-use web hacking environment designed for labs, security enthusiasts, classrooms, CTF, and vulnerability assessment tool targets.</description>
+  <url>https://github.com/webpwnized/mutillidae</url>
+  <clone_url>https://github.com/webpwnized/mutillidae.git</clone_url>
+  <ssh_url>git@github.com:webpwnized/mutillidae.git</ssh_url>
+  <metadata>
+    <language>PHP</language>
+    <stars>1398</stars>
+    <forks>472</forks>
+    <watchers>1398</watchers>
+    <size>10853</size>
+    <default_branch>main</default_branch>
+    <created_at>2018-09-28T02:41:14Z</created_at>
+    <updated_at>2025-08-26T14:45:01Z</updated_at>
+    <pushed_at>2025-08-03T18:57:14Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>10</topic>
+    <topic>application</topic>
+    <topic>appsec</topic>
+    <topic>cybersecurity</topic>
+    <topic>owasp</topic>
+    <topic>owasp-top-10</topic>
+    <topic>penetration-testing</topic>
+    <topic>security</topic>
+    <topic>top</topic>
+    <topic>training</topic>
+    <topic>web</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>webpwnized</login>
+    <type>User</type>
+    <url>https://github.com/webpwnized</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 1398 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

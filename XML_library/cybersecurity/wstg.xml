@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>wstg</name>
+  <full_name>OWASP/wstg</full_name>
+  <description>The Web Security Testing Guide is a comprehensive Open Source guide to testing the security of web applications and web services.</description>
+  <url>https://github.com/OWASP/wstg</url>
+  <clone_url>https://github.com/OWASP/wstg.git</clone_url>
+  <ssh_url>git@github.com:OWASP/wstg.git</ssh_url>
+  <metadata>
+    <language>Dockerfile</language>
+    <stars>8262</stars>
+    <forks>1471</forks>
+    <watchers>8262</watchers>
+    <size>21688</size>
+    <default_branch>master</default_branch>
+    <created_at>2017-05-14T23:20:40Z</created_at>
+    <updated_at>2025-08-26T20:59:04Z</updated_at>
+    <pushed_at>2025-08-13T02:10:26Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>application-security</topic>
+    <topic>appsec</topic>
+    <topic>best-practices</topic>
+    <topic>bugbounty</topic>
+    <topic>guide</topic>
+    <topic>hacking</topic>
+    <topic>hacktoberfest</topic>
+    <topic>owasp</topic>
+    <topic>penetration-testing</topic>
+    <topic>pentesting</topic>
+    <topic>security</topic>
+  </topics>
+  <license>
+    <name>Creative Commons Attribution Share Alike 4.0 International</name>
+    <spdx_id>CC-BY-SA-4.0</spdx_id>
+  </license>
+  <owner>
+    <login>OWASP</login>
+    <type>Organization</type>
+    <url>https://github.com/OWASP</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 8262 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

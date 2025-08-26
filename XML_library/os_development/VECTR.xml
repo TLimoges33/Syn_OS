@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>VECTR</name>
+  <full_name>SecurityRiskAdvisors/VECTR</full_name>
+  <description>VECTR is a tool that facilitates tracking of your red and blue team testing activities to measure detection and prevention capabilities across different attack scenarios</description>
+  <url>https://github.com/SecurityRiskAdvisors/VECTR</url>
+  <clone_url>https://github.com/SecurityRiskAdvisors/VECTR.git</clone_url>
+  <ssh_url>git@github.com:SecurityRiskAdvisors/VECTR.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>1502</stars>
+    <forks>175</forks>
+    <watchers>1502</watchers>
+    <size>128889</size>
+    <default_branch>master</default_branch>
+    <created_at>2017-02-13T20:19:05Z</created_at>
+    <updated_at>2025-08-18T13:17:19Z</updated_at>
+    <pushed_at>2025-07-21T15:27:26Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>os_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <owner>
+    <login>SecurityRiskAdvisors</login>
+    <type>Organization</type>
+    <url>https://github.com/SecurityRiskAdvisors</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 1502 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Security-101</name>
+  <full_name>microsoft/Security-101</full_name>
+  <description>8 Lessons, Kick-start Your Cybersecurity Learning.</description>
+  <url>https://github.com/microsoft/Security-101</url>
+  <clone_url>https://github.com/microsoft/Security-101.git</clone_url>
+  <ssh_url>git@github.com:microsoft/Security-101.git</ssh_url>
+  <metadata>
+    <language>HTML</language>
+    <stars>5609</stars>
+    <forks>724</forks>
+    <watchers>5609</watchers>
+    <size>4572</size>
+    <default_branch>main</default_branch>
+    <created_at>2024-01-31T02:05:05Z</created_at>
+    <updated_at>2025-08-26T17:29:21Z</updated_at>
+    <pushed_at>2025-08-07T09:05:23Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>appsec</topic>
+    <topic>cia-triad</topic>
+    <topic>data-protection</topic>
+    <topic>data-security</topic>
+    <topic>iam</topic>
+    <topic>identity</topic>
+    <topic>risk-management</topic>
+    <topic>secops</topic>
+    <topic>security</topic>
+    <topic>threat-modeling</topic>
+    <topic>zero-trust</topic>
+  </topics>
+  <license>
+    <name>Creative Commons Zero v1.0 Universal</name>
+    <spdx_id>CC0-1.0</spdx_id>
+  </license>
+  <owner>
+    <login>microsoft</login>
+    <type>Organization</type>
+    <url>https://github.com/microsoft</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 5609 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

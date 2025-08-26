@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>write-ups-2014</name>
+  <full_name>ctfs/write-ups-2014</full_name>
+  <description>Wiki-like CTF write-ups repository, maintained by the community. 2014</description>
+  <url>https://github.com/ctfs/write-ups-2014</url>
+  <clone_url>https://github.com/ctfs/write-ups-2014.git</clone_url>
+  <ssh_url>git@github.com:ctfs/write-ups-2014.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>1852</stars>
+    <forks>641</forks>
+    <watchers>1852</watchers>
+    <size>804894</size>
+    <default_branch>master</default_branch>
+    <created_at>2014-01-19T16:41:17Z</created_at>
+    <updated_at>2025-08-21T16:55:58Z</updated_at>
+    <pushed_at>2016-04-27T15:59:15Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <owner>
+    <login>ctfs</login>
+    <type>Organization</type>
+    <url>https://github.com/ctfs</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>7</score>
+    <assessment>Excellent potential for integration. High community engagement with 1852 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

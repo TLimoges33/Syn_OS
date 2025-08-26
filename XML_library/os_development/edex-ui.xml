@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>edex-ui</name>
+  <full_name>GitSquared/edex-ui</full_name>
+  <description>A cross-platform, customizable science fiction terminal emulator with advanced monitoring &amp; touchscreen support.</description>
+  <url>https://github.com/GitSquared/edex-ui</url>
+  <clone_url>https://github.com/GitSquared/edex-ui.git</clone_url>
+  <ssh_url>git@github.com:GitSquared/edex-ui.git</ssh_url>
+  <metadata>
+    <language>JavaScript</language>
+    <stars>42976</stars>
+    <forks>2813</forks>
+    <watchers>42976</watchers>
+    <size>31579</size>
+    <default_branch>master</default_branch>
+    <created_at>2017-01-28T09:35:02Z</created_at>
+    <updated_at>2025-08-26T20:19:27Z</updated_at>
+    <pushed_at>2021-10-19T22:38:47Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>os_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>desktop</topic>
+    <topic>edex-ui</topic>
+    <topic>electron</topic>
+    <topic>linux</topic>
+    <topic>macos</topic>
+    <topic>nodejs</topic>
+    <topic>science-fiction</topic>
+    <topic>shell</topic>
+    <topic>terminal</topic>
+    <topic>touchscreen</topic>
+    <topic>tron</topic>
+    <topic>unixporn</topic>
+    <topic>windows</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>GitSquared</login>
+    <type>User</type>
+    <url>https://github.com/GitSquared</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 42976 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

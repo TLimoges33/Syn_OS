@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>wifi-cracking</name>
+  <full_name>brannondorsey/wifi-cracking</full_name>
+  <description>Crack WPA/WPA2 Wi-Fi Routers with Airodump-ng and Aircrack-ng/Hashcat</description>
+  <url>https://github.com/brannondorsey/wifi-cracking</url>
+  <clone_url>https://github.com/brannondorsey/wifi-cracking.git</clone_url>
+  <ssh_url>git@github.com:brannondorsey/wifi-cracking.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>11980</stars>
+    <forks>1122</forks>
+    <watchers>11980</watchers>
+    <size>56</size>
+    <default_branch>master</default_branch>
+    <created_at>2017-07-23T23:54:11Z</created_at>
+    <updated_at>2025-08-26T19:28:03Z</updated_at>
+    <pushed_at>2024-12-26T23:13:13Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>aircrack-ng</topic>
+    <topic>cracking</topic>
+    <topic>hacking</topic>
+    <topic>hashcat</topic>
+    <topic>password-cracking</topic>
+    <topic>tutorial</topic>
+    <topic>wifi</topic>
+    <topic>wpa2-cracking</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>brannondorsey</login>
+    <type>User</type>
+    <url>https://github.com/brannondorsey</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 11980 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>
