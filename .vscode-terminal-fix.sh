@@ -1,0 +1,1 @@
+scripts/.vscode-terminal-fix.sh
