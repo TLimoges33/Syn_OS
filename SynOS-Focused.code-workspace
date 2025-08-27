@@ -1,0 +1,58 @@
+{
+    "folders": [
+        {
+            "name": "Syn_OS",
+            "path": "."
+        }
+    ],
+    "settings": {
+        "rust-analyzer.cargo.features": ["all"],
+        "rust-analyzer.check.command": "clippy",
+        "rust-analyzer.cargo.loadOutDirsFromCheck": true,
+        "rust-analyzer.procMacro.enable": true,
+        "rust-analyzer.checkOnSave": true,
+        "rust-analyzer.checkOnSave.command": "clippy",
+        "rust-analyzer.checkOnSave.extraArgs": ["--all-targets", "--all-features"],
+        "rust-analyzer.cargo.allFeatures": true,
+        
+        "python.defaultInterpreterPath": "./venv/bin/python",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true,
+        "python.formatting.provider": "autopep8",
+        
+        "files.exclude": {
+            "**/target": true,
+            "**/.venv": true,
+            "**/venv": true,
+            "**/.git/objects": true,
+            "**/dist": true,
+            "**/build": true
+        },
+        
+        "security.workspace.trust.enabled": false,
+        "telemetry.telemetryLevel": "off",
+        "workbench.enableExperiments": false,
+        
+        "git.enableSmartCommit": true,
+        "git.confirmSync": false,
+        "git.autofetch": true,
+        
+        "[rust]": {
+            "editor.defaultFormatter": "rust-lang.rust-analyzer",
+            "editor.formatOnSave": true
+        },
+        "[python]": {
+            "editor.defaultFormatter": "ms-python.python",
+            "editor.formatOnSave": true
+        }
+    },
+    "extensions": {
+        "recommendations": [
+            "rust-lang.rust-analyzer",
+            "ms-python.python",
+            "ms-vscode.cpptools",
+            "ms-azuretools.vscode-containers",
+            "GitHub.copilot"
+        ]
+    }
+}

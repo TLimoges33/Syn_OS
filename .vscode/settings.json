@@ -7,6 +7,7 @@
     "rust-analyzer.inlayHints.enable": true,
     "rust-analyzer.completion.addCallArgumentSnippets": true,
     "rust-analyzer.cargo.allFeatures": true,
+    "rust-analyzer.checkOnSave": true,
     "rust-analyzer.checkOnSave.command": "clippy",
     "rust-analyzer.checkOnSave.extraArgs": ["--all-targets", "--all-features"],
     
@@ -34,15 +35,7 @@
     "C_Cpp.codeAnalysis.clangTidy.enabled": true,
     
     "github.copilot.enable": {
-        "*": true,
-        "yaml": true,
-        "plaintext": true,
-        "markdown": true,
-        "rust": true,
-        "python": true,
-        "go": true,
-        "c": true,
-        "cpp": true
+        "*": true
     },
     "github.copilot.advanced.debug.overrideEngine": "codegen",
     "github.copilot.advanced.debug.useNodejs": true,
@@ -168,7 +161,7 @@
         "editor.semanticHighlighting.enabled": true
     },
     "[python]": {
-        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.defaultFormatter": "ms-python.python",
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
             "source.organizeImports": "always"
