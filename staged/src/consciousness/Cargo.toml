@@ -1,0 +1,31 @@
+[package]
+name = "syn-consciousness"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+# AI/ML dependencies
+candle-core = { workspace = true }
+candle-nn = { workspace = true }
+tokenizers = { workspace = true }
+
+# Security
+ring = "0.17"
+
+# Error handling
+anyhow = "1"
+thiserror = "1"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+
+[features]
+default = ["local-inference", "decision-engine", "pattern-recognition"]
+local-inference = []
+decision-engine = []
+pattern-recognition = []

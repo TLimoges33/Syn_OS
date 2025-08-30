@@ -1,0 +1,1 @@
+savedcmd_/home/diablorain/Syn_OS/src/kernel-module/modules.order := {   echo /home/diablorain/Syn_OS/src/kernel-module/synos_consciousness.o; :; } > /home/diablorain/Syn_OS/src/kernel-module/modules.order

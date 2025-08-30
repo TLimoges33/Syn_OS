@@ -1,0 +1,1 @@
+savedcmd_/home/diablorain/Syn_OS/src/kernel-module/Module.symvers :=  scripts/mod/modpost -M -m       -o /home/diablorain/Syn_OS/src/kernel-module/Module.symvers -T /home/diablorain/Syn_OS/src/kernel-module/modules.order -i Module.symvers -e 
