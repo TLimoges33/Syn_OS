@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="edex-ui" repository_source="starred" generated_at="2025-08-23T14:28:05.068342">
+  <repository_information>
+    <name>edex-ui</name>
+    <full_name>GitSquared/edex-ui</full_name>
+    <description>A cross-platform, customizable science fiction terminal emulator with advanced monitoring &amp; touchscreen support.</description>
+    <language>JavaScript</language>
+    <stargazers_count>42956</stargazers_count>
+    <size>31579</size>
+    <open_issues_count>6</open_issues_count>
+    <fork>False</fork>
+    <archived>True</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2021-10-19T22:38:47+00:00</pushed_at>
+    <license>
+      <name>GNU General Public License v3.0</name>
+    </license>
+    <topics>
+      <item>terminal</item>
+      <item>science-fiction</item>
+      <item>linux</item>
+      <item>windows</item>
+      <item>nodejs</item>
+      <item>electron</item>
+      <item>edex-ui</item>
+      <item>shell</item>
+      <item>macos</item>
+      <item>desktop</item>
+      <item>unixporn</item>
+      <item>tron</item>
+      <item>touchscreen</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.74" level="medium"/>
+    <primary_category integration_level="interface">web_interfaces</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="interface">web_interfaces</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

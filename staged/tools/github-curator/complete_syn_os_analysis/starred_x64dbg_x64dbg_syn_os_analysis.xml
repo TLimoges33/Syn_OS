@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="x64dbg" repository_source="starred" generated_at="2025-08-23T14:27:20.743467">
+  <repository_information>
+    <name>x64dbg</name>
+    <full_name>x64dbg/x64dbg</full_name>
+    <description>An open-source user mode debugger for Windows. Optimized for reverse engineering and malware analysis.</description>
+    <language>C++</language>
+    <stargazers_count>46736</stargazers_count>
+    <size>62714</size>
+    <open_issues_count>607</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-08-22T23:17:40+00:00</pushed_at>
+    <license>
+      <name>Other</name>
+    </license>
+    <topics>
+      <item>debugger</item>
+      <item>windows</item>
+      <item>x64</item>
+      <item>disassembler</item>
+      <item>reverse-engineering</item>
+      <item>security</item>
+      <item>x86</item>
+      <item>x86-64</item>
+      <item>malware-analysis</item>
+      <item>security-tools</item>
+      <item>binary-analysis</item>
+      <item>ctf</item>
+      <item>dynamic-analysis</item>
+      <item>exploit-development</item>
+      <item>hacking</item>
+      <item>oscp</item>
+      <item>debugging</item>
+      <item>program-analysis</item>
+      <item>cybersecurity</item>
+      <item>offensive-security</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.96" level="high"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

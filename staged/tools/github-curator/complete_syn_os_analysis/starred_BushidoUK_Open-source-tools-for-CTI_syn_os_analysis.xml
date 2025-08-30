@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="Open-source-tools-for-CTI" repository_source="starred" generated_at="2025-08-23T14:24:26.235939">
+  <repository_information>
+    <name>Open-source-tools-for-CTI</name>
+    <full_name>BushidoUK/Open-source-tools-for-CTI</full_name>
+    <description>Public Repository of Open Source Tools for Cyber Threat Intelligence Analysts and Researchers</description>
+    <stargazers_count>717</stargazers_count>
+    <size>397</size>
+    <open_issues_count>1</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-07-21T21:58:36+00:00</pushed_at>
+    <topics>
+      <item>cti</item>
+      <item>cybersecurity</item>
+      <item>threatintel</item>
+      <item>osint</item>
+      <item>malware</item>
+      <item>infosec</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.73" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

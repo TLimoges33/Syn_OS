@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="malice" repository_source="starred" generated_at="2025-08-23T14:25:26.756858">
+  <repository_information>
+    <name>malice</name>
+    <full_name>maliceio/malice</full_name>
+    <description>VirusTotal Wanna Be - Now with 100% more Hipster</description>
+    <language>Go</language>
+    <stargazers_count>1692</stargazers_count>
+    <size>33558</size>
+    <open_issues_count>26</open_issues_count>
+    <fork>False</fork>
+    <archived>True</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2023-04-03T23:03:21+00:00</pushed_at>
+    <license>
+      <name>Apache License 2.0</name>
+    </license>
+    <topics>
+      <item>malice</item>
+      <item>docker</item>
+      <item>malware</item>
+      <item>infosec</item>
+      <item>virustotal</item>
+      <item>elasticsearch</item>
+      <item>golang</item>
+      <item>antivirus</item>
+      <item>cloud</item>
+      <item>cybersecurity</item>
+      <item>dfir</item>
+      <item>malware-analysis</item>
+      <item>malware-research</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.84" level="high"/>
+    <primary_category integration_level="infrastructure">containerization</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

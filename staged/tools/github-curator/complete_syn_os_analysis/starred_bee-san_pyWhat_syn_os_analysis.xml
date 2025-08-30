@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="pyWhat" repository_source="starred" generated_at="2025-08-23T14:26:03.712208">
+  <repository_information>
+    <name>pyWhat</name>
+    <full_name>bee-san/pyWhat</full_name>
+    <description>🐸   Identify anything. pyWhat easily lets you identify emails, IP addresses, and more. Feed it a .pcap file or some text and it'll tell you what it is! 🧙‍♀️</description>
+    <language>Python</language>
+    <stargazers_count>6999</stargazers_count>
+    <size>6239</size>
+    <open_issues_count>28</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2023-10-31T22:01:01+00:00</pushed_at>
+    <license>
+      <name>MIT License</name>
+    </license>
+    <topics>
+      <item>cyber</item>
+      <item>security</item>
+      <item>hacking</item>
+      <item>cybersecurity</item>
+      <item>malware</item>
+      <item>re</item>
+      <item>python</item>
+      <item>pcap</item>
+      <item>malware-analysis</item>
+      <item>malware-research</item>
+      <item>tryhackme</item>
+      <item>hacktoberfest</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.88" level="high"/>
+    <primary_category integration_level="security">security_frameworks</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

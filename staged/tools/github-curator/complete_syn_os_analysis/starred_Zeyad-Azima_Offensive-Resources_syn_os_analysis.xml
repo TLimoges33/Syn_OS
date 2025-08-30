@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="Offensive-Resources" repository_source="starred" generated_at="2025-08-23T14:24:48.662942">
+  <repository_information>
+    <name>Offensive-Resources</name>
+    <full_name>Zeyad-Azima/Offensive-Resources</full_name>
+    <description>A Huge Learning Resources with Labs For Offensive Security Players</description>
+    <stargazers_count>982</stargazers_count>
+    <size>21563</size>
+    <open_issues_count>1</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2022-07-13T19:58:03+00:00</pushed_at>
+    <topics>
+      <item>api</item>
+      <item>infrastructure</item>
+      <item>learning</item>
+      <item>security</item>
+      <item>mobile</item>
+      <item>web</item>
+      <item>hack</item>
+      <item>hacking</item>
+      <item>owasp</item>
+      <item>cybersecurity</item>
+      <item>web-security</item>
+      <item>mobile-security</item>
+      <item>offensive</item>
+      <item>offensive-security</item>
+      <item>red-team</item>
+      <item>owasp-top-10</item>
+      <item>redteam</item>
+      <item>cloud-security</item>
+      <item>api-security</item>
+      <item>red-teaming</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.63" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

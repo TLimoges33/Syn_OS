@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="n8n" repository_source="starred" generated_at="2025-08-23T14:28:10.839440">
+  <repository_information>
+    <name>n8n</name>
+    <full_name>n8n-io/n8n</full_name>
+    <description>Fair-code workflow automation platform with native AI capabilities. Combine visual building with custom code, self-host or cloud, 400+ integrations.</description>
+    <language>TypeScript</language>
+    <stargazers_count>132074</stargazers_count>
+    <size>245544</size>
+    <open_issues_count>1063</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>False</has_wiki>
+    <has_pages>True</has_pages>
+    <pushed_at>2025-08-23T12:31:53+00:00</pushed_at>
+    <license>
+      <name>Other</name>
+    </license>
+    <topics>
+      <item>automation</item>
+      <item>ipaas</item>
+      <item>n8n</item>
+      <item>workflow</item>
+      <item>typescript</item>
+      <item>self-hosted</item>
+      <item>integrations</item>
+      <item>workflow-automation</item>
+      <item>cli</item>
+      <item>development</item>
+      <item>low-code</item>
+      <item>data-flow</item>
+      <item>integration-framework</item>
+      <item>apis</item>
+      <item>low-code-platform</item>
+      <item>no-code</item>
+      <item>ai</item>
+      <item>mcp</item>
+      <item>mcp-client</item>
+      <item>mcp-server</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.88" level="high"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

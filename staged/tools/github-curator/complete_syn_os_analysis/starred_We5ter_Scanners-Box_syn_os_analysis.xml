@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="Scanners-Box" repository_source="starred" generated_at="2025-08-23T14:27:05.984219">
+  <repository_information>
+    <name>Scanners-Box</name>
+    <full_name>We5ter/Scanners-Box</full_name>
+    <description>A powerful and open-source toolkit for hackers and security automation - 安全行业从业者自研开源扫描器合辑</description>
+    <stargazers_count>8604</stargazers_count>
+    <size>7396</size>
+    <open_issues_count>2</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-08-07T08:39:09+00:00</pushed_at>
+    <topics>
+      <item>pentesting-tools</item>
+      <item>hacker-tools</item>
+      <item>vulnerability-scanners</item>
+      <item>information-security</item>
+      <item>redteam-tools</item>
+      <item>penetration-testing</item>
+      <item>devsecops</item>
+      <item>security-automation</item>
+      <item>smart-contracts</item>
+      <item>privacy-compliance</item>
+      <item>apk-analysis</item>
+      <item>binary-analysis</item>
+      <item>exploitation-framework</item>
+      <item>malware-analysis</item>
+      <item>security-audit</item>
+      <item>code-analyzer</item>
+      <item>static-analysis</item>
+      <item>wifi-hacking</item>
+      <item>wifi-security</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.85" level="high"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

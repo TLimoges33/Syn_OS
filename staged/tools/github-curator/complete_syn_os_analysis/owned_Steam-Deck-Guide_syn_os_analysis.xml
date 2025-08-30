@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="Steam-Deck-Guide" repository_source="owned" generated_at="2025-08-23T14:23:21.723376">
+  <repository_information>
+    <name>Steam-Deck-Guide</name>
+    <full_name>TLimoges33/Steam-Deck-Guide</full_name>
+    <description>Steam Deck Guide. Learn all about the Tools, Accessories, Games, Emulators, and Gaming Tips that will make your Steam Deck an awesome Gaming Handheld or a Portable Computer Workstation. </description>
+    <stargazers_count>0</stargazers_count>
+    <size>406</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2024-01-04T22:54:45+00:00</pushed_at>
+    <topics/>
+    <source>owned</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.67" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

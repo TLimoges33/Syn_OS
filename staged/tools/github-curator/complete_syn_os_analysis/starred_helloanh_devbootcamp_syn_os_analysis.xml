@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="devbootcamp" repository_source="starred" generated_at="2025-08-23T14:23:43.833758">
+  <repository_information>
+    <name>devbootcamp</name>
+    <full_name>helloanh/devbootcamp</full_name>
+    <description>porfolio repo for all Dev Bootcamp work</description>
+    <language>JavaScript</language>
+    <stargazers_count>45</stargazers_count>
+    <size>1465</size>
+    <open_issues_count>2</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2018-12-26T07:43:30+00:00</pushed_at>
+    <topics/>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.58" level="medium"/>
+    <primary_category integration_level="application">educational_platform</primary_category>
+    <matching_categories>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="interface">web_interfaces</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

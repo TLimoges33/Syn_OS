@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="awesome-hacker-search-engines" repository_source="starred" generated_at="2025-08-23T14:27:06.542878">
+  <repository_information>
+    <name>awesome-hacker-search-engines</name>
+    <full_name>edoardottt/awesome-hacker-search-engines</full_name>
+    <description>A curated list of awesome search engines useful during Penetration testing, Vulnerability assessments, Red/Blue Team operations, Bug Bounty and more</description>
+    <language>Shell</language>
+    <stargazers_count>9128</stargazers_count>
+    <size>727</size>
+    <open_issues_count>8</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <pushed_at>2025-07-31T09:13:39+00:00</pushed_at>
+    <license>
+      <name>MIT License</name>
+    </license>
+    <topics>
+      <item>awesome</item>
+      <item>awesome-list</item>
+      <item>hacking</item>
+      <item>search-engine</item>
+      <item>osint</item>
+      <item>awesome-lists</item>
+      <item>dns</item>
+      <item>hacking-tools</item>
+      <item>exploit</item>
+      <item>security</item>
+      <item>security-tools</item>
+      <item>wifi-network</item>
+      <item>bugbounty</item>
+      <item>osint-tool</item>
+      <item>vulnerabilities</item>
+      <item>redteam</item>
+      <item>redteaming</item>
+      <item>cve</item>
+      <item>hacktoberfest</item>
+      <item>threat-intelligence</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.81" level="high"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

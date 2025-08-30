@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="chepy" generated_at="2025-08-23T14:16:34.996362">
+  <repository_information>
+    <name>chepy</name>
+    <full_name>TLimoges33/chepy</full_name>
+    <description>Chepy is a python lib/cli equivalent of the awesome CyberChef tool. </description>
+    <stargazers_count>0</stargazers_count>
+    <size>5080</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-05-03T00:45:12+00:00</pushed_at>
+    <license>
+      <name>GNU General Public License v3.0</name>
+    </license>
+    <topics/>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.71" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="interface">web_interfaces</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

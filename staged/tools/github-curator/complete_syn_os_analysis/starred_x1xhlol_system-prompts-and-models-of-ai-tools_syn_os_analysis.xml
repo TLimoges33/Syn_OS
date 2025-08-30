@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="system-prompts-and-models-of-ai-tools" repository_source="starred" generated_at="2025-08-23T14:23:37.084241">
+  <repository_information>
+    <name>system-prompts-and-models-of-ai-tools</name>
+    <full_name>x1xhlol/system-prompts-and-models-of-ai-tools</full_name>
+    <description>FULL v0, Cursor, Manus, Augment Code, Same.dev, Lovable, Devin, Replit Agent, Windsurf Agent, VSCode Agent, Dia Browser, Xcode, Trae AI, Cluely &amp; Orchids.app (And other Open Sourced) System Prompts, Tools &amp; AI Models.</description>
+    <stargazers_count>78475</stargazers_count>
+    <size>742</size>
+    <open_issues_count>71</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-08-22T20:53:21+00:00</pushed_at>
+    <license>
+      <name>GNU General Public License v3.0</name>
+    </license>
+    <topics>
+      <item>ai</item>
+      <item>cursor</item>
+      <item>lovable</item>
+      <item>system-prompts</item>
+      <item>v0</item>
+      <item>cursorai</item>
+      <item>devin</item>
+      <item>replit</item>
+      <item>windsurf</item>
+      <item>windsurf-ai</item>
+      <item>bolt</item>
+      <item>open-source</item>
+      <item>copilot</item>
+      <item>github-copilot</item>
+      <item>vscode</item>
+      <item>trae</item>
+      <item>trae-ai</item>
+      <item>trae-ide</item>
+      <item>cluely</item>
+      <item>perplexity</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.88" level="high"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="Awesome-LLM4Cybersecurity" repository_source="owned" generated_at="2025-08-23T14:21:53.661285">
+  <repository_information>
+    <name>Awesome-LLM4Cybersecurity</name>
+    <full_name>TLimoges33/Awesome-LLM4Cybersecurity</full_name>
+    <description>An overview of LLMs for cybersecurity.</description>
+    <stargazers_count>0</stargazers_count>
+    <size>1286</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-05-08T05:14:12+00:00</pushed_at>
+    <topics/>
+    <source>owned</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.55" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

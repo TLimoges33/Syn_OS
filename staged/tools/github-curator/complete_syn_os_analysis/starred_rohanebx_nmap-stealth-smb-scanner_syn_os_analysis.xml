@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="nmap-stealth-smb-scanner" repository_source="starred" generated_at="2025-08-23T14:26:17.034886">
+  <repository_information>
+    <name>nmap-stealth-smb-scanner</name>
+    <full_name>rohanebx/nmap-stealth-smb-scanner</full_name>
+    <description>Nmap Stealth SMB Scanner is a Python-based tool that runs a stealthy Nmap scan targeting Windows SMB and RPC ports. It uses advanced evasion techniques to help bypass basic intrusion detection and prevention systems (IDS/IPS). Ideal for red teamers, ethical hackers, or cybersecurity researchers in controlled environments.</description>
+    <language>Python</language>
+    <stargazers_count>1</stargazers_count>
+    <size>5</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-05-14T20:21:13+00:00</pushed_at>
+    <topics/>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.70" level="medium"/>
+    <primary_category integration_level="security">security_frameworks</primary_category>
+    <matching_categories>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

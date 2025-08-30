@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="infoooze" repository_source="starred" generated_at="2025-08-23T14:24:34.748019">
+  <repository_information>
+    <name>infoooze</name>
+    <full_name>devxprite/infoooze</full_name>
+    <description>A OSINT tool which helps you to quickly find information effectively. All you need is to input and it will take take care of rest.</description>
+    <language>JavaScript</language>
+    <stargazers_count>814</stargazers_count>
+    <size>1576</size>
+    <open_issues_count>32</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <pushed_at>2023-10-31T14:57:16+00:00</pushed_at>
+    <license>
+      <name>MIT License</name>
+    </license>
+    <topics>
+      <item>osint</item>
+      <item>osint-tool</item>
+      <item>nodejs</item>
+      <item>open-source</item>
+      <item>infoooze</item>
+      <item>npm</item>
+      <item>npm-package</item>
+      <item>contributions-welcome</item>
+      <item>github</item>
+      <item>kali-tools</item>
+      <item>infosec</item>
+      <item>cyber</item>
+      <item>cybersecurity</item>
+      <item>termux</item>
+      <item>termux-tool</item>
+      <item>information-gathering</item>
+      <item>recon</item>
+      <item>hacking</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.76" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="interface">web_interfaces</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="sitedorks" repository_source="starred" generated_at="2025-08-23T14:24:05.960419">
+  <repository_information>
+    <name>sitedorks</name>
+    <full_name>Zarcolio/sitedorks</full_name>
+    <description>Search Google/Bing/Ecosia/DuckDuckGo/Yandex/Yahoo for a search term (dork) with a default set of websites, bug bounty programs or custom collection.</description>
+    <language>Python</language>
+    <stargazers_count>980</stargazers_count>
+    <size>1225</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-08-20T09:21:16+00:00</pushed_at>
+    <license>
+      <name>GNU General Public License v3.0</name>
+    </license>
+    <topics>
+      <item>bing</item>
+      <item>yandex</item>
+      <item>yahoo</item>
+      <item>google</item>
+      <item>search</item>
+      <item>osint</item>
+      <item>recon</item>
+      <item>python3</item>
+      <item>duckduckgo</item>
+      <item>baidu</item>
+      <item>hacking</item>
+      <item>bugbounty</item>
+      <item>search-engines</item>
+      <item>bugcrowd</item>
+      <item>intigriti</item>
+      <item>hackerone</item>
+      <item>google-dorks</item>
+      <item>googledork</item>
+      <item>infosec</item>
+      <item>reconnaissance</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.79" level="medium"/>
+    <primary_category integration_level="interface">web_interfaces</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

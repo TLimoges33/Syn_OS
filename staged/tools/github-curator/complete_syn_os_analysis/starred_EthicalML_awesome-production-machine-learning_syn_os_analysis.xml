@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="awesome-production-machine-learning" repository_source="starred" generated_at="2025-08-23T14:28:42.783133">
+  <repository_information>
+    <name>awesome-production-machine-learning</name>
+    <full_name>EthicalML/awesome-production-machine-learning</full_name>
+    <description>A curated list of awesome open source libraries to deploy, monitor, version and scale your machine learning</description>
+    <stargazers_count>19032</stargazers_count>
+    <size>2901</size>
+    <open_issues_count>5</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <pushed_at>2025-08-01T02:23:50+00:00</pushed_at>
+    <license>
+      <name>MIT License</name>
+    </license>
+    <topics>
+      <item>machine-learning</item>
+      <item>mlops</item>
+      <item>interpretability</item>
+      <item>explainability</item>
+      <item>responsible-ai</item>
+      <item>deep-learning</item>
+      <item>machine-learning-operations</item>
+      <item>ml-ops</item>
+      <item>ml-operations</item>
+      <item>privacy-preserving</item>
+      <item>privacy-preserving-ml</item>
+      <item>privacy-preserving-machine-learning</item>
+      <item>data-mining</item>
+      <item>large-scale-ml</item>
+      <item>production-ml</item>
+      <item>large-scale-machine-learning</item>
+      <item>production-machine-learning</item>
+      <item>awesome</item>
+      <item>awesome-list</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.73" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

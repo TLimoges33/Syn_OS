@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="Learning-Curve" repository_source="starred" generated_at="2025-08-23T14:28:27.493154">
+  <repository_information>
+    <name>Learning-Curve</name>
+    <full_name>TLimoges33/Learning-Curve</full_name>
+    <language>C</language>
+    <stargazers_count>1</stargazers_count>
+    <size>69</size>
+    <open_issues_count>1</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2023-03-30T12:17:38+00:00</pushed_at>
+    <topics/>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.46" level="low"/>
+    <primary_category integration_level="core">kernel_modules</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

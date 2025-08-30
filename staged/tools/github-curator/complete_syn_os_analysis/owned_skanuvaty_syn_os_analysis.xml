@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="skanuvaty" repository_source="owned" generated_at="2025-08-23T14:23:19.163119">
+  <repository_information>
+    <name>skanuvaty</name>
+    <full_name>TLimoges33/skanuvaty</full_name>
+    <description>Dangerously fast DNS/network/port scanner</description>
+    <stargazers_count>0</stargazers_count>
+    <size>1251</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2022-03-18T12:36:50+00:00</pushed_at>
+    <topics/>
+    <source>owned</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.52" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

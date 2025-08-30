@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="Steam-Deck-Guide" repository_source="starred" generated_at="2025-08-23T14:23:54.744078">
+  <repository_information>
+    <name>Steam-Deck-Guide</name>
+    <full_name>mikeroyal/Steam-Deck-Guide</full_name>
+    <description>Steam Deck Guide. Learn all about the Tools, Accessories, Games, Emulators, and Gaming Tips that will make your Steam Deck an awesome Gaming Handheld or a Portable Computer Workstation. </description>
+    <language>Rust</language>
+    <stargazers_count>2083</stargazers_count>
+    <size>416</size>
+    <open_issues_count>7</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-06-27T02:04:19+00:00</pushed_at>
+    <topics>
+      <item>steam</item>
+      <item>steamdeck</item>
+      <item>gaming</item>
+      <item>retrogaming</item>
+      <item>steamos</item>
+      <item>proton</item>
+      <item>emulation</item>
+      <item>wine</item>
+      <item>optimization</item>
+      <item>file-sharing</item>
+      <item>nixos</item>
+      <item>windows-11</item>
+      <item>steam-deck</item>
+      <item>xbox</item>
+      <item>controller</item>
+      <item>gamepad</item>
+      <item>games</item>
+      <item>synchronization</item>
+      <item>dxvk</item>
+      <item>plugins</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.85" level="high"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

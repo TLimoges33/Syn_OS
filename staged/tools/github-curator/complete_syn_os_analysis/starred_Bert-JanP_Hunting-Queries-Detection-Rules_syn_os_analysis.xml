@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="Hunting-Queries-Detection-Rules" repository_source="starred" generated_at="2025-08-23T14:25:21.226515">
+  <repository_information>
+    <name>Hunting-Queries-Detection-Rules</name>
+    <full_name>Bert-JanP/Hunting-Queries-Detection-Rules</full_name>
+    <description>KQL Queries. Defender For Endpoint and Azure Sentinel Hunting and Detection Queries in KQL. Out of the box KQL queries for: Advanced Hunting, Custom Detection, Analytics Rules &amp; Hunting Rules. </description>
+    <language>Python</language>
+    <stargazers_count>1522</stargazers_count>
+    <size>1034</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-08-18T14:54:33+00:00</pushed_at>
+    <license>
+      <name>BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; License</name>
+    </license>
+    <topics>
+      <item>azure</item>
+      <item>defender-for-endpoint</item>
+      <item>dfir</item>
+      <item>kql</item>
+      <item>sentinel</item>
+      <item>threat-hunting</item>
+      <item>vulnerability-management</item>
+      <item>zero-day</item>
+      <item>blueteam</item>
+      <item>cybersecurity</item>
+      <item>mde</item>
+      <item>mdi</item>
+      <item>infosec</item>
+      <item>security</item>
+      <item>misp</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.96" level="high"/>
+    <primary_category integration_level="security">security_frameworks</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

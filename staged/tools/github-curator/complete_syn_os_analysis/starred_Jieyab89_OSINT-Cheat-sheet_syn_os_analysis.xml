@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="OSINT-Cheat-sheet" repository_source="starred" generated_at="2025-08-23T14:26:25.841238">
+  <repository_information>
+    <name>OSINT-Cheat-sheet</name>
+    <full_name>Jieyab89/OSINT-Cheat-sheet</full_name>
+    <description>OSINT cheat sheet, list OSINT tools, wiki, dataset, article, book , red team OSINT for hackers and OSINT tips and OSINT branch. This repository will grow every time will research, there is a research, science and technology, tutorial. Please use it wisely.</description>
+    <language>HTML</language>
+    <stargazers_count>1403</stargazers_count>
+    <size>24840</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <pushed_at>2025-08-20T18:37:03+00:00</pushed_at>
+    <topics>
+      <item>hacking</item>
+      <item>information-gathering</item>
+      <item>information-security</item>
+      <item>osint</item>
+      <item>reconnaissance</item>
+      <item>socmint</item>
+      <item>cheatsheet</item>
+      <item>datasets</item>
+      <item>imint</item>
+      <item>masint</item>
+      <item>wiki</item>
+      <item>osintwiki</item>
+      <item>journalism</item>
+      <item>red-team</item>
+      <item>scraping</item>
+      <item>education</item>
+      <item>science</item>
+      <item>osint-tool</item>
+      <item>tools</item>
+      <item>cybersecurity</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.77" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

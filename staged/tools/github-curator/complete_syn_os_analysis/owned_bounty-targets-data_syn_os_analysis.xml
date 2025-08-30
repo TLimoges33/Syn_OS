@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="bounty-targets-data" repository_source="owned" generated_at="2025-08-23T14:22:01.030964">
+  <repository_information>
+    <name>bounty-targets-data</name>
+    <full_name>TLimoges33/bounty-targets-data</full_name>
+    <description>This repo contains hourly-updated data dumps of bug bounty platform scopes (like Hackerone/Bugcrowd/Intigriti/etc) that are eligible for reports</description>
+    <stargazers_count>0</stargazers_count>
+    <size>518671</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-05-21T23:34:19+00:00</pushed_at>
+    <license>
+      <name>MIT License</name>
+    </license>
+    <topics/>
+    <source>owned</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.61" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

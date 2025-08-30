@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="SecToolKit" repository_source="starred" generated_at="2025-08-23T14:24:40.470852">
+  <repository_information>
+    <name>SecToolKit</name>
+    <full_name>ProbiusOfficial/SecToolKit</full_name>
+    <description>Cybersecurity tool repository / Wiki 收录常用 / 前沿 的CTF和渗透工具以及其 官方/使用 文档，致力于让每个工具都能发挥作用ww，不管你是萌新还是领域从业者希望你都能在这里找到适合你的工具或者获得一定的启发。</description>
+    <stargazers_count>857</stargazers_count>
+    <size>853</size>
+    <open_issues_count>2</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <pushed_at>2025-08-23T01:20:13+00:00</pushed_at>
+    <license>
+      <name>GNU General Public License v3.0</name>
+    </license>
+    <topics>
+      <item>ctf</item>
+      <item>ctf-tools</item>
+      <item>ctf-wiki</item>
+      <item>cyber-security</item>
+      <item>cyber-security-tool</item>
+      <item>cyber-security-wiki</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.79" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="cai" generated_at="2025-08-23T14:16:32.528148">
+  <repository_information>
+    <name>cai</name>
+    <full_name>TLimoges33/cai</full_name>
+    <description>Cybersecurity AI (CAI), an open Bug Bounty-ready Artificial Intelligence</description>
+    <stargazers_count>0</stargazers_count>
+    <size>39670</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-05-18T08:47:46+00:00</pushed_at>
+    <license>
+      <name>Other</name>
+    </license>
+    <topics/>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.61" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

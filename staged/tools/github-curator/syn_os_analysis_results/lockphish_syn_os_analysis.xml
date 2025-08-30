@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="lockphish" generated_at="2025-08-23T14:17:08.170035">
+  <repository_information>
+    <name>lockphish</name>
+    <full_name>TLimoges33/lockphish</full_name>
+    <description>Lockphish it's the first tool (07/04/2020) for phishing attacks on the lock screen, designed to grab Windows credentials, Android PIN and iPhone Passcode using a https link.</description>
+    <stargazers_count>0</stargazers_count>
+    <size>60</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2021-07-27T10:19:02+00:00</pushed_at>
+    <license>
+      <name>Other</name>
+    </license>
+    <topics/>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.68" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

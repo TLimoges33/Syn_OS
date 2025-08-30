@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="docs.tryhackme.com" repository_source="starred" generated_at="2025-08-23T14:27:38.545164">
+  <repository_information>
+    <name>docs.tryhackme.com</name>
+    <full_name>tryhackmeltd/docs.tryhackme.com</full_name>
+    <description>TryHackMe documentation site source code</description>
+    <language>JavaScript</language>
+    <stargazers_count>63</stargazers_count>
+    <size>6872</size>
+    <open_issues_count>53</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <pushed_at>2025-08-23T06:39:27+00:00</pushed_at>
+    <license>
+      <name>MIT License</name>
+    </license>
+    <topics>
+      <item>tryhackme</item>
+      <item>cybersecurity</item>
+      <item>infosec</item>
+      <item>education</item>
+      <item>enterprise</item>
+      <item>learning</item>
+      <item>docs</item>
+      <item>documentation</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.90" level="high"/>
+    <primary_category integration_level="application">educational_platform</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="interface">web_interfaces</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

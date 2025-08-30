@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="AnomalyDetectionOnRisk" repository_source="owned" generated_at="2025-08-23T14:21:39.426207">
+  <repository_information>
+    <name>AnomalyDetectionOnRisk</name>
+    <full_name>TLimoges33/AnomalyDetectionOnRisk</full_name>
+    <description>Thesis project about Unsupervised anomaly detection on the streaming time-series data of porfolio risk measures and returns.</description>
+    <stargazers_count>0</stargazers_count>
+    <size>1361</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2018-05-31T16:18:39+00:00</pushed_at>
+    <topics/>
+    <source>owned</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.52" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

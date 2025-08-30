@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="malwoverview" repository_source="starred" generated_at="2025-08-23T14:25:48.567494">
+  <repository_information>
+    <name>malwoverview</name>
+    <full_name>alexandreborges/malwoverview</full_name>
+    <description>Malwoverview is a first response tool used for threat hunting and offers intel information from Virus Total, Hybrid Analysis, URLHaus, Polyswarm, Malshare, Alien Vault, Malpedia, Malware Bazaar, ThreatFox, Triage, InQuest, VxExchange and IPInfo, and it is also able to scan Android devices against VT.</description>
+    <language>Python</language>
+    <stargazers_count>3343</stargazers_count>
+    <size>40263</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-07-27T00:43:06+00:00</pushed_at>
+    <license>
+      <name>GNU General Public License v3.0</name>
+    </license>
+    <topics>
+      <item>malware</item>
+      <item>virustotal</item>
+      <item>malpedia</item>
+      <item>urlhaus</item>
+      <item>alienvault</item>
+      <item>malshare</item>
+      <item>threathunting</item>
+      <item>malwarebazaar</item>
+      <item>threatfox</item>
+      <item>cybersecurity</item>
+      <item>malware-analysis</item>
+      <item>threat-hunting</item>
+      <item>threatintelligence</item>
+      <item>triage</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.88" level="high"/>
+    <primary_category integration_level="security">security_frameworks</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="portfoliov2" repository_source="starred" generated_at="2025-08-23T14:23:44.359999">
+  <repository_information>
+    <name>portfoliov2</name>
+    <full_name>jrgarciadev/portfoliov2</full_name>
+    <description>My portfolio made with Next.js</description>
+    <language>JavaScript</language>
+    <stargazers_count>78</stargazers_count>
+    <size>986</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-05-13T13:53:47+00:00</pushed_at>
+    <topics>
+      <item>vercel</item>
+      <item>porfolio</item>
+      <item>react</item>
+      <item>nextjs</item>
+      <item>styled-components</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.68" level="medium"/>
+    <primary_category integration_level="interface">web_interfaces</primary_category>
+    <matching_categories>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="interface">web_interfaces</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

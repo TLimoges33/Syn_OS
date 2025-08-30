@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="skills-introduction-to-github" generated_at="2025-08-23T14:17:44.312904">
+  <repository_information>
+    <name>skills-introduction-to-github</name>
+    <full_name>TLimoges33/skills-introduction-to-github</full_name>
+    <description>My clone repository</description>
+    <stargazers_count>0</stargazers_count>
+    <size>852</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2024-12-28T10:40:18+00:00</pushed_at>
+    <license>
+      <name>MIT License</name>
+    </license>
+    <topics/>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.55" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="portfoliov2" repository_source="owned" generated_at="2025-08-23T14:23:03.907973">
+  <repository_information>
+    <name>portfoliov2</name>
+    <full_name>TLimoges33/portfoliov2</full_name>
+    <description>My portfolio made with Next.js</description>
+    <stargazers_count>0</stargazers_count>
+    <size>986</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-05-13T13:53:47+00:00</pushed_at>
+    <topics/>
+    <source>owned</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.55" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

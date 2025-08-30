@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="dnsReaper" repository_source="owned" generated_at="2025-08-23T14:22:26.428563">
+  <repository_information>
+    <name>dnsReaper</name>
+    <full_name>TLimoges33/dnsReaper</full_name>
+    <description>dnsReaper - subdomain takeover tool for attackers, bug bounty hunters and the blue team!</description>
+    <stargazers_count>0</stargazers_count>
+    <size>340</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2024-10-23T11:08:37+00:00</pushed_at>
+    <license>
+      <name>GNU Affero General Public License v3.0</name>
+    </license>
+    <topics/>
+    <source>owned</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.69" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

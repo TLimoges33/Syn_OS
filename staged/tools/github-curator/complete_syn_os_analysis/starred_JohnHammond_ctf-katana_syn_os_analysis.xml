@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="ctf-katana" repository_source="starred" generated_at="2025-08-23T14:27:56.365045">
+  <repository_information>
+    <name>ctf-katana</name>
+    <full_name>JohnHammond/ctf-katana</full_name>
+    <description>This repository aims to hold suggestions (and hopefully/eventually code) for CTF challenges. The &quot;project&quot; is nicknamed Katana.</description>
+    <stargazers_count>2791</stargazers_count>
+    <size>669</size>
+    <open_issues_count>4</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2023-05-06T13:16:24+00:00</pushed_at>
+    <topics/>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.67" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

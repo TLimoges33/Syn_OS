@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="ReconAIzer" generated_at="2025-08-23T14:17:34.687318">
+  <repository_information>
+    <name>ReconAIzer</name>
+    <full_name>TLimoges33/ReconAIzer</full_name>
+    <description>A Burp Suite extension to add OpenAI (GPT) on Burp and help you with your Bug Bounty recon to discover endpoints, params, URLs, subdomains and more!</description>
+    <stargazers_count>0</stargazers_count>
+    <size>44</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2023-05-03T03:03:41+00:00</pushed_at>
+    <topics/>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.52" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

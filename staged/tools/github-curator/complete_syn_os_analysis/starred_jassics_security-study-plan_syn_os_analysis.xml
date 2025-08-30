@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="security-study-plan" repository_source="starred" generated_at="2025-08-23T14:25:53.995010">
+  <repository_information>
+    <name>security-study-plan</name>
+    <full_name>jassics/security-study-plan</full_name>
+    <description>Complete Practical Study Plan to become a successful cybersecurity engineer based on roles like Pentest, AppSec, Cloud Security, DevSecOps and so on...</description>
+    <stargazers_count>4674</stargazers_count>
+    <size>6472</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-07-29T07:07:02+00:00</pushed_at>
+    <topics>
+      <item>aws-security</item>
+      <item>study-guide</item>
+      <item>study-plan</item>
+      <item>appsec</item>
+      <item>appsec-tutorials</item>
+      <item>azure-security</item>
+      <item>devsecops-university</item>
+      <item>gcp-security</item>
+      <item>pentesting</item>
+      <item>application-security</item>
+      <item>cybersecurity</item>
+      <item>cybersecurity-education</item>
+      <item>infosec</item>
+      <item>security-testing</item>
+      <item>study-planner</item>
+      <item>api-security</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.78" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

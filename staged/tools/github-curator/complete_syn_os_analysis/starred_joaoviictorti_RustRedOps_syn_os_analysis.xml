@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="RustRedOps" repository_source="starred" generated_at="2025-08-23T14:26:32.328381">
+  <repository_information>
+    <name>RustRedOps</name>
+    <full_name>joaoviictorti/RustRedOps</full_name>
+    <description>RustRedOps is a repository for advanced Red Team techniques and offensive malware, focused on Rust 🦀</description>
+    <language>Rust</language>
+    <stargazers_count>1704</stargazers_count>
+    <size>2608</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-07-14T23:04:39+00:00</pushed_at>
+    <license>
+      <name>MIT License</name>
+    </license>
+    <topics>
+      <item>redteam</item>
+      <item>rust</item>
+      <item>windows</item>
+      <item>offensive-security</item>
+      <item>malware-development</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.81" level="high"/>
+    <primary_category integration_level="core">kernel_modules</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

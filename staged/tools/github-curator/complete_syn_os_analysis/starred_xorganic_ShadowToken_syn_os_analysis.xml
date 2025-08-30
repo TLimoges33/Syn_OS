@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="ShadowToken" repository_source="starred" generated_at="2025-08-23T14:26:18.262673">
+  <repository_information>
+    <name>ShadowToken</name>
+    <full_name>xorganic/ShadowToken</full_name>
+    <description>Red Teaming tool for privilege escalation and stealth detection evasion using token manipulation and fileless injection techniques.</description>
+    <language>C++</language>
+    <stargazers_count>4</stargazers_count>
+    <size>302</size>
+    <open_issues_count>2</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-06-10T08:31:52+00:00</pushed_at>
+    <topics>
+      <item>detection-evasion</item>
+      <item>privilege-escalation</item>
+      <item>red-teaming</item>
+      <item>token-manipulation</item>
+      <item>uac-bypass</item>
+      <item>c2-communication</item>
+      <item>fileless-injection</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.63" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>
