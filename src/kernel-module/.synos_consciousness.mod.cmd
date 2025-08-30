@@ -1,1 +1,0 @@
-savedcmd_/home/diablorain/Syn_OS/src/kernel-module/synos_consciousness.mod := printf '%s\n'   synos_consciousness.o | awk '!x[$$0]++ { print("/home/diablorain/Syn_OS/src/kernel-module/"$$0) }' > /home/diablorain/Syn_OS/src/kernel-module/synos_consciousness.mod
