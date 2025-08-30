@@ -1,0 +1,4 @@
+#!/bin/bash
+# Quick reset for SynOS save system failures
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+exec "$SCRIPT_DIR/git-save-system.sh" reset
