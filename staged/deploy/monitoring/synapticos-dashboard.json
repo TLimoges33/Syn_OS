@@ -1,0 +1,62 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "SynapticOS System Overview",
+    "tags": [
+      "synapticos",
+      "monitoring"
+    ],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "System CPU Usage",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(cpu_usage_total[5m])",
+            "legendFormat": "CPU Usage"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Memory Usage",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "memory_usage_bytes",
+            "legendFormat": "Memory Usage"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "NATS Messages/sec",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(nats_messages_total[5m])",
+            "legendFormat": "Messages/sec"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Service Health",
+        "type": "singlestat",
+        "targets": [
+          {
+            "expr": "up",
+            "legendFormat": "Service Up"
+          }
+        ]
+      }
+    ],
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "refresh": "5s"
+  }
+}

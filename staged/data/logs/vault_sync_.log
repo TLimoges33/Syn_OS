@@ -1,0 +1,14 @@
+[START] 2025-08-29T12:21:42-04:00 Vault sync
+Root: /home/diablorain/Syn_OS
+Bundle: archive/bundles/wip-f0f203abd3ab7d44e5a536782a0cda975f9cc66c.bundle
+Sumfile: archive/bundles/wip-f0f203abd3ab7d44e5a536782a0cda975f9cc66c.bundle.sha256
+Vault repo: TLimoges33/SynOS_Master-Archive-Vault
+Tag: archive-2025-08-29
+[INFO] Bundle size:
+254M	archive/bundles/wip-f0f203abd3ab7d44e5a536782a0cda975f9cc66c.bundle
+Bytes: 265448163
+[STEP] Verifying bundle checksum...
+Expected: 55d3ede55e158255545bcf4462f4ddabe50f71063a7a602e00904b9e909d6ee0
+[INFO] Computing SHA-256 with dd status=progress (this may take time)...
+Actual:   6f6d5b3194190698d750f7e4ca0b7337f8c6a2cffd0c6b148682632380122bdb
+[ERROR] Checksum mismatch

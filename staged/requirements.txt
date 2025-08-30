@@ -1,0 +1,47 @@
+# Syn_OS Consciousness Service Requirements
+# Core consciousness processing dependencies
+
+# Core Python packages
+asyncio>=3.11.0
+typing-extensions>=4.8.0
+dataclasses-json>=0.6.3
+pydantic>=2.5.0
+python-dateutil>=2.8.2
+
+# NATS messaging
+nats-py>=2.6.0
+aiofiles>=23.2.1
+
+# Database connectivity
+asyncpg>=0.29.0
+sqlalchemy>=2.0.25
+alembic>=1.13.0
+
+# HTTP client/server
+aiohttp>=3.9.1
+requests>=2.31.0
+
+# Logging and monitoring
+structlog>=23.2.0
+python-json-logger>=2.0.7
+
+# Security and crypto
+cryptography>=41.0.8
+bcrypt>=4.1.2
+PyJWT>=2.8.0
+
+# Utility libraries
+python-dotenv>=1.0.0
+click>=8.1.7
+tenacity>=8.2.3
+
+# Scientific computing (lightweight base)
+numpy>=1.24.0
+scipy>=1.11.4
+
+# JSON and data processing
+ujson>=5.8.0
+msgpack>=1.0.7
+
+# Async HTTP
+httpx>=0.25.2

@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-08-13T19:08:50.170274",
+  "auth": {
+    "password_hashing_ms": 99.91277576005814,
+    "encryption_ms": 0.06546918000276492,
+    "encryption_throughput_mbps": 14.916369808797935,
+    "meets_requirements": true
+  },
+  "system": {
+    "cpu_ops_per_sec": 745333.1579224069,
+    "memory_alloc_mbps": 3504.8366750248715,
+    "meets_requirements": true
+  },
+  "overall_pass": true
+}

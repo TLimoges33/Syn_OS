@@ -1,0 +1,24 @@
+apiVersion: v2
+appVersion: 1.0.0
+dependencies:
+- condition: postgresql.enabled
+  name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 12.1.2
+- condition: redis.enabled
+  name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 17.3.7
+description: SynapticOS - Advanced Consciousness-Integrated Operating System
+home: https://github.com/TLimoges33/Syn_OS
+keywords:
+- consciousness
+- security
+- ai
+- operating-system
+maintainers:
+- email: team@synapticos.io
+  name: SynapticOS Team
+name: synapticos
+type: application
+version: 1.0.0

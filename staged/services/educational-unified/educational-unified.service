@@ -1,0 +1,38 @@
+[Unit]
+Description=Syn_OS Unified Educational Platform
+Documentation=https://github.com/syn-os/syn-os
+After=network.target consciousness-unified.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=synos
+Group=synos
+WorkingDirectory=/opt/synos/services/educational-unified
+ExecStart=/usr/bin/python3 unified_educational_platform.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=educational-unified
+
+# Environment variables
+Environment=PYTHONPATH=/opt/synos/services/educational-unified
+Environment=PYTHONUNBUFFERED=1
+Environment=QT_QPA_PLATFORM=offscreen
+
+# Resource limits
+MemoryMax=3G
+CPUQuota=250%
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/synos/services/educational-unified/logs
+ReadWritePaths=/opt/synos/services/educational-unified/data
+ReadWritePaths=/tmp
+
+[Install]
+WantedBy=multi-user.target

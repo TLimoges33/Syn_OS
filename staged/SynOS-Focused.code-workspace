@@ -1,0 +1,109 @@
+{
+    "folders": [
+        {
+            "name": "🧠 AI Consciousness Engine",
+            "path": "./src/ai-consciousness"
+        },
+        {
+            "name": "🔧 Kernel Module",
+            "path": "./src/kernel-module"
+        },
+        {
+            "name": "📝 Scripts & Tools",
+            "path": "./scripts"
+        },
+        {
+            "name": "📚 Documentation",
+            "path": ".",
+            "name": "📚 Root Docs"
+        }
+    ],
+    "settings": {
+        // Aggressive file exclusions for performance
+        "files.exclude": {
+            "**/target": true,
+            "**/.venv": true,
+            "**/venv": true,
+            "**/venv_*": true,
+            "**/perf_env": true,
+            "**/performance_env": true,
+            "**/node_modules": true,
+            "**/.git/objects": true,
+            "**/.git/logs": true,
+            "**/__pycache__": true,
+            "**/logs": true,
+            "**/test_reports": true,
+            "**/results": true,
+            "**/archive": true,
+            "**/build": true,
+            "**/dist": true,
+            "**/.cache": true,
+            "**/tmp": true,
+            "**/temp": true,
+            "**/*.tmp": true,
+            "**/*.log": true,
+            "**/*.pyc": true
+        },
+        
+        "files.watcherExclude": {
+            "**/target/**": true,
+            "**/.venv/**": true,
+            "**/venv*/**": true,
+            "**/node_modules/**": true,
+            "**/.git/**": true,
+            "**/__pycache__/**": true,
+            "**/logs/**": true,
+            "**/test_reports/**": true,
+            "**/results/**": true,
+            "**/archive/**": true,
+            "**/build/**": true,
+            "**/dist/**": true,
+            "**/.cache/**": true,
+            "**/tmp/**": true,
+            "**/temp/**": true
+        },
+        
+        "search.exclude": {
+            "**/target": true,
+            "**/.venv": true,
+            "**/venv*": true,
+            "**/node_modules": true,
+            "**/__pycache__": true,
+            "**/logs": true,
+            "**/archive": true,
+            "**/build": true,
+            "**/dist": true
+        },
+        
+        // Memory optimizations
+        "workbench.editor.limit.enabled": true,
+        "workbench.editor.limit.value": 3,
+        "files.maxMemoryForLargeFilesMB": 256,
+        "search.maxResults": 1000,
+        
+        // Disable heavy features
+        "editor.quickSuggestions": {
+            "other": false,
+            "comments": false,
+            "strings": false
+        },
+        "editor.suggest.enabled": false,
+        "editor.minimap.enabled": false,
+        "editor.codeLens": false,
+        
+        // Language server limits
+        "python.analysis.typeCheckingMode": "off",
+        "rust-analyzer.checkOnSave.enable": false,
+        "C_Cpp.intelliSenseEngine": "disabled",
+        
+        // Disable telemetry
+        "telemetry.telemetryLevel": "off",
+        "workbench.enableExperiments": false
+    },
+    "extensions": {
+        "recommendations": [
+            "rust-lang.rust-analyzer",
+            "ms-python.python"
+        ]
+    }
+}

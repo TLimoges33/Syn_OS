@@ -1,0 +1,387 @@
+version: '3.8'
+
+# Syn_OS Unified Services Architecture
+# Consolidated microservices for optimal resource utilization and simplified deployment
+
+services:
+  # Database Services
+  postgres:
+    image: postgres:15
+    container_name: synos_postgres
+    environment:
+      POSTGRES_DB: synos
+      POSTGRES_USER: synos
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-synos_secure_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U synos"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: synos_redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-synos_redis_password}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.3'
+    restart: unless-stopped
+
+  # Message Bus
+  nats:
+    image: nats:2.10-alpine
+    container_name: synos_nats
+    command: 
+      - "--jetstream"
+      - "--store_dir=/data"
+      - "--max_memory_store=1GB"
+      - "--max_file_store=10GB"
+    volumes:
+      - nats_data:/data
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:8222/varz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+    restart: unless-stopped
+
+  # Vector Database
+  qdrant:
+    image: qdrant/qdrant:v1.7.0
+    container_name: synos_qdrant
+    volumes:
+      - qdrant_data:/qdrant/storage
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    environment:
+      QDRANT__SERVICE__HTTP_PORT: 6333
+      QDRANT__SERVICE__GRPC_PORT: 6334
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+    restart: unless-stopped
+
+  # Unified Consciousness Service (ai-bridge + dashboard)
+  consciousness-unified:
+    build:
+      context: ../services/consciousness-unified
+      dockerfile: Dockerfile
+    container_name: synos_consciousness_unified
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - LM_STUDIO_BASE_URL=http://host.docker.internal:1234
+      - POSTGRES_URL=postgresql://synos:${POSTGRES_PASSWORD:-synos_secure_password}@postgres:5432/synos
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-synos_redis_password}@redis:6379
+      - NATS_URL=nats://nats:4222
+    ports:
+      - "8080:8080"
+    volumes:
+      - consciousness_data:/app/data
+      - consciousness_logs:/app/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 3G
+          cpus: '2.0'
+    restart: unless-stopped
+
+  # Unified Educational Platform (platform + gui-framework)
+  educational-unified:
+    build:
+      context: ../services/educational-unified
+      dockerfile: Dockerfile
+    container_name: synos_educational_unified
+    environment:
+      - CONSCIOUSNESS_SERVICE_URL=http://consciousness-unified:8080
+      - FREECODECAMP_API_KEY=${FREECODECAMP_API_KEY}
+      - TRYHACKME_API_KEY=${TRYHACKME_API_KEY}
+      - HACKTHEBOX_API_KEY=${HACKTHEBOX_API_KEY}
+      - BOOTDEV_API_KEY=${BOOTDEV_API_KEY}
+      - POSTGRES_URL=postgresql://synos:${POSTGRES_PASSWORD:-synos_secure_password}@postgres:5432/synos
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-synos_redis_password}@redis:6379
+    ports:
+      - "8081:8081"
+    volumes:
+      - educational_data:/app/data
+      - educational_logs:/app/logs
+    depends_on:
+      consciousness-unified:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 3G
+          cpus: '2.5'
+    restart: unless-stopped
+
+  # Unified Context Intelligence (context-engine + news-intelligence)
+  context-intelligence-unified:
+    build:
+      context: ../services/context-intelligence-unified
+      dockerfile: Dockerfile
+    container_name: synos_context_intelligence_unified
+    environment:
+      - CONSCIOUSNESS_SERVICE_URL=http://consciousness-unified:8080
+      - POSTGRES_URL=postgresql://synos:${POSTGRES_PASSWORD:-synos_secure_password}@postgres:5432/synos
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-synos_redis_password}@redis:6379
+      - QDRANT_URL=http://qdrant:6333
+    ports:
+      - "8082:8082"
+    volumes:
+      - context_intelligence_data:/app/data
+      - context_intelligence_logs:/app/logs
+    depends_on:
+      consciousness-unified:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/health"]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '3.0'
+    restart: unless-stopped
+
+  # Unified CTF Platform (ctf-generator + ctf-platform)
+  ctf-unified:
+    build:
+      context: ../services/ctf-unified
+      dockerfile: Dockerfile
+    container_name: synos_ctf_unified
+    environment:
+      - CONSCIOUSNESS_SERVICE_URL=http://consciousness-unified:8080
+      - EDUCATIONAL_SERVICE_URL=http://educational-unified:8081
+      - POSTGRES_URL=postgresql://synos:${POSTGRES_PASSWORD:-synos_secure_password}@postgres:5432/synos
+    ports:
+      - "8083:8083"
+    volumes:
+      - ctf_data:/app/data
+      - ctf_logs:/app/logs
+    depends_on:
+      consciousness-unified:
+        condition: service_healthy
+      educational-unified:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/health"]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.5'
+    restart: unless-stopped
+
+  # Service Orchestrator (Go-based)
+  orchestrator:
+    build:
+      context: ../services/orchestrator
+      dockerfile: Dockerfile
+    container_name: synos_orchestrator
+    environment:
+      - POSTGRES_URL=postgresql://synos:${POSTGRES_PASSWORD:-synos_secure_password}@postgres:5432/synos
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-synos_redis_password}@redis:6379
+      - NATS_URL=nats://nats:4222
+      - CONSCIOUSNESS_SERVICE_URL=http://consciousness-unified:8080
+      - EDUCATIONAL_SERVICE_URL=http://educational-unified:8081
+      - CONTEXT_INTELLIGENCE_URL=http://context-intelligence-unified:8082
+      - CTF_SERVICE_URL=http://ctf-unified:8083
+    ports:
+      - "8090:8090"
+    volumes:
+      - orchestrator_logs:/app/logs
+    depends_on:
+      consciousness-unified:
+        condition: service_healthy
+      educational-unified:
+        condition: service_healthy
+      context-intelligence-unified:
+        condition: service_healthy
+      ctf-unified:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8090/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+    restart: unless-stopped
+
+  # Monitoring Stack
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    container_name: synos_prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ../config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:10.0.3
+    container_name: synos_grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-synos_admin}
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ../config/grafana/provisioning:/etc/grafana/provisioning
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.3'
+    restart: unless-stopped
+
+  # Reverse Proxy & Load Balancer
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: synos_nginx
+    volumes:
+      - ../config/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ../config/nginx/sites-enabled:/etc/nginx/sites-enabled
+      - nginx_logs:/var/log/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - consciousness-unified
+      - educational-unified
+      - context-intelligence-unified
+      - ctf-unified
+      - orchestrator
+      - grafana
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.2'
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  nats_data:
+    driver: local
+  qdrant_data:
+    driver: local
+  consciousness_data:
+    driver: local
+  consciousness_logs:
+    driver: local
+  educational_data:
+    driver: local
+  educational_logs:
+    driver: local
+  context_intelligence_data:
+    driver: local
+  context_intelligence_logs:
+    driver: local
+  ctf_data:
+    driver: local
+  ctf_logs:
+    driver: local
+  orchestrator_logs:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  nginx_logs:
+    driver: local
+
+networks:
+  default:
+    name: synos_network
+    driver: bridge

@@ -1,0 +1,73 @@
+# Threat Intelligence Dashboard Requirements
+# ==========================================
+
+# Core web framework
+aiohttp==3.9.1
+aiohttp-cors==0.7.0
+
+# Template engine
+Jinja2==3.1.2
+
+# Data visualization
+plotly==5.17.0
+pandas==2.1.4
+numpy==1.25.2
+
+# Network graph visualization
+networkx==3.2.1
+
+# Async HTTP client
+aiohttp-session==2.12.0
+
+# Message bus
+nats-py==2.6.0
+
+# Authentication and security
+PyJWT==2.8.0
+cryptography==41.0.8
+bcrypt==4.1.2
+
+# Input validation and security
+validators==0.22.0
+bleach==6.1.0
+
+# Data processing
+redis==5.0.1
+asyncio-redis==0.16.0
+
+# Logging and monitoring
+structlog==23.2.0
+
+# Configuration management
+pyyaml==6.0.1
+python-dotenv==1.0.0
+
+# Development and testing (optional)
+pytest==7.4.3
+pytest-asyncio==0.21.1
+aioresponses==0.7.4
+
+# Security scanning
+safety==2.3.5
+
+# Performance monitoring
+aiomonitor==0.6.0
+
+# WebSocket support (included in aiohttp)
+# Real-time updates handled by aiohttp WebSocket
+
+# Optional: Additional visualization libraries
+seaborn==0.13.0
+matplotlib==3.8.2
+
+# Data validation
+pydantic==2.5.1
+
+# Date/time handling
+python-dateutil==2.8.2
+
+# HTTP utilities
+yarl==1.9.4
+
+# Async utilities
+asyncio-mqtt==0.13.0

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syn_OS Threat Intelligence Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-bottom: 2px solid #e94560;
+            box-shadow: 0 2px 10px rgba(233, 69, 96, 0.3);
+        }
+        
+        .navbar-brand {
+            color: #e94560 !important;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .nav-link {
+            color: #ffffff !important;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #e94560 !important;
+        }
+        
+        .card {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 1px solid #e94560;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(233, 69, 96, 0.4);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #e94560, #f38ba8);
+            color: white;
+            border-radius: 10px 10px 0 0 !important;
+            font-weight: bold;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            border: 1px solid #00d4aa;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            border-color: #e94560;
+            box-shadow: 0 5px 20px rgba(233, 69, 96, 0.3);
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #00d4aa;
+        }
+        
+        .metric-label {
+            color: #b3b3b3;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .status-active {
+            background-color: #00d4aa;
+            box-shadow: 0 0 10px rgba(0, 212, 170, 0.5);
+        }
+        
+        .status-warning {
+            background-color: #ffb700;
+            box-shadow: 0 0 10px rgba(255, 183, 0, 0.5);
+        }
+        
+        .status-error {
+            background-color: #e94560;
+            box-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+        }
+        
+        .threat-item {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-left: 4px solid #e94560;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            transition: transform 0.2s ease;
+        }
+        
+        .threat-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 3px 15px rgba(233, 69, 96, 0.3);
+        }
+        
+        .threat-severity-high {
+            border-left-color: #e94560;
+        }
+        
+        .threat-severity-medium {
+            border-left-color: #ffb700;
+        }
+        
+        .threat-severity-low {
+            border-left-color: #00d4aa;
+        }
+        
+        .consciousness-indicator {
+            background: linear-gradient(135deg, #6a0dad, #9b59b6);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #e94560, #f38ba8);
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #d63384, #e94560);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+        }
+        
+        .progress {
+            background-color: #2a2a3e;
+            height: 8px;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(135deg, #00d4aa, #0dcaf0);
+        }
+        
+        .table-dark {
+            --bs-table-bg: #1a1a2e;
+            --bs-table-border-color: #e94560;
+        }
+        
+        .table-dark td, .table-dark th {
+            border-color: #2a2a3e;
+        }
+        
+        .alert-info {
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            border: 1px solid #0dcaf0;
+            color: #ffffff;
+        }
+        
+        .dashboard-title {
+            background: linear-gradient(135deg, #e94560, #f38ba8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .visualization-container {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #2a2a3e;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .real-time-indicator {
+            animation: pulse 2s infinite;
+            color: #00d4aa;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-shield-alt"></i> Syn_OS Threat Intelligence
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/"><i class="fas fa-tachometer-alt"></i> Overview</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/feeds"><i class="fas fa-rss"></i> Threat Feeds</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/intelligence"><i class="fas fa-brain"></i> Global Intelligence</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/correlations"><i class="fas fa-project-diagram"></i> Correlations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/hunting"><i class="fas fa-search"></i> Threat Hunting</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analytics"><i class="fas fa-chart-line"></i> Analytics</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <span class="nav-link">
+                            <i class="fas fa-user"></i> {{ user.username }}
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <h1 class="dashboard-title">
+            <i class="fas fa-shield-alt real-time-indicator"></i>
+            Comprehensive Threat Intelligence Dashboard
+        </h1>
+        
+        <!-- Status Alert -->
+        <div class="alert alert-info d-flex align-items-center mb-4" role="alert">
+            <i class="fas fa-info-circle me-2"></i>
+            <div>
+                <strong>Real-Time Status:</strong> Monitoring 
+                <span class="badge bg-success">{{ dashboard_data.threat_feeds.active_sources }}</span> threat intelligence sources with 
+                <span class="badge bg-primary">{{ dashboard_data.global_intelligence.active_nodes }}</span> global nodes active.
+                Consciousness integration: <strong>ACTIVE</strong>
+                <span class="consciousness-indicator">
+                    <i class="fas fa-brain"></i> Neural Enhanced
+                </span>
+            </div>
+        </div>
+
+        <!-- Key Metrics Row -->
+        <div class="row mb-4">
+            <div class="col-xl-2 col-lg-4 col-md-6 mb-3">
+                <div class="card metric-card">
+                    <div class="card-body text-center">
+                        <div class="metric-value">{{ dashboard_data.threat_feeds.active_sources }}</div>
+                        <div class="metric-label">Active Sources</div>
+                        <div class="mt-2">
+                            <span class="status-indicator status-active"></span>
+                            <small class="text-muted">Real-time feeds</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-2 col-lg-4 col-md-6 mb-3">
+                <div class="card metric-card">
+                    <div class="card-body text-center">
+                        <div class="metric-value">{{ "{:,}".format(dashboard_data.threat_feeds.items_processed) }}</div>
+                        <div class="metric-label">Threats Processed</div>
+                        <div class="mt-2">
+                            <span class="status-indicator status-active"></span>
+                            <small class="text-muted">Today</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-2 col-lg-4 col-md-6 mb-3">
+                <div class="card metric-card">
+                    <div class="card-body text-center">
+                        <div class="metric-value">{{ dashboard_data.global_intelligence.correlations_found }}</div>
+                        <div class="metric-label">Correlations Found</div>
+                        <div class="mt-2">
+                            <span class="status-indicator status-active"></span>
+                            <small class="text-muted">AI-powered</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-2 col-lg-4 col-md-6 mb-3">
+                <div class="card metric-card">
+                    <div class="card-body text-center">
+                        <div class="metric-value">{{ dashboard_data.global_intelligence.predictions_generated }}</div>
+                        <div class="metric-label">Predictions</div>
+                        <div class="mt-2">
+                            <span class="status-indicator status-warning"></span>
+                            <small class="text-muted">Consciousness</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-2 col-lg-4 col-md-6 mb-3">
+                <div class="card metric-card">
+                    <div class="card-body text-center">
+                        <div class="metric-value">{{ dashboard_data.global_intelligence.quantum_threats }}</div>
+                        <div class="metric-label">Quantum Threats</div>
+                        <div class="mt-2">
+                            {% if dashboard_data.global_intelligence.quantum_threats > 0 %}
+                            <span class="status-indicator status-error"></span>
+                            <small class="text-muted">Critical</small>
+                            {% else %}
+                            <span class="status-indicator status-active"></span>
+                            <small class="text-muted">Secured</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-xl-2 col-lg-4 col-md-6 mb-3">
+                <div class="card metric-card">
+                    <div class="card-body text-center">
+                        <div class="metric-value">{{ dashboard_data.global_intelligence.consciousness_enhanced }}</div>
+                        <div class="metric-label">Enhanced Detections</div>
+                        <div class="mt-2">
+                            <span class="status-indicator status-active"></span>
+                            <small class="text-muted">Neural AI</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Content -->
+        <div class="row">
+            <!-- Real-time Threat Feed -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-stream real-time-indicator"></i>
+                            Real-Time Threat Feed
+                        </h5>
+                        <span class="badge bg-success">Live</span>
+                    </div>
+                    <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                        <div id="real-time-threats">
+                            {% for threat in dashboard_data.threat_feeds.real_time_threats[:10] %}
+                            <div class="threat-item threat-severity-{{ threat.severity }}">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="mb-1">
+                                            <span class="badge bg-secondary">{{ threat.indicator_type.upper() }}</span>
+                                            {{ threat.indicator_value }}
+                                        </h6>
+                                        <p class="mb-1">
+                                            <strong>{{ threat.threat_type.replace('_', ' ').title() }}</strong>
+                                        </p>
+                                        <small class="text-muted">
+                                            Source: {{ threat.source }} | 
+                                            Confidence: {{ "%.1f"|format(threat.confidence * 100) }}%
+                                        </small>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="badge bg-{{ 'danger' if threat.severity == 'high' else 'warning' if threat.severity == 'medium' else 'success' }}">
+                                            {{ threat.severity.upper() }}
+                                        </span>
+                                        {% if threat.consciousness_score > 0.8 %}
+                                        <div class="consciousness-indicator mt-1">
+                                            <i class="fas fa-brain"></i> {{ "%.2f"|format(threat.consciousness_score) }}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="fas fa-clock"></i> {{ threat.timestamp }}
+                                    </small>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Threat Campaigns -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-globe"></i>
+                            Global Threat Campaigns
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% for campaign in dashboard_data.global_intelligence.global_campaigns %}
+                        <div class="card mb-3" style="background: linear-gradient(135deg, #2a2a3e, #1a1a2e);">
+                            <div class="card-body">
+                                <h6 class="card-title">
+                                    {{ campaign.name }}
+                                    {% if campaign.consciousness_verified %}
+                                    <span class="consciousness-indicator">
+                                        <i class="fas fa-brain"></i> Verified
+                                    </span>
+                                    {% endif %}
+                                </h6>
+                                <p class="card-text">
+                                    <strong>Threat Actors:</strong> {{ campaign.threat_actors|join(', ') }}<br>
+                                    <strong>Targets:</strong> {{ campaign.targets|join(', ') }}<br>
+                                    <strong>Indicators:</strong> {{ campaign.indicators_count }}
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">{{ campaign.start_date }}</small>
+                                    <div>
+                                        <span class="badge bg-info">{{ "%.1f"|format(campaign.confidence * 100) }}% Confidence</span>
+                                        <button class="btn btn-sm btn-outline-primary ms-2">
+                                            <i class="fas fa-info-circle"></i> Details
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visualization Row -->
+        <div class="row mb-4">
+            <div class="col-lg-6">
+                <div class="visualization-container">
+                    <h5 class="mb-3">
+                        <i class="fas fa-chart-line"></i>
+                        Threat Timeline (24 Hours)
+                    </h5>
+                    <div id="threat-timeline-chart"></div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="visualization-container">
+                    <h5 class="mb-3">
+                        <i class="fas fa-chart-pie"></i>
+                        Severity Distribution
+                    </h5>
+                    <div id="severity-chart"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-bolt"></i>
+                            Quick Actions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 mb-2">
+                                <button class="btn btn-primary w-100" onclick="window.location.href='/hunting'">
+                                    <i class="fas fa-search"></i> Threat Hunt
+                                </button>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <button class="btn btn-primary w-100" onclick="window.location.href='/intelligence'">
+                                    <i class="fas fa-brain"></i> Intelligence Analysis
+                                </button>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <button class="btn btn-primary w-100" onclick="window.location.href='/correlations'">
+                                    <i class="fas fa-project-diagram"></i> Correlation Analysis
+                                </button>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <button class="btn btn-primary w-100" onclick="window.location.href='/analytics'">
+                                    <i class="fas fa-chart-bar"></i> Advanced Analytics
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // WebSocket connection for real-time updates
+        let ws = null;
+        let authToken = localStorage.getItem('authToken');
+
+        function connectWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws`;
+            
+            ws = new WebSocket(wsUrl);
+            
+            ws.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                
+                if (data.type === 'threat_intelligence_update') {
+                    updateRealTimeThreats(data.data.real_time_threats);
+                    updateMetrics(data.data);
+                }
+            };
+            
+            ws.onclose = function() {
+                setTimeout(connectWebSocket, 5000); // Reconnect after 5 seconds
+            };
+        }
+
+        function updateRealTimeThreats(threats) {
+            const container = document.getElementById('real-time-threats');
+            if (!container || !threats) return;
+
+            container.innerHTML = '';
+            
+            threats.slice(0, 10).forEach(threat => {
+                const threatElement = document.createElement('div');
+                threatElement.className = `threat-item threat-severity-${threat.severity}`;
+                
+                const severityBadgeClass = threat.severity === 'high' ? 'danger' : 
+                                         threat.severity === 'medium' ? 'warning' : 'success';
+                
+                const consciousnessIndicator = threat.consciousness_score > 0.8 ? 
+                    `<div class="consciousness-indicator mt-1">
+                        <i class="fas fa-brain"></i> ${threat.consciousness_score.toFixed(2)}
+                     </div>` : '';
+                
+                threatElement.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="mb-1">
+                                <span class="badge bg-secondary">${threat.indicator_type.toUpperCase()}</span>
+                                ${threat.indicator_value}
+                            </h6>
+                            <p class="mb-1">
+                                <strong>${threat.threat_type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</strong>
+                            </p>
+                            <small class="text-muted">
+                                Source: ${threat.source} | 
+                                Confidence: ${(threat.confidence * 100).toFixed(1)}%
+                            </small>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-${severityBadgeClass}">
+                                ${threat.severity.toUpperCase()}
+                            </span>
+                            ${consciousnessIndicator}
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            <i class="fas fa-clock"></i> ${threat.timestamp}
+                        </small>
+                    </div>
+                `;
+                
+                container.appendChild(threatElement);
+            });
+        }
+
+        function updateMetrics(data) {
+            // Update metric values if elements exist
+            const metricElements = {
+                'active_sources': data.threat_feeds?.active_sources,
+                'items_processed': data.threat_feeds?.items_processed,
+                'correlations_found': data.global_intelligence?.correlations_found,
+                'predictions_generated': data.global_intelligence?.predictions_generated,
+                'quantum_threats': data.global_intelligence?.quantum_threats,
+                'consciousness_enhanced': data.global_intelligence?.consciousness_enhanced
+            };
+
+            Object.keys(metricElements).forEach(key => {
+                const elements = document.querySelectorAll(`[data-metric="${key}"]`);
+                elements.forEach(element => {
+                    if (metricElements[key] !== undefined) {
+                        element.textContent = metricElements[key].toLocaleString();
+                    }
+                });
+            });
+        }
+
+        function logout() {
+            localStorage.removeItem('authToken');
+            window.location.href = '/login';
+        }
+
+        // Initialize visualizations
+        function initializeCharts() {
+            // Initialize threat timeline chart
+            {% if dashboard_data.visualizations.threat_timeline %}
+            const timelineData = {{ dashboard_data.visualizations.threat_timeline|safe }};
+            Plotly.newPlot('threat-timeline-chart', timelineData.data, timelineData.layout, {responsive: true});
+            {% endif %}
+
+            // Initialize severity chart
+            {% if dashboard_data.visualizations.severity_pie_chart %}
+            const severityData = {{ dashboard_data.visualizations.severity_pie_chart|safe }};
+            Plotly.newPlot('severity-chart', severityData.data, severityData.layout, {responsive: true});
+            {% endif %}
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            connectWebSocket();
+            initializeCharts();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "SynapticOS - System Overview",
+    "description": "Comprehensive system monitoring for SynapticOS",
+    "tags": [
+      "synapticos",
+      "overview"
+    ],
+    "timezone": "browser",
+    "refresh": "5s",
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "panels": [
+      {
+        "id": 1,
+        "title": "Service Health Status",
+        "type": "stat",
+        "gridPos": {
+          "h": 4,
+          "w": 6,
+          "x": 0,
+          "y": 0
+        },
+        "targets": [
+          {
+            "expr": "up{job=~\"synapticos.*\"}",
+            "legendFormat": "{{job}}"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "text": "DOWN",
+                    "color": "red"
+                  }
+                }
+              },
+              {
+                "options": {
+                  "1": {
+                    "text": "UP",
+                    "color": "green"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": 2,
+        "title": "CPU Usage",
+        "type": "timeseries",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 4
+        },
+        "targets": [
+          {
+            "expr": "rate(container_cpu_usage_seconds_total{namespace=\"synapticos-prod\"}[5m]) * 100",
+            "legendFormat": "{{pod}}"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Memory Usage",
+        "type": "timeseries",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 4
+        },
+        "targets": [
+          {
+            "expr": "container_memory_usage_bytes{namespace=\"synapticos-prod\"} / 1024 / 1024",
+            "legendFormat": "{{pod}} MB"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "NATS Messages/sec",
+        "type": "timeseries",
+        "gridPos": {
+          "h": 6,
+          "w": 8,
+          "x": 0,
+          "y": 12
+        },
+        "targets": [
+          {
+            "expr": "rate(nats_core_in_msgs[5m])",
+            "legendFormat": "Incoming"
+          },
+          {
+            "expr": "rate(nats_core_out_msgs[5m])",
+            "legendFormat": "Outgoing"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Network I/O",
+        "type": "timeseries",
+        "gridPos": {
+          "h": 6,
+          "w": 8,
+          "x": 8,
+          "y": 12
+        },
+        "targets": [
+          {
+            "expr": "rate(container_network_receive_bytes_total{namespace=\"synapticos-prod\"}[5m])",
+            "legendFormat": "RX {{pod}}"
+          },
+          {
+            "expr": "rate(container_network_transmit_bytes_total{namespace=\"synapticos-prod\"}[5m])",
+            "legendFormat": "TX {{pod}}"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Pod Restart Count",
+        "type": "stat",
+        "gridPos": {
+          "h": 6,
+          "w": 8,
+          "x": 16,
+          "y": 12
+        },
+        "targets": [
+          {
+            "expr": "kube_pod_container_status_restarts_total{namespace=\"synapticos-prod\"}",
+            "legendFormat": "{{pod}}"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "kilo-code": {
+    "version": "4.60.0",
+    "engine": "claude-code",
+    "api": {
+      "provider": "anthropic",
+      "endpoint": "local",
+      "model": "claude-sonnet-4-20250514",
+      "use_local_claude_code": true,
+      "bypass_kilo_api": true
+    },
+    "settings": {
+      "auto_complete": true,
+      "real_time_suggestions": true,
+      "code_analysis": true,
+      "security_scanning": true,
+      "performance_optimization": true
+    },
+    "integration": {
+      "claude_code_server": {
+        "enabled": true,
+        "host": "localhost",
+        "use_existing_session": true
+      },
+      "mcp_servers": {
+        "use_project_config": true,
+        "config_path": ".kilocode/mcp.json"
+      }
+    },
+    "cost_control": {
+      "use_external_apis": false,
+      "token_tracking": false,
+      "billing_bypass": true,
+      "free_mode": true
+    }
+  }
+}

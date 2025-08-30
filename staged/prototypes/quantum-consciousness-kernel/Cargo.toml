@@ -1,0 +1,36 @@
+[package]
+name = "syn-kernel"
+version = "0.4.0"
+edition = "2021"
+license = "MIT"
+authors = ["GenAI OS Team"]
+
+[dependencies]
+# Core kernel dependencies
+bootloader = "0.9"
+volatile = "0.2"
+spin = "0.5"
+x86_64 = "0.14"
+pic8259 = "0.10"
+pc-keyboard = "0.7"
+linked_list_allocator = "0.10"
+lazy_static = { version = "1.5", features = ["spin_no_std"] }
+
+# Serde for AI interface (no_std compatible)
+serde = { version = "1.0", default-features = false, features = ["alloc", "derive"] }
+
+# Additional dependencies for no_std environment
+uart_16550 = "0.2"
+
+[features]
+default = ["ai-integration"]
+ai-integration = []
+security-enhanced = []
+debug-mode = []
+
+[[bin]]
+name = "kernel"
+path = "src/main.rs"
+
+[build-dependencies]
+bootimage = "0.9"

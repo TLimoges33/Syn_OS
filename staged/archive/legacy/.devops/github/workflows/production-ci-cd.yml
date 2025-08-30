@@ -1,0 +1,573 @@
+name: Production CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, master, production]
+    tags: ['v*']
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '18'
+  GO_VERSION: '1.21'
+  RUST_VERSION: 'stable'
+
+jobs:
+  # Security and Quality Gates
+  security-scan:
+    name: Security & Quality Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install security tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install bandit safety semgrep ruff mypy
+          pip install -r requirements-security.txt
+
+      - name: Run Bandit security scan
+        run: |
+          bandit -r src/ applications/ services/ -f json -o bandit-report.json || true
+          bandit -r src/ applications/ services/ --severity-level medium
+
+      - name: Run Safety dependency check
+        run: |
+          safety check --json --output safety-report.json || true
+          safety check
+
+      - name: Run Semgrep security scan
+        run: |
+          semgrep --config=auto --json --output=semgrep-report.json src/ applications/ services/ || true
+
+      - name: Run Ruff linting
+        run: |
+          ruff check src/ applications/ --output-format=json --output-file=ruff-report.json || true
+          ruff check src/ applications/
+
+      - name: Run MyPy type checking
+        run: |
+          mypy src/consciousness_v2/ src/security/ src/ai_integration/ --ignore-missing-imports
+
+      - name: Upload security reports
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: security-reports
+          path: |
+            bandit-report.json
+            safety-report.json
+            semgrep-report.json
+            ruff-report.json
+
+  # Unit Tests
+  test-python:
+    name: Python Unit Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        test-group: [consciousness, security, applications]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov pytest-asyncio
+          pip install -r requirements-testing.txt
+          pip install -r requirements-security.txt
+          pip install -r requirements-ai-integration.txt
+
+      - name: Run consciousness tests
+        if: matrix.test-group == 'consciousness'
+        run: |
+          pytest src/consciousness_v2/test_*.py -v --cov=src/consciousness_v2 --cov-report=xml --cov-report=html
+
+      - name: Run security tests
+        if: matrix.test-group == 'security'
+        run: |
+          pytest tests/security_benchmarks/ tests/integration/auth_*.py -v --cov=src/security --cov-report=xml --cov-report=html
+
+      - name: Run application tests
+        if: matrix.test-group == 'applications'
+        run: |
+          pytest test_security_dashboard.py test_advanced_security_orchestrator.py -v --cov=applications --cov-report=xml --cov-report=html
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-results-${{ matrix.test-group }}
+          path: |
+            htmlcov/
+            coverage.xml
+            pytest-report.xml
+
+  # Rust Tests
+  test-rust:
+    name: Rust Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          components: rustfmt, clippy
+
+      - name: Cache Rust dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Run Rust tests
+        run: |
+          cargo test --all-features --workspace
+
+      - name: Run Clippy
+        run: |
+          cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Check Rust formatting
+        run: |
+          cargo fmt --all -- --check
+
+  # Go Tests
+  test-go:
+    name: Go Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Cache Go dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Run Go tests
+        working-directory: services/orchestrator
+        run: |
+          go test -v -race -coverprofile=coverage.out ./...
+          go tool cover -html=coverage.out -o coverage.html
+
+      - name: Upload Go test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: go-test-results
+          path: services/orchestrator/coverage.html
+
+  # Integration Tests
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: [test-python, test-rust, test-go]
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: syn_os_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+      nats:
+        image: nats:2.10-alpine
+        ports:
+          - 4222:4222
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-testing.txt
+          pip install -r requirements-security.txt
+          pip install -r requirements-ai-integration.txt
+
+      - name: Wait for services
+        run: |
+          sleep 10
+          python -c "import psycopg2; psycopg2.connect('postgresql://postgres:test_password@localhost:5432/syn_os_test').close()"
+          python -c "import redis; redis.Redis(host='localhost', port=6379).ping()"
+
+      - name: Run A+ comprehensive integration tests
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          POSTGRES_DB: syn_os_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: test_password
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+          NATS_URL: nats://localhost:4222
+          JWT_SECRET_KEY: test_jwt_secret_key_for_ci
+          ENCRYPTION_KEY: test_encryption_key_32_bytes_long
+        run: |
+          python tests/integration/a_plus_comprehensive_test.py
+          python tests/performance_validation/quick_a_plus_test.py
+
+      - name: Upload integration test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: integration-test-results
+          path: |
+            results/integration_tests/
+            results/performance_reports/
+
+  # Build Docker Images
+  build-images:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+    needs: [security-scan, integration-tests]
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        service: 
+          - orchestrator
+          - consciousness
+          - security-dashboard
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.service }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build orchestrator image
+        if: matrix.service == 'orchestrator'
+        uses: docker/build-push-action@v5
+        with:
+          context: services/orchestrator
+          file: services/orchestrator/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build consciousness image
+        if: matrix.service == 'consciousness'
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile.consciousness
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build security-dashboard image
+        if: matrix.service == 'security-dashboard'
+        uses: docker/build-push-action@v5
+        with:
+          context: applications/security_dashboard
+          file: applications/security_dashboard/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # Staging Deployment
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [build-images]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.environment == 'staging'
+    environment: staging
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.28.0'
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'v3.13.0'
+
+      - name: Configure staging cluster access
+        run: |
+          echo "${{ secrets.STAGING_KUBECONFIG }}" | base64 -d > ~/.kube/config
+          kubectl config current-context
+
+      - name: Deploy to staging with Helm
+        run: |
+          helm upgrade --install syn-os-staging ./deploy/helm/syn-os \
+            --namespace syn-os-staging \
+            --create-namespace \
+            --set-string image.tag=${{ github.sha }} \
+            --set-string environment=staging \
+            --set-string database.host=${{ secrets.STAGING_DB_HOST }} \
+            --set-string database.name=${{ secrets.STAGING_DB_NAME }} \
+            --set-string redis.host=${{ secrets.STAGING_REDIS_HOST }} \
+            --wait --timeout=600s
+
+      - name: Run staging health checks
+        run: |
+          kubectl wait --for=condition=ready pod -l app=syn-os-orchestrator -n syn-os-staging --timeout=300s
+          kubectl wait --for=condition=ready pod -l app=syn-os-consciousness -n syn-os-staging --timeout=300s
+          kubectl wait --for=condition=ready pod -l app=syn-os-security-dashboard -n syn-os-staging --timeout=300s
+
+      - name: Run staging smoke tests
+        run: |
+          STAGING_URL=$(kubectl get ingress syn-os-staging -n syn-os-staging -o jsonpath='{.spec.rules[0].host}')
+          python tests/integration/staging_smoke_tests.py --url "https://$STAGING_URL"
+
+  # Production Deployment
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [deploy-staging]
+    if: startsWith(github.ref, 'refs/tags/v') || github.event.inputs.environment == 'production'
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.28.0'
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'v3.13.0'
+
+      - name: Configure production cluster access
+        run: |
+          echo "${{ secrets.PRODUCTION_KUBECONFIG }}" | base64 -d > ~/.kube/config
+          kubectl config current-context
+
+      - name: Production deployment with blue-green strategy
+        run: |
+          # Deploy green environment
+          helm upgrade --install syn-os-green ./deploy/helm/syn-os \
+            --namespace syn-os-production \
+            --create-namespace \
+            --set-string image.tag=${{ github.sha }} \
+            --set-string environment=production \
+            --set-string deployment.color=green \
+            --set-string database.host=${{ secrets.PRODUCTION_DB_HOST }} \
+            --set-string database.name=${{ secrets.PRODUCTION_DB_NAME }} \
+            --set-string redis.host=${{ secrets.PRODUCTION_REDIS_HOST }} \
+            --wait --timeout=600s
+
+      - name: Run production health checks
+        run: |
+          kubectl wait --for=condition=ready pod -l app=syn-os-orchestrator,color=green -n syn-os-production --timeout=300s
+          kubectl wait --for=condition=ready pod -l app=syn-os-consciousness,color=green -n syn-os-production --timeout=300s
+          kubectl wait --for=condition=ready pod -l app=syn-os-security-dashboard,color=green -n syn-os-production --timeout=300s
+
+      - name: Run production validation tests
+        run: |
+          python tests/integration/production_validation_tests.py --environment=green
+
+      - name: Switch traffic to green (blue-green deployment)
+        run: |
+          # Switch ingress traffic to green deployment
+          kubectl patch ingress syn-os-production -n syn-os-production \
+            --type='json' \
+            -p='[{"op": "replace", "path": "/spec/rules/0/http/paths/0/backend/service/name", "value": "syn-os-green"}]'
+
+      - name: Monitor production deployment
+        run: |
+          # Monitor for 5 minutes
+          sleep 300
+          python scripts/monitor_production_health.py --duration=300
+
+      - name: Cleanup old blue deployment
+        run: |
+          helm uninstall syn-os-blue --namespace syn-os-production || true
+
+  # Security and Compliance
+  security-compliance:
+    name: Security & Compliance Check
+    runs-on: ubuntu-latest
+    needs: [build-images]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run container security scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-orchestrator:${{ github.sha }}
+          format: 'sarif'
+          output: 'trivy-orchestrator.sarif'
+
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-orchestrator.sarif'
+
+      - name: Run compliance validation
+        run: |
+          python scripts/validate_compliance.py --environment=production
+
+  # Performance Benchmarks
+  performance-benchmarks:
+    name: Performance Benchmarks
+    runs-on: ubuntu-latest
+    needs: [deploy-staging]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements-testing.txt
+
+      - name: Run A+ performance benchmarks
+        env:
+          STAGING_URL: ${{ secrets.STAGING_URL }}
+          BENCHMARK_API_KEY: ${{ secrets.BENCHMARK_API_KEY }}
+        run: |
+          python tests/performance_validation/quick_a_plus_test.py --environment=staging
+          python tests/performance_validation/load_test_auth.py --target-ops=9800
+
+      - name: Upload performance results
+        uses: actions/upload-artifact@v3
+        with:
+          name: performance-benchmarks
+          path: |
+            results/performance_reports/
+            results/benchmarks/
+
+  # Notification and Reporting
+  notify-completion:
+    name: Notify Deployment Status
+    runs-on: ubuntu-latest
+    needs: [deploy-production, security-compliance, performance-benchmarks]
+    if: always()
+    steps:
+      - name: Notify successful deployment
+        if: needs.deploy-production.result == 'success'
+        run: |
+          echo "✅ Production deployment successful!"
+          echo "Version: ${{ github.sha }}"
+          echo "Environment: Production"
+          # Add Slack/Discord/Email notification here
+
+      - name: Notify deployment failure
+        if: needs.deploy-production.result == 'failure'
+        run: |
+          echo "❌ Production deployment failed!"
+          echo "Version: ${{ github.sha }}"
+          # Add alert notification here
+          exit 1

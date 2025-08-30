@@ -1,0 +1,121 @@
+autoscaling:
+  enabled: true
+  maxReplicas: 10
+  minReplicas: 2
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+global:
+  imagePullSecrets: []
+  imageRegistry: docker.io
+  storageClass: ''
+image:
+  pullPolicy: IfNotPresent
+  registry: docker.io
+  repository: synapticos
+  tag: 1.0.0
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  className: nginx
+  enabled: true
+  hosts:
+  - host: synapticos.io
+    paths:
+    - path: /
+      pathType: Prefix
+      service: orchestrator
+  - host: dashboard.synapticos.io
+    paths:
+    - path: /
+      pathType: Prefix
+      service: security-dashboard
+  tls:
+  - hosts:
+    - synapticos.io
+    - dashboard.synapticos.io
+    secretName: synapticos-tls
+monitoring:
+  grafana:
+    dashboards:
+      enabled: true
+    enabled: true
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      namespace: monitoring
+persistence:
+  accessMode: ReadWriteOnce
+  enabled: true
+  size: 10Gi
+  storageClass: ''
+postgresql:
+  auth:
+    database: syn_os
+    password: syn_os_password
+    postgresPassword: synapticos-postgres-password
+    username: syn_os_user
+  enabled: true
+  primary:
+    persistence:
+      enabled: true
+      size: 20Gi
+redis:
+  auth:
+    enabled: true
+    password: synapticos-redis-password
+  enabled: true
+  master:
+    persistence:
+      enabled: true
+      size: 10Gi
+replicaCount:
+  consciousness: 3
+  nats: 3
+  orchestrator: 2
+  securityDashboard: 2
+resources:
+  consciousness:
+    limits:
+      cpu: 2000m
+      memory: 4Gi
+    requests:
+      cpu: 1000m
+      memory: 2Gi
+  nats:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+  orchestrator:
+    limits:
+      cpu: 2000m
+      memory: 2Gi
+    requests:
+      cpu: 1000m
+      memory: 1Gi
+  securityDashboard:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+security:
+  networkPolicy:
+    enabled: true
+  podSecurityPolicy:
+    enabled: true
+  rbac:
+    create: true
+service:
+  ports:
+    consciousness: 8081
+    nats: 4222
+    natsMonitoring: 8222
+    orchestrator: 8080
+    securityDashboard: 8082
+  type: ClusterIP

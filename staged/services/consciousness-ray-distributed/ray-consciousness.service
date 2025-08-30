@@ -1,0 +1,50 @@
+[Unit]
+Description=Syn_OS Ray Distributed Consciousness Processing Service
+Documentation=https://docs.syn-os.org/consciousness/ray-distributed
+After=network.target docker.service consciousness-ai-bridge.service
+Requires=docker.service
+Wants=consciousness-ai-bridge.service
+
+[Service]
+Type=exec
+User=syn-os
+Group=syn-os
+WorkingDirectory=/opt/syn_os/services/consciousness-ray-distributed
+
+# Environment configuration
+EnvironmentFile=/opt/syn_os/services/consciousness-ray-distributed/ray-consciousness.env
+
+# Start Ray consciousness cluster
+ExecStartPre=/usr/bin/docker-compose -f /opt/syn_os/docker/docker-compose.ray.yml pull
+ExecStart=/usr/bin/docker-compose -f /opt/syn_os/docker/docker-compose.ray.yml up consciousness-ray-distributed
+ExecStop=/usr/bin/docker-compose -f /opt/syn_os/docker/docker-compose.ray.yml down
+ExecReload=/usr/bin/docker-compose -f /opt/syn_os/docker/docker-compose.ray.yml restart consciousness-ray-distributed
+
+# Service management
+Restart=always
+RestartSec=10
+TimeoutStartSec=60
+TimeoutStopSec=30
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=4096
+MemoryMax=4G
+CPUQuota=200%
+
+# Security
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/opt/syn_os/data/consciousness
+ReadOnlyPaths=/opt/syn_os/config
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=syn-os-ray-consciousness
+
+[Install]
+WantedBy=multi-user.target
+Also=consciousness-ai-bridge.service

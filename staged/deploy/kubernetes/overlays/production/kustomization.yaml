@@ -1,0 +1,68 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: syn-os-production
+  annotations:
+    description: "Production environment overlay for Syn_OS"
+
+namespace: synos-core
+
+resources:
+  - ../base
+
+namePrefix: prod-
+
+commonLabels:
+  environment: production
+  variant: prod
+
+images:
+  - name: synos/kernel
+    newTag: "1.0.0"
+  - name: synos/security-manager
+    newTag: "1.0.0"
+
+configMapGenerator:
+  - name: syn-os-prod-config
+    behavior: merge
+    literals:
+      - LOG_LEVEL=warn
+      - ENVIRONMENT=production
+      - PERFORMANCE_MODE=optimized
+
+secretGenerator:
+  - name: syn-os-prod-secrets
+    behavior: replace
+    files:
+      - api-key=secrets/api-key.txt
+      - jwt-secret=secrets/jwt-secret.txt
+
+patches:
+  - target:
+      kind: Deployment
+      name: syn-os-core
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 3
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: "2Gi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: "4Gi"
+
+  - target:
+      kind: Deployment
+      name: syn-os-security-manager
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 3
+
+replicas:
+  - name: syn-os-core
+    count: 3
+  - name: syn-os-security-manager
+    count: 3
