@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>netron</name>
+  <full_name>lutzroeder/netron</full_name>
+  <description>Visualizer for neural network, deep learning and machine learning models</description>
+  <url>https://github.com/lutzroeder/netron</url>
+  <clone_url>https://github.com/lutzroeder/netron.git</clone_url>
+  <ssh_url>git@github.com:lutzroeder/netron.git</ssh_url>
+  <metadata>
+    <language>JavaScript</language>
+    <stars>31259</stars>
+    <forks>2976</forks>
+    <watchers>31259</watchers>
+    <size>64808</size>
+    <default_branch>main</default_branch>
+    <created_at>2010-12-26T12:53:43Z</created_at>
+    <updated_at>2025-08-26T21:34:30Z</updated_at>
+    <pushed_at>2025-08-26T12:35:45Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>ai</topic>
+    <topic>coreml</topic>
+    <topic>deep-learning</topic>
+    <topic>deeplearning</topic>
+    <topic>keras</topic>
+    <topic>machine-learning</topic>
+    <topic>machinelearning</topic>
+    <topic>ml</topic>
+    <topic>neural-network</topic>
+    <topic>numpy</topic>
+    <topic>onnx</topic>
+    <topic>pytorch</topic>
+    <topic>safetensors</topic>
+    <topic>tensorflow</topic>
+    <topic>tensorflow-lite</topic>
+    <topic>visualizer</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>lutzroeder</login>
+    <type>User</type>
+    <url>https://github.com/lutzroeder</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 31259 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

@@ -1,0 +1,8 @@
+[Unit]
+Description=SynapticOS Consciousness Stack
+Requires=synapticos-consciousness-bridge.service
+Wants=synapticos-educational-platform.service synapticos-ctf-platform.service synapticos-news-intelligence.service synapticos-context-engine.service
+After=network.target
+
+[Install]
+WantedBy=multi-user.target

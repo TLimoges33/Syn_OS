@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>OverTheWire-boobiesbot</name>
+  <full_name>OverTheWireOrg/OverTheWire-boobiesbot</full_name>
+  <description>OverTheWire #social BoobiesBot</description>
+  <url>https://github.com/OverTheWireOrg/OverTheWire-boobiesbot</url>
+  <clone_url>https://github.com/OverTheWireOrg/OverTheWire-boobiesbot.git</clone_url>
+  <ssh_url>git@github.com:OverTheWireOrg/OverTheWire-boobiesbot.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>9</stars>
+    <forks>12</forks>
+    <watchers>9</watchers>
+    <size>49</size>
+    <default_branch>master</default_branch>
+    <created_at>2012-12-22T22:19:15Z</created_at>
+    <updated_at>2025-05-18T01:26:52Z</updated_at>
+    <pushed_at>2016-11-10T08:17:33Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cloud_devops</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <owner>
+    <login>OverTheWireOrg</login>
+    <type>Organization</type>
+    <url>https://github.com/OverTheWireOrg</url>
+  </owner>
+  <development_potential>
+    <level>medium</level>
+    <score>4</score>
+    <assessment>Good potential for integration. Moderate community interest with 9 stars. Suitable for selective implementation.</assessment>
+  </development_potential>
+</repository>

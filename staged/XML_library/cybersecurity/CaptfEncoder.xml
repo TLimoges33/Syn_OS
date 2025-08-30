@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>CaptfEncoder</name>
+  <full_name>guyoung/CaptfEncoder</full_name>
+  <description>Captfencoder is opensource a rapid cross platform network security tool suite, providing network security related code conversion, classical cryptography, cryptography, asymmetric encryption, miscellaneous tools, and aggregating all kinds of online tools.</description>
+  <url>https://github.com/guyoung/CaptfEncoder</url>
+  <clone_url>https://github.com/guyoung/CaptfEncoder.git</clone_url>
+  <ssh_url>git@github.com:guyoung/CaptfEncoder.git</ssh_url>
+  <metadata>
+    <language>JavaScript</language>
+    <stars>1265</stars>
+    <forks>192</forks>
+    <watchers>1265</watchers>
+    <size>25328</size>
+    <default_branch>master</default_branch>
+    <created_at>2018-05-21T04:36:30Z</created_at>
+    <updated_at>2025-08-25T07:56:13Z</updated_at>
+    <pushed_at>2023-10-16T02:59:08Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cipher</topic>
+    <topic>crypto</topic>
+    <topic>ctf</topic>
+    <topic>cybersecurity</topic>
+    <topic>decode</topic>
+    <topic>decoder</topic>
+    <topic>electron</topic>
+    <topic>encode</topic>
+    <topic>encoder</topic>
+    <topic>fltk</topic>
+    <topic>hacking-tool</topic>
+    <topic>hash</topic>
+    <topic>misc</topic>
+    <topic>network-security</topic>
+    <topic>opensource</topic>
+    <topic>rust</topic>
+    <topic>security</topic>
+    <topic>security-tools</topic>
+    <topic>toolkit</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>guyoung</login>
+    <type>User</type>
+    <url>https://github.com/guyoung</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 1265 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

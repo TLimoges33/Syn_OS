@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Mobile-Security-Framework-MobSF</name>
+  <full_name>MobSF/Mobile-Security-Framework-MobSF</full_name>
+  <description>Mobile Security Framework (MobSF) is an automated, all-in-one mobile application (Android/iOS/Windows) pen-testing, malware analysis and security assessment framework capable of performing static and dynamic analysis.</description>
+  <url>https://github.com/MobSF/Mobile-Security-Framework-MobSF</url>
+  <clone_url>https://github.com/MobSF/Mobile-Security-Framework-MobSF.git</clone_url>
+  <ssh_url>git@github.com:MobSF/Mobile-Security-Framework-MobSF.git</ssh_url>
+  <metadata>
+    <language>JavaScript</language>
+    <stars>19316</stars>
+    <forks>3462</forks>
+    <watchers>19316</watchers>
+    <size>1525454</size>
+    <default_branch>master</default_branch>
+    <created_at>2015-01-31T04:36:01Z</created_at>
+    <updated_at>2025-08-26T22:29:12Z</updated_at>
+    <pushed_at>2025-07-17T16:14:44Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>mobile_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>android-security</topic>
+    <topic>api-testing</topic>
+    <topic>apk</topic>
+    <topic>cwe</topic>
+    <topic>devsecops</topic>
+    <topic>dynamic-analysis</topic>
+    <topic>ios-security</topic>
+    <topic>malware-analysis</topic>
+    <topic>mastg</topic>
+    <topic>masvs</topic>
+    <topic>mobile-security</topic>
+    <topic>mobsf</topic>
+    <topic>mstg</topic>
+    <topic>owasp</topic>
+    <topic>rest</topic>
+    <topic>runtime-security</topic>
+    <topic>static-analysis</topic>
+    <topic>web-security</topic>
+    <topic>windows-mobile-security</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>MobSF</login>
+    <type>Organization</type>
+    <url>https://github.com/MobSF</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 19316 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

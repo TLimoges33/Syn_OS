@@ -1,0 +1,25 @@
+Architectures: amd64
+Codename: lory
+Components: main contrib non-free
+Date: Wed, 02 Jul 2025 15:23:38 +0000
+Description: Last updated: Wed, 02 Jul 2025 15:23:38 +0000
+Label: Debian
+Origin: Debian
+Suite: lory
+Version: "6.4"
+MD5Sum:
+ 52812cdd2ac92ce0e5529d0c8e21489a              223 Release
+ 3ab9abfca64890912a234461317fb5b3           125158 main/binary-amd64/Packages
+ 89265287cd584f8e8e187862c3a6b0d2            44043 main/binary-amd64/Packages.gz
+SHA1:
+ 288b9332be743b79f98fb8dea30c74a9833a0873              223 Release
+ badf5d31a0b56bf146bf944ae3ee358dd99cedc9           125158 main/binary-amd64/Packages
+ 91ad61a0b1495e89d7a244367c8981747a43179d            44043 main/binary-amd64/Packages.gz
+SHA256:
+ 847d1af2544a8a28f57acd1d1550e6710be1f2fefb9c01edf0f0659e5d734d14              223 Release
+ 2e2e9b7da5c9d548ae49112ce4cafbcd212504596bb5df4560ff894c31473c1d           125158 main/binary-amd64/Packages
+ 254964e0a4424b665d84de1c5a31a7c48e2a3a5d30e5f4d3999c47a722bcc473            44043 main/binary-amd64/Packages.gz
+SHA512:
+ 471caa5821f2bab6b7c07b8e3d3178521ed949644e1ea80196dfb68abad7337c27480ba2b3573ec4e55a31f37a7da30a0ae08392f7866a676f76c02064196559              223 Release
+ 7e9bf9366904fc9301c5bbd92cefa7bd679760ef24034787737bee3b4b220553c09375e40e9a9aa806b3c71492d2005cd50045fc80ff130a75cf9178996bb7b4           125158 main/binary-amd64/Packages
+ fd45e39f8b5181dd771a987e79b2c960ed0bffeff60bcdbb53f512ab18330235b988bd14d73e668f32f126730287991ae9a3c4df3c2b2ac0b866533aaace1d70            44043 main/binary-amd64/Packages.gz

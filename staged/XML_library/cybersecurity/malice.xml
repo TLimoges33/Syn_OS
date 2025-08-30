@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>malice</name>
+  <full_name>maliceio/malice</full_name>
+  <description>VirusTotal Wanna Be - Now with 100% more Hipster</description>
+  <url>https://github.com/maliceio/malice</url>
+  <clone_url>https://github.com/maliceio/malice.git</clone_url>
+  <ssh_url>git@github.com:maliceio/malice.git</ssh_url>
+  <metadata>
+    <language>Go</language>
+    <stars>1694</stars>
+    <forks>277</forks>
+    <watchers>1694</watchers>
+    <size>33558</size>
+    <default_branch>master</default_branch>
+    <created_at>2015-12-20T23:12:43Z</created_at>
+    <updated_at>2025-08-26T17:49:28Z</updated_at>
+    <pushed_at>2023-04-03T23:03:21Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>antivirus</topic>
+    <topic>cloud</topic>
+    <topic>cybersecurity</topic>
+    <topic>dfir</topic>
+    <topic>docker</topic>
+    <topic>elasticsearch</topic>
+    <topic>golang</topic>
+    <topic>infosec</topic>
+    <topic>malice</topic>
+    <topic>malware</topic>
+    <topic>malware-analysis</topic>
+    <topic>malware-research</topic>
+    <topic>virustotal</topic>
+  </topics>
+  <license>
+    <name>Apache License 2.0</name>
+    <spdx_id>Apache-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>maliceio</login>
+    <type>Organization</type>
+    <url>https://github.com/maliceio</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 1694 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>gameboy.live</name>
+  <full_name>HFO4/gameboy.live</full_name>
+  <description>🕹️ A basic gameboy emulator with terminal &quot;Cloud Gaming&quot; support</description>
+  <url>https://github.com/HFO4/gameboy.live</url>
+  <clone_url>https://github.com/HFO4/gameboy.live.git</clone_url>
+  <ssh_url>git@github.com:HFO4/gameboy.live.git</ssh_url>
+  <metadata>
+    <language>Go</language>
+    <stars>4752</stars>
+    <forks>235</forks>
+    <watchers>4752</watchers>
+    <size>5208</size>
+    <default_branch>master</default_branch>
+    <created_at>2019-04-20T13:30:12Z</created_at>
+    <updated_at>2025-08-20T15:55:55Z</updated_at>
+    <pushed_at>2025-04-13T07:31:04Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cloud_devops</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>ascii</topic>
+    <topic>emulator</topic>
+    <topic>game</topic>
+    <topic>gameboy</topic>
+    <topic>ternimal</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>HFO4</login>
+    <type>User</type>
+    <url>https://github.com/HFO4</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 4752 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

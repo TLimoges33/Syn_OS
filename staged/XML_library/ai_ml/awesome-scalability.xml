@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>awesome-scalability</name>
+  <full_name>binhnguyennus/awesome-scalability</full_name>
+  <description>The Patterns of Scalable, Reliable, and Performant Large-Scale Systems</description>
+  <url>https://github.com/binhnguyennus/awesome-scalability</url>
+  <clone_url>https://github.com/binhnguyennus/awesome-scalability.git</clone_url>
+  <ssh_url>git@github.com:binhnguyennus/awesome-scalability.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>64757</stars>
+    <forks>6569</forks>
+    <watchers>64757</watchers>
+    <size>1557</size>
+    <default_branch>master</default_branch>
+    <created_at>2017-12-27T03:46:40Z</created_at>
+    <updated_at>2025-08-26T21:28:30Z</updated_at>
+    <pushed_at>2025-07-26T06:03:03Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>architecture</topic>
+    <topic>awesome</topic>
+    <topic>awesome-list</topic>
+    <topic>backend</topic>
+    <topic>big-data</topic>
+    <topic>computer-science</topic>
+    <topic>design-patterns</topic>
+    <topic>devops</topic>
+    <topic>distributed-systems</topic>
+    <topic>interview</topic>
+    <topic>interview-practice</topic>
+    <topic>interview-questions</topic>
+    <topic>lists</topic>
+    <topic>machine-learning</topic>
+    <topic>programming</topic>
+    <topic>resources</topic>
+    <topic>scalability</topic>
+    <topic>system</topic>
+    <topic>system-design</topic>
+    <topic>web-development</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>binhnguyennus</login>
+    <type>User</type>
+    <url>https://github.com/binhnguyennus</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 64757 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

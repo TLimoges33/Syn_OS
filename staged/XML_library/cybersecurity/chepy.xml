@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>chepy</name>
+  <full_name>securisec/chepy</full_name>
+  <description>Chepy is a python lib/cli equivalent of the awesome CyberChef tool. </description>
+  <url>https://github.com/securisec/chepy</url>
+  <clone_url>https://github.com/securisec/chepy.git</clone_url>
+  <ssh_url>git@github.com:securisec/chepy.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>1001</stars>
+    <forks>58</forks>
+    <watchers>1001</watchers>
+    <size>5132</size>
+    <default_branch>master</default_branch>
+    <created_at>2019-10-27T00:03:37Z</created_at>
+    <updated_at>2025-08-26T22:30:50Z</updated_at>
+    <pushed_at>2025-08-26T22:34:20Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cli</topic>
+    <topic>cyber</topic>
+    <topic>cyberchef</topic>
+    <topic>cybersecurity</topic>
+    <topic>data-format</topic>
+    <topic>python-library</topic>
+    <topic>python3</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>securisec</login>
+    <type>User</type>
+    <url>https://github.com/securisec</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 1001 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

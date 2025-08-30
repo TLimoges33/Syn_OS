@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>f8x</name>
+  <full_name>ffffffff0x/f8x</full_name>
+  <description>红/蓝队环境自动化部署工具 | Red/Blue team environment automation deployment tool</description>
+  <url>https://github.com/ffffffff0x/f8x</url>
+  <clone_url>https://github.com/ffffffff0x/f8x.git</clone_url>
+  <ssh_url>git@github.com:ffffffff0x/f8x.git</ssh_url>
+  <metadata>
+    <language>Shell</language>
+    <stars>2003</stars>
+    <forks>291</forks>
+    <watchers>2003</watchers>
+    <size>1740</size>
+    <default_branch>main</default_branch>
+    <created_at>2021-01-21T06:27:27Z</created_at>
+    <updated_at>2025-08-26T16:53:52Z</updated_at>
+    <pushed_at>2025-08-26T08:54:44Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>tools_utilities</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>bash</topic>
+    <topic>bash-script</topic>
+    <topic>ctf</topic>
+    <topic>ctf-tools</topic>
+    <topic>ffffffff0x</topic>
+    <topic>linux</topic>
+    <topic>pentest-tool</topic>
+    <topic>shell</topic>
+    <topic>vps</topic>
+  </topics>
+  <license>
+    <name>Apache License 2.0</name>
+    <spdx_id>Apache-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>ffffffff0x</login>
+    <type>Organization</type>
+    <url>https://github.com/ffffffff0x</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 2003 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

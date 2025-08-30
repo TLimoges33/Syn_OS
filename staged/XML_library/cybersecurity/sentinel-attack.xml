@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>sentinel-attack</name>
+  <full_name>netevert/sentinel-attack</full_name>
+  <description>Tools to rapidly deploy a threat hunting capability on Azure Sentinel that leverages Sysmon and MITRE ATT&amp;CK</description>
+  <url>https://github.com/netevert/sentinel-attack</url>
+  <clone_url>https://github.com/netevert/sentinel-attack.git</clone_url>
+  <ssh_url>git@github.com:netevert/sentinel-attack.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>1070</stars>
+    <forks>207</forks>
+    <watchers>1070</watchers>
+    <size>45129</size>
+    <default_branch>master</default_branch>
+    <created_at>2019-05-30T18:47:36Z</created_at>
+    <updated_at>2025-08-21T16:06:27Z</updated_at>
+    <pushed_at>2024-11-28T10:10:09Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>azure</topic>
+    <topic>azure-sentinel</topic>
+    <topic>blue-team</topic>
+    <topic>cybersecurity</topic>
+    <topic>detection</topic>
+    <topic>kql</topic>
+    <topic>logging</topic>
+    <topic>mitre-attack</topic>
+    <topic>security-tools</topic>
+    <topic>siem</topic>
+    <topic>sysmon</topic>
+    <topic>sysmon-config</topic>
+    <topic>terraform-azure</topic>
+    <topic>threat-hunting</topic>
+    <topic>workbooks</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>netevert</login>
+    <type>User</type>
+    <url>https://github.com/netevert</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 1070 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

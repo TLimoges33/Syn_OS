@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>awesome-laravel</name>
+  <full_name>chiraggude/awesome-laravel</full_name>
+  <description>A curated list of bookmarks, packages, tutorials, videos and other cool resources from the Laravel ecosystem</description>
+  <url>https://github.com/chiraggude/awesome-laravel</url>
+  <clone_url>https://github.com/chiraggude/awesome-laravel.git</clone_url>
+  <ssh_url>git@github.com:chiraggude/awesome-laravel.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>12878</stars>
+    <forks>2342</forks>
+    <watchers>12878</watchers>
+    <size>1366</size>
+    <default_branch>master</default_branch>
+    <created_at>2014-07-30T08:39:02Z</created_at>
+    <updated_at>2025-08-25T22:47:54Z</updated_at>
+    <pushed_at>2024-07-03T15:59:36Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>os_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>awesome</topic>
+    <topic>laravel</topic>
+    <topic>php</topic>
+  </topics>
+  <owner>
+    <login>chiraggude</login>
+    <type>User</type>
+    <url>https://github.com/chiraggude</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 12878 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

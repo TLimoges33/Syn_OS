@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>scant3r</name>
+  <full_name>MindPatch/scant3r</full_name>
+  <description>ScanT3r - Module based Bug Bounty Automation Tool ( use Lotus instead github.com/bugBlocker/lotus )</description>
+  <url>https://github.com/MindPatch/scant3r</url>
+  <clone_url>https://github.com/MindPatch/scant3r.git</clone_url>
+  <ssh_url>git@github.com:MindPatch/scant3r.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>688</stars>
+    <forks>151</forks>
+    <watchers>688</watchers>
+    <size>55201</size>
+    <default_branch>master</default_branch>
+    <created_at>2019-12-08T23:18:22Z</created_at>
+    <updated_at>2025-08-03T03:08:09Z</updated_at>
+    <pushed_at>2025-08-03T03:08:06Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>tools_utilities</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>bug-bounty</topic>
+    <topic>bugbounty</topic>
+    <topic>infosec</topic>
+    <topic>module-pattern</topic>
+    <topic>penetration-testing</topic>
+    <topic>pentesting</topic>
+    <topic>security-tools</topic>
+    <topic>web-scanners</topic>
+    <topic>xss</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>MindPatch</login>
+    <type>User</type>
+    <url>https://github.com/MindPatch</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 688 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

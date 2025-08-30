@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Blue-Team-Notes</name>
+  <full_name>Purp1eW0lf/Blue-Team-Notes</full_name>
+  <description>You didn't think I'd go and leave the blue team out, right? </description>
+  <url>https://github.com/Purp1eW0lf/Blue-Team-Notes</url>
+  <clone_url>https://github.com/Purp1eW0lf/Blue-Team-Notes.git</clone_url>
+  <ssh_url>git@github.com:Purp1eW0lf/Blue-Team-Notes.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>1684</stars>
+    <forks>248</forks>
+    <watchers>1684</watchers>
+    <size>1447</size>
+    <default_branch>main</default_branch>
+    <created_at>2021-04-18T17:58:06Z</created_at>
+    <updated_at>2025-08-20T08:19:30Z</updated_at>
+    <pushed_at>2025-08-07T13:36:05Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>blueteam</topic>
+    <topic>cybersecurity</topic>
+    <topic>dfir</topic>
+    <topic>infosec</topic>
+    <topic>powershell</topic>
+  </topics>
+  <owner>
+    <login>Purp1eW0lf</login>
+    <type>User</type>
+    <url>https://github.com/Purp1eW0lf</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 1684 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

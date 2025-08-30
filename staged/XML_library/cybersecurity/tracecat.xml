@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>tracecat</name>
+  <full_name>TracecatHQ/tracecat</full_name>
+  <description>All-in-one automation platform (workflows, tables, cases) for security and IT teams. Open source Splunk SOAR / ServiceNow SecOps alternative.</description>
+  <url>https://github.com/TracecatHQ/tracecat</url>
+  <clone_url>https://github.com/TracecatHQ/tracecat.git</clone_url>
+  <ssh_url>git@github.com:TracecatHQ/tracecat.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>3208</stars>
+    <forks>277</forks>
+    <watchers>3208</watchers>
+    <size>60053</size>
+    <default_branch>main</default_branch>
+    <created_at>2024-02-27T06:48:32Z</created_at>
+    <updated_at>2025-08-26T15:58:27Z</updated_at>
+    <pushed_at>2025-08-26T04:10:35Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>automation</topic>
+    <topic>cybersecurity</topic>
+    <topic>event-driven</topic>
+    <topic>fastapi</topic>
+    <topic>incident-response</topic>
+    <topic>llm</topic>
+    <topic>low-code</topic>
+    <topic>monitoring</topic>
+    <topic>nextjs</topic>
+    <topic>openapi</topic>
+    <topic>orchestration</topic>
+    <topic>pydantic</topic>
+    <topic>security</topic>
+    <topic>temporalio</topic>
+    <topic>workflow-engine</topic>
+  </topics>
+  <license>
+    <name>GNU Affero General Public License v3.0</name>
+    <spdx_id>AGPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>TracecatHQ</login>
+    <type>Organization</type>
+    <url>https://github.com/TracecatHQ</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 3208 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

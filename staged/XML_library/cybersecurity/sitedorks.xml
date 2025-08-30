@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>sitedorks</name>
+  <full_name>Zarcolio/sitedorks</full_name>
+  <description>Search Google/Bing/Ecosia/DuckDuckGo/Yandex/Yahoo for a search term (dork) with a default set of websites, bug bounty programs or custom collection.</description>
+  <url>https://github.com/Zarcolio/sitedorks</url>
+  <clone_url>https://github.com/Zarcolio/sitedorks.git</clone_url>
+  <ssh_url>git@github.com:Zarcolio/sitedorks.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>982</stars>
+    <forks>127</forks>
+    <watchers>982</watchers>
+    <size>1225</size>
+    <default_branch>master</default_branch>
+    <created_at>2020-04-18T14:11:47Z</created_at>
+    <updated_at>2025-08-26T20:26:48Z</updated_at>
+    <pushed_at>2025-08-20T09:21:16Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>baidu</topic>
+    <topic>bing</topic>
+    <topic>bugbounty</topic>
+    <topic>bugcrowd</topic>
+    <topic>duckduckgo</topic>
+    <topic>google</topic>
+    <topic>google-dorks</topic>
+    <topic>googledork</topic>
+    <topic>hackerone</topic>
+    <topic>hacking</topic>
+    <topic>infosec</topic>
+    <topic>intigriti</topic>
+    <topic>osint</topic>
+    <topic>python3</topic>
+    <topic>recon</topic>
+    <topic>reconnaissance</topic>
+    <topic>search</topic>
+    <topic>search-engines</topic>
+    <topic>yahoo</topic>
+    <topic>yandex</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>Zarcolio</login>
+    <type>User</type>
+    <url>https://github.com/Zarcolio</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 982 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

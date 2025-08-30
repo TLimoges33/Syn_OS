@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Sandman</name>
+  <full_name>Idov31/Sandman</full_name>
+  <description>Sandman is a NTP based backdoor for hardened networks.</description>
+  <url>https://github.com/Idov31/Sandman</url>
+  <clone_url>https://github.com/Idov31/Sandman.git</clone_url>
+  <ssh_url>git@github.com:Idov31/Sandman.git</ssh_url>
+  <metadata>
+    <language>C#</language>
+    <stars>805</stars>
+    <forks>109</forks>
+    <watchers>805</watchers>
+    <size>272</size>
+    <default_branch>master</default_branch>
+    <created_at>2022-08-21T11:04:45Z</created_at>
+    <updated_at>2025-08-08T21:32:23Z</updated_at>
+    <pushed_at>2024-03-31T17:40:15Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>backdoor</topic>
+    <topic>csharp</topic>
+    <topic>cybersecurity</topic>
+    <topic>infosec</topic>
+    <topic>python</topic>
+    <topic>red-team</topic>
+    <topic>red-team-tools</topic>
+    <topic>redteam</topic>
+    <topic>windows</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>Idov31</login>
+    <type>User</type>
+    <url>https://github.com/Idov31</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>7</score>
+    <assessment>Excellent potential for integration. High community engagement with 805 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

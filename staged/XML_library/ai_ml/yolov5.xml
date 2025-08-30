@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>yolov5</name>
+  <full_name>ultralytics/yolov5</full_name>
+  <description>YOLOv5 🚀 in PyTorch &gt; ONNX &gt; CoreML &gt; TFLite</description>
+  <url>https://github.com/ultralytics/yolov5</url>
+  <clone_url>https://github.com/ultralytics/yolov5.git</clone_url>
+  <ssh_url>git@github.com:ultralytics/yolov5.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>55110</stars>
+    <forks>17153</forks>
+    <watchers>55110</watchers>
+    <size>17031</size>
+    <default_branch>master</default_branch>
+    <created_at>2020-05-18T03:45:11Z</created_at>
+    <updated_at>2025-08-26T21:57:27Z</updated_at>
+    <pushed_at>2025-08-26T09:29:40Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>coreml</topic>
+    <topic>deep-learning</topic>
+    <topic>ios</topic>
+    <topic>machine-learning</topic>
+    <topic>ml</topic>
+    <topic>object-detection</topic>
+    <topic>onnx</topic>
+    <topic>pytorch</topic>
+    <topic>tflite</topic>
+    <topic>ultralytics</topic>
+    <topic>yolo</topic>
+    <topic>yolov3</topic>
+    <topic>yolov5</topic>
+  </topics>
+  <license>
+    <name>GNU Affero General Public License v3.0</name>
+    <spdx_id>AGPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>ultralytics</login>
+    <type>Organization</type>
+    <url>https://github.com/ultralytics</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 55110 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

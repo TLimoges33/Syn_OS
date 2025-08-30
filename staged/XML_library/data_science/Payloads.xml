@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Payloads</name>
+  <full_name>sh377c0d3/Payloads</full_name>
+  <description>Payload Arsenal for Pentration Tester and Bug Bounty Hunters</description>
+  <url>https://github.com/sh377c0d3/Payloads</url>
+  <clone_url>https://github.com/sh377c0d3/Payloads.git</clone_url>
+  <ssh_url>git@github.com:sh377c0d3/Payloads.git</ssh_url>
+  <metadata>
+    <language>PHP</language>
+    <stars>909</stars>
+    <forks>189</forks>
+    <watchers>909</watchers>
+    <size>86444</size>
+    <default_branch>master</default_branch>
+    <created_at>2020-04-24T08:30:47Z</created_at>
+    <updated_at>2025-08-14T10:41:59Z</updated_at>
+    <pushed_at>2023-05-06T14:02:09Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>data_science</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>bugbounty</topic>
+    <topic>bugbounty-tool</topic>
+    <topic>payload</topic>
+    <topic>payloads</topic>
+    <topic>payloads-database</topic>
+    <topic>penetration-testing</topic>
+  </topics>
+  <owner>
+    <login>sh377c0d3</login>
+    <type>User</type>
+    <url>https://github.com/sh377c0d3</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 909 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

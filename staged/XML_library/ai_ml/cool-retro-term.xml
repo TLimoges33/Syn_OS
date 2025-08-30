@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>cool-retro-term</name>
+  <full_name>Swordfish90/cool-retro-term</full_name>
+  <description>A good looking terminal emulator which mimics the old cathode display...</description>
+  <url>https://github.com/Swordfish90/cool-retro-term</url>
+  <clone_url>https://github.com/Swordfish90/cool-retro-term.git</clone_url>
+  <ssh_url>git@github.com:Swordfish90/cool-retro-term.git</ssh_url>
+  <metadata>
+    <language>QML</language>
+    <stars>23871</stars>
+    <forks>897</forks>
+    <watchers>23871</watchers>
+    <size>17738</size>
+    <default_branch>master</default_branch>
+    <created_at>2013-11-22T09:59:57Z</created_at>
+    <updated_at>2025-08-26T19:05:37Z</updated_at>
+    <pushed_at>2024-06-14T18:28:18Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>linux</topic>
+    <topic>macos</topic>
+    <topic>qml</topic>
+    <topic>qt</topic>
+    <topic>retro</topic>
+    <topic>terminal</topic>
+  </topics>
+  <owner>
+    <login>Swordfish90</login>
+    <type>User</type>
+    <url>https://github.com/Swordfish90</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 23871 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>
