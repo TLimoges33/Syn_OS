@@ -1,0 +1,24 @@
+[
+    {
+        "key": "ctrl+shift+t",
+        "command": "workbench.action.terminal.new",
+        "when": "terminalProcessSupported"
+    },
+    {
+        "key": "ctrl+alt+t",
+        "command": "workbench.action.terminal.openNativeConsole",
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+shift+`",
+        "command": "workbench.action.terminal.toggleTerminal"
+    },
+    {
+        "key": "f12",
+        "command": "workbench.action.terminal.focus"
+    },
+    {
+        "key": "ctrl+alt+m",
+        "command": "workbench.action.terminal.openNativeConsole"
+    }
+]

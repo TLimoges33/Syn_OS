@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: consciousness
+    component: ai-engine
+    version: v1.0
+  name: synos-consciousness
+  namespace: synos-production
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: consciousness
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: consciousness
+        version: v1.0
+    spec:
+      containers:
+      - env:
+        - name: CONSCIOUSNESS_MODE
+          value: production
+        - name: NEURAL_WORKERS
+          value: '4'
+        - name: BATCH_SIZE
+          value: '50'
+        - name: KUBERNETES_MODE
+          value: 'true'
+        image: synos/consciousness:production
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /health
+            port: 9090
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        name: consciousness
+        ports:
+        - containerPort: 9090
+          name: api
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /ready
+            port: 9090
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+          requests:
+            cpu: 500m
+            memory: 1Gi
+        volumeMounts:
+        - mountPath: /app/data
+          name: consciousness-data
+        - mountPath: /app/models
+          name: consciousness-models
+      securityContext:
+        fsGroup: 1001
+        runAsNonRoot: true
+        runAsUser: 1001
+      serviceAccountName: synos-consciousness
+      volumes:
+      - name: consciousness-data
+        persistentVolumeClaim:
+          claimName: consciousness-data-pvc
+      - name: consciousness-models
+        persistentVolumeClaim:
+          claimName: consciousness-models-pvc

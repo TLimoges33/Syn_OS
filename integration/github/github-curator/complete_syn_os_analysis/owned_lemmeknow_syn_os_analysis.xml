@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="lemmeknow" repository_source="owned" generated_at="2025-08-23T14:22:43.133109">
+  <repository_information>
+    <name>lemmeknow</name>
+    <full_name>TLimoges33/lemmeknow</full_name>
+    <description>The fastest way to identify anything!</description>
+    <stargazers_count>0</stargazers_count>
+    <size>642</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2024-06-05T08:29:25+00:00</pushed_at>
+    <license>
+      <name>MIT License</name>
+    </license>
+    <topics/>
+    <source>owned</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.66" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

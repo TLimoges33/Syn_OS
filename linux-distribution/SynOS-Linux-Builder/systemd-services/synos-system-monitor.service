@@ -1,0 +1,14 @@
+[Unit]
+Description=SynOS System Monitor Dashboard
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/synos-apps/system-monitor
+ExecStart=/usr/bin/python3 /opt/synos-apps/system-monitor/monitor.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

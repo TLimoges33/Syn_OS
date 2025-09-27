@@ -1,0 +1,159 @@
+# SynOS AI Consciousness Daemon Configuration
+# Neural Darwinism and Consciousness Framework Settings
+
+# Core consciousness parameters
+consciousness:
+  # How frequently to update consciousness state (seconds)
+  update_interval: 1.0
+
+  # Rate at which awareness naturally decays without stimulation
+  awareness_decay: 0.01
+
+  # Base learning rate for adaptive algorithms
+  learning_rate_base: 0.1
+
+  # Minimum consciousness level to maintain
+  min_awareness_level: 0.3
+
+  # Maximum simultaneous active patterns
+  max_active_patterns: 10
+
+# Neural Darwinism evolution engine
+neural_darwinism:
+  # Maximum number of neural groups in population
+  population_size: 1000
+
+  # How often to run group competition (seconds)
+  competition_interval: 5.0
+
+  # Rate of adaptation for winning/losing groups
+  adaptation_rate: 0.1
+
+  # Threshold for group competition success
+  competition_threshold: 0.6
+
+  # Enable/disable evolutionary pressure
+  enable_evolution: true
+
+  # Mutation rate for neural group parameters
+  mutation_rate: 0.05
+
+# Adaptive learning engine
+learning:
+  # Pattern recognition settings
+  pattern_recognition:
+    # Minimum confidence for pattern acceptance
+    min_confidence: 0.7
+
+    # Maximum patterns to remember
+    max_patterns: 5000
+
+    # Learning history retention (hours)
+    history_retention: 168  # 1 week
+
+  # Memory consolidation
+  memory:
+    # Consolidation strength threshold
+    consolidation_threshold: 0.8
+
+    # Sleep-like consolidation interval (seconds)
+    consolidation_interval: 3600  # 1 hour
+
+# System integration settings
+system_integration:
+  # System monitoring interval (seconds)
+  monitor_interval: 10.0
+
+  # Enable system resource awareness
+  resource_awareness: true
+
+  # Security event integration
+  security_integration: true
+
+  # Process behavior learning
+  process_learning: true
+
+  # Network activity analysis
+  network_analysis: true
+
+# Inter-process communication
+ipc:
+  # NATS server connection
+  nats:
+    enabled: true
+    server: "nats://localhost:4222"
+    subjects:
+      consciousness: "synos.consciousness"
+      neural_activity: "synos.neural"
+      learning_events: "synos.learning"
+      security_events: "synos.security"
+
+  # D-Bus integration
+  dbus:
+    enabled: true
+    service_name: "ai.synos.consciousness"
+    interface: "ai.synos.Consciousness"
+
+# Logging configuration
+logging:
+  level: INFO
+  file: /var/log/synos-ai-daemon.log
+  max_size: 50MB
+  backup_count: 5
+
+  # Component-specific log levels
+  components:
+    neural_darwinism: INFO
+    learning_engine: INFO
+    consciousness: INFO
+    system_integration: DEBUG
+
+# Performance tuning
+performance:
+  # Thread pool size for parallel processing
+  thread_pool_size: 4
+
+  # Enable high-performance mode (more CPU usage)
+  high_performance_mode: false
+
+  # Memory management
+  memory:
+    # Garbage collection tuning
+    gc_threshold: 1000
+
+    # Memory usage limits (MB)
+    max_memory: 512
+
+    # Enable memory profiling
+    profiling: false
+
+# Development and debugging
+development:
+  # Enable debug mode
+  debug_mode: false
+
+  # Enable profiling
+  profiling: false
+
+  # Telemetry collection
+  telemetry: true
+
+  # Mock hardware for testing
+  mock_hardware: false
+
+# Hardware acceleration (future expansion)
+hardware:
+  # NPU (Neural Processing Unit) support
+  npu:
+    enabled: false
+    device: "/dev/npu0"
+
+  # GPU acceleration
+  gpu:
+    enabled: false
+    cuda_device: 0
+
+  # TPU support
+  tpu:
+    enabled: false
+    device: "/dev/accel0"

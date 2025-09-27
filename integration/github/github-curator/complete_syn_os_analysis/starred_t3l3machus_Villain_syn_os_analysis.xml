@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="Villain" repository_source="starred" generated_at="2025-08-23T14:25:52.765237">
+  <repository_information>
+    <name>Villain</name>
+    <full_name>t3l3machus/Villain</full_name>
+    <description>Villain is a high level stage 0/1 C2 framework that can handle multiple reverse TCP &amp; HoaxShell-based shells, enhance their functionality with additional features (commands, utilities) and share them among connected sibling servers (Villain instances running on different machines).</description>
+    <language>Python</language>
+    <stargazers_count>4189</stargazers_count>
+    <size>615</size>
+    <open_issues_count>24</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-05-21T10:49:04+00:00</pushed_at>
+    <license>
+      <name>Other</name>
+    </license>
+    <topics>
+      <item>open-source</item>
+      <item>pentest</item>
+      <item>pentesting</item>
+      <item>readteaming</item>
+      <item>redteam-tools</item>
+      <item>redteam</item>
+      <item>cybersecurity</item>
+      <item>offensive-security</item>
+      <item>c2</item>
+      <item>hacking</item>
+      <item>hacking-tool</item>
+      <item>penetration-testing</item>
+      <item>penetration-testing-tools</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.96" level="high"/>
+    <primary_category integration_level="security">security_frameworks</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="redmine_backlogs" repository_source="starred" generated_at="2025-08-23T14:26:45.604844">
+  <repository_information>
+    <name>redmine_backlogs</name>
+    <full_name>backlogs/redmine_backlogs</full_name>
+    <description>A Redmine plugin for agile teams</description>
+    <language>HTML</language>
+    <stargazers_count>775</stargazers_count>
+    <size>11281</size>
+    <open_issues_count>193</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <pushed_at>2023-08-17T03:39:22+00:00</pushed_at>
+    <license>
+      <name>GNU General Public License v2.0</name>
+    </license>
+    <topics/>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.69" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

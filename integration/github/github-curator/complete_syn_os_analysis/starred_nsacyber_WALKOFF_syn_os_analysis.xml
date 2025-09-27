@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="WALKOFF" repository_source="starred" generated_at="2025-08-23T14:25:09.758785">
+  <repository_information>
+    <name>WALKOFF</name>
+    <full_name>nsacyber/WALKOFF</full_name>
+    <description>A flexible, easy to use, automation framework allowing users to integrate their capabilities and devices to cut through the repetitive, tedious tasks slowing them down. #nsacyber</description>
+    <language>Python</language>
+    <stargazers_count>1226</stargazers_count>
+    <size>272957</size>
+    <open_issues_count>57</open_issues_count>
+    <fork>False</fork>
+    <archived>True</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <pushed_at>2022-12-12T04:07:15+00:00</pushed_at>
+    <license>
+      <name>Other</name>
+    </license>
+    <topics>
+      <item>automation</item>
+      <item>integration</item>
+      <item>administration</item>
+      <item>orchestration</item>
+      <item>orchestration-framework</item>
+      <item>orchestrator</item>
+      <item>workflow</item>
+      <item>cybersecurity</item>
+      <item>security</item>
+      <item>automation-framework</item>
+      <item>framework</item>
+      <item>analytics</item>
+      <item>sysadmin</item>
+      <item>devops</item>
+      <item>walkoff</item>
+      <item>walkoff-apps</item>
+      <item>walkoff-workflows</item>
+      <item>python</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.81" level="high"/>
+    <primary_category integration_level="security">security_frameworks</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

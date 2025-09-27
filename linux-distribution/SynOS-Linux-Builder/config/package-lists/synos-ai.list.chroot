@@ -1,0 +1,66 @@
+# AI and Machine Learning Tools
+python3-numpy
+python3-scipy
+python3-matplotlib
+python3-pandas
+python3-scikit-learn
+python3-requests
+python3-flask
+python3-fastapi
+python3-websockets
+python3-aiohttp
+python3-psutil
+python3-yaml
+python3-toml
+
+# Rust Development
+rustc
+cargo
+rust-src
+rust-doc
+
+# Development Tools
+gcc
+g++
+gdb
+valgrind
+strace
+ltrace
+make
+autoconf
+automake
+libtool
+pkg-config
+git
+gitk
+meld
+code
+
+# Containerization
+docker.io
+docker-compose
+
+# Database Support
+sqlite3
+postgresql-client
+redis-tools
+
+# Networking Libraries
+libcurl4-openssl-dev
+libssl-dev
+libudev-dev
+libv4l-dev
+
+# Audio/Video Processing (for AI)
+ffmpeg
+libavcodec-dev
+libavformat-dev
+libavutil-dev
+libswscale-dev
+libopencv-dev
+
+# Hardware Support
+nvidia-detect
+mesa-utils
+vulkan-tools
+intel-gpu-tools

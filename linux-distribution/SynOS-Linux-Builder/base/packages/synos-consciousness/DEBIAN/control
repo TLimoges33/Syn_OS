@@ -1,0 +1,10 @@
+Package: synos-consciousness
+Version: 1.0.0
+Section: misc
+Priority: optional
+Architecture: all
+Maintainer: SynOS Team <team@synos.dev>
+Description: SynOS AI Consciousness Framework
+ Neural Darwinism-based consciousness engine for SynOS
+ providing intelligent system monitoring and adaptive learning
+Depends: python3, python3-pip, systemd, nats-server

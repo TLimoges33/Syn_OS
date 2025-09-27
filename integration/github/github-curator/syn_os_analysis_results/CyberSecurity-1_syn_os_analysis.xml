@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="CyberSecurity-1" generated_at="2025-08-23T14:16:40.652174">
+  <repository_information>
+    <name>CyberSecurity-1</name>
+    <full_name>TLimoges33/CyberSecurity-1</full_name>
+    <description>A collection of essential and foundational cybersecurity knowledge, thoughtfully organized for easy comprehension.</description>
+    <stargazers_count>0</stargazers_count>
+    <size>21107</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-04-19T19:49:56+00:00</pushed_at>
+    <topics/>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.55" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

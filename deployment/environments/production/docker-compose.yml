@@ -1,0 +1,156 @@
+version: "3.8"
+
+# SynOS Production Environment
+# Full services with high availability and monitoring
+
+services:
+  # Infrastructure with HA
+  nats-cluster:
+    image: nats:2.10-alpine
+    deploy:
+      replicas: 3
+    environment:
+      - NATS_CLUSTER_ROUTES=nats://nats-cluster:6222
+    command:
+      - "--jetstream"
+      - "--cluster=nats://0.0.0.0:6222"
+      - "--routes=nats://nats-cluster:6222"
+      - "--store_dir=/data"
+      - "--max_mem_store=4GB"
+      - "--max_file_store=50GB"
+    volumes:
+      - nats_prod_data:/data
+    networks:
+      - synos_prod
+    restart: unless-stopped
+
+  postgres-primary:
+    image: postgres:15-alpine
+    container_name: synos_prod_postgres_primary
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_REPLICATION_MODE: master
+      POSTGRES_REPLICATION_USER: ${POSTGRES_REPLICATION_USER}
+      POSTGRES_REPLICATION_PASSWORD: ${POSTGRES_REPLICATION_PASSWORD}
+    volumes:
+      - postgres_prod_primary:/var/lib/postgresql/data
+      - ../../../config/postgres/postgresql.conf:/etc/postgresql/postgresql.conf
+    networks:
+      - synos_prod
+    restart: unless-stopped
+
+  postgres-replica:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_REPLICATION_MODE: slave
+      POSTGRES_MASTER_HOST: postgres-primary
+      POSTGRES_REPLICATION_USER: ${POSTGRES_REPLICATION_USER}
+      POSTGRES_REPLICATION_PASSWORD: ${POSTGRES_REPLICATION_PASSWORD}
+    volumes:
+      - postgres_prod_replica:/var/lib/postgresql/data
+    networks:
+      - synos_prod
+    depends_on:
+      - postgres-primary
+    restart: unless-stopped
+
+  redis-cluster:
+    image: redis:7-alpine
+    command: redis-server --cluster-enabled yes --cluster-config-file nodes.conf --cluster-node-timeout 5000
+    deploy:
+      replicas: 6
+    volumes:
+      - redis_prod_data:/data
+    networks:
+      - synos_prod
+    restart: unless-stopped
+
+  # Production Services
+  orchestrator:
+    image: synos/orchestrator:${VERSION:-latest}
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          memory: 2G
+          cpus: "1.0"
+    environment:
+      - ENV=production
+      - NATS_URL=nats://nats-cluster:4222
+      - POSTGRES_HOST=postgres-primary
+      - REDIS_HOST=redis-cluster
+      - LOG_LEVEL=info
+    env_file:
+      - .env.production
+    networks:
+      - synos_prod
+    restart: unless-stopped
+
+  consciousness:
+    image: synos/consciousness:${VERSION:-latest}
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          memory: 4G
+          cpus: "2.0"
+    environment:
+      - ENV=production
+      - NATS_URL=nats://nats-cluster:4222
+      - LOG_LEVEL=info
+    env_file:
+      - .env.production
+    networks:
+      - synos_prod
+    restart: unless-stopped
+
+  # Monitoring Stack
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: synos_prod_prometheus
+    volumes:
+      - ../../../config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_prod_data:/prometheus
+    networks:
+      - synos_prod
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: synos_prod_grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+    volumes:
+      - grafana_prod_data:/var/lib/grafana
+    networks:
+      - synos_prod
+    restart: unless-stopped
+
+  # Load Balancer
+  nginx:
+    image: nginx:alpine
+    container_name: synos_prod_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ../../../config/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ../../../certs:/etc/nginx/certs
+    networks:
+      - synos_prod
+    restart: unless-stopped
+
+volumes:
+  nats_prod_data:
+  postgres_prod_primary:
+  postgres_prod_replica:
+  redis_prod_data:
+  prometheus_prod_data:
+  grafana_prod_data:
+
+networks:
+  synos_prod:
+    driver: overlay
+    attachable: true

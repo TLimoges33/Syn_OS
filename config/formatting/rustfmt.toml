@@ -1,0 +1,76 @@
+# Syn_OS Rust Formatting Configuration
+# Based on Rust standard formatting with consciousness system conventions
+
+# Edition and style
+edition = "2021"
+style_edition = "2021"
+
+# Line length and indentation
+max_width = 100
+hard_tabs = false
+tab_spaces = 4
+
+# Imports
+imports_granularity = "Module"
+group_imports = "StdExternalCrate"
+reorder_imports = true
+
+# Function formatting
+fn_args_layout = "Tall"
+brace_style = "SameLineWhere"
+where_single_line = false
+
+# Control flow
+control_brace_style = "AlwaysSameLine"
+match_block_trailing_comma = false
+trailing_comma = "Vertical"
+
+# Comments and documentation
+format_code_in_doc_comments = true
+normalize_doc_attributes = true
+wrap_comments = true
+comment_width = 80
+
+# Strings and arrays
+string_lit_normalize_unicode = true
+array_width = 60
+chain_width = 60
+
+# Special formatting for consciousness system
+# These patterns are specific to our neural darwinism and consciousness components
+format_macro_matchers = true
+format_macro_bodies = true
+
+# Newlines and spacing
+newline_style = "Unix"
+remove_nested_parens = true
+spaces_around_ranges = false
+type_punctuation_density = "Wide"
+
+# Error handling
+use_try_shorthand = true
+force_explicit_abi = true
+
+# Struct and enum formatting
+struct_field_align_threshold = 0
+enum_discrim_align_threshold = 0
+
+# Match expressions (important for consciousness state matching)
+match_arm_blocks = true
+match_arm_leading_pipes = "Never"
+
+# Version configuration
+version = "Two"
+
+# Skip formatting for generated files
+ignore = [
+    "src/kernel/ebpf/generated/",
+    "target/",
+    "build/",
+    ".git/",
+    "archive/"
+]
+
+# Required width for single line
+single_line_if_else_max_width = 50
+single_line_let_else_max_width = 50

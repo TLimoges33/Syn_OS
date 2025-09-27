@@ -1,0 +1,18 @@
+[package]
+name = "synos-graphics"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "synos_graphics"
+path = "lib.rs"
+
+[dependencies]
+
+[dev-dependencies]
+
+[[bin]]
+name = "graphics-test"
+path = "test_main.rs"
+
+# Profiles managed at workspace level - removed from package

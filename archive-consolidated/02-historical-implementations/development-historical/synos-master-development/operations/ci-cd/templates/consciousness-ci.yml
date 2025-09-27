@@ -1,0 +1,74 @@
+name: SynOS Consciousness-Integrated CI/CD
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  CONSCIOUSNESS_MODE: ci
+  EDUCATIONAL_VALIDATION: strict
+  PERFORMANCE_TARGET: 3.0
+
+jobs:
+  consciousness_validation:
+    name: Consciousness Integration Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup SynOS Development Environment
+        run: |
+          ./development/toolchain/setup-synos-dev.sh
+          source ./development/environments/activate-synos-env.sh
+      
+      - name: Validate Consciousness Integration
+        run: |
+          ./operations/quality-assurance/validate-consciousness.sh
+          ./operations/quality-assurance/check-fitness-threshold.sh --target=0.942
+      
+      - name: Educational Safety Validation
+        run: |
+          ./operations/quality-assurance/validate-educational-safety.sh
+          ./operations/quality-assurance/test-scadi-integration.sh
+
+  security_enhancement_validation:
+    name: Security Tools Enhancement Validation
+    runs-on: ubuntu-latest
+    needs: consciousness_validation
+    steps:
+      - name: Test Enhanced Security Tools
+        run: |
+          ./operations/quality-assurance/test-security-enhancements.sh
+          ./operations/quality-assurance/benchmark-performance-improvements.sh --target=3.0
+      
+      - name: Validate Tool Integration
+        run: |
+          ./operations/quality-assurance/validate-60-tools.sh
+          ./operations/quality-assurance/test-consciousness-optimization.sh
+
+  build_and_package:
+    name: Build SynOS Distribution Components
+    runs-on: ubuntu-latest
+    needs: [consciousness_validation, security_enhancement_validation]
+    steps:
+      - name: Build Consciousness-Integrated Components
+        run: |
+          cd core/consciousness && python -m pip install -e .
+          python -m pytest tests/ --consciousness-mode=ci
+      
+      - name: Build Enhanced Security Tools
+        run: |
+          cd core/security-tools && cargo build --release --workspace
+          cargo test --workspace --release
+      
+      - name: Build Educational Platform
+        run: |
+          cd core/educational-platform && python -m pip install -e .
+          python -m pytest tests/ --educational-validation=strict
+      
+      - name: Create Distribution Package
+        run: |
+          ./distribution/iso-builders/create-synos-iso.sh --consciousness-integrated
+          ./operations/quality-assurance/validate-iso-integrity.sh

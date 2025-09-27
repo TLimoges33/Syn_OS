@@ -1,0 +1,46 @@
+[Unit]
+Description=SynOS Neural Darwinism Consciousness System
+Documentation=https://docs.synos.ai/consciousness
+After=synos-ai-engine.service
+Requires=synos-ai-engine.service
+PartOf=synos-ai-engine.service
+
+[Service]
+Type=notify
+User=synos
+Group=synos
+ExecStart=/usr/lib/synos/ai-engine/synos-consciousness-daemon
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=always
+RestartSec=3
+TimeoutStartSec=30
+TimeoutStopSec=15
+
+# Resource limits for consciousness processing
+CPUQuota=50%
+MemoryMax=512M
+TasksMax=100
+
+# Security settings
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/synos/consciousness /var/lib/synos/models /var/log/synos
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictRealtime=true
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+RestrictAddressFamilies=AF_UNIX
+
+# Environment
+Environment=SYNOS_CONSCIOUSNESS_CONFIG=/etc/synos/consciousness.conf
+Environment=SYNOS_NEURAL_DARWINISM_MODE=enabled
+
+[Install]
+WantedBy=multi-user.target

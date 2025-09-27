@@ -1,0 +1,79 @@
+{
+  "forum_categories": [
+    {
+      "id": "general",
+      "name": "General Discussion",
+      "description": "General SynOS topics and community interaction",
+      "moderators": ["community_manager", "senior_users"],
+      "subcategories": [
+        "introductions",
+        "general_chat", 
+        "announcements",
+        "feedback"
+      ]
+    },
+    {
+      "id": "technical",
+      "name": "Technical Support",
+      "description": "Get help with SynOS technical issues",
+      "moderators": ["tech_support", "developers"],
+      "subcategories": [
+        "installation_help",
+        "configuration_issues",
+        "troubleshooting",
+        "bug_reports"
+      ]
+    },
+    {
+      "id": "consciousness",
+      "name": "Consciousness Research",
+      "description": "Discuss AI consciousness features and research",
+      "moderators": ["ai_researchers", "consciousness_experts"],
+      "subcategories": [
+        "ai_behavior",
+        "learning_patterns",
+        "consciousness_theory",
+        "research_collaboration"
+      ]
+    },
+    {
+      "id": "development",
+      "name": "Development",
+      "description": "For developers contributing to SynOS",
+      "moderators": ["core_developers", "maintainers"],
+      "subcategories": [
+        "feature_requests",
+        "code_review",
+        "api_discussion",
+        "contribution_help"
+      ]
+    },
+    {
+      "id": "showcase",
+      "name": "User Showcase",
+      "description": "Share your SynOS projects and configurations",
+      "moderators": ["community_manager"],
+      "subcategories": [
+        "success_stories",
+        "custom_configurations",
+        "creative_uses",
+        "performance_tips"
+      ]
+    }
+  ],
+  "community_guidelines": {
+    "respect": "Treat all community members with respect",
+    "constructive": "Keep discussions constructive and helpful",
+    "on_topic": "Stay on topic within each category",
+    "no_spam": "No spam, self-promotion, or off-topic content",
+    "help_others": "Help other community members when possible"
+  },
+  "user_roles": [
+    "new_user",
+    "regular_user", 
+    "trusted_user",
+    "expert_contributor",
+    "moderator",
+    "administrator"
+  ]
+}

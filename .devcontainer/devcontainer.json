@@ -1,0 +1,82 @@
+{
+  "name": "SynOS Development Environment",
+  "image": "mcr.microsoft.com/devcontainers/rust:latest",
+
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "upgradePackages": true,
+      "username": "vscode",
+      "userUid": "1000",
+      "userGid": "1000"
+    },
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.11"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        // Performance optimizations for Codespaces
+        "telemetry.telemetryLevel": "off",
+        "editor.minimap.enabled": false,
+        "git.autofetch": false,
+        "extensions.autoCheckUpdates": false,
+
+        // Rust specific - optimized for performance
+        "rust-analyzer.checkOnSave": false,
+        "rust-analyzer.cargo.loadOutDirsFromCheck": false,
+        "rust-analyzer.server.extraEnv": {
+          "RUST_LOG": "error"
+        },
+
+        // File watching optimizations
+        "files.watcherExclude": {
+          "**/target/**": true,
+          "**/build/**": true,
+          "**/logs/**": true,
+          "**/.cargo/registry/**": true,
+          "**/.cargo/git/**": true,
+          "**/Final_SynOS*/**": true
+        }
+      },
+
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "ms-vscode.cpptools",
+        "ms-python.python",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "GitHub.vscode-github-actions",
+        "ms-vscode.vscode-json",
+        "redhat.vscode-yaml",
+        "ms-vscode.makefile-tools",
+        "VinceSalvino.dark-plus-black"
+      ]
+    }
+  },
+
+  "postCreateCommand": "cargo --version && rustc --version && echo 'SynOS Development Environment Ready!'",
+
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+  ],
+
+  "runArgs": ["--init"],
+
+  "remoteUser": "vscode",
+  
+  "forwardPorts": [8080, 3000, 4222],
+  
+  "portsAttributes": {
+    "8080": {
+      "label": "SynOS Web Interface"
+    },
+    "4222": {
+      "label": "NATS Server"
+    }
+  }
+}

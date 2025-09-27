@@ -1,0 +1,27 @@
+apiVersion: v2
+name: synos
+description: SynOS Consciousness-Enhanced Operating System Helm Chart
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+
+keywords:
+  - consciousness
+  - operating-system
+  - cybersecurity
+  - education
+  - ai
+
+home: https://github.com/diablorain/Syn_OS
+sources:
+  - https://github.com/diablorain/Syn_OS
+
+maintainers:
+  - name: SynOS Team
+    email: team@synos.dev
+
+annotations:
+  category: Operating System
+  consciousness.synos.dev/neural-darwinism: "enabled"
+  education.synos.dev/cybersecurity-curriculum: "complete"
+  security.synos.dev/zero-trust: "enabled"

@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+
+"""
+SynOS Adaptive UI - Main executable
+Entry point for the Context-Driven UI Adaptation system
+"""
+
+import sys
+import os
+import asyncio
+import argparse
+
+# Add the src directory to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'src'))
+
+from context_driven_ui import ContextDrivenUI, SecurityPhase, ThreatLevel
+
+async def main():
+    parser = argparse.ArgumentParser(description='SynOS Context-Driven UI Adaptation')
+    parser.add_argument('--daemon', action='store_true', help='Run as daemon service')
+    parser.add_argument('--set-phase', type=str, choices=['reconnaissance', 'vulnerability_assessment', 'exploitation', 'post_exploitation', 'incident_response'], help='Set security phase')
+    parser.add_argument('--set-threat-level', type=str, choices=['green', 'yellow', 'orange', 'red'], help='Set threat level')
+    parser.add_argument('--status', action='store_true', help='Show current UI status')
+    parser.add_argument('--config', type=str, default='/etc/synos/phase3/ui-config.yaml', help='Configuration file path')
+
+    args = parser.parse_args()
+
+    # Initialize UI adapter
+    ui_adapter = ContextDrivenUI(config_path=args.config)
+    await ui_adapter.initialize()
+
+    if args.daemon:
+        print("Starting SynOS Adaptive UI daemon...")
+        await ui_adapter.start_daemon()
+    elif args.set_phase:
+        print(f"Setting security phase to: {args.set_phase}")
+        phase = getattr(SecurityPhase, args.set_phase.upper())
+        await ui_adapter.update_security_phase(phase)
+        print("Security phase updated successfully")
+    elif args.set_threat_level:
+        print(f"Setting threat level to: {args.set_threat_level}")
+        level = getattr(ThreatLevel, args.set_threat_level.upper())
+        await ui_adapter.update_threat_level(level)
+        print("Threat level updated successfully")
+    elif args.status:
+        status = await ui_adapter.get_status()
+        print("SynOS Adaptive UI Status:")
+        print(f"- Security Phase: {status.get('security_phase', 'Unknown')}")
+        print(f"- Threat Level: {status.get('threat_level', 'Unknown')}")
+        print(f"- Current Theme: {status.get('current_theme', 'Unknown')}")
+        print(f"- Layout: {status.get('layout', 'Unknown')}")
+    else:
+        print("SynOS Adaptive UI - Interactive Mode")
+        print("Commands: phase <name>, threat <level>, status, exit")
+
+        while True:
+            try:
+                command = input("synos-ui> ")
+                parts = command.strip().split()
+
+                if not parts or parts[0].lower() in ['exit', 'quit']:
+                    break
+                elif parts[0] == 'phase' and len(parts) > 1:
+                    phase_name = parts[1].upper()
+                    if hasattr(SecurityPhase, phase_name):
+                        phase = getattr(SecurityPhase, phase_name)
+                        await ui_adapter.update_security_phase(phase)
+                        print(f"Security phase set to: {parts[1]}")
+                    else:
+                        print("Invalid phase. Options: reconnaissance, vulnerability_assessment, exploitation, post_exploitation, incident_response")
+                elif parts[0] == 'threat' and len(parts) > 1:
+                    level_name = parts[1].upper()
+                    if hasattr(ThreatLevel, level_name):
+                        level = getattr(ThreatLevel, level_name)
+                        await ui_adapter.update_threat_level(level)
+                        print(f"Threat level set to: {parts[1]}")
+                    else:
+                        print("Invalid threat level. Options: green, yellow, orange, red")
+                elif parts[0] == 'status':
+                    status = await ui_adapter.get_status()
+                    print(f"Phase: {status.get('security_phase')}, Threat: {status.get('threat_level')}")
+                else:
+                    print("Unknown command. Try: phase <name>, threat <level>, status, exit")
+            except KeyboardInterrupt:
+                break
+            except Exception as e:
+                print(f"Error: {e}")
+
+    await ui_adapter.shutdown()
+
+if __name__ == '__main__':
+    asyncio.run(main())

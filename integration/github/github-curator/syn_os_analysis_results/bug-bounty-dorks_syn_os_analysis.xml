@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="bug-bounty-dorks" generated_at="2025-08-23T14:16:25.257729">
+  <repository_information>
+    <name>bug-bounty-dorks</name>
+    <full_name>TLimoges33/bug-bounty-dorks</full_name>
+    <description>List of Google Dorks for sites that have responsible disclosure program / bug bounty program</description>
+    <stargazers_count>0</stargazers_count>
+    <size>63</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2023-07-19T05:38:59+00:00</pushed_at>
+    <topics/>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.52" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

@@ -1,0 +1,102 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "cargo build kernel",
+      "type": "shell",
+      "command": "cargo",
+      "args": [
+        "build",
+        "--manifest-path=src/kernel/Cargo.toml",
+        "--target=x86_64-unknown-none"
+      ],
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "cargo build security",
+      "type": "shell",
+      "command": "cargo",
+      "args": [
+        "build",
+        "--manifest-path=core/security/Cargo.toml"
+      ],
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "run security audit",
+      "type": "shell",
+      "command": "python3",
+      "args": [
+        "scripts/a_plus_security_audit.py"
+      ],
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "run comprehensive tests",
+      "type": "shell",
+      "command": "make",
+      "args": [
+        "test"
+      ],
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "start development containers",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": [
+        "-f",
+        "docker/docker-compose.yml",
+        "up",
+        "-d",
+        "nats",
+        "postgres",
+        "redis"
+      ],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "stop development containers",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": [
+        "-f",
+        "docker/docker-compose.yml",
+        "down"
+      ],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "validate environment (core-only)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "CORE_ONLY=1 ./scripts/validate-environment.sh"
+      ],
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "build ISO image",
+      "type": "shell",
+      "command": "./scripts/build-simple-kernel-iso.sh",
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}

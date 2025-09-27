@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "syn-os.fullname" . }}-config
+  namespace: {{ .Values.namespace | default "syn-os" }}
+  labels:
+    {{- include "syn-os.labels" . | nindent 4 }}
+    component: core
+data:
+  SYN_OS_VERSION: {{ .Chart.AppVersion | quote }}
+  SYN_OS_BUILD: "kubernetes"
+  SYN_OS_LOG_FORMAT: {{ .Values.core.logFormat | default "json" | quote }}
+  SYN_OS_METRICS_ENABLED: {{ .Values.monitoring.enabled | default true | quote }}
+  SYN_OS_PERFORMANCE_MODE: {{ .Values.core.performanceMode | default "balanced" | quote }}
+  {{- with .Values.core.extraConfig }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+---
+{{- if .Values.security.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "syn-os.fullname" . }}-security-config
+  namespace: {{ .Values.namespace | default "syn-os" }}-security
+  labels:
+    {{- include "syn-os.labels" . | nindent 4 }}
+    component: security
+data:
+  SECURITY_LEVEL: {{ .Values.security.level | default "enterprise" | quote }}
+  ZERO_TRUST_MODE: {{ .Values.security.zeroTrust | default true | quote }}
+  QUANTUM_ENCRYPTION: {{ .Values.security.quantumCrypto | default true | quote }}
+  THREAT_DETECTION: {{ .Values.security.threatDetection | default true | quote }}
+  AUDIT_LOGGING: {{ .Values.security.auditLogging | default true | quote }}
+  COMPLIANCE_MODE: {{ .Values.security.complianceMode | default "strict" | quote }}
+  {{- with .Values.security.extraConfig }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+{{- end }}

@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="fuzz4bounty" repository_source="starred" generated_at="2025-08-23T14:24:01.893300">
+  <repository_information>
+    <name>fuzz4bounty</name>
+    <full_name>0xPugal/fuzz4bounty</full_name>
+    <description>1337 Wordlists for Bug Bounty Hunting</description>
+    <stargazers_count>841</stargazers_count>
+    <size>6858</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-01-31T12:34:53+00:00</pushed_at>
+    <topics>
+      <item>bugbounty</item>
+      <item>dirsearch</item>
+      <item>ffuf</item>
+      <item>fuzz</item>
+      <item>wordlist</item>
+      <item>bruteforce</item>
+      <item>fuzz4bounty</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.66" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

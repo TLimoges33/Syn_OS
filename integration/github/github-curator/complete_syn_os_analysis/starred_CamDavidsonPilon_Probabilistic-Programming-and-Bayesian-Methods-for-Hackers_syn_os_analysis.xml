@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="Probabilistic-Programming-and-Bayesian-Methods-for-Hackers" repository_source="starred" generated_at="2025-08-23T14:27:20.217239">
+  <repository_information>
+    <name>Probabilistic-Programming-and-Bayesian-Methods-for-Hackers</name>
+    <full_name>CamDavidsonPilon/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers</full_name>
+    <description>aka &quot;Bayesian Methods for Hackers&quot;: An introduction to Bayesian methods + probabilistic programming with a computation/understanding-first, mathematics-second point of view. All in pure Python ;)  </description>
+    <language>Jupyter Notebook</language>
+    <stargazers_count>27759</stargazers_count>
+    <size>172065</size>
+    <open_issues_count>205</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <pushed_at>2024-06-25T20:42:58+00:00</pushed_at>
+    <license>
+      <name>MIT License</name>
+    </license>
+    <topics>
+      <item>bayesian-methods</item>
+      <item>pymc</item>
+      <item>mathematical-analysis</item>
+      <item>jupyter-notebook</item>
+      <item>data-science</item>
+      <item>statistics</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.73" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

@@ -1,0 +1,40 @@
+[Unit]
+Description=SynOS AI Engine Core Service
+Documentation=https://docs.synos.ai/ai-engine
+After=network.target
+Wants=synos-consciousness.service
+
+[Service]
+Type=notify
+User=synos
+Group=synos
+ExecStart=/usr/lib/synos/ai-engine/synos-ai-daemon
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=always
+RestartSec=5
+TimeoutStartSec=60
+TimeoutStopSec=30
+
+# Security settings
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/synos /var/log/synos
+PrivateTmp=true
+PrivateDevices=false
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictRealtime=true
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+# Environment
+Environment=SYNOS_AI_CONFIG=/etc/synos/ai-engine.conf
+Environment=SYNOS_LOG_LEVEL=info
+
+[Install]
+WantedBy=multi-user.target

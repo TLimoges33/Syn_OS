@@ -1,0 +1,2 @@
+# SynOS Local Repository
+deb [trusted=yes] file:///tmp/synos-repo ./

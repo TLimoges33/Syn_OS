@@ -1,0 +1,36 @@
+[Unit]
+Description=SynapticOS AI Consciousness Engine
+Documentation=https://github.com/Syn_OS-Dev-Team/Syn_OS
+After=network.target multi-user.target
+Wants=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/synos-ai-engine
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=5
+User=synos
+Group=synos
+Environment=RUST_LOG=info
+Environment=SYNOS_CONFIG_PATH=/etc/synos
+WorkingDirectory=/usr/share/synos
+StandardOutput=journal
+StandardError=journal
+
+# Security settings
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/synos /tmp
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+
+# Resource limits
+MemoryMax=2G
+CPUQuota=200%
+
+[Install]
+WantedBy=multi-user.target

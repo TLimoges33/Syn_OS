@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="redteam-research" repository_source="starred" generated_at="2025-08-23T14:26:26.455269">
+  <repository_information>
+    <name>redteam-research</name>
+    <full_name>blackarrowsec/redteam-research</full_name>
+    <description>Collection of PoC and offensive techniques used by the BlackArrow Red Team</description>
+    <language>C</language>
+    <stargazers_count>1134</stargazers_count>
+    <size>2360</size>
+    <open_issues_count>2</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2024-07-19T21:22:52+00:00</pushed_at>
+    <topics>
+      <item>redteam</item>
+      <item>research</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.66" level="medium"/>
+    <primary_category integration_level="core">kernel_modules</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

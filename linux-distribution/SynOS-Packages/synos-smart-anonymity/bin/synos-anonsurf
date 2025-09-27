@@ -1,0 +1,83 @@
+#!/usr/bin/env python3
+
+"""
+SynOS Adaptive AnonSurf Profiles - Main executable
+Entry point for dynamic anonymity configuration
+"""
+
+import sys
+import os
+import asyncio
+import argparse
+
+# Add the src directory to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'src'))
+
+from adaptive_anonsurf_profiles import AdaptiveAnonSurfProfiles, TaskType, RiskLevel
+
+async def main():
+    parser = argparse.ArgumentParser(description='SynOS Adaptive AnonSurf Profiles')
+    parser.add_argument('--start', type=str, help='Start AnonSurf with profile ID')
+    parser.add_argument('--stop', action='store_true', help='Stop AnonSurf and restore configuration')
+    parser.add_argument('--status', action='store_true', help='Show current AnonSurf status')
+    parser.add_argument('--list-profiles', action='store_true', help='List available profiles')
+    parser.add_argument('--adaptive', type=str, choices=[t.value for t in TaskType],
+                       help='Select adaptive profile for task type')
+    parser.add_argument('--risk-level', type=str, choices=[r.value for r in RiskLevel],
+                       help='Override risk level assessment')
+    parser.add_argument('--config', type=str, default='/etc/synos/phase4/anonsurf-profiles-config.yaml')
+
+    args = parser.parse_args()
+
+    profiles = AdaptiveAnonSurfProfiles(config_path=args.config)
+
+    if await profiles.initialize():
+        if args.start:
+            profile = profiles.profiles.get(args.start)
+            if profile:
+                success = await profiles.apply_profile(profile)
+                print(f"AnonSurf profile '{profile.name}' {'activated' if success else 'failed to activate'}")
+            else:
+                print(f"Profile '{args.start}' not found")
+
+        elif args.stop:
+            await profiles._restore_network_configuration()
+            print("AnonSurf deactivated, network configuration restored")
+
+        elif args.status:
+            if profiles.active_profile:
+                print(f"Active profile: {profiles.active_profile.name}")
+                print(f"Anonymity level: {profiles.active_profile.anonymity_level.value}")
+                print(f"Risk level: {profiles.active_profile.risk_level.value}")
+                print(f"Tor enabled: {profiles.active_profile.tor_enabled}")
+                print(f"VPN enabled: {profiles.active_profile.vpn_enabled}")
+                print(f"MAC spoofing: {profiles.active_profile.mac_spoofing}")
+            else:
+                print("No AnonSurf profile active")
+
+        elif args.list_profiles:
+            print("Available AnonSurf Profiles:")
+            for profile_id, profile in profiles.profiles.items():
+                print(f"  {profile_id}: {profile.name}")
+                print(f"    Level: {profile.anonymity_level.value}")
+                print(f"    Tasks: {', '.join([t.value for t in profile.task_types])}")
+
+        elif args.adaptive:
+            task_type = TaskType(args.adaptive)
+            risk_level = RiskLevel(args.risk_level) if args.risk_level else None
+
+            profile = await profiles.select_adaptive_profile(task_type, risk_level)
+            if profile:
+                success = await profiles.apply_profile(profile)
+                print(f"Adaptive profile selected and {'activated' if success else 'failed to activate'}")
+                print(f"Profile: {profile.name} ({profile.anonymity_level.value})")
+            else:
+                print("No suitable adaptive profile found")
+
+        else:
+            print("Use --help for available commands")
+
+    await profiles.shutdown()
+
+if __name__ == '__main__':
+    asyncio.run(main())

@@ -1,0 +1,64 @@
+name: Build and publish devcontainer image
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.devcontainer/**'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract SHA tag metadata
+        id: meta-sha
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/syn-os-dev-team/devcontainer
+          tags: |
+            type=sha
+
+      - name: Extract main tag metadata
+        if: github.ref == 'refs/heads/main'
+        id: meta-main
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/syn-os-dev-team/devcontainer
+          tags: |
+            type=raw,value=main
+
+      - name: Compose tag list
+        run: |
+          set -euo pipefail
+          echo "${{ steps.meta-sha.outputs.tags }}" > tags.txt
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "${{ steps.meta-main.outputs.tags }}" >> tags.txt
+          fi
+          echo "TAGS<<EOF" >> "$GITHUB_ENV"
+          cat tags.txt >> "$GITHUB_ENV"
+          echo "EOF" >> "$GITHUB_ENV"
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .devcontainer
+          file: .devcontainer/Dockerfile
+          push: true
+          tags: ${{ env.TAGS }}
+          labels: ${{ steps.meta-sha.outputs.labels }}

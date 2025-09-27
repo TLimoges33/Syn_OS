@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="vulnerable-container-hub" repository_source="starred" generated_at="2025-08-23T14:27:31.119442">
+  <repository_information>
+    <name>vulnerable-container-hub</name>
+    <full_name>OWASP/vulnerable-container-hub</full_name>
+    <description>VULCONHUB provides access to files to build your own hands-on vulnerable container image to learn and practice security</description>
+    <language>SCSS</language>
+    <stargazers_count>24</stargazers_count>
+    <size>728</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2023-04-14T04:35:13+00:00</pushed_at>
+    <license>
+      <name>MIT License</name>
+    </license>
+    <topics>
+      <item>ctf</item>
+      <item>docker</item>
+      <item>podman</item>
+      <item>security</item>
+      <item>vulnerability</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.72" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

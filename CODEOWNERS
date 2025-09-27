@@ -1,0 +1,24 @@
+# This file designates code owners for critical areas of Syn_OS
+
+# Format: path @github-username
+
+# Core architecture
+
+/src/ @TLimoges33
+/core/ @TLimoges33
+
+# New optimized structure
+
+/development/ @TLimoges33
+/infrastructure/ @TLimoges33
+/security/ @TLimoges33
+/integration/ @TLimoges33
+/operations/ @TLimoges33
+
+# Documentation
+
+/docs/ @TLimoges33
+
+# Legacy paths (if any remain)
+
+/scripts/ @TLimoges33

@@ -1,0 +1,97 @@
+# SynOS Application Ecosystem Container
+# AI-powered educational and security tools integration
+
+FROM ubuntu:22.04
+
+# Prevent interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install base dependencies
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    python3-dev \
+    nodejs \
+    npm \
+    golang-go \
+    rust-all \
+    cargo \
+    git \
+    curl \
+    wget \
+    build-essential \
+    libssl-dev \
+    libffi-dev \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python packages for AI and educational framework
+RUN pip3 install --no-cache-dir \
+    numpy \
+    pandas \
+    scikit-learn \
+    torch \
+    transformers \
+    fastapi \
+    uvicorn \
+    aiohttp \
+    websockets \
+    rich \
+    typer \
+    pydantic \
+    jupyter \
+    notebook \
+    ipython
+
+# Install Node.js packages for web applications
+RUN npm install -g \
+    typescript \
+    @types/node \
+    express \
+    socket.io \
+    webpack \
+    vite \
+    react \
+    vue \
+    svelte
+
+# Set up workspace
+WORKDIR /workspace
+
+# Create application directories
+RUN mkdir -p /workspace/{ai,research,userspace,data,tools}
+
+# Environment variables for consciousness integration
+ENV CONSCIOUSNESS_API=http://synos-consciousness-dev:9090
+ENV PARROT_TOOLS_INTEGRATION=enabled
+ENV EDUCATIONAL_FRAMEWORK=enabled
+ENV CONSCIOUSNESS_AWARE_APPS=enabled
+
+# Create application launcher script
+RUN echo '#!/bin/bash' > /workspace/launch-apps.sh && \
+    echo 'echo "🎯 SynOS Application Ecosystem Starting..."' >> /workspace/launch-apps.sh && \
+    echo 'cd /workspace' >> /workspace/launch-apps.sh && \
+    echo '# Start educational framework' >> /workspace/launch-apps.sh && \
+    echo 'if [ -f /workspace/userspace/educational_server.py ]; then' >> /workspace/launch-apps.sh && \
+    echo '    python3 /workspace/userspace/educational_server.py &' >> /workspace/launch-apps.sh && \
+    echo 'fi' >> /workspace/launch-apps.sh && \
+    echo '# Start AI services' >> /workspace/launch-apps.sh && \
+    echo 'if [ -f /workspace/ai/consciousness_bridge.py ]; then' >> /workspace/launch-apps.sh && \
+    echo '    python3 /workspace/ai/consciousness_bridge.py &' >> /workspace/launch-apps.sh && \
+    echo 'fi' >> /workspace/launch-apps.sh && \
+    echo 'echo "✅ Application ecosystem ready"' >> /workspace/launch-apps.sh && \
+    echo 'tail -f /dev/null' >> /workspace/launch-apps.sh && \
+    chmod +x /workspace/launch-apps.sh
+
+# Create development user
+RUN useradd -m -s /bin/bash synos && \
+    chown -R synos:synos /workspace
+
+# Expose application ports
+EXPOSE 5000 5001 5002 8000 8001
+
+# Switch to development user
+USER synos
+
+# Default command
+CMD ["/workspace/launch-apps.sh"]

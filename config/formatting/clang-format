@@ -1,0 +1,85 @@
+# Syn_OS C/C++ Code Formatting Configuration
+---
+# Based on the Linux kernel style with Syn_OS customizations
+
+BasedOnStyle: LLVM
+Language: Cpp
+
+# Indentation and spacing
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+IndentCaseLabels: true
+IndentPPDirectives: BeforeHash
+
+# Line length and wrapping
+ColumnLimit: 100
+BreakBeforeBraces: Linux
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
+
+# Alignment
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignOperands: true
+AlignTrailingComments: true
+
+# Spacing
+SpaceBeforeParens: ControlStatements
+SpaceAfterCStyleCast: false
+SpaceBeforeAssignmentOperators: true
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+
+# Line breaking
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortBlocksOnASingleLine: false
+
+# Pointers and references
+PointerAlignment: Right
+ReferenceAlignment: Right
+DerivePointerAlignment: false
+
+# Include sorting
+SortIncludes: true
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: "^<linux/"
+    Priority: 1
+  - Regex: "^<"
+    Priority: 2
+  - Regex: '^"synos/'
+    Priority: 3
+  - Regex: '^"'
+    Priority: 4
+
+# Comments
+ReflowComments: true
+
+# Function parameters
+BinPackParameters: false
+BinPackArguments: false
+
+# Penalties for breaking
+PenaltyBreakBeforeFirstCallParameter: 100
+PenaltyBreakComment: 300
+PenaltyBreakFirstLessLess: 120
+PenaltyBreakString: 1000
+PenaltyExcessCharacter: 1000000
+PenaltyReturnTypeOnItsOwnLine: 200
+
+# Special handling for eBPF and kernel code
+ForEachMacros:
+  - "bpf_for_each"
+  - "list_for_each"
+  - "list_for_each_safe"
+  - "for_each_set_bit"
+
+MacroBlockBegin: '^SEC\('
+MacroBlockEnd: "^$"
+
+# Keep empty lines for readability in kernel code
+MaxEmptyLinesToKeep: 2
+KeepEmptyLinesAtTheStartOfBlocks: false

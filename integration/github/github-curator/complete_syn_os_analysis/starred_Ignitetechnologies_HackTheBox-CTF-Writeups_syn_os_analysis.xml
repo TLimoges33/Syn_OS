@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="HackTheBox-CTF-Writeups" repository_source="starred" generated_at="2025-08-23T14:27:50.015589">
+  <repository_information>
+    <name>HackTheBox-CTF-Writeups</name>
+    <full_name>Ignitetechnologies/HackTheBox-CTF-Writeups</full_name>
+    <description>This cheasheet is aimed at the CTF Players and Beginners to help them sort Hack The Box Labs on the basis of Operating System and Difficulty.</description>
+    <stargazers_count>1660</stargazers_count>
+    <size>4235</size>
+    <open_issues_count>3</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2023-03-24T12:50:31+00:00</pushed_at>
+    <topics/>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.67" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

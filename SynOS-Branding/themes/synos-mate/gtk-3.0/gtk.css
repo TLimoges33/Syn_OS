@@ -1,0 +1,109 @@
+/* SynOS MATE Theme - Neural Dark */
+
+@define-color theme_bg_color #1a1a2e;
+@define-color theme_fg_color #e0e0e0;
+@define-color theme_selected_bg_color #00ffff;
+@define-color theme_selected_fg_color #000000;
+@define-color theme_base_color #16213e;
+@define-color theme_text_color #ffffff;
+@define-color theme_unfocused_bg_color #15152a;
+@define-color theme_unfocused_fg_color #c0c0c0;
+
+/* Window styling */
+window {
+    background-color: @theme_bg_color;
+    color: @theme_fg_color;
+    font-family: "Liberation Sans";
+}
+
+/* Header bars */
+headerbar {
+    background: linear-gradient(to bottom, #2a2a4a, #1a1a2e);
+    color: @theme_fg_color;
+    border-bottom: 1px solid #00ffff22;
+}
+
+/* Panel styling */
+.mate-panel {
+    background: linear-gradient(to bottom, #1a1a2e, #0f0f23);
+    color: #e0e0e0;
+    border: 1px solid #00ffff33;
+}
+
+/* Menu styling */
+menubar {
+    background: linear-gradient(to bottom, #1a1a2e, #16213e);
+    color: #e0e0e0;
+    border-bottom: 1px solid #00ffff22;
+}
+
+menu {
+    background-color: @theme_bg_color;
+    color: @theme_fg_color;
+    border: 1px solid #00ffff44;
+}
+
+menuitem:hover {
+    background-color: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+/* Button styling */
+button {
+    background: linear-gradient(to bottom, #2a2a4a, #1a1a2e);
+    color: @theme_fg_color;
+    border: 1px solid #00ffff44;
+    border-radius: 3px;
+}
+
+button:hover {
+    background: linear-gradient(to bottom, #3a3a5a, #2a2a4a);
+    border-color: #00ffff88;
+}
+
+button:active {
+    background: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+/* Entry/Input styling */
+entry {
+    background-color: @theme_base_color;
+    color: @theme_text_color;
+    border: 1px solid #00ffff44;
+    border-radius: 3px;
+}
+
+entry:focus {
+    border-color: @theme_selected_bg_color;
+    box-shadow: 0 0 3px #00ffff44;
+}
+
+/* Selection styling */
+*:selected,
+selection {
+    background-color: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+/* Scrollbar styling */
+scrollbar {
+    background-color: #16213e;
+}
+
+scrollbar slider {
+    background-color: #00ffff44;
+    border-radius: 3px;
+}
+
+scrollbar slider:hover {
+    background-color: #00ffff66;
+}
+
+/* Tooltip styling */
+tooltip {
+    background-color: #0f0f23;
+    color: #e0e0e0;
+    border: 1px solid #00ffff44;
+    border-radius: 3px;
+}

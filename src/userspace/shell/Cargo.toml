@@ -1,0 +1,25 @@
+[package]
+name = "synshell"
+version = "1.0.0"
+edition = "2021"
+authors = ["SynOS Development Team"]
+description = "Security-focused command interpreter for SynOS"
+license = "MIT"
+
+[dependencies]
+# Core dependencies for no_std environment
+linked_list_allocator = "0.10"
+
+[features]
+default = []
+std = []
+
+# Profiles managed at workspace level - removed from package
+
+[[bin]]
+name = "synshell"
+path = "main.rs"
+
+[lib]
+name = "synshell"
+path = "lib.rs"

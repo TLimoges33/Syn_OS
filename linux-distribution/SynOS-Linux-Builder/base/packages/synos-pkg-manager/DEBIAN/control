@@ -1,0 +1,10 @@
+Package: synos-pkg-manager
+Version: 1.0.0
+Section: admin
+Priority: optional
+Architecture: amd64
+Maintainer: SynOS Team <team@synos.dev>
+Description: SynPkg - SynOS Package Manager
+ Advanced package manager with AI-driven dependency resolution
+ and security-aware package installation
+Depends: apt, dpkg, python3, synos-consciousness

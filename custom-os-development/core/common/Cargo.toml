@@ -1,0 +1,20 @@
+[package]
+name = "common"
+version = "4.3.0"
+edition = "2021"
+authors = ["Syn_OS Team"]
+description = "Common utilities for Syn_OS"
+
+[dependencies]
+# Only no_std compatible dependencies for V1.0
+spin = { workspace = true }
+thiserror = { workspace = true, optional = true }
+serde_json = { workspace = true, optional = true }
+chrono = { workspace = true, optional = true }
+
+[features]
+default = []
+std = ["thiserror", "serde_json", "chrono"]
+
+[dev-dependencies]
+# Remove test dependencies that require std for now

@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="dnsReaper" repository_source="starred" generated_at="2025-08-23T14:24:19.581381">
+  <repository_information>
+    <name>dnsReaper</name>
+    <full_name>punk-security/dnsReaper</full_name>
+    <description>dnsReaper - subdomain takeover tool for attackers, bug bounty hunters and the blue team!</description>
+    <language>Python</language>
+    <stargazers_count>2140</stargazers_count>
+    <size>340</size>
+    <open_issues_count>29</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2024-10-23T11:08:37+00:00</pushed_at>
+    <license>
+      <name>GNU Affero General Public License v3.0</name>
+    </license>
+    <topics/>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.81" level="high"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

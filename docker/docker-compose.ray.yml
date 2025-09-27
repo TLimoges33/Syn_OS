@@ -1,0 +1,216 @@
+version: "3.8"
+
+services:
+  # Ray Head Node - Coordinates distributed consciousness processing
+  ray-head:
+    build:
+      context: ../services/consciousness-ray-distributed
+      dockerfile: Dockerfile
+    container_name: syn-os-ray-head
+    command:
+      [
+        "ray",
+        "start",
+        "--head",
+        "--dashboard-host=0.0.0.0",
+        "--dashboard-port=8265",
+        "--port=10001",
+      ]
+    ports:
+      - "8265:8265" # Ray Dashboard
+      - "10001:10001" # Ray Head Port
+      - "6379:6379" # Redis
+    volumes:
+      - consciousness_ray_data:/app/data
+      - consciousness_ray_logs:/app/logs
+    environment:
+      - RAY_DISABLE_IMPORT_WARNING=1
+      - PYTHONPATH=/app
+    env_file:
+      - ../services/consciousness-ray-distributed/ray-consciousness.env
+    restart: unless-stopped
+    networks:
+      - syn_os_consciousness
+    healthcheck:
+      test: ["CMD", "ray", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # Ray Worker Nodes - Process consciousness computations
+  ray-worker-1:
+    build:
+      context: ../services/consciousness-ray-distributed
+      dockerfile: Dockerfile
+    container_name: syn-os-ray-worker-1
+    command: ["ray", "start", "--address=ray-head:10001"]
+    depends_on:
+      - ray-head
+    volumes:
+      - consciousness_ray_data:/app/data
+      - consciousness_ray_logs:/app/logs
+    environment:
+      - RAY_DISABLE_IMPORT_WARNING=1
+      - PYTHONPATH=/app
+    env_file:
+      - ../services/consciousness-ray-distributed/ray-consciousness.env
+    restart: unless-stopped
+    networks:
+      - syn_os_consciousness
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "1.0"
+
+  ray-worker-2:
+    build:
+      context: ../services/consciousness-ray-distributed
+      dockerfile: Dockerfile
+    container_name: syn-os-ray-worker-2
+    command: ["ray", "start", "--address=ray-head:10001"]
+    depends_on:
+      - ray-head
+    volumes:
+      - consciousness_ray_data:/app/data
+      - consciousness_ray_logs:/app/logs
+    environment:
+      - RAY_DISABLE_IMPORT_WARNING=1
+      - PYTHONPATH=/app
+    env_file:
+      - ../services/consciousness-ray-distributed/ray-consciousness.env
+    restart: unless-stopped
+    networks:
+      - syn_os_consciousness
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "1.0"
+
+  ray-worker-3:
+    build:
+      context: ../services/consciousness-ray-distributed
+      dockerfile: Dockerfile
+    container_name: syn-os-ray-worker-3
+    command: ["ray", "start", "--address=ray-head:10001"]
+    depends_on:
+      - ray-head
+    volumes:
+      - consciousness_ray_data:/app/data
+      - consciousness_ray_logs:/app/logs
+    environment:
+      - RAY_DISABLE_IMPORT_WARNING=1
+      - PYTHONPATH=/app
+    env_file:
+      - ../services/consciousness-ray-distributed/ray-consciousness.env
+    restart: unless-stopped
+    networks:
+      - syn_os_consciousness
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "1.0"
+
+  ray-worker-4:
+    build:
+      context: ../services/consciousness-ray-distributed
+      dockerfile: Dockerfile
+    container_name: syn-os-ray-worker-4
+    command: ["ray", "start", "--address=ray-head:10001"]
+    depends_on:
+      - ray-head
+    volumes:
+      - consciousness_ray_data:/app/data
+      - consciousness_ray_logs:/app/logs
+    environment:
+      - RAY_DISABLE_IMPORT_WARNING=1
+      - PYTHONPATH=/app
+    env_file:
+      - ../services/consciousness-ray-distributed/ray-consciousness.env
+    restart: unless-stopped
+    networks:
+      - syn_os_consciousness
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "1.0"
+
+  # Distributed Consciousness Engine - Main application service
+  consciousness-ray-distributed:
+    build:
+      context: ../services/consciousness-ray-distributed
+      dockerfile: Dockerfile
+    container_name: syn-os-consciousness-ray-engine
+    command: ["python", "ray_consciousness_engine.py"]
+    depends_on:
+      - ray-head
+      - ray-worker-1
+      - ray-worker-2
+    ports:
+      - "8010:8000" # Consciousness API
+      - "9090:9090" # Metrics
+    volumes:
+      - consciousness_ray_data:/app/data
+      - consciousness_ray_logs:/app/logs
+      - consciousness_state:/app/consciousness_state
+    environment:
+      - RAY_ADDRESS=ray://ray-head:10001
+      - PYTHONPATH=/app
+    env_file:
+      - ../services/consciousness-ray-distributed/ray-consciousness.env
+    restart: unless-stopped
+    networks:
+      - syn_os_consciousness
+      - syn_os_backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Ray Dashboard Proxy - For external access to Ray monitoring
+  ray-dashboard-proxy:
+    image: nginx:alpine
+    container_name: syn-os-ray-dashboard-proxy
+    ports:
+      - "8266:80"
+    volumes:
+      - ./nginx-ray-dashboard.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - ray-head
+    networks:
+      - syn_os_consciousness
+    restart: unless-stopped
+
+volumes:
+  consciousness_ray_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/syn_os/data/consciousness/ray
+  consciousness_ray_logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/syn_os/logs/consciousness/ray
+  consciousness_state:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/syn_os/data/consciousness/state
+
+networks:
+  syn_os_consciousness:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+  syn_os_backend:
+    external: true

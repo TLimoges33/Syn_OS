@@ -1,0 +1,151 @@
+{
+  "name": "SynOS Development Environment",
+  "image": "mcr.microsoft.com/devcontainers/rust:latest",
+
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "installOhMyZsh": true,
+      "upgradePackages": true,
+      "username": "vscode",
+      "userUid": "1000",
+      "userGid": "1000"
+    },
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.11"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        // Performance optimizations for Codespaces
+        "telemetry.telemetryLevel": "off",
+        "editor.minimap.enabled": false,
+        "editor.semanticHighlighting.enabled": false,
+        "typescript.disableAutomaticTypeAcquisition": true,
+        "git.autofetch": false,
+        "extensions.autoCheckUpdates": false,
+
+        // Rust specific - disabled for performance
+        "rust-analyzer.checkOnSave": false,
+        "rust-analyzer.cargo.loadOutDirsFromCheck": false,
+        "rust-analyzer.procMacro.enable": false,
+
+        // Terminal
+        "terminal.integrated.defaultProfile.linux": "bash",
+
+        // File watching optimizations
+        "files.watcherExclude": {
+          "**/target/**": true,
+          "**/build/**": true,
+          "**/.cargo/**": true,
+          "**/node_modules/**": true
+        }
+      },
+
+      "extensions": [
+        // 10X Development Stack
+        "rust-lang.rust-analyzer",
+        "vadimcn.vscode-lldb",
+        "tamasfe.even-better-toml",
+
+        // AI Development (Modern Standard)
+        "github.copilot",
+        "github.copilot-chat",
+        "anthropic.claude-code",
+
+        // Security & DevOps
+        "ms-vscode.vscode-json",
+        "redhat.vscode-yaml",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "snyk-security.snyk-vulnerability-scanner",
+
+        // Collaboration & Git
+        "github.vscode-pull-request-github",
+        "github.codespaces",
+        "eamodio.gitlens",
+
+        // Code Quality
+        "ms-vscode.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-python.black-formatter",
+
+        // Documentation & Markdown
+        "yzhang.markdown-all-in-one",
+        "davidanson.vscode-markdownlint",
+
+        // Performance & Debugging
+        "ms-vscode.vscode-performance",
+        "ms-vscode.hexdump"
+      ]
+    }
+  },
+
+  "forwardPorts": [3000, 8000, 8080, 9090, 5000],
+
+  "portsAttributes": {
+    "3000": {
+      "label": "Frontend Development Server",
+      "onAutoForward": "notify"
+    },
+    "8000": {
+      "label": "Backend API Server",
+      "onAutoForward": "notify"
+    },
+    "8080": {
+      "label": "Development Web Server",
+      "onAutoForward": "notify"
+    },
+    "9090": {
+      "label": "Monitoring/Prometheus",
+      "onAutoForward": "ignore"
+    },
+    "5000": {
+      "label": "Security Dashboard",
+      "onAutoForward": "notify"
+    }
+  },
+
+  "onCreateCommand": "bash .devcontainer/setup.sh",
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
+
+  "remoteUser": "vscode",
+
+  "mounts": [
+    "source=${localWorkspaceFolder}/.cargo,target=/usr/local/cargo,type=bind,consistency=cached"
+  ],
+
+  "containerEnv": {
+    "CARGO_BUILD_JOBS": "4",
+    "NODE_OPTIONS": "--max-old-space-size=4096",
+    "RUST_BACKTRACE": "0",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "RUSTFLAGS": "-C link-arg=-fuse-ld=lld",
+
+    // MCP (Model Context Protocol) Configuration
+    "MCP_ENABLED": "true",
+    "MCP_CONFIG_PATH": "${containerWorkspaceFolder}/.kilocode/mcp-enhanced-secure.json",
+    "SYNOS_MCP_ACCESS": "full",
+    "CLAUDE_MCP_INTEGRATION": "enabled",
+    "COPILOT_MCP_ACCESS": "secure",
+
+    // AI Development Environment
+    "AI_TOOLS_INTEGRATION": "enabled",
+    "CONSCIOUSNESS_ACCESS": "development",
+    "SECURITY_AUDIT_INTEGRATION": "active",
+
+    // Development Security
+    "SECURE_MCP_MODE": "true",
+    "MCP_LOG_LEVEL": "info",
+    "AI_SANDBOX_MODE": "development"
+  }
+}

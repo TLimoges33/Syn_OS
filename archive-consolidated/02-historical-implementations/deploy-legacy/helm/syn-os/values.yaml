@@ -1,0 +1,178 @@
+# Default values for syn-os.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Global settings
+namespace: syn-os
+environment: production
+
+# Replica counts (used when autoscaling is disabled)
+replicaCount:
+  core: 3
+  security: 2
+
+# Container images
+image:
+  core:
+    repository: syn-os/core
+    tag: "" # defaults to chart appVersion
+  security:
+    repository: syn-os/security
+    tag: "" # defaults to chart appVersion
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# Service account configuration
+serviceAccount:
+  create: true
+  automount: false
+  annotations: {}
+  name: ""
+
+# Pod annotations
+podAnnotations: {}
+
+# Pod security context
+podSecurityContext: {}
+
+# Security context
+securityContext: {}
+
+# Service configuration
+service:
+  core:
+    type: ClusterIP
+    port: 8080
+    metricsPort: 9090
+  security:
+    type: ClusterIP
+    port: 8443
+    metricsPort: 9091
+
+# Ingress configuration
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts: []
+  tls: []
+
+# Persistence
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 10Gi
+  storageClass: ""
+
+# Core component configuration
+core:
+  logLevel: info
+  logFormat: json
+  performanceMode: balanced
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 10
+  readinessProbe:
+    initialDelaySeconds: 5
+    periodSeconds: 5
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 4Gi
+    requests:
+      cpu: 1000m
+      memory: 2Gi
+  extraEnv: []
+  extraConfig: {}
+
+# Security component configuration
+security:
+  enabled: true
+  mode: strict
+  level: enterprise
+  zeroTrust: true
+  quantumCrypto: true
+  threatDetection: true
+  auditLogging: true
+  complianceMode: strict
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 10
+  readinessProbe:
+    initialDelaySeconds: 5
+    periodSeconds: 5
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+  extraEnv: []
+  extraConfig: {}
+
+# Consciousness component configuration
+consciousness:
+  enabled: true
+
+# Monitoring configuration
+monitoring:
+  enabled: true
+
+# Autoscaling configuration
+autoscaling:
+  enabled: false
+  core:
+    minReplicas: 3
+    maxReplicas: 20
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+    behavior:
+      scaleDown:
+        stabilizationWindowSeconds: 300
+        policies:
+          - type: Percent
+            value: 50
+            periodSeconds: 60
+      scaleUp:
+        stabilizationWindowSeconds: 60
+        policies:
+          - type: Percent
+            value: 100
+            periodSeconds: 15
+  security:
+    minReplicas: 2
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 60
+    targetMemoryUtilizationPercentage: 70
+
+# Node selector
+nodeSelector: {}
+
+# Tolerations
+tolerations: []
+
+# Affinity
+affinity: {}
+
+# External dependencies
+postgresql:
+  enabled: true
+  auth:
+    postgresPassword: "changeme"
+    database: "synos"
+
+redis:
+  enabled: true
+  auth:
+    enabled: true
+    password: "changeme"
+
+nats:
+  enabled: true
+  config:
+    cluster:
+      enabled: true

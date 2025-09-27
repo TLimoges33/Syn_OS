@@ -1,0 +1,190 @@
+#!/usr/bin/env python3
+
+"""
+SynOS Advanced Vulnerability Assessment - Main executable
+Entry point for GOE methodology and contextual risk prioritization
+"""
+
+import sys
+import os
+import asyncio
+import argparse
+import json
+
+# Add the src directory to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'src'))
+
+from advanced_vulnerability_assessment import (
+    AdvancedVulnerabilityAnalyzer, VulnerabilityType, SystemCriticality,
+    RiskContext, AdvancedVulnerabilityAssessment
+)
+
+async def main():
+    parser = argparse.ArgumentParser(description='SynOS Advanced Vulnerability Assessment')
+    parser.add_argument('--analyze-code', type=str, help='Analyze source code file')
+    parser.add_argument('--language', type=str, choices=['python', 'c', 'javascript', 'java'],
+                       help='Source code language')
+    parser.add_argument('--system', type=str, help='Target system for assessment')
+    parser.add_argument('--criticality', type=str, choices=[c.value for c in SystemCriticality],
+                       default='medium', help='System criticality level')
+    parser.add_argument('--generate-goe', action='store_true', help='Generate Graph of Effort')
+    parser.add_argument('--vuln-db', action='store_true', help='Show vulnerability database')
+    parser.add_argument('--report', type=str, help='Generate assessment report for vulnerability ID')
+    parser.add_argument('--config', type=str, default='/etc/synos/phase4/vuln-assessment-config.yaml')
+
+    args = parser.parse_args()
+
+    analyzer = AdvancedVulnerabilityAnalyzer(config_path=args.config)
+
+    if await analyzer.initialize():
+        if args.analyze_code:
+            if not args.language:
+                print("Language parameter required for code analysis")
+                return
+
+            vulnerabilities = await analyzer.analyze_code_vulnerabilities(args.analyze_code, args.language)
+
+            print(f"Code Analysis Results for {args.analyze_code}:")
+            print(f"Found {len(vulnerabilities)} potential vulnerabilities")
+
+            for vuln in vulnerabilities:
+                print(f"\n  {vuln.title}")
+                print(f"  Type: {vuln.vulnerability_type.value}")
+                print(f"  CVSS Score: {vuln.cvss_score}")
+                print(f"  Description: {vuln.description}")
+
+                # Generate Graph of Effort for this vulnerability
+                if args.generate_goe:
+                    goe = await analyzer.generate_graph_of_effort(args.analyze_code, [vuln])
+                    print(f"  Graph of Effort: {len(goe.nodes)} nodes, {len(goe.edges)} edges")
+                    if goe.total_effort_scores:
+                        min_effort = min(goe.total_effort_scores.values())
+                        print(f"  Minimum exploit effort: {min_effort:.1f} hours")
+
+        elif args.vuln_db:
+            print("Vulnerability Database:")
+            for vuln_id, vuln in analyzer.vulnerability_db.items():
+                print(f"  {vuln_id}: {vuln.title}")
+                print(f"    CVE: {vuln.cve_id or 'N/A'}")
+                print(f"    Type: {vuln.vulnerability_type.value}")
+                print(f"    CVSS: {vuln.cvss_score}")
+                print(f"    Patch Available: {vuln.patch_available}")
+
+        elif args.report:
+            vuln = analyzer.vulnerability_db.get(args.report)
+            if not vuln:
+                print(f"Vulnerability '{args.report}' not found")
+                return
+
+            # Create risk context
+            risk_context = RiskContext(
+                system_criticality=SystemCriticality(args.criticality),
+                internet_exposure=True,
+                user_interaction_required=False,
+                authentication_required=True,
+                encryption_in_use=True,
+                monitoring_in_place=False,
+                patch_management_mature=True,
+                incident_response_ready=True,
+                business_impact_high=True,
+                compliance_requirements=['SOX', 'PCI-DSS']
+            )
+
+            # Generate Graph of Effort
+            goe = await analyzer.generate_graph_of_effort(args.system or "target_system", [vuln])
+
+            # Contextualize risk
+            contextualized_score = await analyzer.contextualize_vulnerability_risk(vuln, risk_context)
+
+            # Predict exploit likelihood
+            exploit_likelihood = await analyzer.predict_exploit_likelihood(vuln)
+
+            # Create assessment
+            assessment = AdvancedVulnerabilityAssessment(
+                assessment_id=f"ASSESS-{vuln.vuln_id}",
+                target_system=args.system or "target_system",
+                vulnerability_details=vuln,
+                exploit_paths=[],  # Would be populated in full implementation
+                graph_of_effort=goe,
+                risk_context=risk_context,
+                contextualized_score=contextualized_score,
+                priority_ranking=1,
+                recommended_actions=await analyzer.generate_recommendations(
+                    AdvancedVulnerabilityAssessment(
+                        assessment_id="temp",
+                        target_system=args.system or "target_system",
+                        vulnerability_details=vuln,
+                        exploit_paths=[],
+                        graph_of_effort=goe,
+                        risk_context=risk_context,
+                        contextualized_score=contextualized_score,
+                        priority_ranking=1,
+                        recommended_actions=[],
+                        assessment_time=vuln.discovery_date
+                    )
+                ),
+                assessment_time=vuln.discovery_date
+            )
+
+            # Export report
+            report = await analyzer.export_assessment_report(assessment)
+
+            print("Advanced Vulnerability Assessment Report")
+            print("=" * 50)
+            print(json.dumps(report, indent=2))
+
+        else:
+            # Interactive mode
+            print("SynOS Advanced Vulnerability Assessment - Interactive Mode")
+            print("Commands: analyze <file> <lang>, vuln-db, goe <system>, report <vuln_id>, exit")
+
+            while True:
+                try:
+                    command = input("vuln-analyzer> ").strip().split()
+
+                    if not command:
+                        continue
+
+                    if command[0] == 'exit':
+                        break
+
+                    elif command[0] == 'analyze' and len(command) >= 3:
+                        file_path, language = command[1], command[2]
+                        vulnerabilities = await analyzer.analyze_code_vulnerabilities(file_path, language)
+                        print(f"Found {len(vulnerabilities)} vulnerabilities in {file_path}")
+
+                    elif command[0] == 'vuln-db':
+                        print(f"Database contains {len(analyzer.vulnerability_db)} vulnerabilities")
+                        for vuln_id in list(analyzer.vulnerability_db.keys())[:5]:
+                            vuln = analyzer.vulnerability_db[vuln_id]
+                            print(f"  {vuln_id}: {vuln.title} (CVSS: {vuln.cvss_score})")
+
+                    elif command[0] == 'goe' and len(command) > 1:
+                        system = command[1]
+                        sample_vulns = list(analyzer.vulnerability_db.values())[:2]
+                        if sample_vulns:
+                            goe = await analyzer.generate_graph_of_effort(system, sample_vulns)
+                            print(f"Generated GOE for {system}: {len(goe.nodes)} nodes, {len(goe.attack_paths)} paths")
+
+                    elif command[0] == 'report' and len(command) > 1:
+                        vuln_id = command[1]
+                        if vuln_id in analyzer.vulnerability_db:
+                            print(f"Generating report for {vuln_id}...")
+                        else:
+                            print(f"Vulnerability {vuln_id} not found")
+
+                    elif command[0] == 'stats':
+                        print(f"Analysis Statistics: {analyzer.analysis_stats}")
+
+                    else:
+                        print("Unknown command")
+
+                except KeyboardInterrupt:
+                    break
+                except Exception as e:
+                    print(f"Error: {e}")
+
+    await analyzer.shutdown()
+
+if __name__ == '__main__':
+    asyncio.run(main())

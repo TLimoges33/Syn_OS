@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="Cybersecurity" repository_source="owned" generated_at="2025-08-23T14:22:18.831125">
+  <repository_information>
+    <name>Cybersecurity</name>
+    <full_name>TLimoges33/Cybersecurity</full_name>
+    <description>This is meant to assist people looking for entry level Cybersecurity jobs, as well as study up on skills that they can put on their resume.</description>
+    <stargazers_count>0</stargazers_count>
+    <size>231</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2024-02-07T10:47:07+00:00</pushed_at>
+    <license>
+      <name>MIT License</name>
+    </license>
+    <topics/>
+    <source>owned</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.58" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

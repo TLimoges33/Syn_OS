@@ -1,0 +1,50 @@
+# SynOS Development Aliases
+# Source this file in your .bashrc or .zshrc
+
+# Navigation aliases
+alias synos='cd "/home/diablorain/Syn_OS"'
+alias scripts='cd "/home/diablorain/Syn_OS/scripts"'
+alias docs='cd "/home/diablorain/Syn_OS/docs"'
+alias src='cd "/home/diablorain/Syn_OS/src"'
+
+# Git save system aliases
+alias save='/home/diablorain/Syn_OS/scripts/save'
+alias save-dev='/home/diablorain/Syn_OS/scripts/save-dev'
+alias save-prod='/home/diablorain/Syn_OS/scripts/save-prod'
+alias git-check='/home/diablorain/Syn_OS/scripts/git-status-check'
+alias save-reset='/home/diablorain/Syn_OS/scripts/save-reset'
+alias save-troubleshoot='/home/diablorain/Syn_OS/scripts/save-troubleshoot'
+
+# Development workflow aliases
+alias build-kernel='cargo build --manifest-path=src/kernel/Cargo.toml --target=x86_64-syn_os'
+alias build-security='cargo build --manifest-path=src/security/Cargo.toml'
+alias test-all='make test'
+alias security-audit='python3 scripts/a_plus_security_audit.py'
+alias validate-env='./scripts/validate-environment.sh'
+
+# Docker aliases
+alias docker-up='docker-compose -f docker-compose.yml up -d'
+alias docker-down='docker-compose -f docker-compose.yml down'
+alias docker-rebuild='docker-compose -f docker-compose.yml up -d --build'
+
+# Quick status checks
+alias gs='git status'
+alias gb='git branch -v'
+alias gl='git log --oneline -10'
+alias gd='git diff'
+
+# Safety aliases (prevent accidental operations)
+alias git-force-push='echo "Use save-dev or save-prod instead for safe operations"'
+alias git-reset-hard='echo "Use git-save-system.sh for safe operations with backups"'
+
+echo "SynOS Development Environment loaded!"
+echo "Available commands:"
+echo "  save              - Interactive save system"
+echo "  save-dev          - Save development work (dev-team-main -> main)"
+echo "  save-prod         - Save to production (main -> master)"
+echo "  git-check         - Comprehensive status check"
+echo "  save-reset        - Reset failure counter"
+echo "  save-troubleshoot - Advanced troubleshooting with Copilot"
+echo "  build-kernel      - Build kernel components"
+echo "  test-all          - Run all tests"
+echo "  docker-up         - Start development containers"

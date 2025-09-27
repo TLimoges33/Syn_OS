@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="curriculum" repository_source="starred" generated_at="2025-08-23T14:28:04.455536">
+  <repository_information>
+    <name>curriculum</name>
+    <full_name>bootdotdev/curriculum</full_name>
+    <description>An open roadmap for Boot.dev's backend development curriculum</description>
+    <stargazers_count>2864</stargazers_count>
+    <size>165</size>
+    <open_issues_count>30</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-07-02T16:29:33+00:00</pushed_at>
+    <topics>
+      <item>curriculum</item>
+      <item>computer-science</item>
+      <item>educational</item>
+      <item>javascript</item>
+      <item>python</item>
+      <item>golang</item>
+      <item>algorithms</item>
+      <item>students</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.78" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

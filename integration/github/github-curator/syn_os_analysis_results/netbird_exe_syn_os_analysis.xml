@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="netbird_exe" generated_at="2025-08-23T14:17:13.469280">
+  <repository_information>
+    <name>netbird_exe</name>
+    <full_name>TLimoges33/netbird_exe</full_name>
+    <description>Connect your devices into a secure WireGuard®-based overlay network with SSO, MFA and granular access controls.</description>
+    <stargazers_count>1</stargazers_count>
+    <size>40313</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-03-28T12:55:20+00:00</pushed_at>
+    <license>
+      <name>BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; License</name>
+    </license>
+    <topics/>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.61" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="core">networking_protocols</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

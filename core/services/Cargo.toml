@@ -1,0 +1,43 @@
+[package]
+name = "synos-services"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+# Workspace dependencies
+common = { path = "../common", features = ["std"] }
+
+# Service integration dependencies
+async-nats.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+futures.workspace = true
+
+# Async runtime
+tokio = { version = "1.35", features = ["full"] }
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = "0.3"
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Time utilities
+chrono = { version = "0.4", features = ["serde"] }
+
+# Base64 encoding
+base64 = "0.21"
+
+[dev-dependencies]
+tokio-test = "0.4"
+
+[features]
+default = ["nats", "service-discovery", "health-monitoring"]
+nats = []
+service-discovery = []
+health-monitoring = []
+testing = []

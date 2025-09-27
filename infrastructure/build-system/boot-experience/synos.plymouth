@@ -1,0 +1,11 @@
+# SynOS Plymouth Boot Splash Theme
+# Consciousness initialization animation with cybersecurity elements
+
+[Plymouth Theme]
+Name=SynOS Consciousness
+Description=SynOS v1.0 consciousness initialization boot splash
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/synos
+ScriptFile=/usr/share/plymouth/themes/synos/synos.script

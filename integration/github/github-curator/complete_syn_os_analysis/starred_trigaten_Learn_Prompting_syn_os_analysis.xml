@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="Learn_Prompting" repository_source="starred" generated_at="2025-08-23T14:23:39.132505">
+  <repository_information>
+    <name>Learn_Prompting</name>
+    <full_name>trigaten/Learn_Prompting</full_name>
+    <description>Prompt Engineering, Generative AI, and LLM Guide by Learn Prompting | Join our discord for the largest Prompt Engineering learning community</description>
+    <language>MDX</language>
+    <stargazers_count>4553</stargazers_count>
+    <size>1029942</size>
+    <open_issues_count>95</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <pushed_at>2025-01-14T15:04:07+00:00</pushed_at>
+    <license>
+      <name>Other</name>
+    </license>
+    <topics>
+      <item>gpt-3</item>
+      <item>prompting</item>
+      <item>prompt-engineering</item>
+      <item>gpt3</item>
+      <item>llm</item>
+      <item>chatgpt</item>
+      <item>gpt-4</item>
+      <item>gpt-4-api</item>
+      <item>large-language-models</item>
+      <item>nlp</item>
+      <item>transformers</item>
+      <item>chatgpt-api</item>
+      <item>deep-learning</item>
+      <item>machine-learning</item>
+      <item>prompt-tuning</item>
+      <item>prompt-toolkit</item>
+      <item>openai-api</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.88" level="high"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

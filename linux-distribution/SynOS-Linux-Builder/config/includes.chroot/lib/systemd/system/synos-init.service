@@ -1,0 +1,20 @@
+[Unit]
+Description=SynOS AI System Initialization
+Documentation=https://docs.synos.ai/initialization
+After=network.target
+After=graphical-session.target
+Wants=network.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/synos-init
+StandardOutput=journal
+StandardError=journal
+TimeoutStartSec=60
+
+# Environment
+Environment=SYNOS_LIVE_BOOT=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,195 @@
+# SynOS Security & eBPF Development Container
+# Advanced security orchestration with consciousness integration
+
+FROM ubuntu:22.04
+
+# Prevent interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install security and eBPF development dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    clang \
+    llvm \
+    libbpf-dev \
+    bpftool \
+    linux-headers-generic \
+    libelf-dev \
+    zlib1g-dev \
+    python3 \
+    python3-pip \
+    python3-dev \
+    git \
+    vim \
+    curl \
+    wget \
+    htop \
+    netcat \
+    nmap \
+    tcpdump \
+    wireshark-common \
+    strace \
+    gdb \
+    valgrind \
+    perf-tools-unstable \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Rust for security components
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+# Install Python security libraries
+RUN pip3 install --no-cache-dir \
+    rich \
+    typer \
+    pydantic \
+    fastapi \
+    uvicorn \
+    psutil \
+    scapy \
+    cryptography \
+    requests \
+    websockets \
+    asyncio \
+    aiohttp \
+    prometheus-client \
+    pycryptodome
+
+# Set up workspace
+WORKDIR /workspace
+
+# Create security directories
+RUN mkdir -p /workspace/{security,ebpf,kernel-module,data,logs,alerts}
+
+# Set environment variables
+ENV SECURITY_ROOT=/workspace/security
+ENV EBPF_ROOT=/workspace/ebpf
+ENV DATA_DIR=/workspace/data
+ENV LOG_DIR=/workspace/logs
+
+# Create security user
+RUN useradd -m -s /bin/bash security && \
+    usermod -aG sudo security && \
+    echo "security ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# Copy security development scripts
+COPY scripts/security-dev/ /workspace/scripts/
+
+# Make scripts executable
+RUN chmod +x /workspace/scripts/*.sh
+
+# Set up eBPF security monitoring
+RUN echo '#!/usr/bin/env python3' > /workspace/ebpf_security_monitor.py && \
+    echo 'import time' >> /workspace/ebpf_security_monitor.py && \
+    echo 'import json' >> /workspace/ebpf_security_monitor.py && \
+    echo 'import asyncio' >> /workspace/ebpf_security_monitor.py && \
+    echo 'from rich.console import Console' >> /workspace/ebpf_security_monitor.py && \
+    echo 'from rich.table import Table' >> /workspace/ebpf_security_monitor.py && \
+    echo 'from rich.live import Live' >> /workspace/ebpf_security_monitor.py && \
+    echo '' >> /workspace/ebpf_security_monitor.py && \
+    echo 'console = Console()' >> /workspace/ebpf_security_monitor.py && \
+    echo '' >> /workspace/ebpf_security_monitor.py && \
+    echo 'class EBPFSecurityMonitor:' >> /workspace/ebpf_security_monitor.py && \
+    echo '    def __init__(self):' >> /workspace/ebpf_security_monitor.py && \
+    echo '        self.threat_level = 0' >> /workspace/ebpf_security_monitor.py && \
+    echo '        self.events_processed = 0' >> /workspace/ebpf_security_monitor.py && \
+    echo '        self.consciousness_score = 0.5' >> /workspace/ebpf_security_monitor.py && \
+    echo '        console.print("🛡️ eBPF Security Monitor Initialized")' >> /workspace/ebpf_security_monitor.py && \
+    echo '' >> /workspace/ebpf_security_monitor.py && \
+    echo '    def create_status_table(self):' >> /workspace/ebpf_security_monitor.py && \
+    echo '        table = Table(title="🛡️ SynOS Security Monitor")' >> /workspace/ebpf_security_monitor.py && \
+    echo '        table.add_column("Metric", style="cyan")' >> /workspace/ebpf_security_monitor.py && \
+    echo '        table.add_column("Value", style="magenta")' >> /workspace/ebpf_security_monitor.py && \
+    echo '        table.add_row("Threat Level", f"{self.threat_level}")' >> /workspace/ebpf_security_monitor.py && \
+    echo '        table.add_row("Events Processed", f"{self.events_processed}")' >> /workspace/ebpf_security_monitor.py && \
+    echo '        table.add_row("Consciousness Score", f"{self.consciousness_score:.2f}")' >> /workspace/ebpf_security_monitor.py && \
+    echo '        return table' >> /workspace/ebpf_security_monitor.py && \
+    echo '' >> /workspace/ebpf_security_monitor.py && \
+    echo '    async def monitor_security(self):' >> /workspace/ebpf_security_monitor.py && \
+    echo '        with Live(self.create_status_table(), refresh_per_second=2) as live:' >> /workspace/ebpf_security_monitor.py && \
+    echo '            while True:' >> /workspace/ebpf_security_monitor.py && \
+    echo '                self.events_processed += 1' >> /workspace/ebpf_security_monitor.py && \
+    echo '                self.consciousness_score += 0.01' >> /workspace/ebpf_security_monitor.py && \
+    echo '                live.update(self.create_status_table())' >> /workspace/ebpf_security_monitor.py && \
+    echo '                await asyncio.sleep(0.5)' >> /workspace/ebpf_security_monitor.py && \
+    echo '' >> /workspace/ebpf_security_monitor.py && \
+    echo 'if __name__ == "__main__":' >> /workspace/ebpf_security_monitor.py && \
+    echo '    monitor = EBPFSecurityMonitor()' >> /workspace/ebpf_security_monitor.py && \
+    echo '    asyncio.run(monitor.monitor_security())' >> /workspace/ebpf_security_monitor.py && \
+    chmod +x /workspace/ebpf_security_monitor.py
+
+# Set up threat analysis engine
+RUN echo '#!/usr/bin/env python3' > /workspace/threat_analyzer.py && \
+    echo 'from fastapi import FastAPI' >> /workspace/threat_analyzer.py && \
+    echo 'import uvicorn' >> /workspace/threat_analyzer.py && \
+    echo 'import random' >> /workspace/threat_analyzer.py && \
+    echo '' >> /workspace/threat_analyzer.py && \
+    echo 'app = FastAPI(title="SynOS Threat Analyzer")' >> /workspace/threat_analyzer.py && \
+    echo '' >> /workspace/threat_analyzer.py && \
+    echo '@app.get("/")' >> /workspace/threat_analyzer.py && \
+    echo 'async def root():' >> /workspace/threat_analyzer.py && \
+    echo '    return {"message": "🛡️ SynOS Threat Analyzer Active"}' >> /workspace/threat_analyzer.py && \
+    echo '' >> /workspace/threat_analyzer.py && \
+    echo '@app.get("/threats")' >> /workspace/threat_analyzer.py && \
+    echo 'async def get_threats():' >> /workspace/threat_analyzer.py && \
+    echo '    return {' >> /workspace/threat_analyzer.py && \
+    echo '        "active_threats": random.randint(0, 5),' >> /workspace/threat_analyzer.py && \
+    echo '        "threat_level": random.choice(["LOW", "MEDIUM", "HIGH"]),' >> /workspace/threat_analyzer.py && \
+    echo '        "consciousness_correlation": random.uniform(0.1, 0.9),' >> /workspace/threat_analyzer.py && \
+    echo '        "ebpf_events": random.randint(100, 1000)' >> /workspace/threat_analyzer.py && \
+    echo '    }' >> /workspace/threat_analyzer.py && \
+    echo '' >> /workspace/threat_analyzer.py && \
+    echo 'if __name__ == "__main__":' >> /workspace/threat_analyzer.py && \
+    echo '    uvicorn.run(app, host="0.0.0.0", port=9091)' >> /workspace/threat_analyzer.py && \
+    chmod +x /workspace/threat_analyzer.py
+
+# Set up consciousness integration bridge
+RUN echo '#!/usr/bin/env python3' > /workspace/consciousness_bridge.py && \
+    echo 'import asyncio' >> /workspace/consciousness_bridge.py && \
+    echo 'import requests' >> /workspace/consciousness_bridge.py && \
+    echo 'from rich.console import Console' >> /workspace/consciousness_bridge.py && \
+    echo '' >> /workspace/consciousness_bridge.py && \
+    echo 'console = Console()' >> /workspace/consciousness_bridge.py && \
+    echo '' >> /workspace/consciousness_bridge.py && \
+    echo 'class ConsciousnessBridge:' >> /workspace/consciousness_bridge.py && \
+    echo '    def __init__(self):' >> /workspace/consciousness_bridge.py && \
+    echo '        self.consciousness_api = "http://synos-consciousness-dev:9090"' >> /workspace/consciousness_bridge.py && \
+    echo '        console.print("🌉 Consciousness Bridge Initialized")' >> /workspace/consciousness_bridge.py && \
+    echo '' >> /workspace/consciousness_bridge.py && \
+    echo '    async def sync_with_consciousness(self):' >> /workspace/consciousness_bridge.py && \
+    echo '        while True:' >> /workspace/consciousness_bridge.py && \
+    echo '            try:' >> /workspace/consciousness_bridge.py && \
+    echo '                response = requests.get(f"{self.consciousness_api}/status")' >> /workspace/consciousness_bridge.py && \
+    echo '                if response.status_code == 200:' >> /workspace/consciousness_bridge.py && \
+    echo '                    data = response.json()' >> /workspace/consciousness_bridge.py && \
+    echo '                    console.print(f"🧠 Consciousness Level: {data.get(\"consciousness_level\", 0)}")' >> /workspace/consciousness_bridge.py && \
+    echo '            except Exception as e:' >> /workspace/consciousness_bridge.py && \
+    echo '                console.print(f"⚠️ Consciousness connection failed: {e}")' >> /workspace/consciousness_bridge.py && \
+    echo '            await asyncio.sleep(5)' >> /workspace/consciousness_bridge.py && \
+    echo '' >> /workspace/consciousness_bridge.py && \
+    echo 'if __name__ == "__main__":' >> /workspace/consciousness_bridge.py && \
+    echo '    bridge = ConsciousnessBridge()' >> /workspace/consciousness_bridge.py && \
+    echo '    asyncio.run(bridge.sync_with_consciousness())' >> /workspace/consciousness_bridge.py && \
+    chmod +x /workspace/consciousness_bridge.py
+
+# Create security startup script
+RUN echo '#!/bin/bash' > /workspace/start_security.sh && \
+    echo 'echo "🛡️ Starting SynOS Security Framework..."' >> /workspace/start_security.sh && \
+    echo 'cd /workspace' >> /workspace/start_security.sh && \
+    echo 'python3 threat_analyzer.py &' >> /workspace/start_security.sh && \
+    echo 'python3 consciousness_bridge.py &' >> /workspace/start_security.sh && \
+    echo 'python3 ebpf_security_monitor.py' >> /workspace/start_security.sh && \
+    chmod +x /workspace/start_security.sh
+
+# Expose security API ports
+EXPOSE 9091
+
+# Switch to security user
+USER security
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:9091/threats || exit 1
+
+# Default command
+CMD ["/workspace/start_security.sh"]

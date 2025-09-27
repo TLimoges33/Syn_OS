@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="TryHackMe-CTF-Writeups" repository_source="starred" generated_at="2025-08-23T14:27:37.933390">
+  <repository_information>
+    <name>TryHackMe-CTF-Writeups</name>
+    <full_name>Ignitetechnologies/TryHackMe-CTF-Writeups</full_name>
+    <stargazers_count>205</stargazers_count>
+    <size>1661</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2022-10-23T15:07:03+00:00</pushed_at>
+    <topics/>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.55" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="RedEye" repository_source="starred" generated_at="2025-08-23T14:26:53.693483">
+  <repository_information>
+    <name>RedEye</name>
+    <full_name>cisagov/RedEye</full_name>
+    <description>RedEye is a visual analytic tool supporting Red &amp; Blue Team operations</description>
+    <language>TypeScript</language>
+    <stargazers_count>2730</stargazers_count>
+    <size>16705</size>
+    <open_issues_count>4</open_issues_count>
+    <fork>False</fork>
+    <archived>True</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <pushed_at>2023-10-20T10:45:05+00:00</pushed_at>
+    <license>
+      <name>BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; License</name>
+    </license>
+    <topics>
+      <item>blue-team</item>
+      <item>cybersecurity</item>
+      <item>red-team</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.75" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="interface">web_interfaces</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

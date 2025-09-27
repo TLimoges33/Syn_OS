@@ -1,0 +1,21 @@
+# SynOS Monitoring Requirements
+# Performance monitoring and metrics collection dependencies
+
+# Core monitoring
+prometheus-client==0.20.0
+psutil==5.9.8
+
+# Web server for metrics
+fastapi==0.110.0
+uvicorn[standard]==0.27.1
+
+# Async support
+asyncio-mqtt==0.16.2
+
+# Logging and utilities  
+structlog==24.1.0
+click==8.1.7
+
+# Optional: Advanced monitoring
+# grafana-client==1.0.0
+# influxdb-client==1.45.0

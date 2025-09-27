@@ -1,0 +1,376 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: synos-production
+  labels:
+    name: synos-production
+    component: consciousness-os
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consciousness-engine
+  namespace: synos-production
+  labels:
+    app: consciousness-engine
+    component: ai-core
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: consciousness-engine
+  template:
+    metadata:
+      labels:
+        app: consciousness-engine
+        component: ai-core
+    spec:
+      containers:
+      - name: consciousness-engine
+        image: synos/consciousness:latest
+        ports:
+        - containerPort: 8081
+          name: health
+        - containerPort: 4222
+          name: nats
+        env:
+        - name: CONSCIOUSNESS_MODE
+          value: "production"
+        - name: NEURAL_DARWINISM_ENABLED
+          value: "true"
+        - name: PERFORMANCE_OPTIMIZATION
+          value: "maximum"
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8081
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8081
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        volumeMounts:
+        - name: consciousness-data
+          mountPath: /app/data
+        - name: consciousness-config
+          mountPath: /app/config
+      volumes:
+      - name: consciousness-data
+        persistentVolumeClaim:
+          claimName: consciousness-data-pvc
+      - name: consciousness-config
+        configMap:
+          name: consciousness-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: consciousness-engine-service
+  namespace: synos-production
+  labels:
+    app: consciousness-engine
+spec:
+  selector:
+    app: consciousness-engine
+  ports:
+  - name: health
+    port: 8081
+    targetPort: 8081
+  - name: nats
+    port: 4222
+    targetPort: 4222
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: security-framework
+  namespace: synos-production
+  labels:
+    app: security-framework
+    component: security-core
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: security-framework
+  template:
+    metadata:
+      labels:
+        app: security-framework
+        component: security-core
+    spec:
+      containers:
+      - name: security-framework
+        image: synos/security:latest
+        ports:
+        - containerPort: 8082
+          name: security-api
+        env:
+        - name: EBPF_MONITORING
+          value: "enabled"
+        - name: THREAT_DETECTION
+          value: "realtime"
+        - name: CONSCIOUSNESS_INTEGRATION
+          value: "enabled"
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+            - SYS_ADMIN
+            - NET_ADMIN
+        volumeMounts:
+        - name: ebpf-programs
+          mountPath: /opt/ebpf
+        - name: security-logs
+          mountPath: /var/log/security
+      volumes:
+      - name: ebpf-programs
+        hostPath:
+          path: /sys/fs/bpf
+          type: Directory
+      - name: security-logs
+        persistentVolumeClaim:
+          claimName: security-logs-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: security-framework-service
+  namespace: synos-production
+  labels:
+    app: security-framework
+spec:
+  selector:
+    app: security-framework
+  ports:
+  - name: security-api
+    port: 8082
+    targetPort: 8082
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: educational-platform
+  namespace: synos-production
+  labels:
+    app: educational-platform
+    component: education-core
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: educational-platform
+  template:
+    metadata:
+      labels:
+        app: educational-platform
+        component: education-core
+    spec:
+      containers:
+      - name: educational-platform
+        image: synos/education:latest
+        ports:
+        - containerPort: 3000
+          name: web-interface
+        - containerPort: 8083
+          name: api
+        env:
+        - name: EDUCATION_MODE
+          value: "interactive"
+        - name: CONSCIOUSNESS_TUTOR
+          value: "enabled"
+        - name: CYBERSECURITY_CURRICULUM
+          value: "complete"
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "3Gi"
+            cpu: "1500m"
+        volumeMounts:
+        - name: education-content
+          mountPath: /app/content
+        - name: student-progress
+          mountPath: /app/data/progress
+      volumes:
+      - name: education-content
+        persistentVolumeClaim:
+          claimName: education-content-pvc
+      - name: student-progress
+        persistentVolumeClaim:
+          claimName: student-progress-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: educational-platform-service
+  namespace: synos-production
+  labels:
+    app: educational-platform
+spec:
+  selector:
+    app: educational-platform
+  ports:
+  - name: web-interface
+    port: 3000
+    targetPort: 3000
+  - name: api
+    port: 8083
+    targetPort: 8083
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: consciousness-config
+  namespace: synos-production
+data:
+  consciousness.yaml: |
+    neural_darwinism:
+      enabled: true
+      population_size: 100
+      mutation_rate: 0.01
+      fitness_threshold: 0.95
+    performance:
+      optimization_level: maximum
+      resource_allocation: adaptive
+      real_time_processing: true
+    security:
+      threat_detection: realtime
+      behavioral_analysis: enabled
+      zero_day_resistance: true
+    education:
+      adaptive_learning: true
+      personalization: enabled
+      progress_tracking: comprehensive
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: consciousness-data-pvc
+  namespace: synos-production
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast-ssd
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: security-logs-pvc
+  namespace: synos-production
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: shared-storage
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: education-content-pvc
+  namespace: synos-production
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: shared-storage
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: student-progress-pvc
+  namespace: synos-production
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: fast-ssd
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: consciousness-network-policy
+  namespace: synos-production
+spec:
+  podSelector:
+    matchLabels:
+      app: consciousness-engine
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          component: security-core
+    - podSelector:
+        matchLabels:
+          component: education-core
+    ports:
+    - protocol: TCP
+      port: 8081
+    - protocol: TCP
+      port: 4222
+  egress:
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: consciousness-engine-hpa
+  namespace: synos-production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: consciousness-engine
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80

@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="ja4" repository_source="starred" generated_at="2025-08-23T14:25:13.128921">
+  <repository_information>
+    <name>ja4</name>
+    <full_name>FoxIO-LLC/ja4</full_name>
+    <description>JA4+ is a suite of network fingerprinting standards</description>
+    <language>Rust</language>
+    <stargazers_count>1440</stargazers_count>
+    <size>15650</size>
+    <open_issues_count>15</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-08-07T15:35:48+00:00</pushed_at>
+    <license>
+      <name>Other</name>
+    </license>
+    <topics>
+      <item>cybersecurity</item>
+      <item>ja3</item>
+      <item>ja3-fingerprint</item>
+      <item>jarm</item>
+      <item>network-analysis</item>
+      <item>network-forensics</item>
+      <item>ja4</item>
+      <item>ja4-fingerprint</item>
+      <item>ja4h</item>
+      <item>ja4x</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.88" level="high"/>
+    <primary_category integration_level="security">security_frameworks</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

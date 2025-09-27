@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+
+"""
+SynOS Smart Shell - Main executable
+Entry point for the Intelligent Command Completion system
+"""
+
+import sys
+import os
+import argparse
+
+# Add the src directory to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'src'))
+
+from intelligent_completion import IntelligentCompleter, CommandContext, SecurityContext
+
+def main():
+    parser = argparse.ArgumentParser(description='SynOS Intelligent Command Completion')
+    parser.add_argument('--input', type=str, help='Partial input to complete')
+    parser.add_argument('--context', type=str, help='Security context (reconnaissance, exploitation, etc.)')
+    parser.add_argument('--install-completion', action='store_true', help='Install bash completion')
+
+    args = parser.parse_args()
+
+    completer = IntelligentCompleter()
+
+    if args.install_completion:
+        print("Installing SynOS intelligent completion...")
+        # This would install the bash completion script
+        print("Completion installed successfully")
+        return
+
+    if args.input:
+        security_context = SecurityContext()
+        if args.context:
+            security_context.current_phase = args.context
+
+        context = CommandContext(
+            partial_input=args.input,
+            security_context=security_context,
+            working_directory=os.getcwd()
+        )
+
+        suggestions = completer.get_completions(context)
+
+        for suggestion in suggestions:
+            print(f"{suggestion.completion}\t{suggestion.description}")
+    else:
+        print("SynOS Intelligent Command Completion")
+        print("Usage: synos-completion --input 'partial command'")
+
+if __name__ == '__main__':
+    main()

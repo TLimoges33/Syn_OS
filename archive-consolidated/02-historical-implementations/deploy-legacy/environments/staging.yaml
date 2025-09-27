@@ -1,0 +1,97 @@
+# Staging Environment Configuration
+environment: staging
+namespace: syn-os-staging
+
+# Moderate replica counts for staging
+replicaCount:
+  core: 2
+  security: 2
+
+# Use staging images
+image:
+  core:
+    tag: "staging-latest"
+  security:
+    tag: "staging-latest"
+
+# Staging core configuration
+core:
+  logLevel: info
+  performanceMode: balanced
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+  extraEnv:
+    - name: SYN_OS_DEBUG_ENABLED
+      value: "false"
+    - name: SYN_OS_METRICS_DETAILED
+      value: "true"
+
+# Enhanced security for staging
+security:
+  mode: strict
+  level: enterprise
+  auditLogging: true
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 250m
+      memory: 512Mi
+
+# Enable persistence with standard storage
+persistence:
+  enabled: true
+  size: 20Gi
+  storageClass: standard
+
+# Moderate autoscaling
+autoscaling:
+  enabled: true
+  core:
+    minReplicas: 2
+    maxReplicas: 6
+    targetCPUUtilizationPercentage: 70
+  security:
+    minReplicas: 1
+    maxReplicas: 4
+    targetCPUUtilizationPercentage: 70
+
+# Staging external dependencies
+postgresql:
+  enabled: true
+  primary:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1Gi
+      requests:
+        cpu: 250m
+        memory: 512Mi
+
+redis:
+  enabled: true
+  master:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1Gi
+      requests:
+        cpu: 250m
+        memory: 512Mi
+
+nats:
+  enabled: true
+  nats:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1Gi
+      requests:
+        cpu: 250m
+        memory: 512Mi

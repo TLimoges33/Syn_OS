@@ -1,0 +1,33 @@
+
+# Quantum Hardware Configuration
+quantum_hardware:
+  providers:
+    - name: "IBM Quantum"
+      backend: "ibm_quantum"
+      qubits: 127
+      connectivity: "heavy_hex"
+      fidelity: 0.999
+      
+    - name: "Google Quantum"
+      backend: "google_quantum"
+      qubits: 70
+      connectivity: "sycamore"
+      fidelity: 0.9985
+      
+    - name: "Rigetti"
+      backend: "rigetti_quantum"
+      qubits: 80
+      connectivity: "linear"
+      fidelity: 0.998
+
+  error_correction:
+    surface_code: true
+    repetition_code: true
+    color_code: false
+    threshold: 0.01
+    
+  optimization:
+    gate_optimization: true
+    circuit_compression: true
+    noise_mitigation: true
+    calibration_frequency: 3600  # seconds

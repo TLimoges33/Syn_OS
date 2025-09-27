@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+
+"""
+SynOS NLP Command Interface - Main executable
+Entry point for the Natural Language Processing command interface
+"""
+
+import sys
+import os
+import asyncio
+import argparse
+
+# Add the src directory to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'src'))
+
+from nlp_command_processor import NLPCommandProcessor
+
+async def main():
+    parser = argparse.ArgumentParser(description='SynOS Natural Language Command Interface')
+    parser.add_argument('--daemon', action='store_true', help='Run as daemon service')
+    parser.add_argument('--command', type=str, help='Process single command')
+    parser.add_argument('--config', type=str, default='/etc/synos/phase3/nlp-config.yaml', help='Configuration file path')
+
+    args = parser.parse_args()
+
+    # Initialize NLP processor
+    processor = NLPCommandProcessor(config_path=args.config)
+    await processor.initialize()
+
+    if args.daemon:
+        print("Starting SynOS NLP Interface daemon...")
+        await processor.start_daemon()
+    elif args.command:
+        print(f"Processing command: {args.command}")
+        result = await processor.process_command(args.command)
+        print(f"Result: {result}")
+    else:
+        # Interactive mode
+        print("SynOS NLP Interface - Interactive Mode")
+        print("Type 'exit' to quit")
+
+        while True:
+            try:
+                command = input("synos-nlp> ")
+                if command.lower() in ['exit', 'quit']:
+                    break
+                if command.strip():
+                    result = await processor.process_command(command)
+                    print(f"Result: {result}")
+            except KeyboardInterrupt:
+                break
+            except Exception as e:
+                print(f"Error: {e}")
+
+    await processor.shutdown()
+
+if __name__ == '__main__':
+    asyncio.run(main())

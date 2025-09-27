@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="Red-Baron" repository_source="starred" generated_at="2025-08-23T14:26:43.459748">
+  <repository_information>
+    <name>Red-Baron</name>
+    <full_name>Coalfire-Research/Red-Baron</full_name>
+    <description>Automate creating resilient, disposable, secure and agile infrastructure for Red Teams.</description>
+    <language>HCL</language>
+    <stargazers_count>910</stargazers_count>
+    <size>29435</size>
+    <open_issues_count>12</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2021-04-06T23:11:27+00:00</pushed_at>
+    <license>
+      <name>GNU General Public License v3.0</name>
+    </license>
+    <topics>
+      <item>infrastructure-as-code</item>
+      <item>security-tools</item>
+      <item>red-teams</item>
+      <item>terraform-module</item>
+      <item>terraform</item>
+      <item>security</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.76" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

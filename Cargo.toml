@@ -1,0 +1,143 @@
+[workspace]
+resolver = "2"
+members = [
+    "core/security", 
+    "core/ai",
+    "core/common",
+    "core/services",
+    "src/kernel",
+    "src/userspace/shell",
+    "src/userspace/synpkg",
+    "src/graphics",
+    "src/desktop",
+    "src/ai-engine",
+    "src/drivers/ai-accelerator",
+    "src/tools/distro-builder",
+    "src/tools/ai-model-manager"
+]
+
+[workspace.package]
+version = "4.3.0"
+edition = "2021"
+authors = ["Syn_OS Team"]
+repository = "https://github.com/Syn_OS-Dev-Team/Syn_OS"
+license = "MIT"
+
+[workspace.dependencies]
+# ===================
+# CORE KERNEL DEPENDENCIES
+# ===================
+bootloader = "0.10.12"
+volatile = "0.4.6"
+spin = "0.9.8"
+x86_64 = "0.14.10"
+pic8259 = "0.10.4"
+pc-keyboard = "0.7.0"
+linked_list_allocator = "0.10.5"
+lazy_static = { version = "1.5", features = ["spin_no_std"] }
+uart_16550 = "0.2"
+
+# ===================
+# SERVICE INTEGRATION DEPENDENCIES
+# ===================
+async-nats = "0.33"
+uuid = { version = "1.6", default-features = false, features = ["v4"] }
+
+# ===================
+# AI/CONSCIOUSNESS DEPENDENCIES
+# ===================
+candle-core = { version = "0.3.1" }
+candle-nn = { version = "0.3.1" }
+tokenizers = { version = "0.15.0" }
+# ONNX Runtime for cross-platform model execution
+ort = { version = "1.16.0" }
+# PyTorch bindings for Rust
+tch = { version = "0.13.0" }
+
+# ===================
+# IPC & MESSAGING
+# ===================
+zeromq = { version = "0.5.0-pre" }
+nng = { version = "1.0.0" }
+
+# ===================
+# LINUX DISTRIBUTION DEPENDENCIES
+# ===================
+systemd = { version = "0.10.0" }
+dbus = { version = "0.9.0" }
+nix = { version = "0.27.0" }
+libc = { version = "0.2.0" }
+
+# ===================
+# SERIALIZATION & DATA
+# ===================
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0" }
+
+# ===================
+# ERROR HANDLING & LOGGING
+# ===================
+anyhow = { version = "1.0.75", default-features = false }
+thiserror = { version = "1.0.50", default-features = false }
+chrono = { version = "0.4", default-features = false, features = ["serde"] }
+log = { version = "0.4", default-features = false }
+tracing = { version = "0.1", default-features = false }
+
+# ===================
+# ASYNC RUNTIME
+# ===================
+tokio = { version = "1.32", default-features = false, features = ["rt", "macros"] }
+futures = { version = "0.3", default-features = false }
+
+# ===================
+# CRYPTOGRAPHY
+# ===================
+ring = "0.17"
+chacha20poly1305 = "0.10"
+ed25519-dalek = "2.0"
+x25519-dalek = "2.0"
+
+# ===================
+# DEVELOPMENT TOOLS
+# ===================
+clap = { version = "4.4", features = ["derive"] }
+
+# ===================
+# TESTING FRAMEWORK
+# ===================
+criterion = { version = "0.5", features = ["html_reports"] }
+proptest = "1.4"
+
+# ===================
+# OPTIMIZATION PROFILES
+# ===================
+[profile.release]
+# Production kernel optimization - Maximum performance
+opt-level = 3           # Maximum optimization
+lto = "fat"            # Link-time optimization across all dependencies
+codegen-units = 1      # Single codegen unit for maximum optimization
+panic = "abort"        # Abort on panic (smaller binary, faster)
+strip = true           # Strip debug symbols from binary
+overflow-checks = false # Disable overflow checks in release (kernel handles this)
+
+[profile.release-small]
+# Size-optimized build for embedded systems
+inherits = "release"
+opt-level = "z"        # Optimize for size
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[profile.dev]
+# Fast compilation for development
+opt-level = 0
+debug = true
+panic = "abort"  # Changed to abort for kernel compatibility
+overflow-checks = true
+
+[profile.dev-fast]
+# Development with some optimizations
+inherits = "dev"
+opt-level = 1          # Basic optimization for faster execution
+debug = 1              # Reduced debug info for faster builds

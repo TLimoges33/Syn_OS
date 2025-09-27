@@ -1,0 +1,235 @@
+# SynOS Plymouth Boot Splash Script
+# Advanced consciousness initialization animation
+
+# Set background to solid black
+Window.SetBackgroundTopColor(0, 0, 0);
+Window.SetBackgroundBottomColor(0, 0, 0);
+
+# Screen dimensions
+screen_width = Window.GetWidth();
+screen_height = Window.GetHeight();
+
+# Colors (RGB normalized)
+red_color = [1, 0, 0];
+white_color = [1, 1, 1];
+gray_color = [0.5, 0.5, 0.5];
+dark_red_color = [0.5, 0, 0];
+
+# Load logo image
+if (logo_image = Image("synos_logo.png")) {
+    logo_sprite = Sprite(logo_image);
+    logo_sprite.SetPosition(screen_width / 2 - logo_image.GetWidth() / 2, 
+                           screen_height / 3 - logo_image.GetHeight() / 2);
+} else {
+    # Fallback: Create text logo
+    logo_text = Image.Text("SYN_OS", 48, 1, 0, 0, "Courier New Bold");
+    logo_sprite = Sprite(logo_text);
+    logo_sprite.SetPosition(screen_width / 2 - logo_text.GetWidth() / 2, 
+                           screen_height / 3 - logo_text.GetHeight() / 2);
+}
+
+# Main title
+title_text = Image.Text("Next-Gen Cybersecurity Operating System", 16, 1, 1, 1, "Courier New");
+title_sprite = Sprite(title_text);
+title_sprite.SetPosition(screen_width / 2 - title_text.GetWidth() / 2, 
+                        screen_height / 2 + 40);
+
+# Version info
+version_text = Image.Text("v1.0 \"Consciousness\"", 14, 0.7, 0.7, 0.7, "Courier New");
+version_sprite = Sprite(version_text);
+version_sprite.SetPosition(screen_width / 2 - version_text.GetWidth() / 2, 
+                          screen_height / 2 + 65);
+
+# Consciousness initialization status
+status_text = Image.Text("Initializing Consciousness Engine...", 12, 1, 0, 0, "Courier New");
+status_sprite = Sprite(status_text);
+status_sprite.SetPosition(screen_width / 2 - status_text.GetWidth() / 2, 
+                         screen_height / 2 + 100);
+
+# Security components status
+security_y_start = screen_height / 2 + 140;
+security_spacing = 20;
+
+# Array of security components
+security_components = [
+    "🔒 Secure Boot",
+    "🛡️ Post-Quantum Crypto",
+    "🧠 Neural Networks", 
+    "⚡ GPU Acceleration",
+    "📊 Context Engine",
+    "🔍 Threat Detection",
+    "🌐 Network Security",
+    "🔐 Encrypted Storage"
+];
+
+# Create security component sprites
+security_sprites = [];
+for (i = 0; i < 8; i++) {
+    security_text = Image.Text(security_components[i], 10, 0.8, 0.8, 0.8, "Courier New");
+    security_sprite = Sprite(security_text);
+    security_sprite.SetPosition(screen_width / 4 + (i % 4) * (screen_width / 8), 
+                               security_y_start + Math.Int(i / 4) * security_spacing);
+    security_sprite.SetOpacity(0);
+    security_sprites[i] = security_sprite;
+}
+
+# Progress bar elements
+progress_bar_width = screen_width * 0.6;
+progress_bar_height = 4;
+progress_bar_x = (screen_width - progress_bar_width) / 2;
+progress_bar_y = screen_height * 0.8;
+
+# Progress bar background
+progress_bg = Image.CreateRGBA(progress_bar_width, progress_bar_height, 0.3, 0.3, 0.3, 1);
+progress_bg_sprite = Sprite(progress_bg);
+progress_bg_sprite.SetPosition(progress_bar_x, progress_bar_y);
+
+# Progress bar foreground
+progress_fg = Image.CreateRGBA(1, progress_bar_height, 1, 0, 0, 1);
+progress_fg_sprite = Sprite(progress_fg);
+progress_fg_sprite.SetPosition(progress_bar_x, progress_bar_y);
+
+# Neural network animation elements
+neural_nodes = [];
+neural_connections = [];
+
+# Create neural network nodes
+for (i = 0; i < 12; i++) {
+    node = Image.CreateRGBA(3, 3, 1, 0, 0, 0.7);
+    node_sprite = Sprite(node);
+    
+    # Position nodes in a network pattern
+    angle = i * 2 * 3.14159 / 12;
+    radius = 80;
+    x = screen_width / 2 + Math.Cos(angle) * radius;
+    y = screen_height / 3 + Math.Sin(angle) * radius;
+    
+    node_sprite.SetPosition(x, y);
+    node_sprite.SetOpacity(0);
+    neural_nodes[i] = node_sprite;
+}
+
+# Animation variables
+animation_time = 0;
+boot_progress = 0;
+phase = 0;
+security_component_index = 0;
+
+# Boot phases
+phases = [
+    "Initializing Hardware...",
+    "Loading Consciousness Kernel...",
+    "Activating Neural Networks...",
+    "Enabling Security Protocols...",
+    "Starting Context Engine...",
+    "Finalizing Boot Process...",
+    "Ready for Consciousness Integration"
+];
+
+# Main animation function
+fun refresh_callback() {
+    animation_time++;
+    
+    # Calculate boot progress (0-100)
+    boot_progress = Plymouth.GetBootProgress() * 100;
+    if (boot_progress < 0) boot_progress = (animation_time % 300) / 3;
+    
+    # Update progress bar
+    progress_width = Math.Int(progress_bar_width * boot_progress / 100);
+    if (progress_width > 0) {
+        progress_fg.SetSize(progress_width, progress_bar_height);
+    }
+    
+    # Phase transitions
+    current_phase = Math.Int(boot_progress / 14.3); # 7 phases
+    if (current_phase != phase && current_phase < 7) {
+        phase = current_phase;
+        status_text = Image.Text(phases[phase], 12, 1, 0, 0, "Courier New");
+        status_sprite = Sprite(status_text);
+        status_sprite.SetPosition(screen_width / 2 - status_text.GetWidth() / 2, 
+                                 screen_height / 2 + 100);
+    }
+    
+    # Neural network animation
+    if (boot_progress > 30) {
+        for (i = 0; i < 12; i++) {
+            pulse = Math.Sin((animation_time + i * 10) / 20);
+            opacity = 0.3 + pulse * 0.4;
+            neural_nodes[i].SetOpacity(opacity);
+        }
+    }
+    
+    # Security components activation
+    if (boot_progress > 40 && security_component_index < 8) {
+        if (animation_time % 15 == 0) {
+            security_sprites[security_component_index].SetOpacity(1);
+            security_component_index++;
+        }
+    }
+    
+    # Pulsing logo effect
+    logo_pulse = Math.Sin(animation_time / 30) * 0.1 + 1;
+    logo_sprite.SetOpacity(logo_pulse);
+    
+    # Final consciousness activation effect
+    if (boot_progress > 90) {
+        consciousness_pulse = Math.Sin(animation_time / 10) * 0.3 + 0.7;
+        title_sprite.SetOpacity(consciousness_pulse);
+        
+        # Add "ready" indicator
+        if (animation_time % 60 == 0) {
+            ready_text = Image.Text("● CONSCIOUSNESS ACTIVE ●", 14, 1, 0, 0, "Courier New Bold");
+            ready_sprite = Sprite(ready_text);
+            ready_sprite.SetPosition(screen_width / 2 - ready_text.GetWidth() / 2, 
+                                   screen_height / 2 + 125);
+        }
+    }
+}
+
+# Set the refresh callback
+Plymouth.SetRefreshFunction(refresh_callback);
+
+# Boot progress callback
+fun boot_progress_callback(duration, progress) {
+    if (progress >= 1.0) {
+        # Boot complete - show final message
+        complete_text = Image.Text("Welcome to Syn_OS - Consciousness Integration Complete", 
+                                  14, 0, 1, 0, "Courier New Bold");
+        complete_sprite = Sprite(complete_text);
+        complete_sprite.SetPosition(screen_width / 2 - complete_text.GetWidth() / 2, 
+                                   screen_height - 50);
+    }
+}
+
+Plymouth.SetBootProgressFunction(boot_progress_callback);
+
+# Display message callback
+fun display_normal_callback() {
+    # Standard boot message display
+}
+
+fun display_password_callback(prompt, bullets) {
+    # Password prompt display for encrypted boot
+    prompt_text = Image.Text(prompt, 14, 1, 1, 1, "Courier New");
+    prompt_sprite = Sprite(prompt_text);
+    prompt_sprite.SetPosition(screen_width / 2 - prompt_text.GetWidth() / 2, 
+                             screen_height / 2 + 150);
+    
+    bullets_text = Image.Text(bullets, 14, 1, 0, 0, "Courier New");
+    bullets_sprite = Sprite(bullets_text);
+    bullets_sprite.SetPosition(screen_width / 2 - bullets_text.GetWidth() / 2, 
+                              screen_height / 2 + 175);
+}
+
+Plymouth.SetDisplayNormalFunction(display_normal_callback);
+Plymouth.SetDisplayPasswordFunction(display_password_callback);
+
+# Message display function
+fun message_callback(text) {
+    message_text = Image.Text(text, 12, 1, 1, 1, "Courier New");
+    message_sprite = Sprite(message_text);
+    message_sprite.SetPosition(screen_width / 2 - message_text.GetWidth() / 2, 
+                              screen_height - 30);
+}
+
+Plymouth.SetMessageFunction(message_callback);

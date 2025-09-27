@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: syn-os-core
+spec:
+  template:
+    spec:
+      containers:
+        - name: core
+          resources:
+            limits:
+              cpu: 4000m
+              memory: 8Gi
+            requests:
+              cpu: 2000m
+              memory: 4Gi
+          env:
+            - name: SYN_OS_LOG_LEVEL
+              value: "warn"
+            - name: SYN_OS_PERFORMANCE_MODE
+              value: "optimized"
+            - name: SYN_OS_CACHE_SIZE
+              value: "2048"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: syn-os-security-manager
+spec:
+  template:
+    spec:
+      containers:
+        - name: security-manager
+          resources:
+            limits:
+              cpu: 2000m
+              memory: 4Gi
+            requests:
+              cpu: 1000m
+              memory: 2Gi
+          env:
+            - name: SYN_OS_SECURITY_MODE
+              value: "maximum"
+            - name: SYN_OS_AUDIT_ENABLED
+              value: "true"

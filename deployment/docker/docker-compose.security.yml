@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  secure-build:
+    build:
+      context: .
+      dockerfile: Dockerfile.secure-build
+    volumes:
+      - .:/workspace:ro
+      - build-output:/workspace/build
+    environment:
+      - RUST_BACKTRACE=1
+      - CARGO_TERM_COLOR=always
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SYS_ADMIN  # Required for ISO building
+    user: "1000:1000"
+    
+  security-scan:
+    build:
+      context: .
+      dockerfile: Dockerfile.secure-build
+    volumes:
+      - .:/workspace:ro
+      - security-reports:/workspace/security/reports
+    command: ["./scripts/security-automation/dependency-scanner.sh"]
+    user: "1000:1000"
+
+volumes:
+  build-output:
+  security-reports:

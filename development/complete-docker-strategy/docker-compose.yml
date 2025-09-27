@@ -1,0 +1,207 @@
+# SynOS Complete Docker Development Environment
+# Kernel to UI integrated development with consciousness framework
+
+version: "3.8"
+
+services:
+  # Layer 1: Custom Kernel Development
+  synos-kernel-dev:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.kernel
+    container_name: synos-kernel-dev
+    privileged: true
+    volumes:
+      - ./core/kernel:/workspace/kernel
+      - ./core/consciousness:/workspace/consciousness
+      - ./src/kernel-module:/workspace/kernel-module
+      - kernel-build:/workspace/build
+    environment:
+      - KERNEL_VERSION=6.5.0-synos
+      - CONSCIOUSNESS_MODULE=enabled
+      - EBPF_FRAMEWORK=enabled
+    networks:
+      - synos-dev-network
+
+  # Layer 2: Consciousness Engine Development
+  synos-consciousness-dev:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.consciousness
+    container_name: synos-consciousness-dev
+    volumes:
+      - ./src/consciousness:/workspace/consciousness
+      - ./infrastructure/consciousness:/workspace/infrastructure
+      - consciousness-data:/workspace/data
+    environment:
+      - NEURAL_DARWINISM=enabled
+      - LEARNING_RATE=0.1
+      - POPULATION_SIZE=100
+      - CONSCIOUSNESS_API_PORT=9090
+    ports:
+      - "9090:9090"
+    networks:
+      - synos-dev-network
+
+  # Layer 3: eBPF Security Framework
+  synos-security-dev:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.security
+    container_name: synos-security-dev
+    privileged: true
+    volumes:
+      - ./core/security:/workspace/security
+      - ./src/kernel-module:/workspace/kernel-module
+      - ./core/kernel/ebpf:/workspace/ebpf
+      - security-data:/workspace/data
+    environment:
+      - EBPF_MONITORING=enabled
+      - THREAT_DETECTION=enabled
+      - CONSCIOUSNESS_INTEGRATION=enabled
+    networks:
+      - synos-dev-network
+    depends_on:
+      - synos-consciousness-dev
+
+  # Layer 4: Adaptive UI Development
+  synos-ui-dev:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.ui
+    container_name: synos-ui-dev
+    volumes:
+      - ./src/ui:/workspace/ui
+      - ./docs/user-experience:/workspace/ux
+      - ui-themes:/workspace/themes
+    environment:
+      - DISPLAY=:0
+      - QT_X11_NO_MITSHM=1
+      - CONSCIOUSNESS_UI=enabled
+      - ADAPTIVE_THEMING=enabled
+    ports:
+      - "8080:8080" # Web dashboard
+      - "8081:8081" # UI development server
+    networks:
+      - synos-dev-network
+    depends_on:
+      - synos-consciousness-dev
+
+  # Layer 5: Application Ecosystem
+  synos-apps-dev:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.apps
+    container_name: synos-apps-dev
+    volumes:
+      - ./src/ai:/workspace/ai
+      - ./docs/06-research:/workspace/research
+      - ./src/userspace:/workspace/userspace
+      - apps-data:/workspace/data
+    environment:
+      - PARROT_TOOLS_INTEGRATION=enabled
+      - EDUCATIONAL_FRAMEWORK=enabled
+      - CONSCIOUSNESS_AWARE_APPS=enabled
+    networks:
+      - synos-dev-network
+    depends_on:
+      - synos-consciousness-dev
+
+  # Testing and Integration
+  synos-test-suite:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.testing
+    container_name: synos-test-suite
+    volumes:
+      - ./tests:/workspace/tests
+      - ./scripts/testing:/workspace/testing
+      - test-results:/workspace/results
+    environment:
+      - PYTEST_ARGS=--verbose --cov
+      - INTEGRATION_TESTS=enabled
+      - VM_TESTING=enabled
+    networks:
+      - synos-dev-network
+    depends_on:
+      - synos-kernel-dev
+      - synos-consciousness-dev
+      - synos-security-dev
+      - synos-ui-dev
+      - synos-apps-dev
+
+  # Complete System Integration
+  synos-complete-system:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.complete
+    container_name: synos-complete-system
+    privileged: true
+    volumes:
+      - ./:/workspace/synos
+      - complete-build:/workspace/build
+      - iso-output:/workspace/iso
+    environment:
+      - BUILD_TYPE=complete
+      - CONSCIOUSNESS_FULL=enabled
+      - SECURITY_FULL=enabled
+      - UI_FULL=enabled
+      - APPS_FULL=enabled
+    ports:
+      - "8080:8080" # Web dashboard
+      - "9090:9090" # Consciousness API
+      - "8443:8443" # Secure management
+    networks:
+      - synos-dev-network
+    depends_on:
+      - synos-kernel-dev
+      - synos-consciousness-dev
+      - synos-security-dev
+      - synos-ui-dev
+      - synos-apps-dev
+
+  # Development Tools
+  synos-dev-tools:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.devtools
+    container_name: synos-dev-tools
+    volumes:
+      - ./:/workspace/synos
+      - dev-tools:/workspace/tools
+    environment:
+      - IDE_SUPPORT=enabled
+      - DEBUGGING=enabled
+      - PROFILING=enabled
+    ports:
+      - "8888:8888" # Jupyter notebook
+      - "3000:3000" # Development server
+    networks:
+      - synos-dev-network
+
+volumes:
+  kernel-build:
+    driver: local
+  consciousness-data:
+    driver: local
+  security-data:
+    driver: local
+  ui-themes:
+    driver: local
+  apps-data:
+    driver: local
+  test-results:
+    driver: local
+  complete-build:
+    driver: local
+  iso-output:
+    driver: local
+  dev-tools:
+    driver: local
+
+networks:
+  synos-dev-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16

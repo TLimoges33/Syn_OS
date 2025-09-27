@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="Open-source-tools-for-CTI" repository_source="owned" generated_at="2025-08-23T14:22:58.070120">
+  <repository_information>
+    <name>Open-source-tools-for-CTI</name>
+    <full_name>TLimoges33/Open-source-tools-for-CTI</full_name>
+    <description>Public Repository of Open Source Tools for Cyber Threat Intelligence Analysts and Researchers</description>
+    <stargazers_count>0</stargazers_count>
+    <size>387</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-05-18T20:19:36+00:00</pushed_at>
+    <topics/>
+    <source>owned</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.62" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

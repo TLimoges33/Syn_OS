@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+
+"""
+SynOS RAG System - Main executable
+Entry point for the Retrieval-Augmented Generation system
+"""
+
+import sys
+import os
+import asyncio
+import argparse
+
+# Add the src directory to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'src'))
+
+from rag_architecture import RAGOrchestrator
+
+async def main():
+    parser = argparse.ArgumentParser(description='SynOS RAG Architecture System')
+    parser.add_argument('--daemon', action='store_true', help='Run as daemon service')
+    parser.add_argument('--query', type=str, help='RAG query')
+    parser.add_argument('--add-document', type=str, help='Add document to knowledge base')
+    parser.add_argument('--initialize-embeddings', action='store_true', help='Initialize vector embeddings')
+    parser.add_argument('--config', type=str, default='/etc/synos/phase3/rag-config.yaml', help='Configuration file path')
+
+    args = parser.parse_args()
+
+    # Initialize RAG orchestrator
+    rag = RAGOrchestrator(config_path=args.config)
+    await rag.initialize()
+
+    if args.initialize_embeddings:
+        print("Initializing vector embeddings...")
+        await rag.initialize_vector_store()
+        print("Vector embeddings initialized successfully")
+        return
+
+    if args.daemon:
+        print("Starting SynOS RAG System daemon...")
+        await rag.start_daemon()
+    elif args.add_document:
+        print(f"Adding document: {args.add_document}")
+        await rag.add_document(args.add_document)
+        print("Document added successfully")
+    elif args.query:
+        print(f"Processing RAG query: {args.query}")
+        response = await rag.generate_response(args.query)
+        print(f"Response: {response.generated_text}")
+        print(f"Sources: {', '.join(response.source_documents)}")
+    else:
+        print("SynOS RAG System - Interactive Mode")
+        print("Type 'exit' to quit")
+
+        while True:
+            try:
+                query = input("synos-rag> ")
+                if query.lower() in ['exit', 'quit']:
+                    break
+                if query.strip():
+                    response = await rag.generate_response(query)
+                    print(f"Response: {response.generated_text}")
+                    if response.source_documents:
+                        print(f"Sources: {', '.join(response.source_documents)}")
+            except KeyboardInterrupt:
+                break
+            except Exception as e:
+                print(f"Error: {e}")
+
+    await rag.shutdown()
+
+if __name__ == '__main__':
+    asyncio.run(main())

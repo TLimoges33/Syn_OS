@@ -1,0 +1,53 @@
+[package]
+name = "syn-kernel"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[[bin]]
+name = "kernel"
+path = "src/main.rs"
+test = false
+bench = false
+
+[dependencies]
+# Core kernel dependencies
+bootloader = { version = "0.9.23", features = ["map_physical_memory"] }
+volatile = { workspace = true }
+spin = { workspace = true }
+x86_64 = { version = "0.14.10", features = ["instructions"] }
+pic8259 = { workspace = true }
+pc-keyboard = { workspace = true }
+linked_list_allocator = { workspace = true }
+lazy_static = { version = "1.4.0", features = ["spin_no_std"] }
+
+# Serde for AI interface (no_std compatible)
+serde = { workspace = true }
+
+# Additional dependencies for no_std environment
+uart_16550 = { workspace = true }
+
+# Error handling (no_std compatible)
+anyhow = { workspace = true, default-features = false }
+thiserror = { workspace = true, default-features = false, optional = true }
+
+# Security features
+aes-gcm = { version = "0.10.2", default-features = false, optional = true }
+sha2 = { version = "0.10.7", default-features = false, optional = true }
+
+# Memory management
+bit_field = "0.10.2"
+bitflags = "2.4.0"
+
+[features]
+default = ["ai-integration", "standard-security"]
+ai-integration = []
+consciousness-integration = ["ai-integration"]
+standard-security = ["aes-gcm", "sha2"]
+enhanced-security = ["standard-security", "quantum-resistant", "thiserror"]
+quantum-resistant = []
+debug-mode = []
+
+[build-dependencies]
+bootimage = "0.10.3"

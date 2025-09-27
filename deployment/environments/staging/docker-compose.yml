@@ -1,0 +1,133 @@
+version: "3.8"
+
+# SynOS Staging Environment
+# Production-like but smaller scale for testing
+
+services:
+  # Infrastructure
+  nats:
+    image: nats:2.10-alpine
+    container_name: synos_staging_nats
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    command:
+      - "--jetstream"
+      - "--store_dir=/data"
+      - "--max_mem_store=2GB"
+      - "--max_file_store=20GB"
+      - "--http_port=8222"
+    volumes:
+      - nats_staging_data:/data
+    networks:
+      - synos_staging
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: synos_staging_postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-synos_staging}
+      POSTGRES_USER: ${POSTGRES_USER:-synos_staging}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_staging_data:/var/lib/postgresql/data
+    networks:
+      - synos_staging
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: synos_staging_redis
+    volumes:
+      - redis_staging_data:/data
+    networks:
+      - synos_staging
+    restart: unless-stopped
+
+  # Services
+  orchestrator:
+    build:
+      context: ../../../services/orchestrator
+      dockerfile: Dockerfile
+    container_name: synos_staging_orchestrator
+    environment:
+      - ENV=staging
+      - NATS_URL=nats://nats:4222
+      - POSTGRES_HOST=postgres
+      - REDIS_HOST=redis
+      - LOG_LEVEL=info
+    env_file:
+      - .env.staging
+    ports:
+      - "8080:8080"
+    depends_on:
+      - nats
+      - postgres
+      - redis
+    networks:
+      - synos_staging
+    restart: unless-stopped
+
+  consciousness:
+    build:
+      context: ../../..
+      dockerfile: deploy/environments/staging/Dockerfile.consciousness
+    container_name: synos_staging_consciousness
+    environment:
+      - ENV=staging
+      - NATS_URL=nats://nats:4222
+      - ORCHESTRATOR_URL=http://orchestrator:8080
+      - LOG_LEVEL=info
+    env_file:
+      - .env.staging
+    volumes:
+      - consciousness_staging_data:/app/data
+    depends_on:
+      - nats
+      - orchestrator
+    networks:
+      - synos_staging
+    restart: unless-stopped
+
+  security:
+    build:
+      context: ../../..
+      dockerfile: deploy/environments/staging/Dockerfile.security
+    container_name: synos_staging_security
+    environment:
+      - ENV=staging
+      - NATS_URL=nats://nats:4222
+      - LOG_LEVEL=info
+    env_file:
+      - .env.staging
+    volumes:
+      - security_staging_data:/app/data
+    depends_on:
+      - nats
+    networks:
+      - synos_staging
+    restart: unless-stopped
+
+  # Basic Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: synos_staging_prometheus
+    volumes:
+      - ../../../config/prometheus/prometheus.staging.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - synos_staging
+    restart: unless-stopped
+
+volumes:
+  nats_staging_data:
+  postgres_staging_data:
+  redis_staging_data:
+  consciousness_staging_data:
+  security_staging_data:
+
+networks:
+  synos_staging:
+    driver: bridge

@@ -1,0 +1,89 @@
+# SynOS Kernel Development Container
+# Custom kernel with consciousness modules and eBPF framework
+
+FROM ubuntu:22.04
+
+# Prevent interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install kernel development dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    linux-headers-generic \
+    linux-source \
+    clang \
+    llvm \
+    libbpf-dev \
+    bpftool \
+    flex \
+    bison \
+    libssl-dev \
+    libelf-dev \
+    libdw-dev \
+    libncurses-dev \
+    git \
+    vim \
+    gdb \
+    strace \
+    python3 \
+    python3-pip \
+    wget \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies for consciousness integration
+RUN pip3 install \
+    rich \
+    typer \
+    pydantic \
+    psutil \
+    requests \
+    websockets
+
+# Set up workspace
+WORKDIR /workspace
+
+# Create kernel build environment
+RUN mkdir -p /workspace/{kernel,consciousness,kernel-module,build}
+
+# Set environment variables
+ENV KERNEL_DIR=/workspace/kernel
+ENV CONSCIOUSNESS_DIR=/workspace/consciousness
+ENV BUILD_DIR=/workspace/build
+
+# Create development user
+RUN useradd -m -s /bin/bash synos && \
+    usermod -aG sudo synos && \
+    echo "synos ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# Copy kernel development scripts
+COPY scripts/kernel-dev/ /workspace/scripts/
+
+# Make scripts executable
+RUN chmod +x /workspace/scripts/*.sh
+
+# Set up consciousness module development
+RUN echo '#!/bin/bash' > /workspace/build-consciousness-kernel.sh && \
+    echo 'cd /workspace/kernel' >> /workspace/build-consciousness-kernel.sh && \
+    echo 'make mrproper' >> /workspace/build-consciousness-kernel.sh && \
+    echo 'cp /workspace/consciousness/kernel/synos_consciousness.config .config' >> /workspace/build-consciousness-kernel.sh && \
+    echo 'make -j$(nproc) ARCH=x86_64' >> /workspace/build-consciousness-kernel.sh && \
+    echo 'make modules_install INSTALL_MOD_PATH=/workspace/build' >> /workspace/build-consciousness-kernel.sh && \
+    echo 'echo "✅ SynOS consciousness kernel built successfully"' >> /workspace/build-consciousness-kernel.sh && \
+    chmod +x /workspace/build-consciousness-kernel.sh
+
+# Set up eBPF development environment
+RUN echo '#!/bin/bash' > /workspace/build-ebpf-programs.sh && \
+    echo 'cd /workspace/kernel/ebpf' >> /workspace/build-ebpf-programs.sh && \
+    echo 'make clean && make all' >> /workspace/build-ebpf-programs.sh && \
+    echo 'echo "✅ eBPF programs compiled successfully"' >> /workspace/build-ebpf-programs.sh && \
+    chmod +x /workspace/build-ebpf-programs.sh
+
+# Expose development ports
+EXPOSE 9001
+
+# Switch to development user
+USER synos
+
+# Default command
+CMD ["/bin/bash", "-c", "echo '🧠 SynOS Kernel Development Environment Ready' && /bin/bash"]

@@ -1,0 +1,10 @@
+Package: synos-ai-engine
+Version: 1.0.0
+Section: misc
+Priority: optional
+Architecture: amd64
+Maintainer: SynOS Team <team@synos.dev>
+Description: SynOS AI Processing Engine
+ TensorFlow Lite and ONNX Runtime integration for on-device AI inference
+ with hardware acceleration support for NPU, GPU, and TPU
+Depends: python3, libtensorflowlite-c2, onnxruntime

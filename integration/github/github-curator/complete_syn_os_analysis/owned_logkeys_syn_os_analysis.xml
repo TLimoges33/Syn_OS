@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="logkeys" repository_source="owned" generated_at="2025-08-23T14:22:45.905232">
+  <repository_information>
+    <name>logkeys</name>
+    <full_name>TLimoges33/logkeys</full_name>
+    <description>:memo: :keyboard: A GNU/Linux keylogger that works!</description>
+    <stargazers_count>0</stargazers_count>
+    <size>299</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2022-12-21T03:56:31+00:00</pushed_at>
+    <license>
+      <name>Other</name>
+    </license>
+    <topics/>
+    <source>owned</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.58" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

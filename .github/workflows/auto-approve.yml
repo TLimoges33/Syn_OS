@@ -1,0 +1,100 @@
+name: Auto-approve safe PRs
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review, edited, labeled]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: auto-approve-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  auto-approve:
+    name: Auto-approve when only safe files change
+    if: >-
+      github.event.pull_request.draft == false &&
+      (startsWith(github.event.pull_request.title, 'docs(') ||
+       startsWith(github.event.pull_request.title, 'chore(') ||
+       contains(github.event.pull_request.title, 'archive'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch changed files via GitHub API
+        id: changed
+        env:
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          page=1
+          files=()
+          while :; do
+            resp=$(curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" -H 'Accept: application/vnd.github+json' \
+              "https://api.github.com/repos/${REPO}/pulls/${PR_NUMBER}/files?per_page=100&page=${page}")
+            count=$(echo "$resp" | jq 'length')
+            if [[ "$count" -eq 0 ]]; then break; fi
+            mapfile -t page_files < <(echo "$resp" | jq -r '.[].filename')
+            files+=("${page_files[@]}")
+            if [[ "$count" -lt 100 ]]; then break; fi
+            page=$((page+1))
+          done
+          printf '%s\n' "${files[@]}" > changed_files.txt
+          echo "listed=$(wc -l < changed_files.txt | tr -d ' ')" >> "$GITHUB_OUTPUT"
+
+      - name: Determine safe-only change set
+        id: gate
+        run: |
+          set -euo pipefail
+          safe_only=true
+          while IFS= read -r f; do
+            case "$f" in
+              *.md) ;;
+              docs/*) ;;
+              archive/*) ;;
+              .devcontainer/*) ;;
+              .github/*.md) ;;
+              .github/protection-restore-*.json) ;;
+              *) safe_only=false; echo "Non-safe file detected: $f" ;;
+            esac
+          done < changed_files.txt
+          echo "safe_only=${safe_only}" >> "$GITHUB_OUTPUT"
+
+      - name: Approve with bot token (preferred)
+        if: steps.gate.outputs.safe_only == 'true' && secrets.AUTO_APPROVE_TOKEN != ''
+        env:
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          APPROVE_TOKEN: ${{ secrets.AUTO_APPROVE_TOKEN }}
+        run: |
+          set -euo pipefail
+          curl -fsSL -X POST -H "Authorization: Bearer ${APPROVE_TOKEN}" -H 'Accept: application/vnd.github+json' \
+            -d '{"event":"APPROVE","body":"Auto-approval for safe-only changes (docs/archive/devcontainer/metadata)."}' \
+            "https://api.github.com/repos/${REPO}/pulls/${PR_NUMBER}/reviews" >/dev/null
+
+      - name: Approve with GitHub Actions token (fallback)
+        if: steps.gate.outputs.safe_only == 'true' && secrets.AUTO_APPROVE_TOKEN == ''
+        env:
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          curl -fsSL -X POST -H "Authorization: Bearer ${GH_TOKEN}" -H 'Accept: application/vnd.github+json' \
+            -d '{"event":"APPROVE","body":"Auto-approval (fallback) via github-actions bot; may not satisfy branch protections."}' \
+            "https://api.github.com/repos/${REPO}/pulls/${PR_NUMBER}/reviews" >/dev/null
+
+      - name: Comment when not eligible
+        if: steps.gate.outputs.safe_only != 'true'
+        env:
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          curl -fsSL -X POST -H "Authorization: Bearer ${GH_TOKEN}" -H 'Accept: application/vnd.github+json' \
+            -d '{"body":"Skipping auto-approval: changes include files outside the safe set (docs/**, archive/**, .devcontainer/**, select repo metadata)."}' \
+            "https://api.github.com/repos/${REPO}/issues/${PR_NUMBER}/comments" >/dev/null

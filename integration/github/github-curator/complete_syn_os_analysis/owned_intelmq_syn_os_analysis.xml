@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="intelmq" repository_source="owned" generated_at="2025-08-23T14:22:39.646547">
+  <repository_information>
+    <name>intelmq</name>
+    <full_name>TLimoges33/intelmq</full_name>
+    <description>IntelMQ is a solution for IT security teams for collecting and processing security feeds using a message queuing protocol.</description>
+    <stargazers_count>0</stargazers_count>
+    <size>39358</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-05-21T19:08:25+00:00</pushed_at>
+    <license>
+      <name>GNU Affero General Public License v3.0</name>
+    </license>
+    <topics/>
+    <source>owned</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.61" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

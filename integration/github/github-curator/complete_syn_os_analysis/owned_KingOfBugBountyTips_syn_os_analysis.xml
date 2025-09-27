@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="KingOfBugBountyTips" repository_source="owned" generated_at="2025-08-23T14:22:41.992694">
+  <repository_information>
+    <name>KingOfBugBountyTips</name>
+    <full_name>TLimoges33/KingOfBugBountyTips</full_name>
+    <description>Our main goal is to share tips from some well-known bughunters. Using recon methodology, we are able to find subdomains, apis, and tokens that are already exploitable, so we can report them. We wish to influence Onelinetips and explain the commands, for the better understanding of new hunters..</description>
+    <stargazers_count>0</stargazers_count>
+    <size>252</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-01-23T20:46:50+00:00</pushed_at>
+    <topics/>
+    <source>owned</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.55" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

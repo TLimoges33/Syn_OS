@@ -1,0 +1,251 @@
+{
+  // 🎯 SynOS Ultimate Development Environment Configuration
+  // Optimized for cybersecurity education and Linux distribution development
+
+  // 💻 Terminal Configuration
+  "terminal.integrated.inheritEnv": true,
+  "terminal.integrated.defaultProfile.linux": "SynOS Development Shell",
+  "terminal.integrated.profiles.linux": {
+    "bash": {
+      "path": "/bin/bash",
+      "args": ["-l"],
+      "icon": "terminal-bash",
+      "env": {
+        "TERM": "xterm-256color"
+      }
+    },
+    "SynOS Development Shell": {
+      "path": "/bin/bash",
+      "args": ["-l"],
+      "icon": "gear",
+      "env": {
+        "TERM": "xterm-256color",
+        "RUST_BACKTRACE": "1",
+        "SYNOS_DEV_MODE": "1",
+        "CARGO_TARGET_DIR": "${workspaceFolder}/target",
+        "CARGO_BUILD_JOBS": "2",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PATH": "${workspaceFolder}/scripts:${env:PATH}",
+        "SYNOS_PROJECT_ROOT": "${workspaceFolder}"
+      }
+    },
+    "Security Testing Shell": {
+      "path": "/bin/bash",
+      "args": ["-l"],
+      "icon": "shield",
+      "env": {
+        "RUST_BACKTRACE": "full",
+        "SYNOS_SECURITY_MODE": "1",
+        "PATH": "${workspaceFolder}/scripts:${workspaceFolder}/core/security/tools:${env:PATH}"
+      }
+    },
+    "Distribution Builder Shell": {
+      "path": "/bin/bash",
+      "args": ["-l"],
+      "icon": "package",
+      "env": {
+        "SYNOS_BUILD_MODE": "1",
+        "PATH": "${workspaceFolder}/linux-distribution/tools:${workspaceFolder}/scripts:${env:PATH}"
+      }
+    }
+  },
+  "terminal.integrated.cwd": "${workspaceFolder}",
+  "terminal.integrated.automationProfile.linux": {
+    "path": "/bin/bash",
+    "args": ["-l"]
+  },
+  "terminal.integrated.rendererType": "canvas",
+  "terminal.integrated.fontFamily": "monospace",
+  "terminal.integrated.fontSize": 12,
+  "terminal.integrated.scrollback": 10000,
+  // 🦀 Rust Language Server Optimization
+  "rust-analyzer.files.excludeDirs": [
+    "archive",
+    "archive-consolidated",
+    "backup",
+    "backup-*",
+    "custom-os-development",
+    "linux-distribution/SynOS-Linux-Builder/build",
+    "development/complete-docker-strategy",
+    "multi_cloud",
+    "advanced_ai/archive",
+    "logs",
+    "results",
+    "reports",
+    "target",
+    "build"
+  ],
+  "rust-analyzer.cargo.unsetTest": [
+    "archive",
+    "backup",
+    "custom-os-development"
+  ],
+  "rust-analyzer.checkOnSave.allTargets": false,
+  "rust-analyzer.checkOnSave.command": "clippy",
+  "rust-analyzer.procMacro.enable": true,
+  "rust-analyzer.cargo.buildScripts.enable": false,
+  "rust-analyzer.linkedProjects": [
+    "Cargo.toml",
+    "src/ai-engine/Cargo.toml",
+    "core/security/Cargo.toml",
+    "src/kernel/Cargo.toml"
+  ],
+  "rust-analyzer.cargo.features": [
+    "consciousness",
+    "ai-bridge",
+    "educational",
+    "security-enhanced",
+    "cybersec-tools"
+  ],
+
+  // 🚀 Performance Optimization
+  "workbench.editor.limit.enabled": true,
+  "workbench.editor.limit.value": 8,
+  "files.maxMemoryForLargeFilesMB": 1024,
+  "search.maxResults": 5000,
+  "search.smartCase": true,
+  "search.useIgnoreFiles": true,
+
+  // 🎭 Interface Configuration
+  "workbench.colorTheme": "Default Dark+",
+  "workbench.iconTheme": "vs-seti",
+  "workbench.startupEditor": "readme",
+  "workbench.enableExperiments": false,
+  "workbench.editor.enablePreview": false,
+
+  // 🔒 Privacy & Security
+  "telemetry.telemetryLevel": "off",
+  "update.mode": "manual",
+  "extensions.autoCheckUpdates": false,
+
+  // 📁 File Associations
+  "files.associations": {
+    "*.deb": "binary",
+    "*.iso": "binary",
+    "*.squashfs": "binary",
+    "Dockerfile*": "dockerfile",
+    "*.service": "systemd",
+    "*.socket": "systemd",
+    "*.timer": "systemd",
+    "*.desktop": "desktop",
+    "*.rules": "udev",
+    "sources.list*": "debian-sources",
+    "*.preseed": "debian-preseed",
+    "*.rs": "rust",
+    "*.toml": "toml",
+    "*.md": "markdown",
+    "*.sh": "shellscript",
+    "*.py": "python",
+    "*.yml": "yaml",
+    "*.yaml": "yaml"
+  },
+
+  // 👁️ File Exclusions
+  "files.exclude": {
+    "**/target": true,
+    "**/.venv": true,
+    "**/venv": true,
+    "**/node_modules": true,
+    "**/logs": true,
+    "**/archive": true,
+    "**/archive-consolidated": true,
+    "**/build/logs": true,
+    "**/linux-distribution/SynOS-Linux-Builder/build": true,
+    "**/dist": true,
+    "**/.cache": true,
+    "**/tmp": true,
+    "**/*.tmp": true,
+    "**/*.log": true,
+    "**/*.pyc": true,
+    "**/__pycache__": true,
+    "**/advanced_ai": true,
+    "**/cloud_native": true,
+    "**/enterprise": true,
+    "**/galactic": true,
+    "**/multi_cloud": true
+  },
+
+  "files.watcherExclude": {
+    "**/target/**": true,
+    "**/.venv/**": true,
+    "**/node_modules/**": true,
+    "**/.git/**": true,
+    "**/logs/**": true,
+    "**/archive/**": true,
+    "**/build/**": true,
+    "**/dist/**": true,
+    "**/.cache/**": true,
+    "**/tmp/**": true,
+    "**/linux-distribution/SynOS-Linux-Builder/build/**": true
+  },
+
+  "search.exclude": {
+    "**/target": true,
+    "**/Cargo.lock": true,
+    "**/.venv": true,
+    "**/node_modules": true,
+    "**/logs": true,
+    "**/archive": true,
+    "**/build": true,
+    "**/dist": true,
+    "**/linux-distribution/SynOS-Linux-Builder/build": true
+  },
+
+  // ✏️ Editor Configuration
+  "editor.tabSize": 4,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": true,
+  "editor.rulers": [100, 120],
+  "editor.wordWrap": "on",
+  "editor.minimap.enabled": true,
+  "editor.codeLens": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true
+  },
+  "editor.suggest.enabled": true,
+  "editor.bracketPairColorization.enabled": true,
+
+  // 🔄 Git Configuration
+  "git.autofetch": false,
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "git.ignoreLimitWarning": true,
+
+  // 🐍 Python Configuration
+  "python.analysis.typeCheckingMode": "basic",
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "python.formatting.provider": "black",
+
+  // 🔧 C/C++ Configuration
+  "C_Cpp.intelliSenseEngine": "default",
+  "C_Cpp.errorSquiggles": "enabled",
+
+  // 🔨 Build Configuration
+  "makefile.configureOnOpen": true,
+
+  // 🔍 Shell Script Configuration
+  "shellcheck.enable": true,
+  "shellcheck.run": "onSave",
+
+  // 📦 Extension Specific
+  "cSpell.words": [
+    "SynOS",
+    "cybersec",
+    "mssp",
+    "debian",
+    "systemd",
+    "chroot",
+    "squashfs",
+    "preseed",
+    "udev"
+  ]
+}

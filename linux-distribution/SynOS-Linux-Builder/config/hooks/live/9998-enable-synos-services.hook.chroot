@@ -1,0 +1,35 @@
+#!/bin/bash
+set -e
+
+echo "🔧 Enabling SynOS services..."
+
+# Enable SynOS initialization service
+systemctl enable synos-init.service || true
+
+# Add synos-init to run at boot for live systems
+if [ ! -f /etc/rc.local ]; then
+    cat > /etc/rc.local << 'EOF'
+#!/bin/bash
+# SynOS Live System Boot Script
+/usr/local/bin/synos-init
+exit 0
+EOF
+    chmod +x /etc/rc.local
+else
+    # Add to existing rc.local if it exists
+    sed -i '/^exit 0/i /usr/local/bin/synos-init' /etc/rc.local
+fi
+
+# Create desktop autostart for live user
+mkdir -p /etc/skel/.config/autostart
+cat > /etc/skel/.config/autostart/synos-welcome.desktop << 'EOF'
+[Desktop Entry]
+Type=Application
+Name=SynOS Welcome
+Exec=sh -c 'sleep 10; if command -v zenity > /dev/null; then zenity --info --title="SynOS AI System" --text="🤖 Welcome to SynOS Linux!\n\n✅ AI Consciousness System: Active\n✅ Security Tools: Ready\n✅ Neural Darwinism: Running\n\nExplore the AI Dashboard and Security Suite!" --width=400; fi'
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+EOF
+
+echo "✅ SynOS services configuration complete"

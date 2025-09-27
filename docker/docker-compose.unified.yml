@@ -1,0 +1,333 @@
+version: "3.8"
+
+# Unified SynOS Docker Compose - Streamlined Architecture
+# This replaces the fragmented service-specific configurations
+
+networks:
+  syn_os_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  postgres_data:
+  redis_data:
+  nats_data:
+  consciousness_data:
+  consciousness_ray_data:
+  consciousness_ray_logs:
+  security_data:
+  security_keys:
+  educational_data:
+
+services:
+  ###########################################
+  # Infrastructure Services
+  ###########################################
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: syn_os_postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    env_file: [.env]
+    ports: ["5432:5432"]
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks: [syn_os_network]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: syn_os_redis
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    env_file: [.env]
+    ports: ["6379:6379"]
+    volumes:
+      - redis_data:/data
+    networks: [syn_os_network]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  nats:
+    image: nats:2.9-alpine
+    container_name: syn_os_nats
+    environment:
+      NATS_SERVER_NAME: ${NATS_SERVER_NAME}
+    env_file: [.env]
+    ports: ["4222:4222", "8222:8222"]
+    volumes:
+      - nats_data:/data
+    networks: [syn_os_network]
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8222/healthz",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ###########################################
+  # Core SynOS Services (Unified Build)
+  ###########################################
+
+  orchestrator:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.unified
+      target: orchestrator
+    container_name: syn_os_orchestrator
+    environment:
+      - NATS_URL=${NATS_URL}
+      - POSTGRES_URL=${POSTGRES_URL}
+      - REDIS_URL=${REDIS_URL}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - LOG_LEVEL=${LOG_LEVEL}
+    env_file: [.env]
+    ports: ["8080:8080"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+      nats: { condition: service_healthy }
+    networks: [syn_os_network]
+    restart: unless-stopped
+
+  consciousness-ai-bridge:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.unified
+      target: ai-bridge
+    container_name: syn_os_ai_bridge
+    environment:
+      - SERVICE_PORT=8082
+      - NATS_URL=${NATS_URL}
+      - ORCHESTRATOR_URL=http://orchestrator:8080
+    env_file: [.env]
+    ports: ["8082:8082"]
+    depends_on:
+      orchestrator: { condition: service_healthy }
+    networks: [syn_os_network]
+    restart: unless-stopped
+
+  consciousness-dashboard:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.unified
+      target: dashboard
+    container_name: syn_os_dashboard
+    environment:
+      - SERVICE_PORT=8000
+      - NATS_URL=${NATS_URL}
+      - ORCHESTRATOR_URL=http://orchestrator:8080
+    env_file: [.env]
+    ports: ["8000:8000"]
+    depends_on:
+      orchestrator: { condition: service_healthy }
+    networks: [syn_os_network]
+    restart: unless-stopped
+
+  consciousness-unified:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.unified
+      target: unified
+    container_name: syn_os_consciousness_unified
+    environment:
+      - SERVICE_PORT=8083
+      - NATS_URL=${NATS_URL}
+      - ORCHESTRATOR_URL=http://orchestrator:8080
+    env_file: [.env]
+    ports: ["8083:8083"]
+    depends_on:
+      orchestrator: { condition: service_healthy }
+    networks: [syn_os_network]
+    restart: unless-stopped
+
+  context-engine:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.unified
+      target: context-engine
+    container_name: syn_os_context_engine
+    environment:
+      - SERVICE_PORT=8085
+      - NATS_URL=${NATS_URL}
+      - ORCHESTRATOR_URL=http://orchestrator:8080
+    env_file: [.env]
+    ports: ["8085:8085"]
+    depends_on:
+      orchestrator: { condition: service_healthy }
+    networks: [syn_os_network]
+    restart: unless-stopped
+
+  context-intelligence:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.unified
+      target: context-intelligence
+    container_name: syn_os_context_intelligence
+    environment:
+      - SERVICE_PORT=8086
+      - NATS_URL=${NATS_URL}
+      - ORCHESTRATOR_URL=http://orchestrator:8080
+    env_file: [.env]
+    ports: ["8086:8086"]
+    depends_on:
+      orchestrator: { condition: service_healthy }
+    networks: [syn_os_network]
+    restart: unless-stopped
+
+  ###########################################
+  # Ray Distributed Processing
+  ###########################################
+
+  ray-consciousness-head:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.unified
+      target: ray-consciousness
+    container_name: syn_os_ray_head
+    command:
+      [
+        "ray",
+        "start",
+        "--head",
+        "--dashboard-host=0.0.0.0",
+        "--dashboard-port=8265",
+        "--port=10001",
+      ]
+    environment:
+      - RAY_HEAD_NODE=true
+      - CONSCIOUSNESS_MODE=distributed
+    env_file:
+      - .env
+      - ../services/consciousness-ray-distributed/ray-consciousness.env
+    ports: ["8265:8265", "10001:10001"]
+    volumes:
+      - consciousness_ray_data:/app/data
+      - consciousness_ray_logs:/app/logs
+    networks: [syn_os_network]
+    restart: unless-stopped
+
+  ray-consciousness-worker:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.unified
+      target: ray-consciousness
+    command: ["ray", "start", "--address=ray-consciousness-head:10001"]
+    environment:
+      - RAY_HEAD_NODE=false
+      - CONSCIOUSNESS_MODE=distributed
+    env_file:
+      - .env
+      - ../services/consciousness-ray-distributed/ray-consciousness.env
+    depends_on:
+      ray-consciousness-head: { condition: service_healthy }
+    networks: [syn_os_network]
+    restart: unless-stopped
+    deploy:
+      replicas: 2
+
+  ###########################################
+  # Educational Platform
+  ###########################################
+
+  educational-platform:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.unified
+      target: educational
+    container_name: syn_os_educational
+    environment:
+      - SERVICE_PORT=8084
+      - NATS_URL=${NATS_URL}
+      - ORCHESTRATOR_URL=http://orchestrator:8080
+    env_file: [.env]
+    ports: ["8084:8084"]
+    depends_on:
+      orchestrator: { condition: service_healthy }
+    volumes:
+      - educational_data:/app/data
+    networks: [syn_os_network]
+    restart: unless-stopped
+
+  educational-gui:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.unified
+      target: educational
+    container_name: syn_os_educational_gui
+    command: ["python", "educational_gui.py"]
+    environment:
+      - SERVICE_PORT=8001
+      - EDUCATIONAL_BACKEND=http://educational-platform:8084
+    env_file: [.env]
+    ports: ["8001:8001"]
+    depends_on:
+      educational-platform: { condition: service_healthy }
+    networks: [syn_os_network]
+    restart: unless-stopped
+
+  ###########################################
+  # CTF Platform
+  ###########################################
+
+  ctf-platform:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.unified
+      target: ctf-platform
+    container_name: syn_os_ctf_platform
+    environment:
+      - SERVICE_PORT=8087
+      - NATS_URL=${NATS_URL}
+      - ORCHESTRATOR_URL=http://orchestrator:8080
+      - POSTGRES_URL=${POSTGRES_URL}
+    env_file: [.env]
+    ports: ["8087:8087"]
+    depends_on:
+      orchestrator: { condition: service_healthy }
+      postgres: { condition: service_healthy }
+    networks: [syn_os_network]
+    restart: unless-stopped
+
+  ###########################################
+  # News Intelligence
+  ###########################################
+
+  news-intelligence:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.unified
+      target: news-intelligence
+    container_name: syn_os_news_intelligence
+    environment:
+      - SERVICE_PORT=8088
+      - NATS_URL=${NATS_URL}
+      - ORCHESTRATOR_URL=http://orchestrator:8080
+    env_file: [.env]
+    ports: ["8088:8088"]
+    depends_on:
+      orchestrator: { condition: service_healthy }
+    networks: [syn_os_network]
+    restart: unless-stopped

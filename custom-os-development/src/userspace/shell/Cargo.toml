@@ -1,0 +1,33 @@
+[package]
+name = "synshell"
+version = "1.0.0"
+edition = "2021"
+authors = ["SynOS Development Team"]
+description = "Security-focused command interpreter for SynOS"
+license = "MIT"
+
+[dependencies]
+# Core dependencies for no_std environment
+linked_list_allocator = "0.10"
+
+[features]
+default = []
+std = []
+
+[profile.release]
+panic = "abort"
+lto = true
+codegen-units = 1
+opt-level = "z"  # Optimize for size
+
+[profile.dev]
+panic = "abort"
+opt-level = 1
+
+[[bin]]
+name = "synshell"
+path = "main.rs"
+
+[lib]
+name = "synshell"
+path = "lib.rs"

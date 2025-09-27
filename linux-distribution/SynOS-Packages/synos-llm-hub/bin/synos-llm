@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+
+"""
+SynOS LLM Hub - Main executable
+Entry point for the Local LLM Integration Engine
+"""
+
+import sys
+import os
+import asyncio
+import argparse
+
+# Add the src directory to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'src'))
+
+from local_llm_engine import LocalLLMEngine
+
+async def main():
+    parser = argparse.ArgumentParser(description='SynOS Local LLM Integration Engine')
+    parser.add_argument('--daemon', action='store_true', help='Run as daemon service')
+    parser.add_argument('--model', type=str, help='Specify model to load')
+    parser.add_argument('--config', type=str, default='/etc/synos/phase3/llm-config.yaml', help='Configuration file path')
+
+    args = parser.parse_args()
+
+    # Initialize LLM engine
+    engine = LocalLLMEngine(config_path=args.config)
+    await engine.initialize(model_id=args.model)
+
+    if args.daemon:
+        print("Starting SynOS LLM Hub daemon...")
+        await engine.start_daemon()
+    else:
+        # Interactive mode
+        print("SynOS LLM Hub - Interactive Mode")
+        print("Type 'exit' to quit")
+
+        session_id = "interactive_session"
+
+        while True:
+            try:
+                prompt = input("synos-llm> ")
+                if prompt.lower() in ['exit', 'quit']:
+                    break
+                if prompt.strip():
+                    response = await engine.generate_response(session_id, prompt)
+                    print(f"Assistant: {response}")
+            except KeyboardInterrupt:
+                break
+            except Exception as e:
+                print(f"Error: {e}")
+
+    await engine.shutdown()
+
+if __name__ == '__main__':
+    asyncio.run(main())

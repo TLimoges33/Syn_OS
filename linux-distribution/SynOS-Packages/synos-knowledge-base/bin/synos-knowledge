@@ -1,0 +1,107 @@
+#!/usr/bin/env python3
+
+"""
+SynOS Knowledge Base - Main executable
+Entry point for the Security Knowledge Graph system
+"""
+
+import sys
+import os
+import asyncio
+import argparse
+import json
+
+# Add the src directory to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'src'))
+
+from security_knowledge_graph import SecurityKnowledgeGraph, SemanticQuery
+
+async def main():
+    parser = argparse.ArgumentParser(description='SynOS Security Knowledge Graph')
+    parser.add_argument('--daemon', action='store_true', help='Run as daemon service')
+    parser.add_argument('--query', type=str, help='Natural language query')
+    parser.add_argument('--semantic-search', type=str, help='Semantic search query')
+    parser.add_argument('--find-related', type=str, help='Find entities related to given entity')
+    parser.add_argument('--export', type=str, help='Export knowledge (json, csv, xml)')
+    parser.add_argument('--statistics', action='store_true', help='Show knowledge graph statistics')
+    parser.add_argument('--initialize-db', action='store_true', help='Initialize knowledge database')
+    parser.add_argument('--config', type=str, default='/etc/synos/phase3/knowledge-config.yaml', help='Configuration file path')
+
+    args = parser.parse_args()
+
+    # Initialize knowledge graph
+    kg = SecurityKnowledgeGraph(config_path=args.config)
+    await kg.initialize()
+
+    if args.initialize_db:
+        print("Initializing knowledge graph database...")
+        await kg.initialize_database()
+        print("Database initialized successfully")
+        return
+
+    if args.daemon:
+        print("Starting SynOS Knowledge Graph daemon...")
+        await kg.start_daemon()
+    elif args.semantic_search:
+        print(f"Semantic search: {args.semantic_search}")
+        query = SemanticQuery(query_text=args.semantic_search, max_results=10)
+        results = await kg.semantic_search(query)
+
+        for result in results:
+            print(f"Entity: {result.entity.name} (Score: {result.score:.3f})")
+            print(f"Type: {result.entity.entity_type}")
+            if result.entity.description:
+                print(f"Description: {result.entity.description[:200]}...")
+            print()
+    elif args.find_related:
+        print(f"Finding entities related to: {args.find_related}")
+        related = await kg.get_related_entities(args.find_related)
+
+        for entity in related:
+            print(f"- {entity.name} ({entity.entity_type})")
+    elif args.export:
+        print(f"Exporting knowledge as {args.export}...")
+        data = await kg.export_knowledge(format=args.export)
+
+        if args.export.lower() == 'json':
+            print(json.dumps(data, indent=2))
+        else:
+            print(data)
+    elif args.statistics:
+        stats = await kg.get_statistics()
+        print("Knowledge Graph Statistics:")
+        print(f"- Total entities: {stats.get('total_entities', 0)}")
+        print(f"- Total relations: {stats.get('total_relations', 0)}")
+        print(f"- Entity types: {', '.join(stats.get('entity_types', []))}")
+    elif args.query:
+        print(f"Processing query: {args.query}")
+        # This would process a natural language query
+        query = SemanticQuery(query_text=args.query, max_results=5)
+        results = await kg.semantic_search(query)
+
+        for result in results:
+            print(f"- {result.entity.name}: {result.entity.description[:100]}...")
+    else:
+        print("SynOS Knowledge Graph - Interactive Mode")
+        print("Type 'exit' to quit, or enter search queries")
+
+        while True:
+            try:
+                query_text = input("synos-knowledge> ")
+                if query_text.lower() in ['exit', 'quit']:
+                    break
+                if query_text.strip():
+                    query = SemanticQuery(query_text=query_text, max_results=5)
+                    results = await kg.semantic_search(query)
+
+                    for result in results:
+                        print(f"- {result.entity.name}: {result.entity.description[:100]}...")
+            except KeyboardInterrupt:
+                break
+            except Exception as e:
+                print(f"Error: {e}")
+
+    await kg.shutdown()
+
+if __name__ == '__main__':
+    asyncio.run(main())

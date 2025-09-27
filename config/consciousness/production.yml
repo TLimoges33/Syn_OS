@@ -1,0 +1,38 @@
+api:
+  cors_enabled: true
+  host: 0.0.0.0
+  port: 9090
+  rate_limiting:
+    enabled: true
+    requests_per_minute: 1000
+consciousness:
+  learning:
+    adaptive_rate: true
+    learning_rate: 0.1
+    momentum: 0.9
+    weight_decay: 0.0001
+  mode: production
+  monitoring:
+    enabled: true
+    health_check_interval: 15
+    metrics_interval: 10
+    performance_logging: true
+  neural_darwinism:
+    enabled: true
+    mutation_rate: 0.01
+    population_size: 100
+    selection_pressure: 0.8
+  processing:
+    batch_size: 50
+    memory_pool_mb: 512
+    neural_cache_mb: 256
+    timeout_seconds: 30
+    worker_threads: 4
+storage:
+  cache_path: /app/cache
+  data_path: /app/data
+  models_path: /app/models
+  persistence:
+    backup_retention: 7
+    checkpoint_interval: 300
+    enabled: true

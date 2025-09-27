@@ -1,0 +1,38 @@
+{
+    "dashboard": {
+        "name": "SynOS Enterprise SOC Dashboard",
+        "version": "4.0.0",
+        "consciousness_enhanced": true
+    },
+    "widgets": [
+        {
+            "name": "consciousness_state_monitor",
+            "type": "consciousness_meter",
+            "position": {"x": 0, "y": 0, "width": 4, "height": 2},
+            "real_time": true
+        },
+        {
+            "name": "threat_detection_feed",
+            "type": "security_feed",
+            "position": {"x": 4, "y": 0, "width": 8, "height": 4},
+            "ai_powered": true
+        },
+        {
+            "name": "performance_metrics",
+            "type": "metrics_chart",
+            "position": {"x": 0, "y": 2, "width": 4, "height": 2},
+            "optimization_data": true
+        },
+        {
+            "name": "enterprise_health",
+            "type": "status_grid",
+            "position": {"x": 0, "y": 4, "width": 12, "height": 3},
+            "multi_tenant": true
+        }
+    ],
+    "themes": {
+        "default": "consciousness_blue",
+        "dark_mode": "consciousness_dark",
+        "high_contrast": "accessibility_high_contrast"
+    }
+}

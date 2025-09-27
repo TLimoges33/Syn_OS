@@ -1,0 +1,179 @@
+[package]
+name = "synos-utilities"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Core dependencies for no_std environment
+alloc = { version = "1.0", default-features = false, optional = true }
+
+# Command line parsing
+clap = { version = "4.0", default-features = false, features = ["derive"] }
+
+# Text processing
+regex = { version = "1.0", default-features = false }
+
+# File system operations
+glob = { version = "0.3", default-features = false }
+
+# Serialization
+serde = { version = "1.0", default-features = false, features = ["derive"] }
+serde_json = { version = "1.0", default-features = false }
+
+# Time and date handling
+chrono = { version = "0.4", default-features = false }
+
+# Logging
+log = { version = "0.4", default-features = false }
+
+# Error handling
+thiserror = { version = "1.0", default-features = false }
+anyhow = { version = "1.0", default-features = false }
+
+# Process management
+nix = { version = "0.27", default-features = false, features = ["process", "signal"] }
+
+# Network utilities
+socket2 = { version = "0.5", default-features = false }
+
+# Compression utilities
+flate2 = { version = "1.0", default-features = false }
+tar = { version = "0.4", default-features = false }
+
+# Cryptographic utilities
+ring = { version = "0.17", default-features = false }
+base64 = { version = "0.21", default-features = false }
+
+# System information
+sysinfo = { version = "0.30", default-features = false }
+
+# File watching
+notify = { version = "6.0", default-features = false }
+
+# Terminal utilities
+termion = { version = "2.0", default-features = false }
+crossterm = { version = "0.27", default-features = false }
+
+# Color support
+colored = { version = "2.0", default-features = false }
+
+# Progress bars
+indicatif = { version = "0.17", default-features = false }
+
+# Configuration file parsing
+toml = { version = "0.8", default-features = false }
+yaml-rust = { version = "0.4", default-features = false }
+
+# HTTP client for network utilities
+reqwest = { version = "0.11", default-features = false, features = ["json", "blocking"] }
+
+# Database utilities
+rusqlite = { version = "0.30", default-features = false, features = ["bundled"] }
+
+# Math utilities
+num-traits = { version = "0.2", default-features = false }
+num-integer = { version = "0.1", default-features = false }
+
+# Memory utilities
+memmap2 = { version = "0.9", default-features = false }
+
+# Threading utilities
+crossbeam = { version = "0.8", default-features = false }
+rayon = { version = "1.0", default-features = false }
+
+# Random utilities
+rand = { version = "0.8", default-features = false }
+
+# String utilities
+unicode-segmentation = { version = "1.0", default-features = false }
+
+# Image processing utilities
+image = { version = "0.24", default-features = false, features = ["png", "jpeg"] }
+
+# Audio utilities
+rodio = { version = "0.17", default-features = false, optional = true }
+
+# Video utilities
+ffmpeg-next = { version = "6.0", default-features = false, optional = true }
+
+# Machine learning utilities
+candle-core = { version = "0.4", default-features = false, optional = true }
+candle-nn = { version = "0.4", default-features = false, optional = true }
+
+# Natural language processing
+tokenizers = { version = "0.15", default-features = false, optional = true }
+
+# Scientific computing
+ndarray = { version = "0.15", default-features = false, optional = true }
+
+# Statistics
+statrs = { version = "0.16", default-features = false, optional = true }
+
+# Graph algorithms
+petgraph = { version = "0.6", default-features = false, optional = true }
+
+# Web scraping
+scraper = { version = "0.18", default-features = false, optional = true }
+
+# PDF utilities
+lopdf = { version = "0.32", default-features = false, optional = true }
+
+# QR code utilities
+qrcode = { version = "0.14", default-features = false, optional = true }
+
+# Backup utilities
+lz4 = { version = "1.0", default-features = false, optional = true }
+zstd = { version = "0.13", default-features = false, optional = true }
+
+# Blockchain utilities
+sha3 = { version = "0.10", default-features = false, optional = true }
+ed25519-dalek = { version = "2.0", default-features = false, optional = true }
+
+[features]
+default = ["alloc", "core-utilities", "file-management", "system-info", "networking"]
+
+# Core features
+alloc = ["dep:alloc"]
+core-utilities = ["clap", "regex", "serde", "log"]
+file-management = ["glob", "tar", "flate2", "notify"]
+system-info = ["sysinfo", "nix"]
+networking = ["socket2", "reqwest"]
+terminal = ["termion", "crossterm", "colored", "indicatif"]
+
+# Advanced features
+ai-enhanced = ["candle-core", "candle-nn", "tokenizers"]
+educational = ["ai-enhanced"]
+multimedia = ["rodio", "ffmpeg-next", "image"]
+scientific = ["ndarray", "statrs"]
+web-tools = ["scraper", "reqwest"]
+security = ["ring", "base64", "sha3", "ed25519-dalek"]
+compression = ["lz4", "zstd"]
+documents = ["lopdf"]
+graphics = ["qrcode", "image"]
+database = ["rusqlite"]
+performance = ["rayon", "crossbeam", "memmap2"]
+development = ["petgraph"]
+
+# Experimental features
+machine-learning = ["candle-core", "candle-nn", "tokenizers", "ndarray", "statrs"]
+blockchain = ["sha3", "ed25519-dalek", "ring"]
+media-processing = ["rodio", "ffmpeg-next", "image"]
+
+[profile.dev]
+panic = "abort"
+opt-level = 0
+debug = true
+overflow-checks = true
+
+[profile.release]
+panic = "abort"
+opt-level = "s"
+debug = false
+lto = true
+codegen-units = 1
+overflow-checks = false
+
+[profile.test]
+panic = "unwind"
+opt-level = 1
+debug = true

@@ -1,0 +1,9 @@
+{
+  "current_metrics": {
+    "cpu_usage": 18.2,
+    "memory_usage": 66.7,
+    "disk_usage": 42.6
+  },
+  "optimization_needed": false,
+  "recommendations": []
+}

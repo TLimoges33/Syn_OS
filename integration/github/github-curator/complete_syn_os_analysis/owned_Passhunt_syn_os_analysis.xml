@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="Passhunt" repository_source="owned" generated_at="2025-08-23T14:23:00.270807">
+  <repository_information>
+    <name>Passhunt</name>
+    <full_name>TLimoges33/Passhunt</full_name>
+    <description>Passhunt is a simple tool for searching of default credentials for network devices, web applications and more. Search through 523 vendors and their 2084 default passwords.</description>
+    <stargazers_count>0</stargazers_count>
+    <size>64</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2018-12-23T06:58:11+00:00</pushed_at>
+    <license>
+      <name>GNU General Public License v3.0</name>
+    </license>
+    <topics/>
+    <source>owned</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.66" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

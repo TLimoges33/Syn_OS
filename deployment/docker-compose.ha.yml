@@ -1,0 +1,434 @@
+# High Availability Docker Compose for Syn_OS
+# Extends production deployment with enhanced clustering and failover
+
+version: '3.8'
+
+services:
+  # HAProxy Load Balancer Cluster
+  haproxy-1:
+    image: haproxy:2.8-alpine
+    container_name: syn_os_haproxy_1
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8404:8404"  # Stats interface
+    volumes:
+      - ./deploy/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ./deploy/haproxy/errors:/etc/haproxy/errors:ro
+      - ./deploy/nginx/ssl:/etc/ssl/certs:ro
+      - haproxy_1_data:/var/lib/haproxy
+    environment:
+      - HAPROXY_STATS_PASSWORD=${HAPROXY_STATS_PASSWORD}
+    depends_on:
+      - orchestrator-1
+      - orchestrator-2
+      - consciousness-1
+      - consciousness-2
+      - security-dashboard-1
+      - security-dashboard-2
+    networks:
+      - syn_os_production
+      - syn_os_ha_cluster
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+    healthcheck:
+      test: ["CMD", "haproxy", "-c", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  haproxy-2:
+    image: haproxy:2.8-alpine
+    container_name: syn_os_haproxy_2
+    ports:
+      - "8080:80"
+      - "8443:443"
+      - "8405:8404"
+    volumes:
+      - ./deploy/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ./deploy/haproxy/errors:/etc/haproxy/errors:ro
+      - ./deploy/nginx/ssl:/etc/ssl/certs:ro
+      - haproxy_2_data:/var/lib/haproxy
+    environment:
+      - HAPROXY_STATS_PASSWORD=${HAPROXY_STATS_PASSWORD}
+    depends_on:
+      - orchestrator-1
+      - orchestrator-2
+      - consciousness-1
+      - consciousness-2
+      - security-dashboard-1
+      - security-dashboard-2
+    networks:
+      - syn_os_production
+      - syn_os_ha_cluster
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+
+  # Keepalived for HAProxy failover
+  keepalived-1:
+    image: osixia/keepalived:2.0.20
+    container_name: syn_os_keepalived_1
+    cap_add:
+      - NET_ADMIN
+      - NET_BROADCAST
+      - NET_RAW
+    environment:
+      - KEEPALIVED_INTERFACE=eth0
+      - KEEPALIVED_VIRTUAL_IPS=172.21.100.100
+      - KEEPALIVED_UNICAST_PEERS=#PYTHON2BASH:['172.21.0.20', '172.21.0.21']
+      - KEEPALIVED_PASSWORD=${KEEPALIVED_PASSWORD}
+      - KEEPALIVED_PRIORITY=110
+      - KEEPALIVED_ROUTER_ID=51
+    volumes:
+      - ./deploy/keepalived/keepalived-1.conf:/container/service/keepalived/assets/keepalived.conf
+    depends_on:
+      - haproxy-1
+    networks:
+      syn_os_ha_cluster:
+        ipv4_address: 172.21.0.20
+    restart: unless-stopped
+
+  keepalived-2:
+    image: osixia/keepalived:2.0.20
+    container_name: syn_os_keepalived_2
+    cap_add:
+      - NET_ADMIN
+      - NET_BROADCAST
+      - NET_RAW
+    environment:
+      - KEEPALIVED_INTERFACE=eth0
+      - KEEPALIVED_VIRTUAL_IPS=172.21.100.100
+      - KEEPALIVED_UNICAST_PEERS=#PYTHON2BASH:['172.21.0.20', '172.21.0.21']
+      - KEEPALIVED_PASSWORD=${KEEPALIVED_PASSWORD}
+      - KEEPALIVED_PRIORITY=100
+      - KEEPALIVED_ROUTER_ID=52
+    volumes:
+      - ./deploy/keepalived/keepalived-2.conf:/container/service/keepalived/assets/keepalived.conf
+    depends_on:
+      - haproxy-2
+    networks:
+      syn_os_ha_cluster:
+        ipv4_address: 172.21.0.21
+    restart: unless-stopped
+
+  # Extended Orchestrator Cluster
+  orchestrator-3:
+    image: ${REGISTRY}/syn-os-orchestrator:${TAG}
+    container_name: syn_os_orchestrator_3
+    environment:
+      - ENV=production
+      - INSTANCE_ID=orchestrator-3
+      - NATS_URL=nats://nats-1:4222,nats://nats-2:4222,nats://nats-3:4222
+      - POSTGRES_HOST=postgres-primary
+      - POSTGRES_REPLICA_HOST=postgres-replica
+      - REDIS_MASTER_HOST=redis-master
+      - REDIS_SENTINEL_HOST=redis-sentinel
+    env_file:
+      - .env.production
+    depends_on:
+      postgres-primary:
+        condition: service_healthy
+      redis-master:
+        condition: service_healthy
+      nats-1:
+        condition: service_started
+    networks:
+      - syn_os_production
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Extended Consciousness Cluster
+  consciousness-3:
+    image: ${REGISTRY}/syn-os-consciousness:${TAG}
+    container_name: syn_os_consciousness_3
+    environment:
+      - CONSCIOUSNESS_MODE=production
+      - INSTANCE_ID=consciousness-3
+      - NATS_URL=nats://nats-1:4222,nats://nats-2:4222,nats://nats-3:4222
+      - ORCHESTRATOR_URL=http://haproxy-1/api
+    env_file:
+      - .env.production
+    depends_on:
+      - orchestrator-1
+      - orchestrator-2
+      - orchestrator-3
+    volumes:
+      - consciousness_3_data:/app/data
+    networks:
+      - syn_os_production
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2.0'
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8081/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Extended Security Dashboard Cluster
+  security-dashboard-3:
+    image: ${REGISTRY}/syn-os-security-dashboard:${TAG}
+    container_name: syn_os_security_dashboard_3
+    environment:
+      - INSTANCE_ID=security-dashboard-3
+      - NATS_URL=nats://nats-1:4222,nats://nats-2:4222,nats://nats-3:4222
+      - ORCHESTRATOR_URL=http://haproxy-1/api
+      - CONSCIOUSNESS_URL=http://haproxy-1/consciousness
+    env_file:
+      - .env.production
+    depends_on:
+      - consciousness-1
+      - consciousness-2
+      - consciousness-3
+    volumes:
+      - security_logs:/app/logs
+    networks:
+      - syn_os_production
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.3'
+
+  # Consul for Service Discovery and Configuration
+  consul-1:
+    image: consul:1.16
+    container_name: syn_os_consul_1
+    command: >
+      consul agent -server -bootstrap-expect=3 -datacenter=syn-os-dc
+      -data-dir=/consul/data -node=consul-1 -bind=0.0.0.0
+      -client=0.0.0.0 -retry-join=consul-2 -retry-join=consul-3
+      -ui-config-enabled=true -connect=true
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+      - CONSUL_CLIENT_INTERFACE=eth0
+    volumes:
+      - consul_1_data:/consul/data
+      - ./deploy/consul/consul-1.json:/consul/config/consul.json:ro
+    ports:
+      - "8500:8500"  # HTTP API
+      - "8600:8600/udp"  # DNS
+    networks:
+      - syn_os_production
+    restart: unless-stopped
+
+  consul-2:
+    image: consul:1.16
+    container_name: syn_os_consul_2
+    command: >
+      consul agent -server -bootstrap-expect=3 -datacenter=syn-os-dc
+      -data-dir=/consul/data -node=consul-2 -bind=0.0.0.0
+      -client=0.0.0.0 -retry-join=consul-1 -retry-join=consul-3
+      -ui-config-enabled=true -connect=true
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+      - CONSUL_CLIENT_INTERFACE=eth0
+    volumes:
+      - consul_2_data:/consul/data
+      - ./deploy/consul/consul-2.json:/consul/config/consul.json:ro
+    networks:
+      - syn_os_production
+    restart: unless-stopped
+
+  consul-3:
+    image: consul:1.16
+    container_name: syn_os_consul_3
+    command: >
+      consul agent -server -bootstrap-expect=3 -datacenter=syn-os-dc
+      -data-dir=/consul/data -node=consul-3 -bind=0.0.0.0
+      -client=0.0.0.0 -retry-join=consul-1 -retry-join=consul-2
+      -ui-config-enabled=true -connect=true
+    environment:
+      - CONSUL_BIND_INTERFACE=eth0
+      - CONSUL_CLIENT_INTERFACE=eth0
+    volumes:
+      - consul_3_data:/consul/data
+      - ./deploy/consul/consul-3.json:/consul/config/consul.json:ro
+    networks:
+      - syn_os_production
+    restart: unless-stopped
+
+  # Enhanced Redis Cluster with additional nodes
+  redis-replica-1:
+    image: redis:7-alpine
+    container_name: syn_os_redis_replica_1
+    command: redis-server --slaveof redis-master 6379 --requirepass ${REDIS_PASSWORD} --masterauth ${REDIS_PASSWORD}
+    volumes:
+      - redis_replica_1_data:/data
+    depends_on:
+      - redis-master
+    networks:
+      - syn_os_production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "--pass", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis-replica-2:
+    image: redis:7-alpine
+    container_name: syn_os_redis_replica_2
+    command: redis-server --slaveof redis-master 6379 --requirepass ${REDIS_PASSWORD} --masterauth ${REDIS_PASSWORD}
+    volumes:
+      - redis_replica_2_data:/data
+    depends_on:
+      - redis-master
+    networks:
+      - syn_os_production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "--pass", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Enhanced PostgreSQL with additional read replica
+  postgres-replica-2:
+    image: postgres:15-alpine
+    container_name: syn_os_postgres_replica_2
+    environment:
+      POSTGRES_MASTER_SERVICE: postgres-primary
+      POSTGRES_REPLICATION_MODE: slave
+      POSTGRES_REPLICATION_USER: ${POSTGRES_REPLICATION_USER}
+      POSTGRES_REPLICATION_PASSWORD: ${POSTGRES_REPLICATION_PASSWORD}
+      POSTGRES_MASTER_PORT_NUMBER: 5432
+    depends_on:
+      postgres-primary:
+        condition: service_healthy
+    volumes:
+      - postgres_replica_2_data:/var/lib/postgresql/data
+    networks:
+      - syn_os_production
+    restart: unless-stopped
+
+  # Elasticsearch cluster for enhanced logging
+  elasticsearch-1:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: syn_os_elasticsearch_1
+    environment:
+      - node.name=elasticsearch-1
+      - cluster.name=syn-os-cluster
+      - discovery.seed_hosts=elasticsearch-2,elasticsearch-3
+      - cluster.initial_master_nodes=elasticsearch-1,elasticsearch-2,elasticsearch-3
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch_1_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - syn_os_production
+    restart: unless-stopped
+
+  elasticsearch-2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: syn_os_elasticsearch_2
+    environment:
+      - node.name=elasticsearch-2
+      - cluster.name=syn-os-cluster
+      - discovery.seed_hosts=elasticsearch-1,elasticsearch-3
+      - cluster.initial_master_nodes=elasticsearch-1,elasticsearch-2,elasticsearch-3
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch_2_data:/usr/share/elasticsearch/data
+    networks:
+      - syn_os_production
+    restart: unless-stopped
+
+  elasticsearch-3:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: syn_os_elasticsearch_3
+    environment:
+      - node.name=elasticsearch-3
+      - cluster.name=syn-os-cluster
+      - discovery.seed_hosts=elasticsearch-1,elasticsearch-2
+      - cluster.initial_master_nodes=elasticsearch-1,elasticsearch-2,elasticsearch-3
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch_3_data:/usr/share/elasticsearch/data
+    networks:
+      - syn_os_production
+    restart: unless-stopped
+
+  # Filebeat for log shipping
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.11.0
+    container_name: syn_os_filebeat
+    user: root
+    volumes:
+      - ./deploy/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/log:/var/log:ro
+      - filebeat_data:/usr/share/filebeat/data
+    environment:
+      - ELASTICSEARCH_HOSTS=elasticsearch-1:9200,elasticsearch-2:9200,elasticsearch-3:9200
+    depends_on:
+      - elasticsearch-1
+      - elasticsearch-2
+      - elasticsearch-3
+    networks:
+      - syn_os_production
+    restart: unless-stopped
+
+volumes:
+  haproxy_1_data:
+  haproxy_2_data:
+  consciousness_3_data:
+  consul_1_data:
+  consul_2_data:
+  consul_3_data:
+  redis_replica_1_data:
+  redis_replica_2_data:
+  postgres_replica_2_data:
+  elasticsearch_1_data:
+  elasticsearch_2_data:
+  elasticsearch_3_data:
+  filebeat_data:
+
+networks:
+  syn_os_ha_cluster:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/24
+          gateway: 172.21.0.1

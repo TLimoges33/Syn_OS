@@ -1,0 +1,10 @@
+[package]
+name = "ai_module_tests"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+syn-ai = { path = "../../core/ai" }
+
+[features]
+default = []

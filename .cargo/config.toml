@@ -1,0 +1,128 @@
+[build]
+# Optimized parallel builds - use all available cores
+jobs = 4  # Maximum parallel jobs (matches available cores)
+rustflags = [
+    "-C", "target-cpu=haswell",    # Specifically target Haswell CPU (detected)
+    "-Z", "tune-cpu=haswell",      # Tune for Haswell CPU specifically
+    "-Z", "emit-thin-lto=yes",     # Emit thin LTO for faster builds
+    "-C", "prefer-dynamic=no",     # Prefer static linking for performance
+    "-W", "unsafe-code",           # Warn on unsafe code
+    "-D", "warnings"               # Deny all warnings
+]
+
+# Workspace-wide features
+[env]
+CARGO_INCREMENTAL = "1"         # Enable incremental compilation
+RUST_BACKTRACE = "1"           # Always enable backtraces for debugging
+
+[profile.dev]
+# Fast debug builds for development
+debug = 1
+overflow-checks = false
+incremental = true
+split-debuginfo = "unpacked"  # Faster linking on Linux
+debug-assertions = false      # Disable debug assertions in dev for speed
+panic = "abort"
+
+[profile.release]
+# Optimized release builds
+opt-level = 3
+lto = "fat"  # More aggressive LTO
+codegen-units = 1
+panic = "abort"
+strip = true  # Strip symbols for smaller binaries
+
+# Kernel-specific profile (security-hardened)
+[profile.kernel]
+inherits = "release"
+opt-level = "s"  # Optimize for size in kernel
+panic = "abort"
+lto = "fat"
+codegen-units = 1
+debug = false
+debug-assertions = false
+overflow-checks = true  # Keep safety checks in kernel
+
+# High-performance profile for critical components
+[profile.performance]
+inherits = "release"
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = "symbols"
+debug = false
+debug-assertions = false
+overflow-checks = false
+
+[alias]
+# Development aliases
+x = "run --release"
+t = "test --all-targets"
+c = "check --all-targets"
+b = "build --release"
+audit = "audit --deny warnings"
+security = ["audit", "deny check"]
+kernel-build = "build --manifest-path=src/kernel/Cargo.toml --target=x86_64-unknown-none"
+kernel-check = "check --manifest-path=src/kernel/Cargo.toml --target=x86_64-unknown-none"
+optimize = "build --release --target=x86_64-syn_os"
+clean-deps = "tree --duplicates"
+size-analysis = ["bloat", "--release", "--crates"]
+profile-build = "build --release --timings"
+minimal-versions = "check --features=minimal-versions"
+
+[registries.crates-io]
+protocol = "sparse"
+
+[net]
+retry = 2
+git-fetch-with-cli = true
+offline = false
+
+[cargo-new]
+vcs = "git"
+
+[term]
+color = "always"
+
+# Kernel target configuration
+[target.x86_64-unknown-none]
+rustflags = [
+    "-C", "target-cpu=haswell",      # Target specific CPU (Haswell supports AVX2)
+    "-C", "target-feature=+crc32",   # Enable CRC32 instructions
+    "-C", "target-feature=+popcnt",  # Enable POPCNT instruction
+    "-C", "target-feature=+avx2",    # Enable AVX2 for better vectorization
+    "-C", "link-arg=--gc-sections",  # Remove unused sections
+    "-Z", "emit-stack-sizes",        # Track stack usage for kernel
+    "-C", "force-frame-pointers=yes", # Better debugging/profiling
+    "-Z", "location-detail=none",    # Reduce binary size by removing location info
+    "-C", "symbol-mangling-version=v0", # Use latest symbol mangling
+]
+
+# Security-hardened userspace target
+[target.x86_64-unknown-linux-gnu]
+rustflags = [
+    "-C", "control-flow-guard",      # Control flow integrity
+    "-C", "relocation-model=pic",    # Position independent code
+]
+
+# SynOS custom target
+[target.x86_64-syn_os]
+rustflags = [
+    "-C", "target-cpu=haswell",
+    "-C", "opt-level=s",
+    "-C", "panic=abort",
+    "-C", "link-arg=--gc-sections",
+    "-Z", "location-detail=none",
+    "-C", "target-feature=+avx2",    # Enable AVX2 for kernel
+    "-C", "target-feature=+fma"      # Enable FMA instructions
+]
+
+# Unstable features for nightly
+[unstable]
+codegen-backend = true
+
+# Build std only for kernel targets
+[target.x86_64-unknown-none.unstable]
+build-std = "core,compiler_builtins,alloc"
+build-std-features = "compiler-builtins-mem"

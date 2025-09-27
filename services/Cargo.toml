@@ -1,0 +1,45 @@
+[workspace]
+resolver = "2"
+
+members = [
+    "synos-ai-daemon",
+    "synos-consciousness-daemon",
+    "synos-security-orchestrator",
+    "synos-hardware-accel",
+    "synos-llm-engine",
+    "synos-voice-interface"
+]
+
+[workspace.dependencies]
+tokio = { version = "1.0", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+anyhow = "1.0"
+clap = { version = "4.0", features = ["derive"] }
+uuid = { version = "1.0", features = ["v4"] }
+async-trait = "0.1"
+
+# Hardware acceleration
+candle = "0.7"
+tch = "0.16"
+ort = "2.0"
+
+# Neural networks and AI
+ndarray = "0.16"
+hf-hub = "0.3"
+tokenizers = "0.20"
+
+# Security tools integration
+rustnmap = "0.3"
+reqwest = { version = "0.12", features = ["json"] }
+
+# Voice processing
+rodio = "0.19"
+whisper-rs = "0.22"
+cpal = "0.15"
+
+# Networking
+quinn = "0.11"
+h3 = "0.0.4"

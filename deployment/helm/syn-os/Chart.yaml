@@ -1,0 +1,31 @@
+apiVersion: v2
+name: syn-os
+description: Syn_OS - Security-First Consciousness-Integrated Operating System
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - security
+  - consciousness
+  - operating-system
+  - ai
+  - quantum-crypto
+home: https://github.com/syn-os/syn-os
+sources:
+  - https://github.com/syn-os/syn-os
+maintainers:
+  - name: Syn_OS Team
+    email: team@syn-os.dev
+dependencies:
+  - name: postgresql
+    version: 12.1.2
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
+  - name: redis
+    version: 17.4.3
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled
+  - name: nats
+    version: 0.19.1
+    repository: https://nats-io.github.io/k8s/helm/charts/
+    condition: nats.enabled

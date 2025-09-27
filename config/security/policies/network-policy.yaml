@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: synos-network-policy
+  namespace: synos-production
+spec:
+  egress:
+  - ports:
+    - port: 5432
+      protocol: TCP
+    to:
+    - podSelector:
+        matchLabels:
+          app: postgres
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: synos-gateway
+    ports:
+    - port: 9090
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      app: consciousness
+  policyTypes:
+  - Ingress
+  - Egress

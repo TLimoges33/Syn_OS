@@ -1,0 +1,126 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: syn-os-core
+  namespace: syn-os
+  labels:
+    app: syn-os-core
+    component: core
+    app.kubernetes.io/name: syn-os
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/component: core
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: syn-os-core
+  template:
+    metadata:
+      labels:
+        app: syn-os-core
+        component: core
+    spec:
+      serviceAccountName: syn-os-core
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 2000
+      containers:
+        - name: core
+          image: syn-os/core:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+            - containerPort: 9090
+              name: metrics
+              protocol: TCP
+          env:
+            - name: SYN_OS_ENVIRONMENT
+              value: "kubernetes"
+            - name: SYN_OS_LOG_LEVEL
+              value: "info"
+            - name: SYN_OS_SECURITY_ENABLED
+              value: "true"
+            - name: SYN_OS_CONSCIOUSNESS_ENABLED
+              value: "true"
+          resources:
+            limits:
+              cpu: 2000m
+              memory: 4Gi
+            requests:
+              cpu: 1000m
+              memory: 2Gi
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          volumeMounts:
+            - name: config
+              mountPath: /etc/syn-os
+              readOnly: true
+            - name: data
+              mountPath: /var/lib/syn-os
+      volumes:
+        - name: config
+          configMap:
+            name: syn-os-config
+        - name: data
+          persistentVolumeClaim:
+            claimName: syn-os-core-data
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: syn-os-core
+  namespace: syn-os
+  labels:
+    app.kubernetes.io/name: syn-os
+    app.kubernetes.io/component: core
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: syn-os-core
+  namespace: syn-os
+  labels:
+    app: syn-os-core
+    component: core
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http
+    - port: 9090
+      targetPort: 9090
+      protocol: TCP
+      name: metrics
+  selector:
+    app: syn-os-core
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: syn-os-core-data
+  namespace: syn-os
+  labels:
+    app: syn-os-core
+    component: core
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast-ssd

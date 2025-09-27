@@ -1,0 +1,8 @@
+Origin: SynOS
+Label: SynOS AI Repository
+Suite: stable
+Codename: bookworm
+Architectures: amd64
+Components: main
+Description: SynOS AI-Enhanced Linux Distribution Repository
+SignWith: yes

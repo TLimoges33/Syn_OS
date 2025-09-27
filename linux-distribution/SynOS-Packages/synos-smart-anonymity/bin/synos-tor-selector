@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+
+"""
+SynOS Intelligent Tor Circuit Selector - Main executable
+Entry point for AI-driven Tor circuit optimization
+"""
+
+import sys
+import os
+import asyncio
+import argparse
+
+# Add the src directory to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'src'))
+
+from intelligent_tor_selector import IntelligentTorSelector, CircuitPurpose, ThreatLevel
+
+async def main():
+    parser = argparse.ArgumentParser(description='SynOS Intelligent Tor Circuit Selector')
+    parser.add_argument('--daemon', action='store_true', help='Run as daemon service')
+    parser.add_argument('--purpose', type=str, choices=[p.value for p in CircuitPurpose],
+                       help='Circuit purpose')
+    parser.add_argument('--threat-level', type=str, choices=[t.value for t in ThreatLevel],
+                       help='Threat level')
+    parser.add_argument('--analytics', action='store_true', help='Export circuit analytics')
+    parser.add_argument('--recommendations', action='store_true', help='Get circuit recommendations')
+    parser.add_argument('--config', type=str, default='/etc/synos/phase4/tor-selector-config.yaml')
+
+    args = parser.parse_args()
+
+    selector = IntelligentTorSelector(config_path=args.config)
+
+    if await selector.initialize():
+        if args.daemon:
+            print("Starting SynOS Tor Circuit Selector daemon...")
+            await selector.adaptive_circuit_management()
+        elif args.analytics:
+            analytics = await selector.export_circuit_analytics()
+            print(f"Circuit Analytics: {analytics}")
+        elif args.recommendations:
+            purpose = CircuitPurpose(args.purpose) if args.purpose else CircuitPurpose.GENERAL_BROWSING
+            threat_level = ThreatLevel(args.threat_level) if args.threat_level else ThreatLevel.MEDIUM
+
+            recommendations = await selector.get_circuit_recommendations(purpose, threat_level)
+            print("Circuit Recommendations:")
+            for rec in recommendations:
+                print(f"  {rec['rank']}. {rec['entry_country']}->{rec['middle_country']}->{rec['exit_country']}")
+                print(f"     Score: {rec['overall_score']:.3f}, Latency: {rec['predicted_latency_ms']:.1f}ms")
+                print(f"     {rec['explanation']}")
+        else:
+            purpose = CircuitPurpose(args.purpose) if args.purpose else CircuitPurpose.GENERAL_BROWSING
+            threat_level = ThreatLevel(args.threat_level) if args.threat_level else ThreatLevel.MEDIUM
+
+            candidate = await selector.select_optimal_circuit(purpose, threat_level)
+            if candidate:
+                circuit_id = await selector.create_circuit(candidate)
+                if circuit_id:
+                    print(f"Created optimal circuit: {circuit_id}")
+                    print(f"Path: {candidate.entry_relay.country_code} -> {candidate.middle_relay.country_code} -> {candidate.exit_relay.country_code}")
+                    print(f"Predicted performance: {candidate.predicted_latency:.1f}ms, {candidate.predicted_bandwidth:.1f}MB/s")
+
+    await selector.shutdown()
+
+if __name__ == '__main__':
+    asyncio.run(main())

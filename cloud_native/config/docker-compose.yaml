@@ -1,0 +1,40 @@
+
+version: '3.8'
+services:
+  consciousness-operator:
+    image: synos/consciousness-operator:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - CONSCIOUSNESS_MODE=production
+      - NEURAL_MESH_ENABLED=true
+    volumes:
+      - consciousness-data:/data
+    networks:
+      - synos-mesh
+    
+  neural-mesh:
+    image: synos/neural-mesh:latest
+    ports:
+      - "9090:9090"
+    depends_on:
+      - consciousness-operator
+    networks:
+      - synos-mesh
+      
+  serverless-runtime:
+    image: synos/serverless-runtime:latest
+    ports:
+      - "9000:9000"
+    environment:
+      - FUNCTION_TIMEOUT=300
+      - MAX_CONCURRENCY=1000
+    networks:
+      - synos-mesh
+
+volumes:
+  consciousness-data:
+
+networks:
+  synos-mesh:
+    driver: bridge

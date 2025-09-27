@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="cool-retro-term" repository_source="starred" generated_at="2025-08-23T14:23:47.820264">
+  <repository_information>
+    <name>cool-retro-term</name>
+    <full_name>Swordfish90/cool-retro-term</full_name>
+    <description>A good looking terminal emulator which mimics the old cathode display...</description>
+    <language>QML</language>
+    <stargazers_count>23845</stargazers_count>
+    <size>17738</size>
+    <open_issues_count>509</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2024-06-14T18:28:18+00:00</pushed_at>
+    <topics>
+      <item>retro</item>
+      <item>qml</item>
+      <item>qt</item>
+      <item>macos</item>
+      <item>linux</item>
+      <item>terminal</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.67" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

@@ -1,0 +1,39 @@
+[Unit]
+Description=SynapticOS AI Dashboard Web Interface
+Documentation=https://github.com/Syn_OS-Dev-Team/Syn_OS
+After=synos-consciousness.service
+Requires=synos-consciousness.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/synos-dashboard --port 8080 --bind 0.0.0.0
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=3
+User=synos
+Group=synos
+Environment=RUST_LOG=info
+Environment=SYNOS_API_ENDPOINT=http://localhost:8081
+WorkingDirectory=/usr/share/synos/dashboard
+StandardOutput=journal
+StandardError=journal
+
+# Security settings
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/synos
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+
+# Network access
+PrivateNetwork=false
+
+# Resource limits
+MemoryMax=512M
+CPUQuota=100%
+
+[Install]
+WantedBy=multi-user.target

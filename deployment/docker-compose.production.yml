@@ -1,0 +1,462 @@
+version: '3.8'
+
+# =========================================================
+# Syn_OS Production Docker Compose Configuration
+# Neural Darwinism Enhanced Security Operating System
+# =========================================================
+
+networks:
+  syn_os_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+    driver_opts:
+      com.docker.network.bridge.name: syn_os_bridge
+
+  syn_os_internal:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+
+volumes:
+  nats_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/var/lib/syn_os/nats'
+
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/var/lib/syn_os/postgres'
+
+  redis_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/var/lib/syn_os/redis'
+
+  consciousness_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/var/lib/syn_os/consciousness'
+
+  security_logs:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/var/log/syn_os/security'
+
+services:
+  # NATS Message Bus - Production Configuration
+  nats:
+    image: nats:2.10.5-alpine
+    container_name: syn_os_nats_prod
+    restart: unless-stopped
+    networks:
+      - syn_os_network
+      - syn_os_internal
+    ports:
+      - "4222:4222"   # Client connections
+      - "8222:8222"   # HTTP monitoring
+      - "6222:6222"   # Cluster routing
+    volumes:
+      - nats_data:/data
+      - ./config/nats/nats-server.conf:/etc/nats/nats-server.conf:ro
+      - security_logs:/var/log/nats
+    command: >
+      --config /etc/nats/nats-server.conf
+      --jetstream
+      --store_dir /data
+      --max_payload 10MB
+      --max_connections 10000
+      --max_control_line 4096
+      --tls
+      --tlscert /etc/nats/certs/server.crt
+      --tlskey /etc/nats/certs/server.key
+      --tlsverify
+    environment:
+      - NATS_LOG_LEVEL=info
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8222/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '2.0'
+        reservations:
+          memory: 512M
+          cpus: '1.0'
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    tmpfs:
+      - /tmp:noexec,nosuid,size=100m
+
+  # PostgreSQL Database - Production
+  postgres:
+    image: postgres:15-alpine
+    container_name: syn_os_postgres_prod
+    restart: unless-stopped
+    networks:
+      - syn_os_internal
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./config/postgres/init:/docker-entrypoint-initdb.d:ro
+      - security_logs:/var/log/postgresql
+    environment:
+      POSTGRES_DB: syn_os_production
+      POSTGRES_USER: syn_os_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      POSTGRES_INITDB_ARGS: "--auth-local=scram-sha-256 --auth-host=scram-sha-256"
+    secrets:
+      - postgres_password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U syn_os_user -d syn_os_production"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2.0'
+        reservations:
+          memory: 1G
+          cpus: '1.0'
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETUID
+      - SETGID
+      - DAC_OVERRIDE
+
+  # Redis Cache - Production
+  redis:
+    image: redis:7-alpine
+    container_name: syn_os_redis_prod
+    restart: unless-stopped
+    networks:
+      - syn_os_internal
+    volumes:
+      - redis_data:/data
+      - ./config/redis/redis.conf:/etc/redis/redis.conf:ro
+    command: redis-server /etc/redis/redis.conf
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 256M
+          cpus: '0.5'
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp:noexec,nosuid,size=50m
+
+  # Consciousness Engine - Production
+  consciousness:
+    build:
+      context: ..
+      dockerfile: docker/consciousness/Dockerfile.production
+    image: syn_os/consciousness:production
+    container_name: syn_os_consciousness_prod
+    restart: unless-stopped
+    networks:
+      - syn_os_network
+      - syn_os_internal
+    volumes:
+      - consciousness_data:/app/data
+      - security_logs:/app/logs
+      - ./config/consciousness:/app/config:ro
+    environment:
+      - RUST_LOG=info
+      - SYN_OS_ENV=production
+      - CONSCIOUSNESS_MODE=production
+      - NATS_URL=nats://nats:4222
+      - POSTGRES_URL=postgresql://syn_os_user@postgres:5432/syn_os_production
+      - REDIS_URL=redis://redis:6379
+    secrets:
+      - postgres_password
+      - consciousness_key
+    depends_on:
+      nats:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/app/bin/health_check"]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '4.0'
+        reservations:
+          memory: 2G
+          cpus: '2.0'
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp:noexec,nosuid,size=200m
+
+  # Security Monitor - Production
+  security_monitor:
+    build:
+      context: ..
+      dockerfile: docker/security/Dockerfile.production
+    image: syn_os/security:production
+    container_name: syn_os_security_prod
+    restart: unless-stopped
+    networks:
+      - syn_os_network
+      - syn_os_internal
+    volumes:
+      - security_logs:/app/logs
+      - ./config/security:/app/config:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - RUST_LOG=warn
+      - SYN_OS_ENV=production
+      - SECURITY_LEVEL=maximum
+      - NATS_URL=nats://nats:4222
+      - ALERT_WEBHOOK_URL_FILE=/run/secrets/alert_webhook
+    secrets:
+      - alert_webhook
+      - security_key
+    depends_on:
+      nats:
+        condition: service_healthy
+      consciousness:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/app/bin/security_health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2.0'
+        reservations:
+          memory: 1G
+          cpus: '1.0'
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_ADMIN
+      - SYS_PTRACE
+    read_only: true
+    tmpfs:
+      - /tmp:noexec,nosuid,size=100m
+
+  # Service Orchestrator - Production
+  orchestrator:
+    build:
+      context: ..
+      dockerfile: docker/orchestrator/Dockerfile.production
+    image: syn_os/orchestrator:production
+    container_name: syn_os_orchestrator_prod
+    restart: unless-stopped
+    networks:
+      - syn_os_network
+      - syn_os_internal
+    ports:
+      - "8080:8080"   # API Gateway
+    volumes:
+      - ./config/orchestrator:/app/config:ro
+      - security_logs:/app/logs
+    environment:
+      - GO_ENV=production
+      - GIN_MODE=release
+      - NATS_URL=nats://nats:4222
+      - POSTGRES_URL=postgresql://syn_os_user@postgres:5432/syn_os_production
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET_FILE=/run/secrets/jwt_secret
+    secrets:
+      - postgres_password
+      - jwt_secret
+      - api_key
+    depends_on:
+      nats:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '2.0'
+        reservations:
+          memory: 512M
+          cpus: '1.0'
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    tmpfs:
+      - /tmp:noexec,nosuid,size=100m
+
+  # Metrics and Monitoring - Production
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    container_name: syn_os_prometheus_prod
+    restart: unless-stopped
+    networks:
+      - syn_os_internal
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./config/prometheus/rules:/etc/prometheus/rules:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 1G
+          cpus: '0.5'
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp:noexec,nosuid,size=100m
+
+  # Log Aggregation - Production
+  fluentd:
+    build:
+      context: ..
+      dockerfile: docker/fluentd/Dockerfile
+    image: syn_os/fluentd:production
+    container_name: syn_os_fluentd_prod
+    restart: unless-stopped
+    networks:
+      - syn_os_internal
+    volumes:
+      - security_logs:/fluentd/log
+      - ./config/fluentd:/fluentd/etc:ro
+    environment:
+      - FLUENTD_CONF=fluent.conf
+      - FLUENTD_SYSTEMD_CONF=disable
+    depends_on:
+      - nats
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp:noexec,nosuid,size=100m
+
+# Production Secrets Management
+secrets:
+  postgres_password:
+    external: true
+    name: syn_os_postgres_password
+
+  consciousness_key:
+    external: true
+    name: syn_os_consciousness_key
+
+  security_key:
+    external: true
+    name: syn_os_security_key
+
+  jwt_secret:
+    external: true
+    name: syn_os_jwt_secret
+
+  api_key:
+    external: true
+    name: syn_os_api_key
+
+  alert_webhook:
+    external: true
+    name: syn_os_alert_webhook
+
+# Production Configuration
+x-common-variables: &common-variables
+  TZ: UTC
+  SYN_OS_VERSION: "4.3.0"
+  SYN_OS_BUILD: "production"
+  LOG_LEVEL: "info"
+  METRICS_ENABLED: "true"
+  SECURITY_ENHANCED: "true"

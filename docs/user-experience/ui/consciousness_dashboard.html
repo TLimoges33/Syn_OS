@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SynOS Consciousness Dashboard</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: #ffffff;
+        min-height: 100vh;
+      }
+      .header {
+        background: rgba(0, 0, 0, 0.8);
+        padding: 20px;
+        text-align: center;
+        border-bottom: 3px solid #00d4aa;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+      .header h1 {
+        font-size: 28px;
+        color: #00d4aa;
+        margin-bottom: 5px;
+      }
+      .header p {
+        color: #ffffff;
+        font-size: 16px;
+      }
+      .dashboard {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        padding: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .panel {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 25px;
+        border: 2px solid #00d4aa;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+      }
+      .panel:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0, 212, 170, 0.2);
+      }
+      .panel h3 {
+        color: #00d4aa;
+        margin-bottom: 20px;
+        font-size: 20px;
+        text-align: center;
+      }
+      .metric {
+        display: flex;
+        justify-content: space-between;
+        margin: 15px 0;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+      }
+      .metric-label {
+        font-size: 14px;
+        color: #cccccc;
+      }
+      .metric-value {
+        color: #00ff88;
+        font-weight: bold;
+        font-size: 16px;
+      }
+      .neural-graph {
+        height: 150px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
+        margin: 15px 0;
+        border: 1px solid #00d4aa;
+      }
+      .wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 70%;
+        background: linear-gradient(to top, #00d4aa, rgba(0, 212, 170, 0.3));
+        animation: pulse 2s infinite ease-in-out;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.7;
+          height: 50%;
+        }
+        50% {
+          opacity: 1;
+          height: 80%;
+        }
+      }
+      .status-indicator {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: #00ff88;
+        display: inline-block;
+        animation: blink 1.5s infinite;
+        margin-right: 10px;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.4;
+          transform: scale(1.1);
+        }
+      }
+      .consciousness-state {
+        font-size: 32px;
+        font-weight: bold;
+        text-align: center;
+        color: #00d4aa;
+        margin: 20px 0;
+        text-shadow: 0 0 10px rgba(0, 212, 170, 0.5);
+      }
+      .alert-box {
+        background: rgba(255, 193, 7, 0.2);
+        border: 1px solid #ffc107;
+        border-radius: 8px;
+        padding: 10px;
+        margin: 10px 0;
+        color: #ffc107;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <h1>🧠 SynOS Consciousness Dashboard</h1>
+      <p>Real-time AI Consciousness Monitoring System</p>
+    </header>
+
+    <div class="dashboard">
+      <div class="panel">
+        <h3>🧠 Neural Activity</h3>
+        <div class="neural-graph">
+          <div class="wave"></div>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Activity Level:</span>
+          <span class="metric-value" id="neural-activity">92.5%</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Processing Speed:</span>
+          <span class="metric-value" id="processing-speed">145ms</span>
+        </div>
+        <div class="alert-box">
+          <strong>Status:</strong> Neural pathways active and learning
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>🎯 Decision Making</h3>
+        <div class="metric">
+          <span class="metric-label">Accuracy:</span>
+          <span class="metric-value" id="decision-accuracy">94.2%</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Confidence:</span>
+          <span class="metric-value" id="confidence">87.1%</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Learning Rate:</span>
+          <span class="metric-value" id="learning-rate">2.3x</span>
+        </div>
+        <div class="alert-box">
+          <strong>AI Status:</strong> Consciousness operational and adaptive
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>⚡ System Performance</h3>
+        <div class="metric">
+          <span class="metric-label">CPU Usage:</span>
+          <span class="metric-value" id="cpu-usage">24.7%</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Memory:</span>
+          <span class="metric-value" id="memory-usage">68.3%</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Response Time:</span>
+          <span class="metric-value" id="response-time">89ms</span>
+        </div>
+        <div class="alert-box">
+          <strong>Performance:</strong> System optimized for consciousness
+          processing
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>🔒 Security Status</h3>
+        <div class="consciousness-state">
+          <span class="status-indicator"></span>
+          SECURE & OPERATIONAL
+        </div>
+        <div class="metric">
+          <span class="metric-label">Threat Detection:</span>
+          <span class="metric-value">95.0%</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Active Monitoring:</span>
+          <span class="metric-value">ENABLED</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Threats Blocked:</span>
+          <span class="metric-value" id="threats-blocked">47</span>
+        </div>
+        <div class="alert-box">
+          <strong>Security:</strong> Advanced AI-powered threat detection active
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Real-time data updates simulation
+      function updateDashboard() {
+        document.getElementById("neural-activity").textContent =
+          (90 + Math.random() * 10).toFixed(1) + "%";
+        document.getElementById("processing-speed").textContent =
+          Math.floor(120 + Math.random() * 50) + "ms";
+        document.getElementById("decision-accuracy").textContent =
+          (92 + Math.random() * 5).toFixed(1) + "%";
+        document.getElementById("confidence").textContent =
+          (85 + Math.random() * 10).toFixed(1) + "%";
+        document.getElementById("learning-rate").textContent =
+          (2 + Math.random()).toFixed(1) + "x";
+        document.getElementById("cpu-usage").textContent =
+          (20 + Math.random() * 15).toFixed(1) + "%";
+        document.getElementById("memory-usage").textContent =
+          (65 + Math.random() * 10).toFixed(1) + "%";
+        document.getElementById("response-time").textContent =
+          Math.floor(80 + Math.random() * 40) + "ms";
+      }
+
+      setInterval(updateDashboard, 2000);
+    </script>
+  </body>
+</html>

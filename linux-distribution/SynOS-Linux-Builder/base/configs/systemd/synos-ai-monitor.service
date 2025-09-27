@@ -1,0 +1,31 @@
+[Unit]
+Description=SynOS AI System Monitor
+Documentation=https://synos.dev/docs/ai-monitor
+After=synos-consciousness.service
+Requires=synos-consciousness.service
+
+[Service]
+Type=simple
+User=synos
+Group=synos
+WorkingDirectory=/opt/synos/ai
+ExecStart=/usr/bin/python3 /opt/synos/ai/monitor.py
+Restart=always
+RestartSec=15
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=synos-ai-monitor
+
+# Resource limits
+MemoryMax=512M
+CPUQuota=50%
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/log/synos
+
+[Install]
+WantedBy=multi-user.target

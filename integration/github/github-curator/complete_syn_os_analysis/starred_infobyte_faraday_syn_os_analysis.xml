@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="faraday" repository_source="starred" generated_at="2025-08-23T14:25:58.294554">
+  <repository_information>
+    <name>faraday</name>
+    <full_name>infobyte/faraday</full_name>
+    <description>Open Source Vulnerability Management Platform</description>
+    <language>Python</language>
+    <stargazers_count>5904</stargazers_count>
+    <size>219755</size>
+    <open_issues_count>56</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <pushed_at>2025-07-30T21:38:59+00:00</pushed_at>
+    <license>
+      <name>GNU General Public License v3.0</name>
+    </license>
+    <topics>
+      <item>devops</item>
+      <item>penetration-testing</item>
+      <item>vulnerability</item>
+      <item>vulnerability-scanners</item>
+      <item>security</item>
+      <item>security-audit</item>
+      <item>pentesting</item>
+      <item>continuous-scanning</item>
+      <item>infosec</item>
+      <item>vulnerability-management</item>
+      <item>collaboration</item>
+      <item>burpsuite</item>
+      <item>nessus</item>
+      <item>nmap</item>
+      <item>devsecops</item>
+      <item>security-automation</item>
+      <item>orchestration</item>
+      <item>cve</item>
+      <item>appsec</item>
+      <item>cybersecurity</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="1.03" level="high"/>
+    <primary_category integration_level="security">security_frameworks</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

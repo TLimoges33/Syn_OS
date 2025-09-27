@@ -1,0 +1,20 @@
+# Syn_OS Security Tools Service Configuration
+security_services:
+  parrot_toolset:
+    name: "Parrot Security Toolset"
+    path: "${PROJECT_ROOT}/tools/parrot-security-toolset"
+    launcher: "synos-security-launcher.py"
+    tools_count: 60
+    categories:
+      - network
+      - web
+      - wireless
+      - password
+      - forensics
+      - reverse
+      - exploit
+    
+  integration:
+    environment_config: "${PROJECT_ROOT}/config/security-tools/environment.sh"
+    bin_symlinks: "${PROJECT_ROOT}/src/bin"
+    status_check: "synos_security_status"

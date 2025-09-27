@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="llm-app" repository_source="starred" generated_at="2025-08-23T14:27:41.516954">
+  <repository_information>
+    <name>llm-app</name>
+    <full_name>pathwaycom/llm-app</full_name>
+    <description>Ready-to-run cloud templates for RAG, AI pipelines, and enterprise search with live data. 🐳Docker-friendly.⚡Always in sync with Sharepoint, Google Drive, S3, Kafka, PostgreSQL, real-time data APIs, and more.</description>
+    <language>Jupyter Notebook</language>
+    <stargazers_count>29922</stargazers_count>
+    <size>62717</size>
+    <open_issues_count>6</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-07-30T12:13:39+00:00</pushed_at>
+    <license>
+      <name>MIT License</name>
+    </license>
+    <topics>
+      <item>chatbot</item>
+      <item>hugging-face</item>
+      <item>llm</item>
+      <item>llm-local</item>
+      <item>llm-prompting</item>
+      <item>llm-security</item>
+      <item>llmops</item>
+      <item>pathway</item>
+      <item>real-time</item>
+      <item>vector-index</item>
+      <item>open-ai</item>
+      <item>vector-database</item>
+      <item>retrieval-augmented-generation</item>
+      <item>machine-learning</item>
+      <item>rag</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.73" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

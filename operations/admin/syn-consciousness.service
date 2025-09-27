@@ -1,0 +1,25 @@
+[Unit]
+Description=Syn_OS Consciousness Engine
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/syn_os
+Environment=PYTHONPATH=/opt/syn_os
+ExecStart=/usr/bin/python3 -m src.consciousness.core.consciousness_kernel
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+# Security settings
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/syn_os/data /var/log
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

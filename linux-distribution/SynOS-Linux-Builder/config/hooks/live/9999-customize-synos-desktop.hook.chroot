@@ -1,0 +1,203 @@
+#!/bin/bash
+set -e
+
+echo "🎨 Customizing SynOS Desktop Environment..."
+
+# Create SynOS desktop configuration directories
+mkdir -p /etc/skel/.config/mate
+mkdir -p /etc/skel/Desktop
+mkdir -p /usr/share/pixmaps/synos
+mkdir -p /usr/share/backgrounds/synos
+
+# Create SynOS MATE desktop configuration
+cat > /etc/skel/.config/mate/mate-session.save << 'EOF'
+[Default]
+0,id=1199256761000143178000000009630001,Priority=50,Program=marco,RestartCommand=marco --sm-client-id 1199256761000143178000000009630001 --screen 0
+1,id=1199256761000143178000000009630002,Priority=50,Program=mate-panel,RestartCommand=mate-panel --sm-client-id 1199256761000143178000000009630002
+2,id=1199256761000143178000000009630003,Priority=50,Program=mate-settings-daemon,RestartCommand=mate-settings-daemon --sm-client-id 1199256761000143178000000009630003
+3,id=1199256761000143178000000009630004,Priority=50,Program=caja,RestartCommand=caja --sm-client-id 1199256761000143178000000009630004 --no-default-window
+EOF
+
+# Create SynOS background
+cat > /usr/share/backgrounds/synos/synos-default.svg << 'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0f23;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1a1a3a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0a0a1a;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="neuralGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#64ffda;stop-opacity:0.8" />
+      <stop offset="50%" style="stop-color:#00bcd4;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#004d40;stop-opacity:0.1" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1920" height="1080" fill="url(#bgGradient)"/>
+
+  <!-- Neural network visualization -->
+  <circle cx="960" cy="540" r="300" fill="url(#neuralGradient)" opacity="0.3"/>
+  <circle cx="700" cy="300" r="150" fill="url(#neuralGradient)" opacity="0.2"/>
+  <circle cx="1200" cy="800" r="200" fill="url(#neuralGradient)" opacity="0.25"/>
+
+  <!-- Connection lines -->
+  <line x1="960" y1="540" x2="700" y2="300" stroke="#64ffda" stroke-width="2" opacity="0.5"/>
+  <line x1="960" y1="540" x2="1200" y2="800" stroke="#64ffda" stroke-width="2" opacity="0.5"/>
+  <line x1="700" y1="300" x2="1200" y2="800" stroke="#00bcd4" stroke-width="1" opacity="0.3"/>
+
+  <!-- SynOS Logo Text -->
+  <text x="960" y="600" text-anchor="middle" font-family="monospace" font-size="72" fill="#64ffda" opacity="0.8">
+    SynOS
+  </text>
+  <text x="960" y="650" text-anchor="middle" font-family="monospace" font-size="24" fill="#00bcd4" opacity="0.6">
+    AI-Conscious Operating System
+  </text>
+</svg>
+EOF
+
+# Create desktop entry for SynOS AI Dashboard
+cat > /etc/skel/Desktop/synos-ai-dashboard.desktop << 'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=SynOS AI Dashboard
+Comment=Monitor and control SynOS AI consciousness system
+Icon=synos-ai-dashboard
+Exec=python3 -c "import webbrowser; webbrowser.open('http://localhost:8080/dashboard')"
+Categories=System;Monitor;
+Keywords=synos;ai;consciousness;dashboard;monitoring;
+StartupNotify=true
+EOF
+
+chmod +x /etc/skel/Desktop/synos-ai-dashboard.desktop
+
+# Create desktop entry for Security Tools
+cat > /etc/skel/Desktop/synos-security-tools.desktop << 'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=SynOS Security Suite
+Comment=AI-Augmented Security Tools and Penetration Testing
+Icon=synos-security
+Exec=mate-terminal --title="SynOS Security Suite" --command="bash -c 'echo \"🛡️  SynOS AI-Augmented Security Suite\"; echo \"Select a tool:\"; echo \"1) Nmap (Network Discovery)\"; echo \"2) Metasploit (Exploitation Framework)\"; echo \"3) Burp Suite (Web Security)\"; echo \"4) Wireshark (Network Analysis)\"; echo \"5) AI Security Orchestrator\"; read -p \"Choice: \" choice; case \$choice in 1) nmap;; 2) msfconsole;; 3) burpsuite;; 4) wireshark;; 5) echo \"Starting AI Security Orchestrator...\"; python3 -c \"print(\\\"🤖 AI Security Orchestrator would start here\\\")\";; *) echo \"Invalid choice\";; esac; bash'"
+Categories=System;Security;
+Keywords=synos;security;pentest;nmap;metasploit;
+StartupNotify=true
+EOF
+
+chmod +x /etc/skel/Desktop/synos-security-tools.desktop
+
+# Set SynOS background as default
+mkdir -p /usr/share/glib-2.0/schemas
+cat > /usr/share/glib-2.0/schemas/99-synos-defaults.gschema.override << 'EOF'
+[org.mate.background]
+picture-filename='/usr/share/backgrounds/synos/synos-default.svg'
+picture-options='zoom'
+color-shading-type='solid'
+primary-color='#0f0f23'
+
+[org.mate.interface]
+gtk-theme='Arc-Dark'
+icon-theme='Papirus-Dark'
+font-name='Ubuntu 11'
+monospace-font-name='Ubuntu Mono 13'
+
+[org.mate.peripherals-mouse]
+cursor-theme='Adwaita'
+
+[org.mate.Marco.general]
+theme='Arc-Dark'
+titlebar-font='Ubuntu Bold 11'
+
+[org.mate.panel]
+default-layout='synos'
+EOF
+
+# Compile GSettings schemas
+glib-compile-schemas /usr/share/glib-2.0/schemas/ || true
+
+# Create SynOS panel layout
+mkdir -p /usr/share/mate-panel/layouts
+cat > /usr/share/mate-panel/layouts/synos.layout << 'EOF'
+[Toplevel top]
+expand=true
+orientation=top
+size=30
+
+[Object ai-status]
+object-type=applet
+applet-iid=SynosAIStatusAppletFactory::SynosAIStatusApplet
+toplevel-id=top
+position=10
+locked=true
+
+[Object menu-bar]
+object-type=menu-bar
+toplevel-id=top
+position=50
+locked=true
+
+[Object security-launcher]
+object-type=launcher
+launcher-location=/usr/share/applications/synos-security-tools.desktop
+toplevel-id=top
+position=100
+locked=true
+
+[Object notification-area]
+object-type=applet
+applet-iid=NotificationAreaAppletFactory::NotificationArea
+toplevel-id=top
+position=1000
+locked=true
+
+[Object clock]
+object-type=applet
+applet-iid=ClockAppletFactory::ClockApplet
+toplevel-id=top
+position=1050
+locked=true
+
+[Toplevel bottom]
+expand=true
+orientation=bottom
+size=30
+
+[Object window-list]
+object-type=applet
+applet-iid=WnckletFactory::WindowListApplet
+toplevel-id=bottom
+position=50
+locked=true
+
+[Object workspace-switcher]
+object-type=applet
+applet-iid=WnckletFactory::WorkspaceSwitcherApplet
+toplevel-id=bottom
+position=1000
+locked=true
+EOF
+
+# Create application menu entries for SynOS
+mkdir -p /usr/share/applications
+cat > /usr/share/applications/synos-consciousness-monitor.desktop << 'EOF'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Consciousness Monitor
+Comment=Monitor SynOS Neural Darwinism consciousness system
+Icon=preferences-system
+Exec=mate-terminal --title="SynOS Consciousness Monitor" --command="bash -c 'echo \"🧠 SynOS Consciousness System Status:\"; systemctl status synos-consciousness; journalctl -u synos-consciousness -n 20; bash'"
+Categories=System;Monitor;
+Keywords=synos;consciousness;neural;darwinism;ai;
+StartupNotify=true
+EOF
+
+# Install Arc theme and Papirus icons if available
+apt-get update || true
+apt-get install -y arc-theme papirus-icon-theme ubuntu-fonts || true
+
+echo "✅ SynOS Desktop customization complete!"

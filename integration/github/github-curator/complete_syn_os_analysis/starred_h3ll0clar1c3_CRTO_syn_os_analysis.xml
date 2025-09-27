@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="CRTO" repository_source="starred" generated_at="2025-08-23T14:26:52.569264">
+  <repository_information>
+    <name>CRTO</name>
+    <full_name>h3ll0clar1c3/CRTO</full_name>
+    <description>Certified Red Team Operator</description>
+    <language>HTML</language>
+    <stargazers_count>423</stargazers_count>
+    <size>555</size>
+    <open_issues_count>1</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2022-04-17T12:50:45+00:00</pushed_at>
+    <topics/>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.62" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

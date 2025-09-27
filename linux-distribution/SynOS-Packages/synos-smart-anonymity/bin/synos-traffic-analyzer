@@ -1,0 +1,100 @@
+#!/usr/bin/env python3
+
+"""
+SynOS Traffic Camouflage Analysis - Main executable
+Entry point for AI-enhanced traffic pattern analysis and camouflage
+"""
+
+import sys
+import os
+import asyncio
+import argparse
+import json
+
+# Add the src directory to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'src'))
+
+from traffic_camouflage_analysis import TrafficCamouflageAnalysis, TrafficPattern
+
+async def main():
+    parser = argparse.ArgumentParser(description='SynOS Traffic Camouflage Analysis')
+    parser.add_argument('--start', action='store_true', help='Start traffic analysis')
+    parser.add_argument('--stop', action='store_true', help='Stop traffic analysis')
+    parser.add_argument('--interface', type=str, help='Network interface to monitor')
+    parser.add_argument('--camouflage', type=str, help='Activate camouflage profile')
+    parser.add_argument('--pattern', type=str, choices=[p.value for p in TrafficPattern],
+                       help='Target traffic pattern for mimicry')
+    parser.add_argument('--report', action='store_true', help='Generate analysis report')
+    parser.add_argument('--profiles', action='store_true', help='List camouflage profiles')
+    parser.add_argument('--config', type=str, default='/etc/synos/phase4/traffic-camouflage-config.yaml')
+
+    args = parser.parse_args()
+
+    analyzer = TrafficCamouflageAnalysis(config_path=args.config)
+
+    if await analyzer.initialize():
+        if args.start:
+            interface = args.interface or 'any'
+            success = await analyzer.start_traffic_analysis(interface)
+            print(f"Traffic analysis {'started' if success else 'failed to start'} on interface: {interface}")
+
+        elif args.stop:
+            await analyzer.stop_traffic_analysis()
+            print("Traffic analysis stopped")
+
+        elif args.camouflage:
+            profile = analyzer.camouflage_profiles.get(args.camouflage)
+            if profile:
+                success = await analyzer.activate_camouflage_profile(profile)
+                print(f"Camouflage profile '{profile.name}' {'activated' if success else 'failed to activate'}")
+            else:
+                print(f"Camouflage profile '{args.camouflage}' not found")
+
+        elif args.report:
+            report = await analyzer.get_analysis_report()
+            print(json.dumps(report, indent=2))
+
+        elif args.profiles:
+            print("Available Camouflage Profiles:")
+            for profile_id, profile in analyzer.camouflage_profiles.items():
+                print(f"  {profile_id}: {profile.name}")
+                print(f"    Target: {profile.target_pattern.value}")
+                print(f"    Strategies: {', '.join([s.value for s in profile.strategies])}")
+
+        else:
+            # Interactive mode
+            print("SynOS Traffic Camouflage Analysis - Interactive Mode")
+            print("Commands: start, stop, report, profiles, exit")
+
+            while True:
+                try:
+                    command = input("traffic-analyzer> ").strip().lower()
+
+                    if command == 'exit':
+                        break
+                    elif command == 'start':
+                        success = await analyzer.start_traffic_analysis()
+                        print(f"Analysis {'started' if success else 'failed'}")
+                    elif command == 'stop':
+                        await analyzer.stop_traffic_analysis()
+                        print("Analysis stopped")
+                    elif command == 'report':
+                        report = await analyzer.get_analysis_report()
+                        print(f"Packets: {report['statistics']['total_packets']}")
+                        print(f"Sessions: {report['active_sessions']}")
+                        print(f"Fingerprinting attempts: {report['statistics']['fingerprint_attempts_detected']}")
+                    elif command == 'profiles':
+                        for pid, profile in analyzer.camouflage_profiles.items():
+                            print(f"  {pid}: {profile.name}")
+                    else:
+                        print("Unknown command. Try: start, stop, report, profiles, exit")
+
+                except KeyboardInterrupt:
+                    break
+                except Exception as e:
+                    print(f"Error: {e}")
+
+    await analyzer.shutdown()
+
+if __name__ == '__main__':
+    asyncio.run(main())

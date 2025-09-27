@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="awesome-cybersecurity-blueteam" repository_source="starred" generated_at="2025-08-23T14:25:54.505140">
+  <repository_information>
+    <name>awesome-cybersecurity-blueteam</name>
+    <full_name>fabacab/awesome-cybersecurity-blueteam</full_name>
+    <description>:computer:🛡️ A curated collection of awesome resources, tools, and other shiny things for cybersecurity blue teams.</description>
+    <stargazers_count>4854</stargazers_count>
+    <size>288</size>
+    <open_issues_count>19</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2024-07-15T08:05:27+00:00</pushed_at>
+    <topics>
+      <item>awesome-list</item>
+      <item>cybersecurity</item>
+      <item>blue-team</item>
+      <item>defensive-security</item>
+      <item>security</item>
+      <item>infosec</item>
+      <item>computer-security</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.75" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

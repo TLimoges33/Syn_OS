@@ -1,0 +1,151 @@
+# SynOS GRUB Theme Configuration
+# Black/Red cybersecurity theme with consciousness elements
+
+# Desktop settings
+desktop-image: "background.png"
+desktop-color: "#000000"
+
+# Title settings
+title-text: "Syn_OS v1.0 - Next-Gen Cybersecurity Operating System"
+title-font: "Courier New Bold 20"
+title-color: "#FF0000"
+
+# Terminal settings
+terminal-font: "Courier New 14"
+terminal-box: "terminal_box_*.png"
+
+# Menu settings
++ boot_menu {
+    left = 15%
+    top = 25%
+    width = 70%
+    height = 50%
+    
+    item_font = "Courier New 14"
+    item_color = "#FFFFFF"
+    selected_item_color = "#FF0000"
+    selected_item_font = "Courier New Bold 14"
+    
+    item_height = 28
+    item_padding = 8
+    item_spacing = 4
+    
+    menu_pixmap_style = "menu_*.png"
+    selected_item_pixmap_style = "select_*.png"
+    
+    icon_width = 24
+    icon_height = 24
+    item_icon_space = 8
+}
+
+# Progress bar for timeout
++ progress_bar {
+    id = "__timeout__"
+    left = 15%
+    top = 80%
+    width = 70%
+    height = 24
+    
+    fg_color = "#FF0000"
+    bg_color = "#000000"
+    border_color = "#800000"
+    
+    text_color = "#FFFFFF"
+    font = "Courier New 12"
+    text = "Consciousness initializing in %d seconds..."
+}
+
+# Custom label for consciousness branding
++ label {
+    top = 90%
+    left = 15%
+    width = 70%
+    height = 20
+    
+    text = "Consciousness-Integrated Security Platform"
+    font = "Courier New 12"
+    color = "#CCCCCC"
+    align = "center"
+}
+
+# System info display
++ label {
+    top = 5%
+    left = 80%
+    width = 18%
+    height = 15%
+    
+    text = "SynOS v1.0
+Memory: %{mem_total}
+CPU: %{cpu_model}"
+    font = "Courier New 10"
+    color = "#800000"
+    align = "left"
+}
+
+# Consciousness status indicator
++ image {
+    left = 2%
+    top = 2%
+    width = 64
+    height = 64
+    file = "consciousness_logo.png"
+}
+
+# Security status indicators
++ hbox {
+    left = 2%
+    top = 75%
+    width = 25%
+    height = 20%
+    
+    + label {
+        text = "🔒 Secure Boot: "
+        font = "Courier New 10"
+        color = "#FFFFFF"
+    }
+    
+    + label {
+        text = "%{secure_boot_status}"
+        font = "Courier New 10"
+        color = "#00FF00"
+    }
+}
+
++ hbox {
+    left = 2%
+    top = 80%
+    width = 25%
+    height = 20%
+    
+    + label {
+        text = "🛡️ TPM: "
+        font = "Courier New 10"
+        color = "#FFFFFF"
+    }
+    
+    + label {
+        text = "%{tpm_status}"
+        font = "Courier New 10"
+        color = "#00FF00"
+    }
+}
+
++ hbox {
+    left = 2%
+    top = 85%
+    width = 25%
+    height = 20%
+    
+    + label {
+        text = "🧠 Consciousness: "
+        font = "Courier New 10"
+        color = "#FFFFFF"
+    }
+    
+    + label {
+        text = "Ready"
+        font = "Courier New Bold 10"
+        color = "#FF0000"
+    }
+}

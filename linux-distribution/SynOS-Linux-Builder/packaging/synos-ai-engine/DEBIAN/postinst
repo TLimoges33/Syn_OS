@@ -1,0 +1,30 @@
+#!/bin/bash
+set -e
+
+echo "Configuring SynOS AI Engine..."
+
+# Enable and start SynOS AI services
+systemctl enable synos-ai-engine.service
+systemctl enable synos-consciousness.service
+systemctl enable synos-security-orchestrator.service
+
+# Create AI data directories
+mkdir -p /var/lib/synos/ai
+mkdir -p /var/lib/synos/models
+mkdir -p /var/lib/synos/consciousness
+mkdir -p /var/log/synos
+
+# Set proper permissions
+chown -R synos:synos /var/lib/synos
+chown -R synos:synos /var/log/synos
+
+# Create synos user if it doesn't exist
+if ! getent passwd synos > /dev/null; then
+    useradd -r -s /bin/false -d /var/lib/synos -c "SynOS AI Engine" synos
+fi
+
+echo "SynOS AI Engine configuration complete."
+
+#DEBHELPER#
+
+exit 0

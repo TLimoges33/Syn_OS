@@ -1,0 +1,204 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis generated_at="2025-08-23T14:15:57.155940" analyzer_version="1.0">
+  <summary total_analyzed="185" high_integration_potential="3" medium_integration_potential="176" low_integration_potential="6">
+    <categories_found>
+      <category>system_utilities</category>
+      <category>networking_protocols</category>
+      <category>web_interfaces</category>
+      <category>data_processing</category>
+      <category>containerization</category>
+      <category>development_tools</category>
+      <category>security_frameworks</category>
+      <category>kernel_modules</category>
+      <category>consciousness_ai</category>
+      <category>educational_platform</category>
+    </categories_found>
+  </summary>
+  <repositories>
+    <repository name="100-Days-Of-ML-Code" full_name="TLimoges33/100-Days-Of-ML-Code" integration_potential="0.58" primary_category="development_tools" xml_file="100-Days-Of-ML-Code_syn_os_analysis.xml"/>
+    <repository name="About-Me-Terminal" full_name="TLimoges33/About-Me-Terminal" integration_potential="0.46" primary_category="development_tools" xml_file="About-Me-Terminal_syn_os_analysis.xml"/>
+    <repository name="AllAboutBugBounty" full_name="TLimoges33/AllAboutBugBounty" integration_potential="0.52" primary_category="development_tools" xml_file="AllAboutBugBounty_syn_os_analysis.xml"/>
+    <repository name="AnomalyDetectionOnRisk" full_name="TLimoges33/AnomalyDetectionOnRisk" integration_potential="0.52" primary_category="development_tools" xml_file="AnomalyDetectionOnRisk_syn_os_analysis.xml"/>
+    <repository name="anthropic-cookbook" full_name="TLimoges33/anthropic-cookbook" integration_potential="0.61" primary_category="development_tools" xml_file="anthropic-cookbook_syn_os_analysis.xml"/>
+    <repository name="anthropic-quickstarts" full_name="TLimoges33/anthropic-quickstarts" integration_potential="0.61" primary_category="development_tools" xml_file="anthropic-quickstarts_syn_os_analysis.xml"/>
+    <repository name="Anti-Virus-Evading-Payloads" full_name="TLimoges33/Anti-Virus-Evading-Payloads" integration_potential="0.55" primary_category="development_tools" xml_file="Anti-Virus-Evading-Payloads_syn_os_analysis.xml"/>
+    <repository name="Artificial-Intelligence-Deep-Learning-Machine-Learning-Tutorials" full_name="TLimoges33/Artificial-Intelligence-Deep-Learning-Machine-Learning-Tutorials" integration_potential="0.61" primary_category="development_tools" xml_file="Artificial-Intelligence-Deep-Learning-Machine-Learning-Tutorials_syn_os_analysis.xml"/>
+    <repository name="assessment-mindset" full_name="TLimoges33/assessment-mindset" integration_potential="0.58" primary_category="development_tools" xml_file="assessment-mindset_syn_os_analysis.xml"/>
+    <repository name="athena" full_name="TLimoges33/athena" integration_potential="0.71" primary_category="development_tools" xml_file="athena_syn_os_analysis.xml"/>
+    <repository name="attackgen" full_name="TLimoges33/attackgen" integration_potential="0.81" primary_category="development_tools" xml_file="attackgen_syn_os_analysis.xml"/>
+    <repository name="AutoPWN-Suite" full_name="TLimoges33/AutoPWN-Suite" integration_potential="0.58" primary_category="development_tools" xml_file="AutoPWN-Suite_syn_os_analysis.xml"/>
+    <repository name="awesome-anti-forensic" full_name="TLimoges33/awesome-anti-forensic" integration_potential="0.68" primary_category="development_tools" xml_file="awesome-anti-forensic_syn_os_analysis.xml"/>
+    <repository name="awesome-bug-bounty" full_name="TLimoges33/awesome-bug-bounty" integration_potential="0.58" primary_category="development_tools" xml_file="awesome-bug-bounty_syn_os_analysis.xml"/>
+    <repository name="awesome-bugbounty-tools" full_name="TLimoges33/awesome-bugbounty-tools" integration_potential="0.71" primary_category="development_tools" xml_file="awesome-bugbounty-tools_syn_os_analysis.xml"/>
+    <repository name="Awesome-Bugbounty-Writeups" full_name="TLimoges33/Awesome-Bugbounty-Writeups" integration_potential="0.52" primary_category="development_tools" xml_file="Awesome-Bugbounty-Writeups_syn_os_analysis.xml"/>
+    <repository name="awesome-detection-engineering" full_name="TLimoges33/awesome-detection-engineering" integration_potential="0.71" primary_category="development_tools" xml_file="awesome-detection-engineering_syn_os_analysis.xml"/>
+    <repository name="Awesome-European-Tech" full_name="TLimoges33/Awesome-European-Tech" integration_potential="0.61" primary_category="development_tools" xml_file="Awesome-European-Tech_syn_os_analysis.xml"/>
+    <repository name="awesome-executable-packing" full_name="TLimoges33/awesome-executable-packing" integration_potential="0.61" primary_category="development_tools" xml_file="awesome-executable-packing_syn_os_analysis.xml"/>
+    <repository name="awesome-gbdev" full_name="TLimoges33/awesome-gbdev" integration_potential="0.81" primary_category="development_tools" xml_file="awesome-gbdev_syn_os_analysis.xml"/>
+    <repository name="awesome-github-pages-portfolios" full_name="TLimoges33/awesome-github-pages-portfolios" integration_potential="0.58" primary_category="development_tools" xml_file="awesome-github-pages-portfolios_syn_os_analysis.xml"/>
+    <repository name="awesome-google-vrp-writeups" full_name="TLimoges33/awesome-google-vrp-writeups" integration_potential="0.55" primary_category="development_tools" xml_file="awesome-google-vrp-writeups_syn_os_analysis.xml"/>
+    <repository name="Awesome-Hacking_lib" full_name="TLimoges33/Awesome-Hacking_lib" integration_potential="0.61" primary_category="development_tools" xml_file="Awesome-Hacking_lib_syn_os_analysis.xml"/>
+    <repository name="awesome-healthcare-ai" full_name="TLimoges33/awesome-healthcare-ai" integration_potential="0.71" primary_category="development_tools" xml_file="awesome-healthcare-ai_syn_os_analysis.xml"/>
+    <repository name="awesome-laravel" full_name="TLimoges33/awesome-laravel" integration_potential="0.62" primary_category="development_tools" xml_file="awesome-laravel_syn_os_analysis.xml"/>
+    <repository name="awesome-list-of-secrets-in-environment-variables" full_name="TLimoges33/awesome-list-of-secrets-in-environment-variables" integration_potential="0.52" primary_category="development_tools" xml_file="awesome-list-of-secrets-in-environment-variables_syn_os_analysis.xml"/>
+    <repository name="Awesome-LLM4Cybersecurity" full_name="TLimoges33/Awesome-LLM4Cybersecurity" integration_potential="0.55" primary_category="development_tools" xml_file="Awesome-LLM4Cybersecurity_syn_os_analysis.xml"/>
+    <repository name="awesome-machine-learning_lib" full_name="TLimoges33/awesome-machine-learning_lib" integration_potential="0.61" primary_category="development_tools" xml_file="awesome-machine-learning_lib_syn_os_analysis.xml"/>
+    <repository name="awesome-python" full_name="TLimoges33/awesome-python" integration_potential="0.58" primary_category="development_tools" xml_file="awesome-python_syn_os_analysis.xml"/>
+    <repository name="awesome-remote-job" full_name="TLimoges33/awesome-remote-job" integration_potential="0.55" primary_category="development_tools" xml_file="awesome-remote-job_syn_os_analysis.xml"/>
+    <repository name="awesome-rl-for-cybersecurity" full_name="TLimoges33/awesome-rl-for-cybersecurity" integration_potential="0.61" primary_category="development_tools" xml_file="awesome-rl-for-cybersecurity_syn_os_analysis.xml"/>
+    <repository name="awesome-security-newsletters" full_name="TLimoges33/awesome-security-newsletters" integration_potential="0.71" primary_category="development_tools" xml_file="awesome-security-newsletters_syn_os_analysis.xml"/>
+    <repository name="AzureHunter" full_name="TLimoges33/AzureHunter" integration_potential="0.58" primary_category="development_tools" xml_file="AzureHunter_syn_os_analysis.xml"/>
+    <repository name="BBTz" full_name="TLimoges33/BBTz" integration_potential="0.62" primary_category="development_tools" xml_file="BBTz_syn_os_analysis.xml"/>
+    <repository name="beelzebub" full_name="TLimoges33/beelzebub" integration_potential="0.61" primary_category="development_tools" xml_file="beelzebub_syn_os_analysis.xml"/>
+    <repository name="best_of_TensorFlow" full_name="TLimoges33/best_of_TensorFlow" integration_potential="0.61" primary_category="development_tools" xml_file="best_of_TensorFlow_syn_os_analysis.xml"/>
+    <repository name="bounty-targets" full_name="TLimoges33/bounty-targets" integration_potential="0.61" primary_category="development_tools" xml_file="bounty-targets_syn_os_analysis.xml"/>
+    <repository name="bounty-targets-data" full_name="TLimoges33/bounty-targets-data" integration_potential="0.61" primary_category="development_tools" xml_file="bounty-targets-data_syn_os_analysis.xml"/>
+    <repository name="Bug-bounty" full_name="TLimoges33/Bug-bounty" integration_potential="0.52" primary_category="development_tools" xml_file="Bug-bounty_syn_os_analysis.xml"/>
+    <repository name="Bug-Bounty-Beginner-Roadmap" full_name="TLimoges33/Bug-Bounty-Beginner-Roadmap" integration_potential="0.58" primary_category="development_tools" xml_file="Bug-Bounty-Beginner-Roadmap_syn_os_analysis.xml"/>
+    <repository name="bug-bounty-dorks" full_name="TLimoges33/bug-bounty-dorks" integration_potential="0.52" primary_category="development_tools" xml_file="bug-bounty-dorks_syn_os_analysis.xml"/>
+    <repository name="bug-bounty-platforms" full_name="TLimoges33/bug-bounty-platforms" integration_potential="0.61" primary_category="development_tools" xml_file="bug-bounty-platforms_syn_os_analysis.xml"/>
+    <repository name="bug-bounty-reference" full_name="TLimoges33/bug-bounty-reference" integration_potential="0.52" primary_category="development_tools" xml_file="bug-bounty-reference_syn_os_analysis.xml"/>
+    <repository name="Bug-Bounty-Roadmaps" full_name="TLimoges33/Bug-Bounty-Roadmaps" integration_potential="0.46" primary_category="development_tools" xml_file="Bug-Bounty-Roadmaps_syn_os_analysis.xml"/>
+    <repository name="Bug-Bounty-Wordlists" full_name="TLimoges33/Bug-Bounty-Wordlists" integration_potential="0.58" primary_category="development_tools" xml_file="Bug-Bounty-Wordlists_syn_os_analysis.xml"/>
+    <repository name="bugbounty-cheatsheet" full_name="TLimoges33/bugbounty-cheatsheet" integration_potential="0.58" primary_category="development_tools" xml_file="bugbounty-cheatsheet_syn_os_analysis.xml"/>
+    <repository name="BugBountyBooks" full_name="TLimoges33/BugBountyBooks" integration_potential="0.52" primary_category="development_tools" xml_file="BugBountyBooks_syn_os_analysis.xml"/>
+    <repository name="BugBountyScanner" full_name="TLimoges33/BugBountyScanner" integration_potential="0.61" primary_category="development_tools" xml_file="BugBountyScanner_syn_os_analysis.xml"/>
+    <repository name="BugBountyToolkit" full_name="TLimoges33/BugBountyToolkit" integration_potential="0.62" primary_category="development_tools" xml_file="BugBountyToolkit_syn_os_analysis.xml"/>
+    <repository name="Bug_Bounty_writeups" full_name="TLimoges33/Bug_Bounty_writeups" integration_potential="0.52" primary_category="development_tools" xml_file="Bug_Bounty_writeups_syn_os_analysis.xml"/>
+    <repository name="BurpSuite-For-Pentester" full_name="TLimoges33/BurpSuite-For-Pentester" integration_potential="0.55" primary_category="development_tools" xml_file="BurpSuite-For-Pentester_syn_os_analysis.xml"/>
+    <repository name="buster" full_name="TLimoges33/buster" integration_potential="0.68" primary_category="development_tools" xml_file="buster_syn_os_analysis.xml"/>
+    <repository name="cai" full_name="TLimoges33/cai" integration_potential="0.61" primary_category="development_tools" xml_file="cai_syn_os_analysis.xml"/>
+    <repository name="CaptfEncoder" full_name="TLimoges33/CaptfEncoder" integration_potential="0.68" primary_category="development_tools" xml_file="CaptfEncoder_syn_os_analysis.xml"/>
+    <repository name="car" full_name="TLimoges33/car" integration_potential="0.61" primary_category="development_tools" xml_file="car_syn_os_analysis.xml"/>
+    <repository name="cards" full_name="TLimoges33/cards" integration_potential="0.46" primary_category="development_tools" xml_file="cards_syn_os_analysis.xml"/>
+    <repository name="chepy" full_name="TLimoges33/chepy" integration_potential="0.71" primary_category="development_tools" xml_file="chepy_syn_os_analysis.xml"/>
+    <repository name="cherrybomb" full_name="TLimoges33/cherrybomb" integration_potential="0.71" primary_category="development_tools" xml_file="cherrybomb_syn_os_analysis.xml"/>
+    <repository name="CHIRP" full_name="TLimoges33/CHIRP" integration_potential="0.68" primary_category="development_tools" xml_file="CHIRP_syn_os_analysis.xml"/>
+    <repository name="conti-pentester-guide-leak" full_name="TLimoges33/conti-pentester-guide-leak" integration_potential="0.62" primary_category="development_tools" xml_file="conti-pentester-guide-leak_syn_os_analysis.xml"/>
+    <repository name="cook" full_name="TLimoges33/cook" integration_potential="0.61" primary_category="development_tools" xml_file="cook_syn_os_analysis.xml"/>
+    <repository name="cool-retro-term" full_name="TLimoges33/cool-retro-term" integration_potential="0.52" primary_category="development_tools" xml_file="cool-retro-term_syn_os_analysis.xml"/>
+    <repository name="coolify" full_name="TLimoges33/coolify" integration_potential="0.61" primary_category="development_tools" xml_file="coolify_syn_os_analysis.xml"/>
+    <repository name="Cybersecurity" full_name="TLimoges33/Cybersecurity" integration_potential="0.58" primary_category="development_tools" xml_file="Cybersecurity_syn_os_analysis.xml"/>
+    <repository name="CyberSecurity-1" full_name="TLimoges33/CyberSecurity-1" integration_potential="0.55" primary_category="development_tools" xml_file="CyberSecurity-1_syn_os_analysis.xml"/>
+    <repository name="Cybersecurity-Roadmap" full_name="TLimoges33/Cybersecurity-Roadmap" integration_potential="0.55" primary_category="development_tools" xml_file="Cybersecurity-Roadmap_syn_os_analysis.xml"/>
+    <repository name="CyberThreatHunting" full_name="TLimoges33/CyberThreatHunting" integration_potential="0.61" primary_category="development_tools" xml_file="CyberThreatHunting_syn_os_analysis.xml"/>
+    <repository name="DDOS-RootSec" full_name="TLimoges33/DDOS-RootSec" integration_potential="0.71" primary_category="development_tools" xml_file="DDOS-RootSec_syn_os_analysis.xml"/>
+    <repository name="decider" full_name="TLimoges33/decider" integration_potential="0.71" primary_category="development_tools" xml_file="decider_syn_os_analysis.xml"/>
+    <repository name="devbootcamp" full_name="TLimoges33/devbootcamp" integration_potential="0.52" primary_category="development_tools" xml_file="devbootcamp_syn_os_analysis.xml"/>
+    <repository name="developer-portfolio-v2" full_name="TLimoges33/developer-portfolio-v2" integration_potential="0.71" primary_category="development_tools" xml_file="developer-portfolio-v2_syn_os_analysis.xml"/>
+    <repository name="devops_training" full_name="TLimoges33/devops_training" integration_potential="0.61" primary_category="development_tools" xml_file="devops_training_syn_os_analysis.xml"/>
+    <repository name="dify" full_name="TLimoges33/dify" integration_potential="0.71" primary_category="development_tools" xml_file="dify_syn_os_analysis.xml"/>
+    <repository name="diodb" full_name="TLimoges33/diodb" integration_potential="0.61" primary_category="development_tools" xml_file="diodb_syn_os_analysis.xml"/>
+    <repository name="diy_guides" full_name="TLimoges33/diy_guides" integration_potential="0.65" primary_category="development_tools" xml_file="diy_guides_syn_os_analysis.xml"/>
+    <repository name="dnsReaper" full_name="TLimoges33/dnsReaper" integration_potential="0.71" primary_category="development_tools" xml_file="dnsReaper_syn_os_analysis.xml"/>
+    <repository name="exploit-notes" full_name="TLimoges33/exploit-notes" integration_potential="0.61" primary_category="development_tools" xml_file="exploit-notes_syn_os_analysis.xml"/>
+    <repository name="ezXSS" full_name="TLimoges33/ezXSS" integration_potential="0.61" primary_category="development_tools" xml_file="ezXSS_syn_os_analysis.xml"/>
+    <repository name="forgottenserver" full_name="TLimoges33/forgottenserver" integration_potential="0.61" primary_category="development_tools" xml_file="forgottenserver_syn_os_analysis.xml"/>
+    <repository name="FunctionStomping" full_name="TLimoges33/FunctionStomping" integration_potential="0.58" primary_category="development_tools" xml_file="FunctionStomping_syn_os_analysis.xml"/>
+    <repository name="fuzz4bounty" full_name="TLimoges33/fuzz4bounty" integration_potential="0.55" primary_category="development_tools" xml_file="fuzz4bounty_syn_os_analysis.xml"/>
+    <repository name="Galaxy-Bugbounty-Checklist" full_name="TLimoges33/Galaxy-Bugbounty-Checklist" integration_potential="0.52" primary_category="development_tools" xml_file="Galaxy-Bugbounty-Checklist_syn_os_analysis.xml"/>
+    <repository name="gameboy.live" full_name="TLimoges33/gameboy.live" integration_potential="0.61" primary_category="development_tools" xml_file="gameboy.live_syn_os_analysis.xml"/>
+    <repository name="GhostStrike_RedTeam_exe" full_name="TLimoges33/GhostStrike_RedTeam_exe" integration_potential="0.71" primary_category="development_tools" xml_file="GhostStrike_RedTeam_exe_syn_os_analysis.xml"/>
+    <repository name="google-dorks" full_name="TLimoges33/google-dorks" integration_potential="0.52" primary_category="development_tools" xml_file="google-dorks_syn_os_analysis.xml"/>
+    <repository name="google-dorks-bug-bounty" full_name="TLimoges33/google-dorks-bug-bounty" integration_potential="0.61" primary_category="development_tools" xml_file="google-dorks-bug-bounty_syn_os_analysis.xml"/>
+    <repository name="h1st" full_name="TLimoges33/h1st" integration_potential="0.68" primary_category="development_tools" xml_file="h1st_syn_os_analysis.xml"/>
+    <repository name="h4cker" full_name="TLimoges33/h4cker" integration_potential="0.81" primary_category="development_tools" xml_file="h4cker_syn_os_analysis.xml"/>
+    <repository name="Hacker-Roadmap" full_name="TLimoges33/Hacker-Roadmap" integration_potential="0.55" primary_category="development_tools" xml_file="Hacker-Roadmap_syn_os_analysis.xml"/>
+    <repository name="haiti" full_name="TLimoges33/haiti" integration_potential="0.71" primary_category="development_tools" xml_file="haiti_syn_os_analysis.xml"/>
+    <repository name="hetty_exe" full_name="TLimoges33/hetty_exe" integration_potential="0.71" primary_category="development_tools" xml_file="hetty_exe_syn_os_analysis.xml"/>
+    <repository name="HolyTips" full_name="TLimoges33/HolyTips" integration_potential="0.58" primary_category="development_tools" xml_file="HolyTips_syn_os_analysis.xml"/>
+    <repository name="homemade-machine-learning" full_name="TLimoges33/homemade-machine-learning" integration_potential="0.61" primary_category="development_tools" xml_file="homemade-machine-learning_syn_os_analysis.xml"/>
+    <repository name="Immunefi-bug-bounty-writeups-list" full_name="TLimoges33/Immunefi-bug-bounty-writeups-list" integration_potential="0.55" primary_category="development_tools" xml_file="Immunefi-bug-bounty-writeups-list_syn_os_analysis.xml"/>
+    <repository name="infoooze" full_name="TLimoges33/infoooze" integration_potential="0.68" primary_category="development_tools" xml_file="infoooze_syn_os_analysis.xml"/>
+    <repository name="infosec-resources" full_name="TLimoges33/infosec-resources" integration_potential="0.55" primary_category="development_tools" xml_file="infosec-resources_syn_os_analysis.xml"/>
+    <repository name="intelmq" full_name="TLimoges33/intelmq" integration_potential="0.61" primary_category="development_tools" xml_file="intelmq_syn_os_analysis.xml"/>
+    <repository name="inventory" full_name="TLimoges33/inventory" integration_potential="0.61" primary_category="development_tools" xml_file="inventory_syn_os_analysis.xml"/>
+    <repository name="ja4" full_name="TLimoges33/ja4" integration_potential="0.61" primary_category="development_tools" xml_file="ja4_syn_os_analysis.xml"/>
+    <repository name="keyhacks" full_name="TLimoges33/keyhacks" integration_potential="0.52" primary_category="development_tools" xml_file="keyhacks_syn_os_analysis.xml"/>
+    <repository name="KingOfBugBountyTips" full_name="TLimoges33/KingOfBugBountyTips" integration_potential="0.55" primary_category="development_tools" xml_file="KingOfBugBountyTips_syn_os_analysis.xml"/>
+    <repository name="Learning-Curve" full_name="TLimoges33/Learning-Curve" integration_potential="0.46" primary_category="kernel_modules" xml_file="Learning-Curve_syn_os_analysis.xml"/>
+    <repository name="lemmeknow" full_name="TLimoges33/lemmeknow" integration_potential="0.68" primary_category="development_tools" xml_file="lemmeknow_syn_os_analysis.xml"/>
+    <repository name="LifeRPG" full_name="TLimoges33/LifeRPG" integration_potential="0.58" primary_category="development_tools" xml_file="LifeRPG_syn_os_analysis.xml"/>
+    <repository name="Lilith" full_name="TLimoges33/Lilith" integration_potential="0.58" primary_category="development_tools" xml_file="Lilith_syn_os_analysis.xml"/>
+    <repository name="LME" full_name="TLimoges33/LME" integration_potential="0.61" primary_category="development_tools" xml_file="LME_syn_os_analysis.xml"/>
+    <repository name="lockphish" full_name="TLimoges33/lockphish" integration_potential="0.68" primary_category="development_tools" xml_file="lockphish_syn_os_analysis.xml"/>
+    <repository name="logkeys" full_name="TLimoges33/logkeys" integration_potential="0.58" primary_category="development_tools" xml_file="logkeys_syn_os_analysis.xml"/>
+    <repository name="Made-With-ML" full_name="TLimoges33/Made-With-ML" integration_potential="0.58" primary_category="development_tools" xml_file="Made-With-ML_syn_os_analysis.xml"/>
+    <repository name="Malware-Exhibit" full_name="TLimoges33/Malware-Exhibit" integration_potential="0.58" primary_category="development_tools" xml_file="Malware-Exhibit_syn_os_analysis.xml"/>
+    <repository name="Massive-Web-Application-Penetration-Testing-Bug-Bounty-Notes" full_name="TLimoges33/Massive-Web-Application-Penetration-Testing-Bug-Bounty-Notes" integration_potential="0.75" primary_category="development_tools" xml_file="Massive-Web-Application-Penetration-Testing-Bug-Bounty-Notes_syn_os_analysis.xml"/>
+    <repository name="mediapipe" full_name="TLimoges33/mediapipe" integration_potential="0.61" primary_category="development_tools" xml_file="mediapipe_syn_os_analysis.xml"/>
+    <repository name="misconfig-mapper" full_name="TLimoges33/misconfig-mapper" integration_potential="0.71" primary_category="development_tools" xml_file="misconfig-mapper_syn_os_analysis.xml"/>
+    <repository name="ML-For-Beginners" full_name="TLimoges33/ML-For-Beginners" integration_potential="0.61" primary_category="development_tools" xml_file="ML-For-Beginners_syn_os_analysis.xml"/>
+    <repository name="n8n" full_name="TLimoges33/n8n" integration_potential="0.61" primary_category="development_tools" xml_file="n8n_syn_os_analysis.xml"/>
+    <repository name="netbird_exe" full_name="TLimoges33/netbird_exe" integration_potential="0.61" primary_category="development_tools" xml_file="netbird_exe_syn_os_analysis.xml"/>
+    <repository name="netron" full_name="TLimoges33/netron" integration_potential="0.61" primary_category="development_tools" xml_file="netron_syn_os_analysis.xml"/>
+    <repository name="Network-Intrusion-Detection" full_name="TLimoges33/Network-Intrusion-Detection" integration_potential="0.52" primary_category="development_tools" xml_file="Network-Intrusion-Detection_syn_os_analysis.xml"/>
+    <repository name="nfstream" full_name="TLimoges33/nfstream" integration_potential="0.58" primary_category="development_tools" xml_file="nfstream_syn_os_analysis.xml"/>
+    <repository name="nodepass" full_name="TLimoges33/nodepass" integration_potential="0.61" primary_category="development_tools" xml_file="nodepass_syn_os_analysis.xml"/>
+    <repository name="nRFBox" full_name="TLimoges33/nRFBox" integration_potential="0.61" primary_category="development_tools" xml_file="nRFBox_syn_os_analysis.xml"/>
+    <repository name="NTHW" full_name="TLimoges33/NTHW" integration_potential="0.61" primary_category="development_tools" xml_file="NTHW_syn_os_analysis.xml"/>
+    <repository name="offensive-bookmarks" full_name="TLimoges33/offensive-bookmarks" integration_potential="0.58" primary_category="development_tools" xml_file="offensive-bookmarks_syn_os_analysis.xml"/>
+    <repository name="Offensive-Resources" full_name="TLimoges33/Offensive-Resources" integration_potential="0.52" primary_category="development_tools" xml_file="Offensive-Resources_syn_os_analysis.xml"/>
+    <repository name="One-Liners" full_name="TLimoges33/One-Liners" integration_potential="0.55" primary_category="development_tools" xml_file="One-Liners_syn_os_analysis.xml"/>
+    <repository name="open-health_ai_exe" full_name="TLimoges33/open-health_ai_exe" integration_potential="0.61" primary_category="development_tools" xml_file="open-health_ai_exe_syn_os_analysis.xml"/>
+    <repository name="Open-source-tools-for-CTI" full_name="TLimoges33/Open-source-tools-for-CTI" integration_potential="0.65" primary_category="development_tools" xml_file="Open-source-tools-for-CTI_syn_os_analysis.xml"/>
+    <repository name="openbas" full_name="TLimoges33/openbas" integration_potential="0.61" primary_category="development_tools" xml_file="openbas_syn_os_analysis.xml"/>
+    <repository name="opensquat" full_name="TLimoges33/opensquat" integration_potential="0.68" primary_category="development_tools" xml_file="opensquat_syn_os_analysis.xml"/>
+    <repository name="Particles" full_name="TLimoges33/Particles" integration_potential="0.46" primary_category="educational_platform" xml_file="Particles_syn_os_analysis.xml"/>
+    <repository name="Passhunt" full_name="TLimoges33/Passhunt" integration_potential="0.68" primary_category="development_tools" xml_file="Passhunt_syn_os_analysis.xml"/>
+    <repository name="Payloads" full_name="TLimoges33/Payloads" integration_potential="0.52" primary_category="development_tools" xml_file="Payloads_syn_os_analysis.xml"/>
+    <repository name="pegasus-frontend" full_name="TLimoges33/pegasus-frontend" integration_potential="0.61" primary_category="development_tools" xml_file="pegasus-frontend_syn_os_analysis.xml"/>
+    <repository name="PET-Project" full_name="TLimoges33/PET-Project" integration_potential="0.55" primary_category="development_tools" xml_file="PET-Project_syn_os_analysis.xml"/>
+    <repository name="porfolio.dev" full_name="TLimoges33/porfolio.dev" integration_potential="0.61" primary_category="development_tools" xml_file="porfolio.dev_syn_os_analysis.xml"/>
+    <repository name="portfolio-website" full_name="TLimoges33/portfolio-website" integration_potential="0.52" primary_category="development_tools" xml_file="portfolio-website_syn_os_analysis.xml"/>
+    <repository name="portfoliov2" full_name="TLimoges33/portfoliov2" integration_potential="0.55" primary_category="development_tools" xml_file="portfoliov2_syn_os_analysis.xml"/>
+    <repository name="Portfolio_Final" full_name="TLimoges33/Portfolio_Final" integration_potential="0.49" primary_category="educational_platform" xml_file="Portfolio_Final_syn_os_analysis.xml"/>
+    <repository name="public-bugbounty-programs" full_name="TLimoges33/public-bugbounty-programs" integration_potential="0.61" primary_category="development_tools" xml_file="public-bugbounty-programs_syn_os_analysis.xml"/>
+    <repository name="PyBoy" full_name="TLimoges33/PyBoy" integration_potential="0.61" primary_category="development_tools" xml_file="PyBoy_syn_os_analysis.xml"/>
+    <repository name="python-guide_best-pracy" full_name="TLimoges33/python-guide_best-pracy" integration_potential="0.68" primary_category="development_tools" xml_file="python-guide_best-pracy_syn_os_analysis.xml"/>
+    <repository name="python-machine-learning-ebook" full_name="TLimoges33/python-machine-learning-ebook" integration_potential="0.58" primary_category="development_tools" xml_file="python-machine-learning-ebook_syn_os_analysis.xml"/>
+    <repository name="Python_algs" full_name="TLimoges33/Python_algs" integration_potential="0.61" primary_category="development_tools" xml_file="Python_algs_syn_os_analysis.xml"/>
+    <repository name="Python_examples" full_name="TLimoges33/Python_examples" integration_potential="0.55" primary_category="development_tools" xml_file="Python_examples_syn_os_analysis.xml"/>
+    <repository name="Ransomware-Tool-Matrix" full_name="TLimoges33/Ransomware-Tool-Matrix" integration_potential="0.65" primary_category="development_tools" xml_file="Ransomware-Tool-Matrix_syn_os_analysis.xml"/>
+    <repository name="ray" full_name="TLimoges33/ray" integration_potential="0.61" primary_category="development_tools" xml_file="ray_syn_os_analysis.xml"/>
+    <repository name="ReconAIzer" full_name="TLimoges33/ReconAIzer" integration_potential="0.52" primary_category="development_tools" xml_file="ReconAIzer_syn_os_analysis.xml"/>
+    <repository name="RedTiger-Tools" full_name="TLimoges33/RedTiger-Tools" integration_potential="0.71" primary_category="development_tools" xml_file="RedTiger-Tools_syn_os_analysis.xml"/>
+    <repository name="resolvers" full_name="TLimoges33/resolvers" integration_potential="0.61" primary_category="development_tools" xml_file="resolvers_syn_os_analysis.xml"/>
+    <repository name="SatIntel" full_name="TLimoges33/SatIntel" integration_potential="0.68" primary_category="development_tools" xml_file="SatIntel_syn_os_analysis.xml"/>
+    <repository name="scant3r" full_name="TLimoges33/scant3r" integration_potential="0.68" primary_category="development_tools" xml_file="scant3r_syn_os_analysis.xml"/>
+    <repository name="Search-That-Hash" full_name="TLimoges33/Search-That-Hash" integration_potential="0.61" primary_category="development_tools" xml_file="Search-That-Hash_syn_os_analysis.xml"/>
+    <repository name="secator" full_name="TLimoges33/secator" integration_potential="0.61" primary_category="development_tools" xml_file="secator_syn_os_analysis.xml"/>
+    <repository name="SecToolKit" full_name="TLimoges33/SecToolKit" integration_potential="0.71" primary_category="development_tools" xml_file="SecToolKit_syn_os_analysis.xml"/>
+    <repository name="security-tools" full_name="TLimoges33/security-tools" integration_potential="0.71" primary_category="development_tools" xml_file="security-tools_syn_os_analysis.xml"/>
+    <repository name="sedutil" full_name="TLimoges33/sedutil" integration_potential="0.55" primary_category="development_tools" xml_file="sedutil_syn_os_analysis.xml"/>
+    <repository name="sedutil-cli" full_name="TLimoges33/sedutil-cli" integration_potential="0.61" primary_category="development_tools" xml_file="sedutil-cli_syn_os_analysis.xml"/>
+    <repository name="sentinel-attack" full_name="TLimoges33/sentinel-attack" integration_potential="0.71" primary_category="development_tools" xml_file="sentinel-attack_syn_os_analysis.xml"/>
+    <repository name="sitedorks" full_name="TLimoges33/sitedorks" integration_potential="0.61" primary_category="development_tools" xml_file="sitedorks_syn_os_analysis.xml"/>
+    <repository name="skanuvaty" full_name="TLimoges33/skanuvaty" integration_potential="0.52" primary_category="development_tools" xml_file="skanuvaty_syn_os_analysis.xml"/>
+    <repository name="skills-introduction-to-github" full_name="TLimoges33/skills-introduction-to-github" integration_potential="0.55" primary_category="development_tools" xml_file="skills-introduction-to-github_syn_os_analysis.xml"/>
+    <repository name="SploitScan" full_name="TLimoges33/SploitScan" integration_potential="0.71" primary_category="development_tools" xml_file="SploitScan_syn_os_analysis.xml"/>
+    <repository name="Spoofy" full_name="TLimoges33/Spoofy" integration_potential="0.61" primary_category="development_tools" xml_file="Spoofy_syn_os_analysis.xml"/>
+    <repository name="Steam-Deck-Guide" full_name="TLimoges33/Steam-Deck-Guide" integration_potential="0.72" primary_category="development_tools" xml_file="Steam-Deck-Guide_syn_os_analysis.xml"/>
+    <repository name="study-bug-bounty" full_name="TLimoges33/study-bug-bounty" integration_potential="0.62" primary_category="development_tools" xml_file="study-bug-bounty_syn_os_analysis.xml"/>
+    <repository name="subzy" full_name="TLimoges33/subzy" integration_potential="0.61" primary_category="development_tools" xml_file="subzy_syn_os_analysis.xml"/>
+    <repository name="synapticOS" full_name="TLimoges33/synapticOS" integration_potential="0.59" primary_category="web_interfaces" xml_file="synapticOS_syn_os_analysis.xml"/>
+    <repository name="Syn_OS" full_name="TLimoges33/Syn_OS" integration_potential="0.73" primary_category="security_frameworks" xml_file="Syn_OS_syn_os_analysis.xml"/>
+    <repository name="tensorflow_exe" full_name="TLimoges33/tensorflow_exe" integration_potential="0.61" primary_category="development_tools" xml_file="tensorflow_exe_syn_os_analysis.xml"/>
+    <repository name="the-book-of-secret-knowledge" full_name="TLimoges33/the-book-of-secret-knowledge" integration_potential="0.55" primary_category="development_tools" xml_file="the-book-of-secret-knowledge_syn_os_analysis.xml"/>
+    <repository name="ThePhish" full_name="TLimoges33/ThePhish" integration_potential="0.68" primary_category="development_tools" xml_file="ThePhish_syn_os_analysis.xml"/>
+    <repository name="TheRoadOfSO" full_name="TLimoges33/TheRoadOfSO" integration_potential="0.52" primary_category="development_tools" xml_file="TheRoadOfSO_syn_os_analysis.xml"/>
+    <repository name="Threat-Hunting-and-Detection" full_name="TLimoges33/Threat-Hunting-and-Detection" integration_potential="0.61" primary_category="development_tools" xml_file="Threat-Hunting-and-Detection_syn_os_analysis.xml"/>
+    <repository name="tookie-osint" full_name="TLimoges33/tookie-osint" integration_potential="0.71" primary_category="development_tools" xml_file="tookie-osint_syn_os_analysis.xml"/>
+    <repository name="uashield" full_name="TLimoges33/uashield" integration_potential="0.61" primary_category="development_tools" xml_file="uashield_syn_os_analysis.xml"/>
+    <repository name="violent-python3" full_name="TLimoges33/violent-python3" integration_potential="0.52" primary_category="development_tools" xml_file="violent-python3_syn_os_analysis.xml"/>
+    <repository name="w12scan" full_name="TLimoges33/w12scan" integration_potential="0.58" primary_category="development_tools" xml_file="w12scan_syn_os_analysis.xml"/>
+    <repository name="WALKOFF" full_name="TLimoges33/WALKOFF" integration_potential="0.58" primary_category="development_tools" xml_file="WALKOFF_syn_os_analysis.xml"/>
+    <repository name="Watcher" full_name="TLimoges33/Watcher" integration_potential="0.61" primary_category="development_tools" xml_file="Watcher_syn_os_analysis.xml"/>
+    <repository name="web-porfolio" full_name="TLimoges33/web-porfolio" integration_potential="0.52" primary_category="development_tools" xml_file="web-porfolio_syn_os_analysis.xml"/>
+    <repository name="WebMap" full_name="TLimoges33/WebMap" integration_potential="0.58" primary_category="development_tools" xml_file="WebMap_syn_os_analysis.xml"/>
+    <repository name="xxe-injection-payload-list" full_name="TLimoges33/xxe-injection-payload-list" integration_potential="0.58" primary_category="development_tools" xml_file="xxe-injection-payload-list_syn_os_analysis.xml"/>
+    <repository name="yolov5" full_name="TLimoges33/yolov5" integration_potential="0.61" primary_category="development_tools" xml_file="yolov5_syn_os_analysis.xml"/>
+    <repository name="Zehef" full_name="TLimoges33/Zehef" integration_potential="0.71" primary_category="development_tools" xml_file="Zehef_syn_os_analysis.xml"/>
+    <repository name="ZeusCloud" full_name="TLimoges33/ZeusCloud" integration_potential="0.58" primary_category="development_tools" xml_file="ZeusCloud_syn_os_analysis.xml"/>
+  </repositories>
+</syn_os_repository_analysis>

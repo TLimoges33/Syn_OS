@@ -1,0 +1,27 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  labels: '{{- include "synapticos.labels" . | nindent 4 }}'
+  name: '{{ include "synapticos.fullname" . }}-hpa'
+spec:
+  maxReplicas: '{{ .Values.autoscaling.maxReplicas }}'
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: '{{ .Values.autoscaling.targetCPUUtilizationPercentage
+          }}'
+        type: Utilization
+    type: Resource
+  - resource:
+      name: memory
+      target:
+        averageUtilization: '{{ .Values.autoscaling.targetMemoryUtilizationPercentage
+          }}'
+        type: Utilization
+    type: Resource
+  minReplicas: '{{ .Values.autoscaling.minReplicas }}'
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: '{{ include "synapticos.fullname" . }}-orchestrator'

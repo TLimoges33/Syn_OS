@@ -1,0 +1,4 @@
+#!/bin/bash
+# Advanced troubleshooting with Copilot integration
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+exec "$SCRIPT_DIR/git-save-system.sh" troubleshoot

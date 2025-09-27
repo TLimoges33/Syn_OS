@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="Shuffle" repository_source="starred" generated_at="2025-08-23T14:25:32.575906">
+  <repository_information>
+    <name>Shuffle</name>
+    <full_name>Shuffle/Shuffle</full_name>
+    <description>Shuffle: A general purpose security automation platform. Our focus is on collaboration and resource sharing.</description>
+    <language>Shell</language>
+    <stargazers_count>2020</stargazers_count>
+    <size>65110</size>
+    <open_issues_count>445</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-08-22T15:24:15+00:00</pushed_at>
+    <license>
+      <name>GNU Affero General Public License v3.0</name>
+    </license>
+    <topics>
+      <item>automation</item>
+      <item>cybersecurity</item>
+      <item>openapi</item>
+      <item>shuffle</item>
+      <item>security</item>
+      <item>workflow-editor</item>
+      <item>integrations</item>
+      <item>mitre-attack</item>
+      <item>discord</item>
+      <item>soar</item>
+      <item>security-orchestrator</item>
+      <item>orchestration</item>
+      <item>security-automation</item>
+      <item>orchestrator</item>
+      <item>orchestrator-gui</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.88" level="high"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

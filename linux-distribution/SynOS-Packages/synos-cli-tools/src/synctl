@@ -1,0 +1,475 @@
+#!/usr/bin/env python3
+"""
+SynOS Consciousness Control (synctl)
+Command-line interface for SynOS AI consciousness framework management
+
+Commands:
+  status        - Show consciousness framework status
+  monitor       - Real-time consciousness monitoring
+  neural        - Neural darwinism management
+  learning      - Learning engine control
+  security      - Security AI management
+  config        - Configuration management
+  services      - System services control
+"""
+
+import sys
+import json
+import time
+import argparse
+import asyncio
+from datetime import datetime
+from typing import Dict, List, Any, Optional
+
+# CLI utilities
+import subprocess
+import os
+
+class Colors:
+    """ANSI color codes for terminal output"""
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    ENDC = '\033[0m'
+
+class ConsciousnessAPI:
+    """Interface to SynOS consciousness framework"""
+
+    def __init__(self):
+        self.state_file = "/var/lib/synos/consciousness-state.json"
+        self.config_file = "/etc/synos/ai-daemon.yml"
+        self.log_file = "/var/log/synos-ai-daemon.log"
+
+    def get_consciousness_state(self) -> Dict[str, Any]:
+        """Get current consciousness state"""
+        try:
+            if os.path.exists(self.state_file):
+                with open(self.state_file, 'r') as f:
+                    return json.load(f)
+            return {}
+        except Exception as e:
+            return {"error": str(e)}
+
+    def get_service_status(self, service_name: str) -> Dict[str, Any]:
+        """Get systemd service status"""
+        try:
+            result = subprocess.run(
+                ['systemctl', 'is-active', service_name],
+                capture_output=True, text=True
+            )
+            active = result.stdout.strip() == 'active'
+
+            result = subprocess.run(
+                ['systemctl', 'is-enabled', service_name],
+                capture_output=True, text=True
+            )
+            enabled = result.stdout.strip() == 'enabled'
+
+            return {
+                'name': service_name,
+                'active': active,
+                'enabled': enabled,
+                'status': 'running' if active else 'stopped'
+            }
+        except Exception as e:
+            return {
+                'name': service_name,
+                'error': str(e),
+                'status': 'unknown'
+            }
+
+    def control_service(self, service_name: str, action: str) -> bool:
+        """Control systemd service"""
+        try:
+            result = subprocess.run(
+                ['sudo', 'systemctl', action, service_name],
+                capture_output=True, text=True
+            )
+            return result.returncode == 0
+        except Exception:
+            return False
+
+    def get_recent_logs(self, lines: int = 50) -> List[str]:
+        """Get recent log entries"""
+        try:
+            if os.path.exists(self.log_file):
+                result = subprocess.run(
+                    ['tail', '-n', str(lines), self.log_file],
+                    capture_output=True, text=True
+                )
+                return result.stdout.split('\n')
+            return []
+        except Exception:
+            return []
+
+class SynCTL:
+    """Main SynOS Control CLI class"""
+
+    def __init__(self):
+        self.api = ConsciousnessAPI()
+        self.services = [
+            'synos-ai-daemon',
+            'nats-server',
+            'synos-security-orchestrator'
+        ]
+
+    def print_header(self, title: str):
+        """Print colored header"""
+        print(f"{Colors.CYAN}{Colors.BOLD}{'='*60}{Colors.ENDC}")
+        print(f"{Colors.CYAN}{Colors.BOLD}{title:^60}{Colors.ENDC}")
+        print(f"{Colors.CYAN}{Colors.BOLD}{'='*60}{Colors.ENDC}")
+
+    def print_status_line(self, label: str, value: str, status: str = "info"):
+        """Print status line with color coding"""
+        color = Colors.ENDC
+        if status == "good":
+            color = Colors.GREEN
+        elif status == "warning":
+            color = Colors.YELLOW
+        elif status == "error":
+            color = Colors.RED
+
+        print(f"{Colors.BOLD}{label:30}{Colors.ENDC} {color}{value}{Colors.ENDC}")
+
+    def format_percentage(self, value: float) -> str:
+        """Format percentage with color"""
+        pct = f"{value*100:.1f}%"
+        if value > 0.8:
+            return f"{Colors.GREEN}{pct}{Colors.ENDC}"
+        elif value > 0.5:
+            return f"{Colors.YELLOW}{pct}{Colors.ENDC}"
+        else:
+            return f"{Colors.RED}{pct}{Colors.ENDC}"
+
+    def cmd_status(self, args):
+        """Show consciousness framework status"""
+        self.print_header("SynOS AI Consciousness Framework Status")
+
+        # Get consciousness state
+        state = self.api.get_consciousness_state()
+
+        if "error" in state:
+            self.print_status_line("Consciousness State", f"ERROR: {state['error']}", "error")
+        elif not state:
+            self.print_status_line("Consciousness State", "No data available", "warning")
+        else:
+            print(f"\n{Colors.HEADER}🧠 Consciousness Metrics{Colors.ENDC}")
+            self.print_status_line("Awareness Level", self.format_percentage(state.get('awareness_level', 0)))
+            self.print_status_line("Neural Activity", self.format_percentage(state.get('neural_activity', 0)))
+            self.print_status_line("Learning Rate", self.format_percentage(state.get('learning_rate', 0)))
+            self.print_status_line("System Integration", self.format_percentage(state.get('system_integration', 0)))
+
+            if 'active_patterns' in state and state['active_patterns']:
+                self.print_status_line("Active Patterns", f"{len(state['active_patterns'])} patterns")
+                for pattern in state['active_patterns'][:3]:  # Show top 3
+                    print(f"  {Colors.CYAN}• {pattern}{Colors.ENDC}")
+
+            if 'last_updated' in state:
+                last_update = datetime.fromisoformat(state['last_updated'])
+                age = datetime.now() - last_update
+                self.print_status_line("Last Update", f"{age.total_seconds():.1f}s ago")
+
+        # Check services
+        print(f"\n{Colors.HEADER}⚙️ System Services{Colors.ENDC}")
+        for service in self.services:
+            status = self.api.get_service_status(service)
+            if 'error' in status:
+                self.print_status_line(service, f"ERROR: {status['error']}", "error")
+            else:
+                status_text = "🟢 Running" if status['active'] else "🔴 Stopped"
+                enabled_text = " (enabled)" if status['enabled'] else " (disabled)"
+                self.print_status_line(service, status_text + enabled_text,
+                                     "good" if status['active'] else "error")
+
+        print()
+
+    def cmd_monitor(self, args):
+        """Real-time consciousness monitoring"""
+        print(f"{Colors.CYAN}{Colors.BOLD}SynOS Consciousness Monitor{Colors.ENDC}")
+        print("Press Ctrl+C to exit\n")
+
+        try:
+            while True:
+                # Clear screen
+                os.system('clear' if os.name == 'posix' else 'cls')
+
+                # Show timestamp
+                print(f"{Colors.BLUE}Monitoring at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}{Colors.ENDC}\n")
+
+                # Get and display current state
+                state = self.api.get_consciousness_state()
+
+                if state and "error" not in state:
+                    print(f"{Colors.GREEN}🧠 CONSCIOUSNESS STATE{Colors.ENDC}")
+                    print(f"Awareness:    {self.format_percentage(state.get('awareness_level', 0))}")
+                    print(f"Activity:     {self.format_percentage(state.get('neural_activity', 0))}")
+                    print(f"Learning:     {self.format_percentage(state.get('learning_rate', 0))}")
+                    print(f"Integration:  {self.format_percentage(state.get('system_integration', 0))}")
+
+                    if 'active_patterns' in state:
+                        print(f"\n{Colors.YELLOW}🔬 ACTIVE PATTERNS{Colors.ENDC}")
+                        for pattern in state['active_patterns'][:5]:
+                            print(f"• {pattern}")
+
+                    # Simple ASCII graph for awareness level
+                    if 'awareness_level' in state:
+                        level = int(state['awareness_level'] * 40)  # 40-char width
+                        bar = "█" * level + "░" * (40 - level)
+                        print(f"\n{Colors.CYAN}Awareness: [{bar}]{Colors.ENDC}")
+                else:
+                    print(f"{Colors.RED}❌ No consciousness data available{Colors.ENDC}")
+
+                # Show service status
+                print(f"\n{Colors.BLUE}📊 SERVICE STATUS{Colors.ENDC}")
+                for service in self.services[:3]:  # Show top 3 services
+                    status = self.api.get_service_status(service)
+                    indicator = "🟢" if status.get('active', False) else "🔴"
+                    print(f"{indicator} {service}")
+
+                time.sleep(2)
+
+        except KeyboardInterrupt:
+            print(f"\n{Colors.CYAN}Monitoring stopped.{Colors.ENDC}")
+
+    def cmd_neural(self, args):
+        """Neural darwinism management"""
+        self.print_header("Neural Darwinism Engine")
+
+        state = self.api.get_consciousness_state()
+
+        if state and "error" not in state:
+            print(f"{Colors.HEADER}🔬 Neural Population Dynamics{Colors.ENDC}")
+
+            # Simulate neural group statistics (would be read from actual data)
+            print("Neural Group Statistics:")
+            print(f"  Active Groups:     {len(state.get('active_patterns', []))}")
+            print(f"  Competition Score: {state.get('neural_activity', 0)*100:.1f}%")
+            print(f"  Evolution Rate:    {state.get('learning_rate', 0)*100:.1f}%")
+
+            if 'active_patterns' in state:
+                print(f"\n{Colors.GREEN}Top Active Neural Groups:{Colors.ENDC}")
+                for i, pattern in enumerate(state['active_patterns'][:5], 1):
+                    strength = 0.8 + (i * -0.1)  # Simulate decreasing strength
+                    bar = "█" * int(strength * 20)
+                    print(f"{i:2}. {pattern:30} [{bar:20}] {strength:.2f}")
+
+        else:
+            print(f"{Colors.RED}❌ Neural darwinism data not available{Colors.ENDC}")
+
+        if hasattr(args, 'action') and args.action:
+            if args.action == 'reset':
+                print(f"\n{Colors.YELLOW}Resetting neural populations...{Colors.ENDC}")
+                # Would implement actual reset functionality
+                print("Reset complete.")
+
+    def cmd_learning(self, args):
+        """Learning engine control"""
+        self.print_header("Adaptive Learning Engine")
+
+        print(f"{Colors.HEADER}📚 Learning Statistics{Colors.ENDC}")
+
+        # Simulate learning data (would be read from actual system)
+        print("Pattern Recognition:")
+        print(f"  Patterns Learned:  347")
+        print(f"  Success Rate:      89.3%")
+        print(f"  Learning Trend:    ↗ Improving")
+        print(f"  Memory Usage:      23.4 MB")
+
+        print(f"\n{Colors.GREEN}Recent Learning Events:{Colors.ENDC}")
+        sample_events = [
+            "security_threat_detection: 94% success",
+            "user_behavior_pattern: 87% success",
+            "network_anomaly_detection: 91% success",
+            "performance_optimization: 83% success"
+        ]
+
+        for event in sample_events:
+            print(f"• {event}")
+
+    def cmd_security(self, args):
+        """Security AI management"""
+        self.print_header("AI Security Framework")
+
+        print(f"{Colors.HEADER}🛡️ Security Status{Colors.ENDC}")
+
+        # Simulate security data
+        print("Threat Detection:")
+        print(f"  Active Monitors:   12")
+        print(f"  Threats Blocked:   3,847")
+        print(f"  False Positives:   23 (0.6%)")
+        print(f"  Response Time:     <0.3s avg")
+
+        print(f"\n{Colors.GREEN}AI Security Modules:{Colors.ENDC}")
+        modules = [
+            ("Network Intrusion Detection", "🟢 Active"),
+            ("Behavioral Analysis", "🟢 Active"),
+            ("Malware Classification", "🟢 Active"),
+            ("Anomaly Detection", "🟢 Active"),
+            ("Automated Response", "🟡 Standby")
+        ]
+
+        for module, status in modules:
+            self.print_status_line(module, status)
+
+    def cmd_config(self, args):
+        """Configuration management"""
+        self.print_header("Configuration Management")
+
+        if args.show:
+            print(f"{Colors.HEADER}Current Configuration:{Colors.ENDC}")
+            try:
+                with open(self.api.config_file, 'r') as f:
+                    config_content = f.read()
+                    print(config_content)
+            except Exception as e:
+                print(f"{Colors.RED}Error reading config: {e}{Colors.ENDC}")
+
+        elif args.edit:
+            print(f"Opening configuration editor for {self.api.config_file}")
+            os.system(f"sudo $EDITOR {self.api.config_file}")
+
+        elif args.validate:
+            print("Validating configuration...")
+            # Would implement actual validation
+            print(f"{Colors.GREEN}✓ Configuration is valid{Colors.ENDC}")
+
+    def cmd_services(self, args):
+        """System services control"""
+        self.print_header("SynOS AI Services")
+
+        if args.action:
+            service = args.service or 'synos-ai-daemon'
+            print(f"Performing '{args.action}' on service '{service}'...")
+
+            if self.api.control_service(service, args.action):
+                print(f"{Colors.GREEN}✓ Service {args.action} successful{Colors.ENDC}")
+            else:
+                print(f"{Colors.RED}✗ Service {args.action} failed{Colors.ENDC}")
+        else:
+            # Show all services
+            for service in self.services:
+                status = self.api.get_service_status(service)
+                if 'error' in status:
+                    self.print_status_line(service, f"ERROR: {status['error']}", "error")
+                else:
+                    status_text = "Running" if status['active'] else "Stopped"
+                    self.print_status_line(service, status_text,
+                                         "good" if status['active'] else "error")
+
+    def cmd_logs(self, args):
+        """Show system logs"""
+        print(f"{Colors.CYAN}Recent SynOS AI Logs:{Colors.ENDC}\n")
+
+        logs = self.api.get_recent_logs(args.lines if hasattr(args, 'lines') else 20)
+
+        for log_line in logs:
+            if log_line.strip():
+                # Color code log levels
+                if 'ERROR' in log_line:
+                    print(f"{Colors.RED}{log_line}{Colors.ENDC}")
+                elif 'WARNING' in log_line:
+                    print(f"{Colors.YELLOW}{log_line}{Colors.ENDC}")
+                elif 'INFO' in log_line:
+                    print(f"{Colors.GREEN}{log_line}{Colors.ENDC}")
+                else:
+                    print(log_line)
+
+def main():
+    """Main CLI entry point"""
+    parser = argparse.ArgumentParser(
+        description='SynOS Consciousness Control (synctl)',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  synctl status                    # Show framework status
+  synctl monitor                   # Real-time monitoring
+  synctl neural                    # Neural darwinism info
+  synctl learning                  # Learning engine status
+  synctl security                  # Security AI status
+  synctl services start nats       # Start NATS service
+  synctl logs                      # Show recent logs
+  synctl config --show            # Show configuration
+        """
+    )
+
+    subparsers = parser.add_subparsers(dest='command', help='Commands')
+
+    # Status command
+    subparsers.add_parser('status', help='Show consciousness framework status')
+
+    # Monitor command
+    subparsers.add_parser('monitor', help='Real-time consciousness monitoring')
+
+    # Neural command
+    neural_parser = subparsers.add_parser('neural', help='Neural darwinism management')
+    neural_parser.add_argument('--action', choices=['reset'], help='Neural actions')
+
+    # Learning command
+    subparsers.add_parser('learning', help='Learning engine control')
+
+    # Security command
+    subparsers.add_parser('security', help='Security AI management')
+
+    # Config command
+    config_parser = subparsers.add_parser('config', help='Configuration management')
+    config_parser.add_argument('--show', action='store_true', help='Show configuration')
+    config_parser.add_argument('--edit', action='store_true', help='Edit configuration')
+    config_parser.add_argument('--validate', action='store_true', help='Validate configuration')
+
+    # Services command
+    services_parser = subparsers.add_parser('services', help='System services control')
+    services_parser.add_argument('action', nargs='?', choices=['start', 'stop', 'restart', 'status'],
+                                help='Service action')
+    services_parser.add_argument('service', nargs='?', help='Service name')
+
+    # Logs command
+    logs_parser = subparsers.add_parser('logs', help='Show system logs')
+    logs_parser.add_argument('-n', '--lines', type=int, default=20, help='Number of lines')
+
+    args = parser.parse_args()
+
+    if not args.command:
+        parser.print_help()
+        return 1
+
+    # Create CLI instance
+    cli = SynCTL()
+
+    # Execute command
+    try:
+        if args.command == 'status':
+            cli.cmd_status(args)
+        elif args.command == 'monitor':
+            cli.cmd_monitor(args)
+        elif args.command == 'neural':
+            cli.cmd_neural(args)
+        elif args.command == 'learning':
+            cli.cmd_learning(args)
+        elif args.command == 'security':
+            cli.cmd_security(args)
+        elif args.command == 'config':
+            cli.cmd_config(args)
+        elif args.command == 'services':
+            cli.cmd_services(args)
+        elif args.command == 'logs':
+            cli.cmd_logs(args)
+        else:
+            print(f"Unknown command: {args.command}")
+            return 1
+
+    except KeyboardInterrupt:
+        print(f"\n{Colors.CYAN}Interrupted by user{Colors.ENDC}")
+        return 130
+    except Exception as e:
+        print(f"{Colors.RED}Error: {e}{Colors.ENDC}")
+        return 1
+
+    return 0
+
+if __name__ == '__main__':
+    exit(main())

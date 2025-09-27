@@ -1,0 +1,176 @@
+#!/usr/bin/env python3
+
+"""
+SynOS Privacy-Preserving AI Analysis - Main executable
+Entry point for homomorphic encryption and secure computation
+"""
+
+import sys
+import os
+import asyncio
+import argparse
+import json
+import numpy as np
+
+# Add the src directory to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'src'))
+
+from homomorphic_encryption_engine import HomomorphicEncryptionEngine, EncryptionScheme, ComputationType, PrivacyLevel
+
+async def main():
+    parser = argparse.ArgumentParser(description='SynOS Privacy-Preserving AI Analysis')
+    parser.add_argument('--daemon', action='store_true', help='Run as daemon service')
+    parser.add_argument('--encrypt', type=str, help='Encrypt data from file')
+    parser.add_argument('--decrypt', type=str, help='Decrypt data with ID')
+    parser.add_argument('--compute', type=str, choices=[c.value for c in ComputationType],
+                       help='Perform encrypted computation')
+    parser.add_argument('--data-ids', nargs='+', help='Data IDs for computation')
+    parser.add_argument('--scheme', type=str, choices=[s.value for s in EncryptionScheme],
+                       default='ckks', help='Encryption scheme')
+    parser.add_argument('--report', action='store_true', help='Generate performance report')
+    parser.add_argument('--list-datasets', action='store_true', help='List encrypted datasets')
+    parser.add_argument('--config', type=str, default='/etc/synos/phase4/privacy-ai-config.yaml')
+
+    args = parser.parse_args()
+
+    engine = HomomorphicEncryptionEngine(config_path=args.config)
+
+    if await engine.initialize():
+        if args.daemon:
+            print("Starting SynOS Privacy-Preserving AI daemon...")
+            # Keep daemon running
+            while True:
+                await asyncio.sleep(60)
+
+        elif args.encrypt:
+            try:
+                # Load data from file
+                data = np.loadtxt(args.encrypt)
+                scheme = EncryptionScheme(args.scheme)
+
+                encrypted_data = await engine.encrypt_data(data, scheme)
+                print(f"Data encrypted successfully")
+                print(f"Data ID: {encrypted_data.data_id}")
+                print(f"Scheme: {encrypted_data.scheme.value}")
+                print(f"Shape: {encrypted_data.shape}")
+
+            except Exception as e:
+                print(f"Encryption failed: {e}")
+
+        elif args.decrypt:
+            try:
+                encrypted_data = engine.encrypted_datasets.get(args.decrypt)
+                if encrypted_data:
+                    decrypted = await engine.decrypt_data(encrypted_data)
+                    print(f"Decrypted data (first 10 values): {decrypted.flatten()[:10]}")
+                else:
+                    print(f"Data ID '{args.decrypt}' not found")
+
+            except Exception as e:
+                print(f"Decryption failed: {e}")
+
+        elif args.compute:
+            try:
+                if not args.data_ids:
+                    print("Data IDs required for computation")
+                    return
+
+                computation_type = ComputationType(args.compute)
+                input_data = []
+
+                for data_id in args.data_ids:
+                    encrypted_data = engine.encrypted_datasets.get(data_id)
+                    if encrypted_data:
+                        input_data.append(encrypted_data)
+                    else:
+                        print(f"Warning: Data ID '{data_id}' not found")
+
+                if input_data:
+                    task_id = await engine.create_computation_task(
+                        computation_type, input_data, privacy_level=PrivacyLevel.STANDARD
+                    )
+                    print(f"Computation task created: {task_id}")
+
+                    # Wait for completion
+                    await asyncio.sleep(5)
+                    result = await engine.get_task_result(task_id)
+
+                    if result and result.success:
+                        print(f"Computation completed in {result.computation_time_ms:.2f}ms")
+                        print(f"Result data ID: {result.result_data.data_id}")
+                    else:
+                        error = result.error_message if result else "Task not completed"
+                        print(f"Computation failed: {error}")
+
+            except Exception as e:
+                print(f"Computation failed: {e}")
+
+        elif args.report:
+            report = await engine.export_performance_report()
+            print(json.dumps(report, indent=2))
+
+        elif args.list_datasets:
+            datasets = await engine.list_encrypted_datasets()
+            print("Encrypted Datasets:")
+            for dataset in datasets:
+                print(f"  {dataset['data_id']}: {dataset['data_type']} ({dataset['scheme']})")
+                print(f"    Shape: {dataset['shape']}, Size: {dataset['size_bytes']} bytes")
+                print(f"    Created: {dataset['timestamp']}")
+
+        else:
+            # Interactive mode
+            print("SynOS Privacy-Preserving AI - Interactive Mode")
+            print("Commands: encrypt <file>, decrypt <id>, compute <type> <data_ids>, report, list, exit")
+
+            while True:
+                try:
+                    command = input("privacy-ai> ").strip().split()
+
+                    if not command:
+                        continue
+
+                    if command[0] == 'exit':
+                        break
+
+                    elif command[0] == 'encrypt' and len(command) > 1:
+                        try:
+                            data = np.loadtxt(command[1])
+                            encrypted_data = await engine.encrypt_data(data, EncryptionScheme.CKKS)
+                            print(f"Encrypted: {encrypted_data.data_id}")
+                        except Exception as e:
+                            print(f"Encryption error: {e}")
+
+                    elif command[0] == 'decrypt' and len(command) > 1:
+                        try:
+                            encrypted_data = engine.encrypted_datasets.get(command[1])
+                            if encrypted_data:
+                                decrypted = await engine.decrypt_data(encrypted_data)
+                                print(f"Decrypted (preview): {decrypted.flatten()[:5]}")
+                            else:
+                                print("Data ID not found")
+                        except Exception as e:
+                            print(f"Decryption error: {e}")
+
+                    elif command[0] == 'list':
+                        datasets = await engine.list_encrypted_datasets()
+                        for dataset in datasets:
+                            print(f"  {dataset['data_id']}: {dataset['data_type']}")
+
+                    elif command[0] == 'report':
+                        report = await engine.export_performance_report()
+                        print(f"Encryptions: {report['performance_metrics']['total_encryptions']}")
+                        print(f"Computations: {report['performance_metrics']['total_computations']}")
+                        print(f"Memory: {report['memory_usage']['current_mb']:.1f} MB")
+
+                    else:
+                        print("Unknown command")
+
+                except KeyboardInterrupt:
+                    break
+                except Exception as e:
+                    print(f"Error: {e}")
+
+    await engine.shutdown()
+
+if __name__ == '__main__':
+    asyncio.run(main())

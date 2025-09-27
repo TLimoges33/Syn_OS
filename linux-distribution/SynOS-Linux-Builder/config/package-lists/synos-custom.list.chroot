@@ -1,0 +1,5 @@
+# SynOS Custom Packages
+# This list includes locally built SynOS packages
+
+# SynOS AI Engine (will be installed from local repository)
+# synos-ai-engine

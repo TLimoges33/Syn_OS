@@ -1,0 +1,33 @@
+
+# Quantum Forecasting Configuration
+quantum_forecasting:
+  horizons:
+    short_term:
+      duration: 1h
+      resolution: 1m
+      quantum_qubits: 10
+      confidence_threshold: 0.95
+      
+    medium_term:
+      duration: 24h
+      resolution: 1h
+      quantum_qubits: 15
+      confidence_threshold: 0.90
+      
+    long_term:
+      duration: 30d
+      resolution: 1d
+      quantum_qubits: 20
+      confidence_threshold: 0.80
+      
+  algorithms:
+    pattern_detection: "quantum_fourier_transform"
+    trend_analysis: "quantum_principal_component"
+    anomaly_detection: "quantum_isolation_forest"
+    scenario_generation: "quantum_variational_autoencoder"
+    
+  optimization:
+    max_iterations: 1000
+    convergence_threshold: 1e-6
+    quantum_circuits: 50
+    parallel_simulations: 100

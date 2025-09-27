@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="test-your-sysadmin-skills" repository_source="starred" generated_at="2025-08-23T14:26:09.354833">
+  <repository_information>
+    <name>test-your-sysadmin-skills</name>
+    <full_name>trimstray/test-your-sysadmin-skills</full_name>
+    <description>A collection of Linux Sysadmin Test Questions and Answers. Test your knowledge and skills in different fields with these Q/A.</description>
+    <stargazers_count>11158</stargazers_count>
+    <size>1115</size>
+    <open_issues_count>18</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2024-11-19T14:07:11+00:00</pushed_at>
+    <license>
+      <name>MIT License</name>
+    </license>
+    <topics>
+      <item>interview</item>
+      <item>interview-questions</item>
+      <item>exam</item>
+      <item>answers</item>
+      <item>knowledge</item>
+      <item>skills</item>
+      <item>cheatsheets</item>
+      <item>resources</item>
+      <item>sysadmin</item>
+      <item>sysops</item>
+      <item>devops</item>
+      <item>webops</item>
+      <item>unix</item>
+      <item>linux</item>
+      <item>bsd</item>
+      <item>systems</item>
+      <item>network</item>
+      <item>security</item>
+      <item>cybersecurity</item>
+      <item>databases</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.81" level="high"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

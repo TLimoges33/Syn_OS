@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: consciousness
+  name: synos-consciousness-service
+  namespace: synos-production
+spec:
+  ports:
+  - name: api
+    port: 9090
+    protocol: TCP
+    targetPort: 9090
+  selector:
+    app: consciousness
+  type: ClusterIP

@@ -1,0 +1,50 @@
+[Unit]
+Description=SynOS AI-Augmented Security Tool Orchestrator
+Documentation=https://docs.synos.ai/security-orchestration
+After=synos-ai-engine.service
+Requires=synos-ai-engine.service
+PartOf=synos-ai-engine.service
+
+[Service]
+Type=notify
+User=synos
+Group=synos
+ExecStart=/usr/lib/synos/ai-engine/synos-security-orchestrator
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=always
+RestartSec=5
+TimeoutStartSec=45
+TimeoutStopSec=20
+
+# Resource limits
+CPUQuota=75%
+MemoryMax=1G
+TasksMax=200
+
+# Security settings
+NoNewPrivileges=false
+ProtectSystem=false
+ProtectHome=false
+ReadWritePaths=/var/lib/synos /var/log/synos /tmp
+PrivateTmp=false
+PrivateDevices=false
+ProtectKernelTunables=false
+ProtectKernelModules=false
+ProtectControlGroups=false
+RestrictRealtime=true
+RestrictNamespaces=false
+LockPersonality=false
+MemoryDenyWriteExecute=false
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+# Capabilities needed for security tool execution
+CapabilityBoundingSet=CAP_NET_RAW CAP_NET_ADMIN CAP_SYS_ADMIN
+AmbientCapabilities=CAP_NET_RAW CAP_NET_ADMIN
+
+# Environment
+Environment=SYNOS_SECURITY_CONFIG=/etc/synos/security-orchestrator.conf
+Environment=SYNOS_TOOLS_PATH=/usr/bin:/usr/sbin
+
+[Install]
+WantedBy=multi-user.target

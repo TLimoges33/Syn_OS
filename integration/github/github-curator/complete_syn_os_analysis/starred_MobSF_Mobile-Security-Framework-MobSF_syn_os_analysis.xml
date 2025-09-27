@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="Mobile-Security-Framework-MobSF" repository_source="starred" generated_at="2025-08-23T14:27:29.945336">
+  <repository_information>
+    <name>Mobile-Security-Framework-MobSF</name>
+    <full_name>MobSF/Mobile-Security-Framework-MobSF</full_name>
+    <description>Mobile Security Framework (MobSF) is an automated, all-in-one mobile application (Android/iOS/Windows) pen-testing, malware analysis and security assessment framework capable of performing static and dynamic analysis.</description>
+    <language>JavaScript</language>
+    <stargazers_count>19299</stargazers_count>
+    <size>1525454</size>
+    <open_issues_count>14</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>False</has_wiki>
+    <has_pages>True</has_pages>
+    <pushed_at>2025-07-17T16:14:44+00:00</pushed_at>
+    <license>
+      <name>GNU General Public License v3.0</name>
+    </license>
+    <topics>
+      <item>static-analysis</item>
+      <item>dynamic-analysis</item>
+      <item>mobsf</item>
+      <item>android-security</item>
+      <item>mobile-security</item>
+      <item>windows-mobile-security</item>
+      <item>ios-security</item>
+      <item>api-testing</item>
+      <item>web-security</item>
+      <item>malware-analysis</item>
+      <item>runtime-security</item>
+      <item>devsecops</item>
+      <item>apk</item>
+      <item>rest</item>
+      <item>cwe</item>
+      <item>owasp</item>
+      <item>mstg</item>
+      <item>masvs</item>
+      <item>mastg</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.86" level="high"/>
+    <primary_category integration_level="interface">web_interfaces</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

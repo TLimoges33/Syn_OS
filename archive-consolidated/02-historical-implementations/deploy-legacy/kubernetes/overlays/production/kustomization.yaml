@@ -1,0 +1,47 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: syn-os-production
+
+namespace: syn-os-prod
+
+resources:
+  - ../../base
+
+namePrefix: prod-
+
+commonLabels:
+  environment: production
+  app.kubernetes.io/instance: syn-os-prod
+
+patchesStrategicMerge:
+  - deployment-patches.yaml
+  - hpa.yaml
+
+configMapGenerator:
+  - name: syn-os-config
+    behavior: merge
+    literals:
+      - SYN_OS_LOG_LEVEL=warn
+      - SYN_OS_DEBUG_ENABLED=false
+      - SYN_OS_METRICS_DETAILED=false
+      - SYN_OS_PERFORMANCE_MODE=optimized
+  - name: syn-os-security-config
+    behavior: merge
+    literals:
+      - SECURITY_LEVEL=maximum
+      - AUDIT_LOGGING=enabled
+      - COMPLIANCE_MODE=strict
+
+replicas:
+  - name: syn-os-core
+    count: 5
+  - name: syn-os-security-manager
+    count: 3
+
+images:
+  - name: syn-os/core
+    newTag: "1.0.0"
+  - name: syn-os/security
+    newTag: "1.0.0"

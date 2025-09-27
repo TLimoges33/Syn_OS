@@ -1,0 +1,31 @@
+[package]
+name = "syn-bootloader"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+
+[lib]
+name = "syn_bootloader"
+crate-type = ["lib"]
+
+[[bin]]
+name = "syn-bootloader" 
+path = "src/main.rs"
+
+[dependencies]
+uefi = { version = "0.29", features = ["alloc", "global_allocator", "logger"] }
+log = "0.4"
+
+[features]
+default = ["consciousness-integration"]
+consciousness-integration = []
+educational-mode = []
+
+[profile.dev]
+overflow-checks = true
+
+[profile.release]
+overflow-checks = true
+lto = true
+codegen-units = 1

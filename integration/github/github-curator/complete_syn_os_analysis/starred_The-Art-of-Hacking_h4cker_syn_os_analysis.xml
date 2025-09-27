@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="h4cker" repository_source="starred" generated_at="2025-08-23T14:28:09.063651">
+  <repository_information>
+    <name>h4cker</name>
+    <full_name>The-Art-of-Hacking/h4cker</full_name>
+    <description>This repository is primarily maintained by Omar Santos (@santosomar) and includes thousands of resources related to ethical hacking, bug bounties, digital forensics and incident response (DFIR), artificial intelligence security, vulnerability research, exploit development, reverse engineering, and more.</description>
+    <language>Jupyter Notebook</language>
+    <stargazers_count>22584</stargazers_count>
+    <size>145565</size>
+    <open_issues_count>3</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2025-08-21T11:56:20+00:00</pushed_at>
+    <license>
+      <name>MIT License</name>
+    </license>
+    <topics>
+      <item>hacking</item>
+      <item>penetration-testing</item>
+      <item>hacking-series</item>
+      <item>cybersecurity</item>
+      <item>ethical-hacking</item>
+      <item>hacker</item>
+      <item>exploit</item>
+      <item>exploits</item>
+      <item>exploit-development</item>
+      <item>vulnerability</item>
+      <item>vulnerability-assessment</item>
+      <item>vulnerability-management</item>
+      <item>vulnerability-identification</item>
+      <item>awesome-lists</item>
+      <item>awesome-list</item>
+      <item>training</item>
+      <item>hackers</item>
+      <item>ai</item>
+      <item>artificial-intelligence</item>
+      <item>ai-security</item>
+    </topics>
+    <source>starred</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.88" level="high"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="core">kernel_modules</category>
+      <category integration_level="consciousness">consciousness_ai</category>
+      <category integration_level="security">security_frameworks</category>
+      <category integration_level="application">educational_platform</category>
+      <category integration_level="toolchain">development_tools</category>
+      <category integration_level="system">system_utilities</category>
+      <category integration_level="core">networking_protocols</category>
+      <category integration_level="interface">web_interfaces</category>
+      <category integration_level="application">data_processing</category>
+      <category integration_level="infrastructure">containerization</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

@@ -1,0 +1,41 @@
+[Unit]
+Description=SynOS AI Consciousness Daemon
+Documentation=man:synos-ai-daemon(8)
+After=network.target nats-server.service
+Wants=network.target
+
+[Service]
+Type=simple
+User=synos-ai
+Group=synos-ai
+ExecStart=/usr/bin/python3 /usr/lib/synos/synos_ai_daemon.py
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=10
+
+# Security settings
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/log /var/lib/synos /tmp
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictRealtime=true
+RestrictNamespaces=true
+
+# Resource limits
+LimitNOFILE=65536
+MemoryAccounting=true
+MemoryMax=512M
+CPUAccounting=true
+CPUQuota=50%
+
+# Environment
+Environment=PYTHONPATH=/usr/lib/synos
+Environment=SYNOS_CONFIG_DIR=/etc/synos
+Environment=SYNOS_LOG_LEVEL=INFO
+
+[Install]
+WantedBy=multi-user.target

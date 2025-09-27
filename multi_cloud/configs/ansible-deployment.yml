@@ -1,0 +1,59 @@
+
+---
+- name: Deploy SynOS Consciousness Multi-Cloud
+  hosts: all
+  become: yes
+  vars:
+    consciousness_version: "3.0.0"
+    
+  tasks:
+    - name: Install Kubernetes
+      shell: |
+        curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+        echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
+        apt-get update && apt-get install -y kubectl
+        
+    - name: Deploy Consciousness Operator
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: consciousness-operator
+            namespace: synos-consciousness
+          spec:
+            replicas: 3
+            selector:
+              matchLabels:
+                app: consciousness-operator
+            template:
+              metadata:
+                labels:
+                  app: consciousness-operator
+              spec:
+                containers:
+                - name: operator
+                  image: "synos/consciousness-operator:{{ consciousness_version }}"
+                  ports:
+                  - containerPort: 8080
+                  env:
+                  - name: CLUSTER_TYPE
+                    value: "multi-cloud"
+                    
+    - name: Configure Edge Nodes
+      shell: |
+        systemctl enable synos-edge-node
+        systemctl start synos-edge-node
+        
+    - name: Setup Global Load Balancer
+      template:
+        src: global-lb-config.j2
+        dest: /etc/synos/global-lb.conf
+      notify: restart global-lb
+      
+  handlers:
+    - name: restart global-lb
+      systemctl:
+        name: synos-global-lb
+        state: restarted

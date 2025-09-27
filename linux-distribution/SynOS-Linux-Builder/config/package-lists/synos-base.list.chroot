@@ -1,0 +1,36 @@
+# SynOS Base System Packages
+live-boot
+live-config
+live-config-systemd
+systemd-sysv
+
+# Desktop Environment (MATE)
+mate-desktop-environment
+mate-desktop-environment-extras
+lightdm
+lightdm-gtk-greeter
+
+# System Essentials
+network-manager
+network-manager-gnome
+firefox-esr
+file-roller
+gdebi
+apt-transport-https
+ca-certificates
+curl
+wget
+git
+vim
+nano
+htop
+tree
+unzip
+zip
+python3
+python3-pip
+python3-venv
+build-essential
+cmake
+pkg-config
+libssl-dev

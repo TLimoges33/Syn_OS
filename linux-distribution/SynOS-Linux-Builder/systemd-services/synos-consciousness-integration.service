@@ -1,0 +1,14 @@
+[Unit]
+Description=SynOS Consciousness Integration Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/synos-apps/consciousness
+ExecStart=/usr/bin/python3 /opt/synos-apps/consciousness/consciousness_bridge.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

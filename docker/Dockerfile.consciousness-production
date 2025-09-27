@@ -1,0 +1,58 @@
+# SynOS Consciousness Engine - Production Optimized
+FROM python:3.11-slim as builder
+
+# Build dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create app user
+RUN useradd -m -u 1001 synos
+
+WORKDIR /app
+
+# Copy and install Python dependencies
+COPY requirements.consciousness.txt .
+RUN pip install --no-cache-dir --user -r requirements.consciousness.txt
+
+# Production stage
+FROM python:3.11-slim
+
+# Runtime dependencies only
+RUN apt-get update && apt-get install -y \
+    curl \
+    procps \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy user and dependencies from builder
+COPY --from=builder /etc/passwd /etc/passwd
+COPY --from=builder /home/synos/.local /home/synos/.local
+
+# Create app user
+USER synos
+WORKDIR /app
+
+# Copy application code
+COPY --chown=synos:synos src/consciousness ./consciousness/
+COPY --chown=synos:synos config/consciousness/production.yml ./config/
+
+# Environment optimization
+ENV PYTHONPATH=/home/synos/.local/lib/python3.11/site-packages:$PYTHONPATH
+ENV PATH=/home/synos/.local/bin:$PATH
+ENV PYTHONUNBUFFERED=1
+ENV CONSCIOUSNESS_MODE=production
+ENV NEURAL_WORKERS=4
+ENV BATCH_SIZE=50
+ENV MEMORY_POOL_SIZE=512Mi
+
+# Health check
+HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost:9090/health || exit 1
+
+# Expose consciousness API
+EXPOSE 9090
+
+# Start consciousness engine
+CMD ["python", "-m", "consciousness.engine", "--config", "config/production.yml"]

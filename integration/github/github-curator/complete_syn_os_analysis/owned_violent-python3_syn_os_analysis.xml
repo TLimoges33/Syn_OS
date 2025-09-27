@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<syn_os_repository_analysis repository_name="violent-python3" repository_source="owned" generated_at="2025-08-23T14:23:28.993561">
+  <repository_information>
+    <name>violent-python3</name>
+    <full_name>TLimoges33/violent-python3</full_name>
+    <description>Source code for the book &quot;Violent Python&quot; by TJ O'Connor. The code has been fully converted to Python 3, reformatted to comply with PEP8 standards and refactored to eliminate dependency issues involving the implementation of deprecated libraries.</description>
+    <stargazers_count>0</stargazers_count>
+    <size>61096</size>
+    <open_issues_count>0</open_issues_count>
+    <fork>False</fork>
+    <archived>False</archived>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <pushed_at>2023-02-19T20:38:10+00:00</pushed_at>
+    <topics/>
+    <source>owned</source>
+  </repository_information>
+  <syn_os_integration>
+    <integration_potential score="0.52" level="medium"/>
+    <primary_category integration_level="toolchain">development_tools</primary_category>
+    <matching_categories>
+      <category integration_level="toolchain">development_tools</category>
+    </matching_categories>
+  </syn_os_integration>
+</syn_os_repository_analysis>

@@ -1,0 +1,29 @@
+[Unit]
+Description=SynOS AI Consciousness Engine
+Documentation=https://synos.dev/docs/consciousness
+After=network.target nats.service
+Requires=network.target
+Wants=nats.service
+
+[Service]
+Type=simple
+User=synos
+Group=synos
+WorkingDirectory=/opt/synos/consciousness
+ExecStart=/usr/bin/python3 /opt/synos/consciousness/main.py
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=synos-consciousness
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/log/synos
+
+[Install]
+WantedBy=multi-user.target

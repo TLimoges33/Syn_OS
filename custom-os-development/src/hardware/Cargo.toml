@@ -1,0 +1,22 @@
+[package]
+name = "synos-hardware"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[lib]
+name = "synos_hardware"
+path = "mod.rs"
+
+[dependencies]
+# Core dependencies for no_std environment
+spin = { workspace = true }
+
+[features]
+default = []
+ai_optimization = []
+educational = []
+performance_monitoring = []
+thermal_management = []
+power_management = []

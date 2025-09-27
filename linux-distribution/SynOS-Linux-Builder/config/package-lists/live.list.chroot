@@ -1,0 +1,58 @@
+live-boot
+live-config
+live-config-systemd
+systemd-sysv
+
+# SynOS Core System
+openssh-server
+curl
+wget
+git
+vim
+htop
+neofetch
+tree
+
+# Security Tools Base (ParrotOS compatibility)
+nmap
+metasploit-framework
+aircrack-ng
+wireshark
+burpsuite
+sqlmap
+hydra
+john
+hashcat
+gobuster
+nikto
+dirb
+wpscan
+maltego
+
+# Development Tools
+build-essential
+python3
+python3-pip
+nodejs
+npm
+docker.io
+docker-compose
+
+# AI/ML Dependencies
+python3-numpy
+python3-scipy
+python3-sklearn
+python3-tensorflow
+python3-torch
+
+# System Monitoring
+netstat
+ss
+lsof
+strace
+tcpdump
+
+# Desktop Environment
+mate-desktop-environment
+mate-themes
+mate-icon-theme

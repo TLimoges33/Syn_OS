@@ -1,0 +1,54 @@
+consciousness:
+  autoscaling:
+    enabled: true
+    maxReplicas: 10
+    minReplicas: 3
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+  enabled: true
+  image:
+    pullPolicy: Always
+    repository: synos/consciousness
+    tag: production
+  persistence:
+    enabled: true
+    size: 50Gi
+    storageClass: fast-ssd
+  replicas: 3
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 4Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+  service:
+    port: 9090
+    type: ClusterIP
+global:
+  imagePullSecrets:
+  - synos-registry-secret
+  imageRegistry: synos-registry.dev
+  namespace: synos-production
+monitoring:
+  enabled: true
+  grafana:
+    adminPassword: synos-admin
+    enabled: true
+  prometheus:
+    enabled: true
+    retention: 30d
+security:
+  enabled: true
+  image:
+    pullPolicy: Always
+    repository: synos/security
+    tag: production
+  replicas: 2
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+    requests:
+      cpu: 200m
+      memory: 512Mi
