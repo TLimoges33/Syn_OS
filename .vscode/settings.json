@@ -87,8 +87,9 @@
   "rust-analyzer.linkedProjects": [
     "Cargo.toml",
     "src/ai-engine/Cargo.toml",
-    "core/security/Cargo.toml",
-    "src/kernel/Cargo.toml"
+    "src/kernel/Cargo.toml",
+    "custom-os-development/core/security/Cargo.toml",
+    "custom-os-development/core/services/Cargo.toml"
   ],
   "rust-analyzer.cargo.features": [
     "consciousness",
