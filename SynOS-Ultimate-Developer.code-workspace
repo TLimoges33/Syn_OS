@@ -124,7 +124,7 @@
         ],
         "rust-analyzer.cargo.unsetTest": ["archive", "backup"],
 
-                // � Search & Performance Settings
+        // � Search & Performance Settings
         "workbench.editor.limit.enabled": true,
         "workbench.editor.limit.value": 6, // 🚀 Max 6 open editors for memory
         "files.maxMemoryForLargeFilesMB": 2048,

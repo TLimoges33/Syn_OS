@@ -2,9 +2,9 @@ name: 🚀 SynOS Professional CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, master, fresh-main ]
+    branches: [main, master, fresh-main]
   pull_request:
-    branches: [ main, master, fresh-main ]
+    branches: [main, master, fresh-main]
 
 env:
   CARGO_TERM_COLOR: always
@@ -15,124 +15,125 @@ jobs:
     name: 🔒 Security Audit
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Install Rust
-      uses: dtolnay/rust-toolchain@stable
-      with:
-        components: clippy, rustfmt
-    
-    - name: Install cargo-audit
-      run: cargo install cargo-audit || true
-    
-    - name: Security Audit
-      run: cargo audit --deny warnings || true
-    
-    - name: Dependency Check
-      run: cargo audit --db advisory-db || true
-  
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - name: Install cargo-audit
+        run: cargo install cargo-audit || true
+
+      - name: Security Audit
+        run: cargo audit --deny warnings || true
+
+      - name: Dependency Check
+        run: cargo audit --db advisory-db || true
+
   code-quality:
     name: 📝 Code Quality
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Install Rust
-      uses: dtolnay/rust-toolchain@stable
-      with:
-        components: clippy, rustfmt
-        targets: x86_64-unknown-none
-    
-    - name: Check Formatting
-      run: cargo fmt --check || true
-    
-    - name: Clippy Analysis (Allow Warnings for Development)
-      run: cargo clippy --all-targets --all-features || true
-    
-    - name: Check Documentation
-      run: cargo doc --no-deps --document-private-items || true
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+          targets: x86_64-unknown-none
+
+      - name: Check Formatting
+        run: cargo fmt --check || true
+
+      - name: Clippy Analysis (Allow Warnings for Development)
+        run: cargo clippy --all-targets --all-features || true
+
+      - name: Check Documentation
+        run: cargo doc --no-deps --document-private-items || true
 
   kernel-build:
     name: 🦀 Kernel Compilation
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Install Rust Nightly
-      uses: dtolnay/rust-toolchain@nightly
-      with:
-        components: rust-src
-        targets: x86_64-unknown-none
-    
-    - name: Build Kernel (Check Only)
-      run: cargo check --manifest-path=src/kernel/Cargo.toml --target=x86_64-unknown-none || true
-    
-    - name: Verify Security Modules
-      run: cargo check --manifest-path=core/security/Cargo.toml || true
+      - uses: actions/checkout@v4
+
+      - name: Install Rust Nightly
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: rust-src
+          targets: x86_64-unknown-none
+
+      - name: Build Kernel (Check Only)
+        run: cargo check --manifest-path=src/kernel/Cargo.toml --target=x86_64-unknown-none || true
+
+      - name: Verify Security Modules
+        run: cargo check --manifest-path=core/security/Cargo.toml || true
 
   test-suite:
     name: 🧪 Test Suite
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Install Rust
-      uses: dtolnay/rust-toolchain@stable
-    
-    - name: Run Tests
-      run: cargo test --workspace || true
-    
-    - name: Run Integration Tests
-      run: cargo test --workspace --test '*' || true
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Run Tests
+        run: cargo test --workspace || true
+
+      - name: Run Integration Tests
+        run: cargo test --workspace --test '*' || true
 
   iso-build-test:
     name: 💿 ISO Build Verification (Skipped)
     runs-on: ubuntu-latest
     needs: [security-audit, code-quality, kernel-build]
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Skip ISO Build (Requires Live-Build Environment)
-      run: |
-        echo "ℹ️  ISO building requires debian live-build environment"
-        echo "ℹ️  Use deployment/infrastructure/build-system/build-production-iso.sh locally"
-        echo "✅ Skipping ISO build in CI"
-    
-    - name: Install Dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y grub-pc-bin xorriso mtools
-    
-    - name: Install Rust Nightly
-      uses: dtolnay/rust-toolchain@nightly
-      with:
-        components: rust-src
-        targets: x86_64-unknown-none
-    
-    - name: Install Bootimage
-      run: cargo install bootimage
-    
-    - name: Test ISO Build Process
-      run: |
-        # Test that the build script is executable
-        chmod +x scripts/build-simple-kernel-iso.sh
-        echo "✅ ISO build script ready"
+      - uses: actions/checkout@v4
+
+      - name: Skip ISO Build (Requires Live-Build Environment)
+        run: |
+          echo "ℹ️  ISO building requires debian live-build environment"
+          echo "ℹ️  Use deployment/infrastructure/build-system/build-production-iso.sh locally"
+          echo "✅ Skipping ISO build in CI"
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y grub-pc-bin xorriso mtools
+
+      - name: Install Rust Nightly
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: rust-src
+          targets: x86_64-unknown-none
+
+      - name: Install Bootimage
+        run: cargo install bootimage
+
+      - name: Test ISO Build Process
+        run: |
+          # Test that the build script is executable
+          chmod +x scripts/build-simple-kernel-iso.sh
+          echo "✅ ISO build script ready"
 
   workflow-validation:
     name: ✅ Workflow Validation
     runs-on: ubuntu-latest
-    needs: [security-audit, code-quality, kernel-build, test-suite, iso-build-test]
+    needs:
+      [security-audit, code-quality, kernel-build, test-suite, iso-build-test]
     if: always()
     steps:
-    - name: Check Status
-      run: |
-        echo "🎯 All workflow checks completed"
-        echo "Security Audit: ${{ needs.security-audit.result }}"
-        echo "Code Quality: ${{ needs.code-quality.result }}"
-        echo "Kernel Build: ${{ needs.kernel-build.result }}"
-        echo "Test Suite: ${{ needs.test-suite.result }}"
-        echo "ISO Build Test: ${{ needs.iso-build-test.result }}"
-    
-    - name: Success Notification
-      if: ${{ needs.security-audit.result == 'success' && needs.code-quality.result == 'success' && needs.kernel-build.result == 'success' }}
-      run: echo "🚀 All checks passed! Ready for merge."
+      - name: Check Status
+        run: |
+          echo "🎯 All workflow checks completed"
+          echo "Security Audit: ${{ needs.security-audit.result }}"
+          echo "Code Quality: ${{ needs.code-quality.result }}"
+          echo "Kernel Build: ${{ needs.kernel-build.result }}"
+          echo "Test Suite: ${{ needs.test-suite.result }}"
+          echo "ISO Build Test: ${{ needs.iso-build-test.result }}"
+
+      - name: Success Notification
+        if: ${{ needs.security-audit.result == 'success' && needs.code-quality.result == 'success' && needs.kernel-build.result == 'success' }}
+        run: echo "🚀 All checks passed! Ready for merge."
