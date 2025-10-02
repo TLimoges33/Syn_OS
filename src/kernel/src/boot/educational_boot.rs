@@ -15,7 +15,7 @@ use crate::scadi::ScadiInterface;
 
 extern crate alloc;
 use alloc::vec::Vec;
-use alloc::string::String;
+use alloc::string::{String, ToString};
 
 /// SynOS Educational Boot System
 /// 
@@ -144,47 +144,47 @@ impl EducationalBootSystem {
     
     /// Detect and configure hardware capabilities
     pub fn detect_hardware(&mut self) {
-        boot_println!("🔍 Detecting hardware capabilities...");
+        boot_crate::println!("🔍 Detecting hardware capabilities...");
         
         // Detect CPU features
         self.boot_config.hardware_caps.cpu_features = self.detect_cpu_features();
-        boot_println!("  ✅ CPU: x86_64 with {} cores", self.get_cpu_count());
+        boot_crate::println!("  ✅ CPU: x86_64 with {} cores", self.get_cpu_count());
         
         if self.boot_config.hardware_caps.cpu_features.aes_ni {
-            boot_println!("  🔒 AES-NI hardware acceleration available");
+            boot_crate::println!("  🔒 AES-NI hardware acceleration available");
         }
         
         if self.boot_config.hardware_caps.cpu_features.sha_extensions {
-            boot_println!("  🔐 SHA hardware acceleration available");
+            boot_crate::println!("  🔐 SHA hardware acceleration available");
         }
         
         // Detect memory configuration
         self.boot_config.hardware_caps.memory_info = self.detect_memory();
-        boot_println!("  💾 Memory: {}MB available", 
+        boot_crate::println!("  💾 Memory: {}MB available", 
                      self.boot_config.hardware_caps.memory_info.total_mb);
         
         // Detect network interfaces
         self.boot_config.hardware_caps.network_interfaces = self.detect_network_interfaces();
-        boot_println!("  🌐 Network: {} interfaces detected", 
+        boot_crate::println!("  🌐 Network: {} interfaces detected", 
                      self.boot_config.hardware_caps.network_interfaces.len());
         
         // Detect storage devices
         self.boot_config.hardware_caps.storage_devices = self.detect_storage_devices();
-        boot_println!("  💿 Storage: {} devices available", 
+        boot_crate::println!("  💿 Storage: {} devices available", 
                      self.boot_config.hardware_caps.storage_devices.len());
         
         // Detect AI acceleration hardware
         self.boot_config.hardware_caps.ai_hardware = self.detect_ai_hardware();
         if let Some(ref ai_hw) = self.boot_config.hardware_caps.ai_hardware {
-            boot_println!("  🧠 AI Hardware: {} detected", ai_hw.device_name);
+            boot_crate::println!("  🧠 AI Hardware: {} detected", ai_hw.device_name);
         }
         
-        boot_println!("✅ Hardware detection complete");
+        boot_crate::println!("✅ Hardware detection complete");
     }
     
     /// Initialize memory management for educational safety
     pub fn init_memory_management(&mut self) {
-        boot_println!("🧠 Initializing educational memory management...");
+        boot_crate::println!("🧠 Initializing educational memory management...");
         
         // Set up basic paging
         self.memory_manager.init_paging();
@@ -198,22 +198,22 @@ impl EducationalBootSystem {
         // Configure memory isolation for safety
         self.memory_manager.configure_educational_isolation();
         
-        boot_println!("✅ Educational memory management initialized");
+        boot_crate::println!("✅ Educational memory management initialized");
     }
     
     /// Initialize AI consciousness system
     pub fn init_consciousness(&mut self) {
-        boot_println!("🧠 Initializing Neural Darwinism consciousness...");
+        boot_crate::println!("🧠 Initializing Neural Darwinism consciousness...");
         
         // Load consciousness state if available
         if let Ok(state) = self.load_consciousness_state() {
             self.consciousness.restore_state(state);
-            boot_println!("  🔄 Consciousness state restored (Fitness: {:.1}%)", 
+            boot_crate::println!("  🔄 Consciousness state restored (Fitness: {:.1}%)", 
                          self.consciousness.get_fitness() * 100.0);
         } else {
             // Initialize new consciousness
             self.consciousness.init_neural_darwinism();
-            boot_println!("  🆕 New consciousness created");
+            boot_crate::println!("  🆕 New consciousness created");
         }
         
         // Configure for educational optimization
@@ -222,12 +222,12 @@ impl EducationalBootSystem {
         // Start real-time learning adaptation
         self.consciousness.start_learning_adaptation();
         
-        boot_println!("✅ AI consciousness initialized and ready");
+        boot_crate::println!("✅ AI consciousness initialized and ready");
     }
     
     /// Load all 60 enhanced security tools
     pub fn load_security_tools(&mut self) {
-        boot_println!("🛠️ Loading 60 enhanced security tools...");
+        boot_crate::println!("🛠️ Loading 60 enhanced security tools...");
         
         // Network Analysis Tools
         self.load_network_tools();
@@ -247,13 +247,13 @@ impl EducationalBootSystem {
         // Additional specialized tools
         self.load_specialized_tools();
         
-        boot_println!("✅ All 60 security tools loaded and enhanced");
-        boot_println!("  🚀 300% performance improvement over baseline");
+        boot_crate::println!("✅ All 60 security tools loaded and enhanced");
+        boot_crate::println!("  🚀 300% performance improvement over baseline");
     }
     
     /// Initialize SCADI VSCode-inspired interface
     pub fn init_scadi_interface(&mut self) {
-        boot_println!("💻 Initializing SCADI educational interface...");
+        boot_crate::println!("💻 Initializing SCADI educational interface...");
         
         // Initialize base interface
         self.scadi_interface.init_base_interface();
@@ -270,14 +270,14 @@ impl EducationalBootSystem {
         // Configure collaborative features
         self.scadi_interface.init_collaboration();
         
-        boot_println!("✅ SCADI interface ready");
-        boot_println!("  📚 4-phase curriculum loaded");
-        boot_println!("  🤖 AI assistant configured");
+        boot_crate::println!("✅ SCADI interface ready");
+        boot_crate::println!("  📚 4-phase curriculum loaded");
+        boot_crate::println!("  🤖 AI assistant configured");
     }
     
     /// Start educational services
     pub fn start_educational_services(&mut self) {
-        boot_println!("🎓 Starting educational services...");
+        boot_crate::println!("🎓 Starting educational services...");
         
         // Start educational process scheduler
         self.start_educational_scheduler();
@@ -294,16 +294,16 @@ impl EducationalBootSystem {
         // Start collaboration services
         self.start_collaboration_services();
         
-        boot_println!("✅ Educational services active");
+        boot_crate::println!("✅ Educational services active");
     }
     
     /// Main educational platform execution loop
     pub fn run_educational_platform(&mut self) -> ! {
-        boot_println!("🚀 SynOS Educational Platform ready!");
-        boot_println!("");
-        boot_println!("🎉 Welcome to the future of cybersecurity education!");
-        boot_println!("💻 SCADI interface starting...");
-        boot_println!("");
+        boot_crate::println!("🚀 SynOS Educational Platform ready!");
+        boot_crate::println!("");
+        boot_crate::println!("🎉 Welcome to the future of cybersecurity education!");
+        boot_crate::println!("💻 SCADI interface starting...");
+        boot_crate::println!("");
         
         // Start main interface
         self.scadi_interface.start_main_interface();
@@ -349,7 +349,7 @@ impl EducationalBootSystem {
             self.security_tools.load_tool(tool, SecurityToolType::NetworkAnalyzer);
             boot_print!(".");
         }
-        boot_println!(" Network tools loaded");
+        boot_crate::println!(" Network tools loaded");
     }
     
     /// Load web penetration testing tools
@@ -371,7 +371,7 @@ impl EducationalBootSystem {
             self.security_tools.load_tool(tool, SecurityToolType::WebPenetration);
             boot_print!(".");
         }
-        boot_println!(" Web tools loaded");
+        boot_crate::println!(" Web tools loaded");
     }
     
     /// Load digital forensics tools
@@ -393,7 +393,7 @@ impl EducationalBootSystem {
             self.security_tools.load_tool(tool, SecurityToolType::DigitalForensics);
             boot_print!(".");
         }
-        boot_println!(" Forensics tools loaded");
+        boot_crate::println!(" Forensics tools loaded");
     }
     
     /// Load cryptography tools
@@ -415,7 +415,7 @@ impl EducationalBootSystem {
             self.security_tools.load_tool(tool, SecurityToolType::Cryptography);
             boot_print!(".");
         }
-        boot_println!(" Crypto tools loaded");
+        boot_crate::println!(" Crypto tools loaded");
     }
     
     /// Handle system events and interrupts
@@ -463,19 +463,19 @@ impl EducationalBootSystem {
 
 /// Display educational boot banner
 fn display_educational_banner() {
-    boot_println!("");
-    boot_println!("╔══════════════════════════════════════════════════════════════════════════╗");
-    boot_println!("║                                                                          ║");
-    boot_println!("║    🧠 SynOS - Revolutionary Cybersecurity Education Platform 🧠        ║");
-    boot_println!("║                                                                          ║");
-    boot_println!("║         🎓 Neural Darwinism AI + 60 Enhanced Security Tools 🎓         ║");
-    boot_println!("║                                                                          ║");
-    boot_println!("║  🚀 300% Performance Boost | 94.2% AI Fitness | Zero-Day Ready 🚀     ║");
-    boot_println!("║                                                                          ║");
-    boot_println!("╚══════════════════════════════════════════════════════════════════════════╝");
-    boot_println!("");
-    boot_println!("🔄 Initializing bare metal educational platform...");
-    boot_println!("");
+    boot_crate::println!("");
+    boot_crate::println!("╔══════════════════════════════════════════════════════════════════════════╗");
+    boot_crate::println!("║                                                                          ║");
+    boot_crate::println!("║    🧠 SynOS - Revolutionary Cybersecurity Education Platform 🧠        ║");
+    boot_crate::println!("║                                                                          ║");
+    boot_crate::println!("║         🎓 Neural Darwinism AI + 60 Enhanced Security Tools 🎓         ║");
+    boot_crate::println!("║                                                                          ║");
+    boot_crate::println!("║  🚀 300% Performance Boost | 94.2% AI Fitness | Zero-Day Ready 🚀     ║");
+    boot_crate::println!("║                                                                          ║");
+    boot_crate::println!("╚══════════════════════════════════════════════════════════════════════════╝");
+    boot_crate::println!("");
+    boot_crate::println!("🔄 Initializing bare metal educational platform...");
+    boot_crate::println!("");
 }
 
 /// Basic hardware initialization
@@ -525,8 +525,8 @@ macro_rules! boot_println {
 /// Panic handler for bare metal operation
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    boot_println!("💥 KERNEL PANIC: {}", info);
-    boot_println!("🛑 System halted for safety");
+    boot_crate::println!("💥 KERNEL PANIC: {}", info);
+    boot_crate::println!("🛑 System halted for safety");
     
     // Halt the CPU
     loop {

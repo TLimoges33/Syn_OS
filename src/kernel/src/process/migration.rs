@@ -5,11 +5,10 @@
 
 use alloc::collections::BTreeMap;
 use alloc::vec::Vec;
-use alloc::string::String;
 use core::sync::atomic::{AtomicU64, AtomicU32, Ordering};
 use spin::{Mutex, RwLock};
 
-use crate::process_lifecycle::{ProcessId, ProcessState, ProcessError};
+use crate::process_lifecycle::{ProcessId, ProcessError};
 use crate::ai::interface::AIInterface;
 
 /// Migration strategy types
@@ -361,7 +360,7 @@ impl ProcessMigrationManager {
         }
 
         // Update core last migration time
-        if let Some(mut core_stats) = self.core_stats.write().get_mut(&migration.current_core) {
+        if let Some(core_stats) = self.core_stats.write().get_mut(&migration.current_core) {
             core_stats.last_migration = start_time;
         }
 

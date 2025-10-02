@@ -38,7 +38,7 @@ pub struct SecurityConfig {
 }
 
 /// Security level
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
 pub enum SecurityLevel {
     Public = 0,
     Basic = 1,
@@ -259,3 +259,7 @@ pub fn init_security_manager() {
 pub fn get_security_manager() -> Option<&'static SecurityManager> {
     unsafe { SECURITY_MANAGER.as_ref() }
 }
+
+// Security tests
+#[cfg(test)]
+mod tests;

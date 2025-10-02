@@ -8,15 +8,38 @@
 #![feature(abi_x86_interrupt)]
 #![feature(alloc_error_handler)]
 
+// Suppress warnings during development (TODO: remove before production)
+#![allow(unused)]
+#![allow(dead_code)]
+#![allow(unused_variables)]
+#![allow(unused_mut)]
+#![allow(unreachable_patterns)]
+#![allow(unused_assignments)]
+
+// Enable external allocator with macros
+#[macro_use]
+extern crate alloc;
+
 // Export core modules
 pub mod memory;
 pub mod gdt;
 pub mod interrupts;
 pub mod serial; // Serial communication for debugging
+pub mod time; // Time management and timing functions
+pub mod cpu; // CPU management and identification
+pub mod debug; // Debug utilities and core dumps
+pub mod system; // System control and power management
 pub mod ipc; // Inter-Process Communication module
 pub mod syscalls; // System call interface
 pub mod process_lifecycle; // Advanced process lifecycle management
 pub mod scheduler; // Process scheduler (for backward compatibility)
+
+// Hardware abstraction and drivers
+pub mod hal; // Hardware Abstraction Layer
+pub mod drivers; // Device drivers
+pub mod devices; // Device management
+pub mod network; // Network stack
+pub mod fs; // Filesystem
 
 // Phase 2 reorganized modules
 pub mod boot; // Boot system management
@@ -46,9 +69,6 @@ pub use advanced_applications_minimal as advanced_applications;
 // Re-export components
 pub use bootloader;
 pub use x86_64;
-
-// Use custom allocator
-extern crate alloc;
 
 // Simple print and println macros for kernel debugging
 #[macro_export]

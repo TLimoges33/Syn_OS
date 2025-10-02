@@ -207,9 +207,10 @@ impl WindowManager {
         }
         
         // Focus new window
+        let next_z_order = self.get_next_z_order();
         if let Some(window) = self.windows.get_mut(&window_id) {
             window.focused = true;
-            window.z_order = self.get_next_z_order();
+            window.z_order = next_z_order;
             self.focused_window = Some(window_id);
             
             crate::log_info!("🎯 Focused window: {}", window.title);
@@ -390,8 +391,8 @@ impl WindowManager {
         let text_y = window.bounds.y + 8;
         GraphicsPrimitives::draw_text(
             framebuffer,
-            Point::new(text_x, text_y),
             &window.title,
+            Point::new(text_x, text_y),
             window.decorations.title_text_color,
         )?;
         

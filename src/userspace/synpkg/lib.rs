@@ -1,8 +1,11 @@
 //! SynPkg - SynOS Consciousness-Aware Package Manager Library
-//! 
+//!
 //! This library provides the core functionality for the SynPkg package manager,
 //! including consciousness-driven package recommendations, multi-repository support,
 //! and advanced security validation.
+
+#![allow(unused)]
+#![allow(dead_code)]
 
 pub mod core;
 pub mod repository;
@@ -16,7 +19,8 @@ pub use core::{SynPkgManager, PackageInfo, SecurityRating, InstallStatus};
 pub use repository::{Repository, RepositoryManager, PackageSource, RepositoryConfig};
 pub use dependency::{DependencyResolver, DependencyResolution, DependencyTree};
 pub use cache::{PackageCache, InstalledPackageRecord, CacheStats, CleanupResults};
-pub use syn_ai::{ConsciousnessEngine, PackageRecommendation, InstallationContext};
+// TODO: Re-enable when AI integration types are available
+// pub use syn_ai::{ConsciousnessEngine, PackageRecommendation, InstallationContext};
 pub use security::{SecurityValidator, SecurityValidationResult, Vulnerability, TrustLevel};
 
 /// Library version

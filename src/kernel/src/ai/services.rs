@@ -4,7 +4,7 @@
 //! including intelligent resource management and optimization.
 
 use alloc::vec::Vec;
-use alloc::string::String;
+use alloc::string::{String, ToString};
 use crate::ai::interface::{AIInterface, AIRequest, AIOperation, RequestPriority, StimulusData, StimulusType};
 use crate::ai::consciousness::{ConsciousnessSystem, ConsciousnessState};
 
@@ -237,7 +237,7 @@ impl AIServices {
         let task_id = self.generate_task_id();
         let task = OptimizationTask {
             task_id,
-            task_type: self.resource_to_optimization_type(request.resource_type),
+            task_type: self.resource_to_optimization_type(request.resource_type.clone()),
             target_system: format!("{:?}", request.resource_type),
             current_performance: request.current_metrics.performance,
             target_performance: self.calculate_target_performance(&request),
@@ -289,7 +289,7 @@ impl AIServices {
             timestamp: 0, // Would be filled with actual timestamp
             system_health: consciousness_state.awareness_level * 100.0,
             performance_score: consciousness_state.decision_confidence * 100.0,
-            efficiency_rating: consciousness_state.learning_progress * 100.0,
+            efficiency_rating: consciousness_state.decision_confidence * 100.0,
             identified_issues: self.identify_system_issues().await?,
             recommendations: self.generate_recommendations().await?,
         };
@@ -378,18 +378,9 @@ impl AIServices {
     
     fn calculate_target_performance(&self, request: &ResourceOptimizationRequest) -> f32 {
 impl AIServices {
-    /// Create new AI services manager
-    pub fn new() -> Self {
-        Self {
-            ai_interface: AIInterface::new(),
-            consciousness_system: ConsciousnessSystem::new(),
-            service_registry: Vec::new(),
-            active_optimizations: Vec::new(),
-        }
-    }
     
     /// Initialize AI services
-    pub fn initialize(&mut self) -> Result<(), &'static str> {
+    pub fn initialize_sync(&mut self) -> Result<(), &'static str> {
         // Initialize default services
         self.register_default_services()?;
         Ok(())

@@ -4,25 +4,25 @@
 //! systems before memory management and interrupts are available.
 
 use crate::gdt;
-use crate::serial::{serial_print, serial_println};
+use crate::println;
 
 /// Perform early kernel initialization
 pub fn early_kernel_init() -> Result<(), &'static str> {
-    serial_println!("🚀 Starting Syn OS Kernel...");
+    println!("🚀 Starting Syn OS Kernel...");
     
     // Initialize Global Descriptor Table
     gdt::init();
-    serial_println!("✅ GDT initialized");
+    println!("✅ GDT initialized");
     
     // Initialize basic logging
     init_early_logging();
-    serial_println!("✅ Early logging initialized");
+    println!("✅ Early logging initialized");
     
     // Validate boot environment
     validate_boot_environment()?;
-    serial_println!("✅ Boot environment validated");
+    println!("✅ Boot environment validated");
     
-    serial_println!("🎯 Early initialization complete");
+    println!("🎯 Early initialization complete");
     Ok(())
 }
 
@@ -30,7 +30,7 @@ pub fn early_kernel_init() -> Result<(), &'static str> {
 fn init_early_logging() {
     // Set up basic serial logging
     // This is implemented in the serial module
-    serial_println!("📝 Early logging system active");
+    println!("📝 Early logging system active");
 }
 
 /// Validate the boot environment

@@ -1,8 +1,8 @@
 /// Kernel-level real-time threat detection engine
 /// Implements adaptive threat detection using neural darwinism principles
 
-use crate::println;
-use crate::security::SecurityContext;
+use syn_kernel::println;
+use syn_kernel::security::SecurityContext;
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
 use core::sync::atomic::{AtomicBool, AtomicU64, Ordering};
@@ -117,7 +117,7 @@ impl AdaptiveThreatDetector {
         };
         patterns.push(rootkit);
 
-        println!("🔍 Initialized {} base threat detection patterns", patterns.len());
+        crate::println!("🔍 Initialized {} base threat detection patterns", patterns.len());
     }
 
     /// Analyze memory region for threats (educational simulation)
@@ -245,7 +245,7 @@ impl AdaptiveThreatDetector {
     /// Enable educational mode for safe threat simulation
     pub fn enable_educational_mode(&self) {
         self.educational_mode.store(true, Ordering::SeqCst);
-        println!("📚 Educational threat detection mode enabled");
+        crate::println!("📚 Educational threat detection mode enabled");
     }
 
     /// Get detected threats for analysis
@@ -272,7 +272,7 @@ impl AdaptiveThreatDetector {
         };
 
         self.patterns.lock().push(pattern);
-        println!("➕ Added custom threat pattern with ID: {}", pattern_id);
+        crate::println!("➕ Added custom threat pattern with ID: {}", pattern_id);
         pattern_id
     }
 }
@@ -282,13 +282,13 @@ static THREAT_DETECTOR: Mutex<Option<AdaptiveThreatDetector>> = Mutex::new(None)
 
 /// Initialize the threat detection system
 pub fn init() {
-    println!("🔍 Initializing adaptive threat detection engine...");
+    crate::println!("🔍 Initializing adaptive threat detection engine...");
     
     let detector = AdaptiveThreatDetector::new();
     detector.initialize_base_patterns();
     
     *THREAT_DETECTOR.lock() = Some(detector);
-    println!("✅ Threat detection engine initialized");
+    crate::println!("✅ Threat detection engine initialized");
 }
 
 /// Analyze memory for threats (public kernel API)

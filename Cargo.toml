@@ -1,10 +1,11 @@
 [workspace]
 resolver = "2"
 members = [
-    "core/security", 
+    "core/security",
     "core/ai",
     "core/common",
     "core/services",
+    "core/infrastructure/package",
     "src/kernel",
     "src/userspace/shell",
     "src/userspace/synpkg",
@@ -14,6 +15,16 @@ members = [
     "src/drivers/ai-accelerator",
     "src/tools/distro-builder",
     "src/tools/ai-model-manager"
+]
+
+# Exclude archived, backup, and build directories
+exclude = [
+    "archive/**",
+    "archive-consolidated/**",
+    "custom-os-development/**",
+    "target/**",
+    "linux-distribution/SynOS-Linux-Builder/build/**",
+    "fuzz/**",  # Fuzzing has its own workspace
 ]
 
 [workspace.package]
@@ -46,8 +57,8 @@ uuid = { version = "1.6", default-features = false, features = ["v4"] }
 # ===================
 # AI/CONSCIOUSNESS DEPENDENCIES
 # ===================
-candle-core = { version = "0.3.1" }
-candle-nn = { version = "0.3.1" }
+candle-core = { version = "0.9.1" }
+candle-nn = { version = "0.9.1" }
 tokenizers = { version = "0.15.0" }
 # ONNX Runtime for cross-platform model execution
 ort = { version = "1.16.0" }
@@ -96,6 +107,16 @@ ring = "0.17"
 chacha20poly1305 = "0.10"
 ed25519-dalek = "2.0"
 x25519-dalek = "2.0"
+sha2 = "0.10"
+hmac = "0.12"
+base64 = "0.22"
+
+# ===================
+# HTTP CLIENT (SIEM Integration)
+# ===================
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+hyper = { version = "1.0", features = ["client", "http1", "http2"] }
+http = "1.0"
 
 # ===================
 # DEVELOPMENT TOOLS
@@ -107,6 +128,22 @@ clap = { version = "4.4", features = ["derive"] }
 # ===================
 criterion = { version = "0.5", features = ["html_reports"] }
 proptest = "1.4"
+
+# ===================
+# WORKSPACE FEATURES
+# ===================
+[workspace.metadata.features]
+# AI Features (from core/ai)
+consciousness = ["syn-ai/consciousness"]
+ai-bridge = ["syn-ai/ai-bridge", "syn-security/cybersec-tools"]
+educational = ["syn-ai/educational"]
+
+# Security Features (from core/security)
+security-enhanced = ["syn-security/security-enhanced"]
+cybersec-tools = ["syn-security/cybersec-tools"]
+mssp-platform = ["syn-security/mssp-platform"]
+red-team-tools = ["syn-security/red-team-tools"]
+blue-team-defense = ["syn-security/blue-team-defense"]
 
 # ===================
 # OPTIMIZATION PROFILES

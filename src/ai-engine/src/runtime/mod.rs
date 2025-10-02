@@ -21,6 +21,11 @@ pub struct RuntimeConfig {
     pub memory_limit_mb: usize,
     pub enable_gpu: bool,
     pub enable_monitoring: bool,
+    // AI framework configuration
+    pub enable_tensorflow_lite: Option<bool>,
+    pub enable_onnx_runtime: Option<bool>,
+    pub enable_pytorch: Option<bool>,
+    pub max_cache_size_mb: Option<usize>,
 }
 
 impl Default for RuntimeConfig {
@@ -30,6 +35,10 @@ impl Default for RuntimeConfig {
             memory_limit_mb: 1024,
             enable_gpu: true,
             enable_monitoring: true,
+            enable_tensorflow_lite: Some(true),
+            enable_onnx_runtime: Some(true),
+            enable_pytorch: Some(false), // Disabled by default
+            max_cache_size_mb: Some(1024),
         }
     }
 }
@@ -49,7 +58,8 @@ pub struct RuntimeMetrics {
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum RuntimeState {
     Uninitialized,
-    Initializing,
+    Initializing, 
+    Initialized,
     Running,
     Paused,
     Stopping,

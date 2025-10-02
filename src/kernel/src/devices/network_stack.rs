@@ -2,7 +2,7 @@
 /// Complete TCP/IP implementation with wireless, security, and consciousness optimization
 use alloc::collections::{BTreeMap, VecDeque};
 use alloc::vec::Vec;
-use alloc::string::String;
+use alloc::string::{String, ToString};
 use core::sync::atomic::{AtomicU32, Ordering};
 use spin::{Mutex, RwLock};
 use super::advanced_device_manager::*;

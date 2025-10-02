@@ -80,7 +80,7 @@ impl ConsciousnessFrameAllocator {
         // If allocation succeeded, mark it as a quantum frame
         if frame.is_some() {
             self.quantum_frames += 1;
-            println!("  • Allocated quantum frame (total: {})", self.quantum_frames);
+            crate::println!("  • Allocated quantum frame (total: {})", self.quantum_frames);
         }
         
         frame
@@ -94,7 +94,7 @@ impl ConsciousnessFrameAllocator {
         // If allocation succeeded, mark it as a GPU frame
         if frame.is_some() {
             self.gpu_frames += 1;
-            println!("  • Allocated GPU frame (total: {})", self.gpu_frames);
+            crate::println!("  • Allocated GPU frame (total: {})", self.gpu_frames);
         }
         
         frame

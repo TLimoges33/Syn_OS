@@ -1,7 +1,6 @@
 /// Process scheduler with basic functionality
 /// Simplified version without complex consciousness integration
 
-use crate::println;
 use alloc::collections::VecDeque;
 use core::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
 use lazy_static::lazy_static;
@@ -39,15 +38,15 @@ static TOTAL_PROCESSES: AtomicUsize = AtomicUsize::new(0);
 static CURRENT_PROCESS: Mutex<Option<Process>> = Mutex::new(None);
 
 pub fn init() {
-    println!("⚡ Initializing Process Scheduler...");
+    crate::println!("⚡ Initializing Process Scheduler...");
     
     // Clear all queues
     HIGH_PRIORITY_QUEUE.lock().clear();
     NORMAL_PRIORITY_QUEUE.lock().clear();
     LOW_PRIORITY_QUEUE.lock().clear();
     
-    println!("  ✅ Process queues configured");
-    println!("⚡ Process Scheduler initialized");
+    crate::println!("  ✅ Process queues configured");
+    crate::println!("⚡ Process Scheduler initialized");
 }
 
 /// Create a new process
@@ -69,7 +68,7 @@ pub fn create_process(priority: u8) -> u64 {
     }
     
     TOTAL_PROCESSES.fetch_add(1, Ordering::SeqCst);
-    println!("  📋 Created process PID {} with priority {}", pid, priority);
+    crate::println!("  📋 Created process PID {} with priority {}", pid, priority);
     
     pid
 }

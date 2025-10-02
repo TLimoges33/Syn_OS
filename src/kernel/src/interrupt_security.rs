@@ -18,15 +18,15 @@ pub fn init_secure_interrupts() {
         IDT.load();
     }
     
-    println!("🛡️ Secure interrupt handlers initialized");
+    crate::println!("🛡️ Secure interrupt handlers initialized");
 }
 
 extern "x86-interrupt" fn secure_breakpoint_handler(
     stack_frame: InterruptStackFrame
 ) {
     // Security: Log potential debugging attempt
-    println!("⚠️  SECURITY: Breakpoint interrupt - possible debugging attempt");
-    println!("   RIP: {:?}", stack_frame.instruction_pointer);
+    crate::println!("⚠️  SECURITY: Breakpoint interrupt - possible debugging attempt");
+    crate::println!("   RIP: {:?}", stack_frame.instruction_pointer);
     
     // Validate this is expected debugging
     if !is_debugging_authorized() {
@@ -38,9 +38,9 @@ extern "x86-interrupt" fn secure_double_fault_handler(
     stack_frame: InterruptStackFrame, 
     error_code: u64
 ) -> ! {
-    println!("🚨 SECURITY: Double fault detected - potential attack");
-    println!("   Error code: {}", error_code);
-    println!("   RIP: {:?}", stack_frame.instruction_pointer);
+    crate::println!("🚨 SECURITY: Double fault detected - potential attack");
+    crate::println!("   Error code: {}", error_code);
+    crate::println!("   RIP: {:?}", stack_frame.instruction_pointer);
     
     // Collect forensic information
     collect_fault_forensics(&stack_frame, error_code);
@@ -56,12 +56,12 @@ extern "x86-interrupt" fn secure_page_fault_handler(
     
     let fault_address = Cr2::read();
     
-    println!("⚠️  Page fault at address: {:?}", fault_address);
-    println!("   Error code: {:#b}", error_code);
+    crate::println!("⚠️  Page fault at address: {:?}", fault_address);
+    crate::println!("   Error code: {:#b}", error_code);
     
     // Check for potential exploit attempts
     if is_exploit_attempt(fault_address.as_u64(), error_code.bits()) {
-        println!("🚨 SECURITY: Potential exploit attempt detected");
+        crate::println!("🚨 SECURITY: Potential exploit attempt detected");
         panic!("Exploit attempt via page fault");
     }
     
@@ -73,9 +73,9 @@ extern "x86-interrupt" fn secure_gpf_handler(
     stack_frame: InterruptStackFrame,
     error_code: u64
 ) {
-    println!("🚨 SECURITY: General protection fault");
-    println!("   Error code: {}", error_code);
-    println!("   RIP: {:?}", stack_frame.instruction_pointer);
+    crate::println!("🚨 SECURITY: General protection fault");
+    crate::println!("   Error code: {}", error_code);
+    crate::println!("   RIP: {:?}", stack_frame.instruction_pointer);
     
     // GPF often indicates privilege escalation attempts
     panic!("General protection fault - potential privilege escalation");
@@ -89,7 +89,7 @@ fn is_debugging_authorized() -> bool {
 
 fn collect_fault_forensics(_stack_frame: &InterruptStackFrame, _error_code: u64) {
     // Collect detailed forensic information about the fault
-    println!("🔍 Collecting fault forensics...");
+    crate::println!("🔍 Collecting fault forensics...");
     // Implementation would save to secure buffer
 }
 
@@ -116,5 +116,5 @@ fn is_exploit_attempt(address: u64, error_code: u64) -> bool {
 
 fn handle_legitimate_page_fault(fault_address: x86_64::VirtAddr, _error_code: u64) {
     // Handle legitimate page faults (swapping, etc.)
-    println!("Handling legitimate page fault for address: {:?}", fault_address);
+    crate::println!("Handling legitimate page fault for address: {:?}", fault_address);
 }

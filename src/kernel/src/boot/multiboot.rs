@@ -3,6 +3,8 @@
 //! Handles Multiboot2 bootloader information and provides kernel
 //! with essential boot-time data.
 
+use alloc::vec::Vec;
+
 /// Multiboot2 information structure
 #[repr(C)]
 pub struct MultibootInfo {
@@ -103,7 +105,7 @@ fn parse_command_line(multiboot_info_addr: usize) -> Option<&'static str> {
 /// Parse module information from multiboot
 fn parse_modules(multiboot_info_addr: usize) -> Result<Vec<ModuleInfo>, &'static str> {
     // Simplified module parsing
-    let mut modules = Vec::new();
+    let modules = Vec::new();
     
     // Would parse actual modules from multiboot structure
     // For now, return empty list

@@ -1,0 +1,75 @@
+# 🎯 SynOS Ultimate Developer EditorConfig
+# Ensures consistent coding styles across different editors and IDEs
+
+root = true
+
+# All files
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+# Rust files
+[*.rs]
+indent_size = 4
+max_line_length = 100
+
+# TOML files (Cargo.toml, etc.)
+[*.toml]
+indent_size = 2
+
+# YAML files
+[*.{yml,yaml}]
+indent_size = 2
+
+# JSON files
+[*.json]
+indent_size = 2
+
+# Markdown files
+[*.md]
+trim_trailing_whitespace = false
+max_line_length = 120
+
+# Assembly files
+[*.{s,S,asm}]
+indent_size = 8
+indent_style = tab
+
+# C/C++ files
+[*.{c,h,cpp,hpp,cc,cxx}]
+indent_size = 4
+
+# Python files
+[*.py]
+indent_size = 4
+max_line_length = 100
+
+# Shell scripts
+[*.sh]
+indent_size = 2
+
+# Makefile
+[{Makefile,makefile,*.mk}]
+indent_style = tab
+indent_size = 4
+
+# JavaScript/TypeScript
+[*.{js,ts,jsx,tsx}]
+indent_size = 2
+
+# Go files
+[*.go]
+indent_style = tab
+indent_size = 4
+
+# Configuration files
+[*.{ini,cfg,conf}]
+indent_size = 4
+
+# Docker files
+[{Dockerfile,*.dockerfile}]
+indent_size = 2

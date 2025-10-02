@@ -10,7 +10,6 @@ pub mod manager;
 pub mod init;
 pub mod educational_memory_manager;
 
-use crate::println;
 
 // Re-export main components
 pub use allocator::BumpAllocator;
@@ -21,7 +20,7 @@ pub use init::{MemoryConfig, init_memory_system, test_memory_system};
 
 /// Initialize the memory management system
 pub fn init() {
-    println!("🧠 Starting SynOS memory management initialization...");
+    crate::println!("🧠 Starting SynOS memory management initialization...");
     
     // Use default configuration for now
     let config = MemoryConfig::default();
@@ -110,4 +109,10 @@ mod tests {
         stats.update(1024, 512);
         assert_eq!(stats.usage_percent(), 50);
     }
+}
+
+/// Allocate shared memory for IPC
+pub fn allocate_shared_memory(size: usize) -> Result<*mut u8, &'static str> {
+    // TODO: Implement shared memory allocation
+    Err("Shared memory allocation not yet implemented")
 }

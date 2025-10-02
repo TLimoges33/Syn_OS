@@ -4,9 +4,12 @@
 //! capability-based security and mandatory access control.
 
 use alloc::vec::Vec;
-use alloc::string::String;
+use alloc::string::{String, ToString};
 use alloc::collections::BTreeMap;
 use crate::security::{SecurityConfig, SecurityContext, SecurityPolicy};
+
+/// Access controller alias for compatibility
+pub type AccessController = AccessControlManager;
 
 /// Enhanced access control manager
 pub struct AccessControlManager {
@@ -61,7 +64,7 @@ pub enum Permission {
 }
 
 /// Access conditions
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct AccessCondition {
     pub condition_type: ConditionType,
     pub value: String,
@@ -155,8 +158,8 @@ pub enum AccessDecision {
 static mut ACCESS_CONTROL_MANAGER: Option<AccessControlManager> = None;
 
 /// Initialize access control system
-pub async fn init_access_control(config: &SecurityConfig) -> Result<(), &'static str> {
-    crate::serial_println!("🔐 Initializing access control system...");
+pub async fn init_access_control(_config: &SecurityConfig) -> Result<(), &'static str> {
+    crate::println!("🔐 Initializing access control system...");
     
     let manager = AccessControlManager::new();
     
@@ -167,7 +170,7 @@ pub async fn init_access_control(config: &SecurityConfig) -> Result<(), &'static
     // Load default policies
     load_default_policies().await?;
     
-    crate::serial_println!("✅ Access control system initialized");
+    crate::println!("✅ Access control system initialized");
     Ok(())
 }
 
@@ -267,7 +270,7 @@ impl AccessControlManager {
     }
     
     /// Apply security policy
-    pub async fn apply_security_policy(&mut self, policy: &SecurityPolicy) -> Result<(), &'static str> {
+    pub async fn apply_security_policy(&mut self, _policy: &SecurityPolicy) -> Result<(), &'static str> {
         // Convert security policy to access control rules
         // This would be implemented based on policy content
         Ok(())

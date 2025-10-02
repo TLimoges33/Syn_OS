@@ -4,50 +4,65 @@
     "rust-lang.rust-analyzer",
     "ms-vscode.cpptools",
     "ms-vscode.cpptools-extension-pack",
-    "golang.go", 
+    "golang.go",
     "ms-python.python",
     "ms-python.pylint",
     "ms-pyright.pyright",
     "ms-vscode.makefile-tools",
     "twxs.cmake",
     "ms-vscode.cmake-tools",
-    
+
     // Assembly and Low-Level
     "13xforever.language-x86-64-assembly",
     "maziac.asm-code-lens",
     "ms-vscode.hexeditor",
     "ms-vscode.vscode-embedded-tools",
-    
-    // Debugging and Analysis  
+
+    // Debugging and Analysis
     "vadimcn.vscode-lldb",
     "webfreak.debug",
     "rogalmic.bash-debug",
     "ms-vscode.test-adapter-converter",
-    
+
+    // Enhanced Rust Development
+    "serayuzgur.crates",
+    "bungcip.better-toml",
+    "tamasfe.even-better-toml",
+    "rust-lang.rust-analyzer",
+
+    // Advanced Code Intelligence
+    "ms-vscode.vscode-ai",
+    "github.copilot",
+    "github.copilot-chat",
+    "ms-vscode.remote-repositories",
+
     // Documentation and Diagramming
     "yzhang.markdown-all-in-one",
     "hediet.vscode-drawio",
     "davidanson.vscode-markdownlint",
-    
+    "bierner.markdown-mermaid",
+
     // Git and Version Control
     "eamodio.gitlens",
     "github.vscode-pull-request-github",
     "donjayamanne.githistory",
-    
+    "mhutchie.git-graph",
+
     // Security and Analysis
     "snyk-security.snyk-vulnerability-scanner",
     "streetsidesoftware.code-spell-checker",
-    
+    "ms-vscode.vscode-json",
+
     // Container and Cloud (local development only)
     "ms-azuretools.vscode-docker",
-    
+
     // Productivity and Code Quality
     "formulahendry.code-runner",
     "aaron-bond.better-comments",
     "esbenp.prettier-vscode",
     "editorconfig.editorconfig",
     "emeraldwalk.runonsave",
-    
+
     // Database and Data
     "cweijan.vscode-mysql-client2",
     "cweijan.dbclient-jdbc",

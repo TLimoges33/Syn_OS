@@ -82,7 +82,7 @@ impl EthernetDriver {
         // Enable interface
         self.driver_state = DriverState::Active;
 
-        println!(
+        crate::println!(
             "🌐 Ethernet Driver initialized with consciousness level {:.3}",
             consciousness_level
         );
@@ -91,9 +91,9 @@ impl EthernetDriver {
 
     fn detect_hardware(&self) -> Result<(), NetworkError> {
         // Simulate hardware detection
-        println!("🔍 Detecting Ethernet hardware...");
-        println!("   Found: SynapticOS Virtual Ethernet Controller");
-        println!("   MAC Address: {}", self.mac_address);
+        crate::println!("🔍 Detecting Ethernet hardware...");
+        crate::println!("   Found: SynapticOS Virtual Ethernet Controller");
+        crate::println!("   MAC Address: {}", self.mac_address);
         Ok(())
     }
 
@@ -107,7 +107,7 @@ impl EthernetDriver {
         };
 
         self.packet_buffer = Vec::with_capacity(buffer_size);
-        println!(
+        crate::println!(
             "📦 Configured packet buffers: {} packets capacity",
             buffer_size
         );
@@ -150,7 +150,7 @@ impl EthernetDriver {
 
     fn transmit_packet(&self, packet: EthernetPacket) -> Result<(), NetworkError> {
         // Simulate packet transmission
-        println!(
+        crate::println!(
             "📡 Transmitting packet: {} bytes to {}",
             packet.payload.len(),
             packet.destination
@@ -321,11 +321,11 @@ impl TcpIpStack {
         // Initialize routing table
         self.initialize_routing_table()?;
 
-        println!("🌐 TCP/IP Stack initialized");
-        println!("   IP Address: {}", self.ip_address);
-        println!("   Subnet Mask: {}", self.subnet_mask);
-        println!("   Gateway: {}", self.gateway);
-        println!("   Consciousness Routing: {}", self.consciousness_routing);
+        crate::println!("🌐 TCP/IP Stack initialized");
+        crate::println!("   IP Address: {}", self.ip_address);
+        crate::println!("   Subnet Mask: {}", self.subnet_mask);
+        crate::println!("   Gateway: {}", self.gateway);
+        crate::println!("   Consciousness Routing: {}", self.consciousness_routing);
 
         Ok(())
     }
@@ -387,7 +387,7 @@ impl TcpIpStack {
         self.connection_pool.push(connection);
         CONNECTIONS_ESTABLISHED.fetch_add(1, Ordering::SeqCst);
 
-        println!(
+        crate::println!(
             "🔗 Created TCP connection {} to {}:{}",
             connection_id, remote_addr, remote_port
         );
@@ -433,7 +433,7 @@ impl TcpIpStack {
             };
 
             // Simulate packet transmission
-            println!("📤 Sending TCP packet: {} bytes", tcp_packet.data.len());
+            crate::println!("📤 Sending TCP packet: {} bytes", tcp_packet.data.len());
             connection.sequence_number += tcp_packet.data.len() as u32;
 
             Ok(())
@@ -576,8 +576,8 @@ impl SocketManager {
         let consciousness_level = get_consciousness_level();
         self.consciousness_socket_optimization = consciousness_level > 0.5;
 
-        println!("🔌 Socket Manager initialized");
-        println!(
+        crate::println!("🔌 Socket Manager initialized");
+        crate::println!(
             "   Consciousness Optimization: {}",
             self.consciousness_socket_optimization
         );
@@ -610,7 +610,7 @@ impl SocketManager {
 
         self.sockets.insert(socket_id, socket);
 
-        println!("🔌 Created socket {} of type {:?}", socket_id, socket_type);
+        crate::println!("🔌 Created socket {} of type {:?}", socket_id, socket_type);
 
         Ok(socket_id)
     }
@@ -625,7 +625,7 @@ impl SocketManager {
             socket.local_address = Some(address);
             socket.state = SocketState::Bound;
 
-            println!("🔗 Socket {} bound to {}", socket_id, address);
+            crate::println!("🔗 Socket {} bound to {}", socket_id, address);
             Ok(())
         } else {
             Err(NetworkError::InvalidSocket)
@@ -647,7 +647,7 @@ impl SocketManager {
                 socket.buffer_size *= 2; // Larger buffers for consciousness-enhanced connections
             }
 
-            println!(
+            crate::println!(
                 "🔗 Socket {} connected to {} with consciousness enhancement {:.2}",
                 socket_id, address, socket.consciousness_enhancement
             );
@@ -669,7 +669,7 @@ impl SocketManager {
             let bytes_sent = data.len();
 
             // Simulate data transmission
-            println!("📤 Socket {} sent {} bytes", socket_id, bytes_sent);
+            crate::println!("📤 Socket {} sent {} bytes", socket_id, bytes_sent);
 
             // Clear send buffer (simulate immediate transmission)
             socket.send_buffer.clear();
@@ -762,7 +762,7 @@ impl ConsciousnessConnectionManager {
 
     /// Initialize consciousness connection manager
     pub fn initialize(&mut self) -> Result<(), NetworkError> {
-        println!("🧠 Consciousness Connection Manager initialized");
+        crate::println!("🧠 Consciousness Connection Manager initialized");
         Ok(())
     }
 
@@ -789,7 +789,7 @@ impl ConsciousnessConnectionManager {
         self.active_connections.insert(connection_id, connection);
         self.consciousness_metrics.total_connections += 1;
 
-        println!(
+        crate::println!(
             "🧠 Created consciousness connection {} with level {:.3}",
             connection_id, consciousness_level
         );
@@ -809,7 +809,7 @@ impl ConsciousnessConnectionManager {
             consciousness_correlation: consciousness_level,
         };
 
-        println!(
+        crate::println!(
             "📊 Connection pattern analysis: {} connections, {:.3} avg consciousness",
             analysis.total_connections, analysis.average_consciousness_level
         );
@@ -962,7 +962,7 @@ fn calculate_adaptive_bandwidth(consciousness_level: f64) -> u64 {
 
 /// Initialize networking foundation
 pub fn init() {
-    println!("🌐 Initializing Networking Foundation - Phase 3...");
+    crate::println!("🌐 Initializing Networking Foundation - Phase 3...");
 
     NETWORKING_ACTIVE.store(true, Ordering::SeqCst);
     PACKETS_PROCESSED.store(0, Ordering::SeqCst);
@@ -972,7 +972,7 @@ pub fn init() {
     {
         let mut ethernet = ETHERNET_DRIVER.lock();
         if let Err(e) = ethernet.initialize() {
-            println!("❌ Failed to initialize Ethernet driver: {:?}", e);
+            crate::println!("❌ Failed to initialize Ethernet driver: {:?}", e);
             return;
         }
     }
@@ -981,7 +981,7 @@ pub fn init() {
     {
         let mut tcp_ip = TCP_IP_STACK.lock();
         if let Err(e) = tcp_ip.initialize() {
-            println!("❌ Failed to initialize TCP/IP stack: {:?}", e);
+            crate::println!("❌ Failed to initialize TCP/IP stack: {:?}", e);
             return;
         }
     }
@@ -990,7 +990,7 @@ pub fn init() {
     {
         let mut socket_mgr = SOCKET_MANAGER.lock();
         if let Err(e) = socket_mgr.initialize() {
-            println!("❌ Failed to initialize socket manager: {:?}", e);
+            crate::println!("❌ Failed to initialize socket manager: {:?}", e);
             return;
         }
     }
@@ -999,7 +999,7 @@ pub fn init() {
     {
         let mut conn_mgr = CONNECTION_MANAGER.lock();
         if let Err(e) = conn_mgr.initialize() {
-            println!(
+            crate::println!(
                 "❌ Failed to initialize consciousness connection manager: {:?}",
                 e
             );
@@ -1007,11 +1007,11 @@ pub fn init() {
         }
     }
 
-    println!("🌐 Networking Foundation initialized successfully");
-    println!("   ✅ Ethernet Driver: Ready");
-    println!("   ✅ TCP/IP Stack: Active");
-    println!("   ✅ Socket Manager: Online");
-    println!("   ✅ Consciousness Connections: Ready");
+    crate::println!("🌐 Networking Foundation initialized successfully");
+    crate::println!("   ✅ Ethernet Driver: Ready");
+    crate::println!("   ✅ TCP/IP Stack: Active");
+    crate::println!("   ✅ Socket Manager: Online");
+    crate::println!("   ✅ Consciousness Connections: Ready");
 }
 
 /// Check if networking is active

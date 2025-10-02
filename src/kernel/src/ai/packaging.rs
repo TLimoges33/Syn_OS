@@ -8,7 +8,7 @@ use alloc::vec::Vec;
 use alloc::string::{String, ToString};
 use alloc::format;
 use core::sync::atomic::{AtomicU64, AtomicU32, Ordering};
-use spin::{Mutex, RwLock};
+use spin::RwLock;
 
 use crate::ai::mlops::MLOpsError;
 
@@ -256,7 +256,7 @@ impl DebianPackagingPipeline {
         // Create default pipeline
         self.create_default_pipeline(&package.package_name);
 
-        println!("Registered package: {} v{}", package.package_name, package.version);
+        crate::println!("Registered package: {} v{}", package.package_name, package.version);
         Ok(())
     }
 
@@ -369,7 +369,7 @@ impl DebianPackagingPipeline {
             error_message: None,
         };
 
-        println!("Starting build {} for package {}", build_id, package_name);
+        crate::println!("Starting build {} for package {}", build_id, package_name);
 
         // Execute pipeline stages
         let pipeline_result = self.execute_pipeline(package_name, &build_id);
@@ -396,7 +396,7 @@ impl DebianPackagingPipeline {
                 build_result.output_packages.push(generated_package);
                 build_result.build_log = "Build completed successfully".to_string();
 
-                println!("Build {} completed successfully", build_id);
+                crate::println!("Build {} completed successfully", build_id);
             }
             Err(stages) => {
                 build_result.status = BuildStatus::Failed;
@@ -404,7 +404,7 @@ impl DebianPackagingPipeline {
                 build_result.end_time = Some(get_current_timestamp());
                 build_result.error_message = Some("Build pipeline failed".to_string());
 
-                println!("Build {} failed", build_id);
+                crate::println!("Build {} failed", build_id);
             }
         }
 
@@ -423,7 +423,7 @@ impl DebianPackagingPipeline {
 
         if let Some(stages) = pipelines.get(package_name) {
             for stage in stages {
-                println!("Executing stage: {} for build {}", stage.name, build_id);
+                crate::println!("Executing stage: {} for build {}", stage.name, build_id);
 
                 let stage_result = self.execute_stage(stage, build_id);
 
@@ -458,7 +458,7 @@ impl DebianPackagingPipeline {
 
         // Execute commands
         for command in &stage.commands {
-            println!("Executing command: {} {:?}", command.command, command.args);
+            crate::println!("Executing command: {} {:?}", command.command, command.args);
 
             // Simulate command execution
             match command.command.as_str() {
@@ -501,7 +501,7 @@ impl DebianPackagingPipeline {
         let mut repositories = self.repositories.write();
         repositories.insert(config.repo_name.clone(), config.clone());
 
-        println!("Created repository configuration: {}", config.repo_name);
+        crate::println!("Created repository configuration: {}", config.repo_name);
         Ok(())
     }
 
@@ -513,14 +513,14 @@ impl DebianPackagingPipeline {
         if let Some(build_result) = results.get(build_id) {
             if let Some(_repository) = repositories.get(repository_name) {
                 if build_result.status == BuildStatus::Success {
-                    println!("Deploying packages from build {} to repository {}", build_id, repository_name);
+                    crate::println!("Deploying packages from build {} to repository {}", build_id, repository_name);
 
                     for package in &build_result.output_packages {
-                        println!("Deploying: {}", package.package_file);
+                        crate::println!("Deploying: {}", package.package_file);
                         // In a real implementation, this would upload to the repository
                     }
 
-                    println!("Deployment completed successfully");
+                    crate::println!("Deployment completed successfully");
                     Ok(())
                 } else {
                     Err(MLOpsError::DeploymentFailed)
@@ -700,7 +700,7 @@ pub fn initialize_synos_packages(pipeline: &DebianPackagingPipeline) -> Result<(
 
     pipeline.register_package(mlops_package, mlops_build)?;
 
-    println!("Initialized SynOS AI component packages");
+    crate::println!("Initialized SynOS AI component packages");
     Ok(())
 }
 

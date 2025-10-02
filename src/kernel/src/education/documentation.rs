@@ -3,7 +3,7 @@
 //! Provides comprehensive documentation and context-sensitive help.
 
 use alloc::vec::Vec;
-use alloc::string::String;
+use alloc::string::{String, ToString};
 use alloc::collections::BTreeMap;
 
 /// Documentation system
@@ -111,7 +111,8 @@ impl DocumentationSystem {
             return Err("Documentation system not initialized");
         }
         
-        let query_words: Vec<&str> = query.to_lowercase().split_whitespace().collect();
+        let query_lowercase = query.to_lowercase();
+        let query_words: Vec<&str> = query_lowercase.split_whitespace().collect();
         let mut results: Vec<(String, f32)> = Vec::new();
         
         // Search through index
@@ -240,8 +241,9 @@ impl DocumentationSystem {
     async fn build_search_index(&mut self) -> Result<(), &'static str> {
         self.search_index.clear();
         
-        for (topic_id, topic) in &self.help_topics {
-            self.add_to_search_index(topic).await?;
+        let topics: Vec<_> = self.help_topics.values().cloned().collect();
+        for topic in topics {
+            self.add_to_search_index(&topic).await?;
         }
         
         Ok(())

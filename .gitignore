@@ -222,3 +222,18 @@ scripts/.venv/
 venv/
 env/
 .env/
+
+# Large ISO builder directory (25GB+)
+linux-distribution/SynOS-Linux-Builder/
+
+# Nested target directories (use workspace target instead)
+src/kernel/target/
+src/userspace/*/target/
+
+# Fuzz artifacts
+fuzz/corpus/
+fuzz/artifacts/
+
+# Large audit reports
+workspace-audit-report.json
+*-audit-report.json

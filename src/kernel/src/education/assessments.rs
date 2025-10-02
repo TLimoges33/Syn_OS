@@ -117,7 +117,7 @@ impl AssessmentManager {
     }
     
     /// Start assessment
-    pub async fn start_assessment(&self, assessment_id: u32, user_id: u32) -> Result<Assessment, &'static str> {
+    pub async fn start_assessment(&self, assessment_id: u32, _user_id: u32) -> Result<Assessment, &'static str> {
         if !self.initialized {
             return Err("Assessment manager not initialized");
         }

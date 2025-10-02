@@ -181,6 +181,11 @@ impl VirtualAddress {
     pub fn page_offset(&self) -> usize {
         self.0 & 0xfff
     }
+
+    /// Convert to u64
+    pub fn as_u64(&self) -> u64 {
+        self.0 as u64
+    }
 }
 
 impl Page {

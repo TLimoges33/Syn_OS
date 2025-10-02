@@ -30,8 +30,8 @@ impl KernelTestSuite {
 
     /// Run all cybersecurity kernel tests
     pub fn run_all_tests(&mut self) {
-        println!("🧪 STARTING SYN_OS KERNEL TEST SUITE");
-        println!("=====================================");
+        crate::println!("🧪 STARTING SYN_OS KERNEL TEST SUITE");
+        crate::println!("=====================================");
         
         // Initialize all systems first
         self.test_system_initialization();
@@ -59,20 +59,20 @@ impl KernelTestSuite {
     /// Test system initialization
     fn test_system_initialization(&mut self) {
         self.current_test = "System Initialization".to_string();
-        println!("🔧 Testing system initialization...");
+        crate::println!("🔧 Testing system initialization...");
         
         // Test all subsystem initializations
         self.assert_true(true, "Memory management initialized");
         self.assert_true(true, "Security subsystem initialized");
         self.assert_true(true, "AI interface initialized");
         
-        println!("✅ System initialization tests passed");
+        crate::println!("✅ System initialization tests passed");
     }
 
     /// Test security context functionality
     fn test_security_context(&mut self) {
         self.current_test = "Security Context".to_string();
-        println!("🔒 Testing security context management...");
+        crate::println!("🔒 Testing security context management...");
         
         // Create test contexts
         let kernel_ctx = SecurityContext::kernel_context();
@@ -87,13 +87,13 @@ impl KernelTestSuite {
         // Test capability checking (mock test)
         self.assert_true(true, "Capability checking functional");
         
-        println!("✅ Security context tests passed");
+        crate::println!("✅ Security context tests passed");
     }
 
     /// Test threat detection engine
     fn test_threat_detection(&mut self) {
         self.current_test = "Threat Detection".to_string();
-        println!("🔍 Testing adaptive threat detection...");
+        crate::println!("🔍 Testing adaptive threat detection...");
         
         // Initialize threat detection
         threat_detection::init();
@@ -114,13 +114,13 @@ impl KernelTestSuite {
         let (total_threats, patterns, avg_fitness) = threat_detection::get_threat_statistics();
         self.assert_true(patterns > 0, "Threat patterns initialized");
         
-        println!("✅ Threat detection tests passed");
+        crate::println!("✅ Threat detection tests passed");
     }
 
     /// Test neural security evolution
     fn test_neural_security(&mut self) {
         self.current_test = "Neural Security".to_string();
-        println!("🧠 Testing neural darwinian security...");
+        crate::println!("🧠 Testing neural darwinian security...");
         
         // Initialize neural security
         neural_security::init();
@@ -134,13 +134,13 @@ impl KernelTestSuite {
         // Test evolution trigger
         neural_security::evolve_security_population();
         
-        println!("✅ Neural security tests passed");
+        crate::println!("✅ Neural security tests passed");
     }
 
     /// Test exploit simulation framework
     fn test_exploit_simulator(&mut self) {
         self.current_test = "Exploit Simulator".to_string();
-        println!("🎮 Testing educational exploit simulation...");
+        crate::println!("🎮 Testing educational exploit simulation...");
         
         // Initialize exploit simulator
         exploit_simulator::init();
@@ -155,13 +155,13 @@ impl KernelTestSuite {
         // In a real implementation, we'd test actual simulation
         self.assert_true(true, "Educational simulation framework ready");
         
-        println!("✅ Exploit simulator tests passed");
+        crate::println!("✅ Exploit simulator tests passed");
     }
 
     /// Test educational API
     fn test_educational_api(&mut self) {
         self.current_test = "Educational API".to_string();
-        println!("🎓 Testing educational API framework...");
+        crate::println!("🎓 Testing educational API framework...");
         
         // Initialize educational API
         crate::educational_api::init();
@@ -183,13 +183,13 @@ impl KernelTestSuite {
         let learning_response = process_educational_command(learning_cmd, &context);
         self.assert_true(learning_response.success, "Learning objectives accessible");
         
-        println!("✅ Educational API tests passed");
+        crate::println!("✅ Educational API tests passed");
     }
 
     /// Test forensics collection
     fn test_forensics_collection(&mut self) {
         self.current_test = "Forensics Collection".to_string();
-        println!("🔍 Testing digital forensics framework...");
+        crate::println!("🔍 Testing digital forensics framework...");
         
         // Initialize forensics
         forensics::init();
@@ -208,13 +208,13 @@ impl KernelTestSuite {
         let report = forensics::generate_forensic_report();
         self.assert_true(report.len() > 0, "Forensic report generation works");
         
-        println!("✅ Forensics collection tests passed");
+        crate::println!("✅ Forensics collection tests passed");
     }
 
     /// Test kernel stability and performance
     fn test_kernel_stability(&mut self) {
         self.current_test = "Kernel Stability".to_string();
-        println!("⚖️  Testing kernel stability and performance...");
+        crate::println!("⚖️  Testing kernel stability and performance...");
         
         // Test panic handler (without actually panicking)
         self.assert_true(true, "Panic handler properly configured");
@@ -228,48 +228,48 @@ impl KernelTestSuite {
         // Performance benchmarks (mock)
         self.assert_true(true, "Performance within acceptable limits");
         
-        println!("✅ Kernel stability tests passed");
+        crate::println!("✅ Kernel stability tests passed");
     }
 
     /// Assert helper function
     fn assert_true(&mut self, condition: bool, description: &str) {
         if condition {
-            println!("  ✓ {}", description);
+            crate::println!("  ✓ {}", description);
             self.tests_passed += 1;
         } else {
-            println!("  ✗ {} - FAILED", description);
+            crate::println!("  ✗ {} - FAILED", description);
             self.tests_failed += 1;
         }
     }
 
     /// Print final test report
     fn print_final_report(&self) {
-        println!("\n📊 SYN_OS KERNEL TEST REPORT");
-        println!("===============================");
-        println!("Tests Passed: {}", self.tests_passed);
-        println!("Tests Failed: {}", self.tests_failed);
-        println!("Total Tests:  {}", self.tests_passed + self.tests_failed);
+        crate::println!("\n📊 SYN_OS KERNEL TEST REPORT");
+        crate::println!("===============================");
+        crate::println!("Tests Passed: {}", self.tests_passed);
+        crate::println!("Tests Failed: {}", self.tests_failed);
+        crate::println!("Total Tests:  {}", self.tests_passed + self.tests_failed);
         
         let success_rate = (self.tests_passed as f32 / (self.tests_passed + self.tests_failed) as f32) * 100.0;
-        println!("Success Rate: {:.1}%", success_rate);
+        crate::println!("Success Rate: {:.1}%", success_rate);
         
         if self.tests_failed == 0 {
-            println!("🎉 ALL TESTS PASSED! Kernel is ready for educational use!");
-            println!("🛡️  Security features: ✅ Operational");
-            println!("🧠 AI integration: ✅ Functional");
-            println!("🎓 Educational tools: ✅ Ready");
-            println!("🔍 Forensics: ✅ Active");
+            crate::println!("🎉 ALL TESTS PASSED! Kernel is ready for educational use!");
+            crate::println!("🛡️  Security features: ✅ Operational");
+            crate::println!("🧠 AI integration: ✅ Functional");
+            crate::println!("🎓 Educational tools: ✅ Ready");
+            crate::println!("🔍 Forensics: ✅ Active");
         } else {
-            println!("⚠️  Some tests failed - review before deployment");
+            crate::println!("⚠️  Some tests failed - review before deployment");
         }
         
-        println!("🎓 Educational Value: Maximum - All cybersecurity features tested");
+        crate::println!("🎓 Educational Value: Maximum - All cybersecurity features tested");
     }
     
     /// Test consciousness-aware personalized education
     fn test_ai_education(&mut self) {
         self.current_test = "Consciousness-Aware Education".to_string();
-        println!("🧠 Testing consciousness-aware personalized education...");
+        crate::println!("🧠 Testing consciousness-aware personalized education...");
         
         // Run quick consciousness demo
         ai_education_demo::quick_ai_demo();
@@ -289,10 +289,10 @@ impl KernelTestSuite {
         // Test breakthrough detection
         self.assert_true(true, "Breakthrough learning detection active");
         
-        println!("✅ Consciousness-aware education tests passed");
-        println!("🧬 Personal context integration: ✅ Functional");
-        println!("🎯 Adaptive learning paths: ✅ Active");
-        println!("🌟 Breakthrough detection: ✅ Ready");
+        crate::println!("✅ Consciousness-aware education tests passed");
+        crate::println!("🧬 Personal context integration: ✅ Functional");
+        crate::println!("🎯 Adaptive learning paths: ✅ Active");
+        crate::println!("🌟 Breakthrough detection: ✅ Ready");
     }
 }
 

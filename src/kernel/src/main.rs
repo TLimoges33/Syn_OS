@@ -11,99 +11,81 @@ use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
 use x86_64;
 
+// Import kernel library - all modules now in lib.rs
+use syn_kernel;
+
+// Local modules only used in main.rs
 mod allocator;
-mod advanced_applications_minimal;
-mod ai_bridge;
-mod boot;
 mod ai_interface;
-// mod cybersecurity_tutorial_content;  // Temporarily disabled - depends on hud_tutorial_engine
-mod drivers;
-mod education_platform_minimal;
 mod filesystem;
-// mod hud_command_interface;  // Temporarily disabled - depends on hud_tutorial_engine
-// mod hud_tutorial_engine;  // Temporarily disabled for compilation
-// mod learning_analytics;  // Temporarily disabled - depends on education_platform
-mod memory;
 mod networking;
-mod scheduler;
-mod security;
 mod threat_detection;
 
 #[allow(dead_code)]
 fn init(_boot_info: &'static mut BootInfo) {
     // Initialize basic systems
-    drivers::init();
-    memory::init();
-    boot::init();
-    allocator::init_heap().expect("heap initialization failed");
-    
-    // Initialize AI bridge system
-    ai_bridge::init();
-    
-    // Initialize educational platform
-    education_platform_minimal::init();
-    
-    // Initialize HUD tutorial engine (temporarily disabled)
-    // if let Err(e) = hud_tutorial_engine::init() {
-    //     println!("⚠️ HUD Tutorial Engine initialization failed: {}", e);
-    // } else {
-    //     println!("🎯 HUD Tutorial Engine initialized successfully!");
-    // }
-    
-    // Initialize advanced applications
-    advanced_applications_minimal::init();
+    syn_kernel::drivers::init();
+    syn_kernel::boot::early_init::early_kernel_init().expect("early kernel init failed");
 
-    println!("🧠 SynapticOS V1.0 - Basic kernel ready!");
+    // Initialize heap allocator
+    allocator::init_heap().expect("heap initialization failed");
+
+    // Initialize memory system with default config
+    syn_kernel::memory::init::init_memory_system(
+        syn_kernel::memory::init::MemoryConfig::default()
+    ).expect("memory system init failed");
+
+    // Initialize AI bridge system
+    syn_kernel::ai_bridge::init();
+
+    // Initialize educational platform
+    syn_kernel::education_platform_minimal::init();
+
+    // Initialize advanced applications
+    syn_kernel::advanced_applications_minimal::init();
+
+    println!("🧠 SynOS Kernel V1.0 - Initialized!");
 }
 
 entry_point!(kernel_main);
 
 fn kernel_main(boot_info: &'static mut BootInfo) -> ! {
     // Initialize serial port FIRST - before any other initialization
-    serial_println!("SynOS: Serial port initialized");
-    serial_println!("SynOS: Kernel entry point reached");
+    println!("SynOS: Serial port initialized");
+    println!("SynOS: Kernel entry point reached");
     
     init(boot_info);
 
     #[cfg(test)]
     test_main();
 
-    // Boot messages to both VGA and serial
-    println!("🧠 SynapticOS - Consciousness-Integrated Cybersecurity Education Platform");
-    serial_println!("🧠 SynapticOS - Consciousness-Integrated Cybersecurity Education Platform");
+    // Boot messages
+    println!("🧠 SynOS - AI-Enhanced Cybersecurity OS");
+    println!("🔧 V1.0 Build - Core functionality active");
     
-    println!("🔧 V1.0 Basic Build - Core functionality active");
-    serial_println!("🔧 V1.0 Basic Build - Core functionality active");
-    
-    serial_println!("🚀 SynOS V1.0 Developer ISO - Build Complete");
-    serial_println!("📅 Build Date: September 2, 2025");
-    serial_println!("🏗️  Kernel: Syn_OS Native Kernel (x86_64-unknown-none)");
+    println!("🚀 SynOS V1.0 Developer ISO - Build Complete");
+    println!("📅 Build Date: September 2, 2025");
+    println!("🏗️  Kernel: Syn_OS Native Kernel (x86_64-unknown-none)");
     
     // Simple module status check
-    if education_platform_minimal::is_platform_active() {
+    if syn_kernel::education_platform_minimal::is_platform_active() {
         println!("✅ Education Platform: Active");
-        serial_println!("✅ Education Platform: Active");
-    }
-    
-    if advanced_applications_minimal::is_apps_active() {
-        println!("✅ Advanced Applications: Active");
-        serial_println!("✅ Advanced Applications: Active");  
     }
 
-    serial_println!("🔄 Entering kernel main loop...");
+    if syn_kernel::advanced_applications_minimal::is_apps_active() {
+        println!("✅ Advanced Applications: Active");
+    }
+
+    println!("🔄 Entering kernel main loop...");
     
     // Basic kernel loop
     let mut loop_count = 0u64;
     loop {
         loop_count += 1;
         
-        // Simple output every 10000 loops
-        if loop_count % 10000 == 0 {
-            println!("🧠 Kernel running: {} iterations", loop_count);
-            // Less frequent serial output to avoid spam
-            if loop_count % 100000 == 0 {
-                serial_println!("🧠 Kernel heartbeat: {} iterations", loop_count);
-            }
+        // Heartbeat every 100000 loops
+        if loop_count % 100000 == 0 {
+            println!("🧠 Kernel heartbeat: {} iterations", loop_count);
         }
 
         // Halt to save CPU
@@ -116,15 +98,15 @@ fn kernel_main(boot_info: &'static mut BootInfo) -> ! {
 #[cfg(not(test))]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    println!("{}", info);
+    crate::println!("{}", info);
     loop {}
 }
 
 #[cfg(test)]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    serial_println!("[failed]\n");
-    serial_println!("Error: {}\n", info);
+    println!("[failed]\n");
+    println!("Error: {}\n", info);
     exit_qemu(QemuExitCode::Failed);
     loop {}
 }
@@ -147,7 +129,7 @@ pub fn exit_qemu(exit_code: QemuExitCode) {
 
 #[cfg(test)]
 fn test_runner(tests: &[&dyn Fn()]) {
-    serial_println!("Running {} tests", tests.len());
+    println!("Running {} tests", tests.len());
     for test in tests {
         test();
     }

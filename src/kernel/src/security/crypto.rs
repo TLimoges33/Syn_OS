@@ -4,7 +4,7 @@
 //! encryption, hashing, digital signatures, and key management.
 
 use alloc::vec::Vec;
-use alloc::string::String;
+use alloc::string::{String, ToString};
 use alloc::collections::BTreeMap;
 use crate::security::SecurityConfig;
 
@@ -180,7 +180,7 @@ static mut CRYPTO_PROVIDER: Option<CryptoProvider> = None;
 
 /// Initialize cryptographic services
 pub async fn init_crypto_services(config: &SecurityConfig) -> Result<(), &'static str> {
-    crate::serial_println!("🔐 Initializing cryptographic services...");
+    crate::println!("🔐 Initializing cryptographic services...");
     
     let mut provider = CryptoProvider::new();
     
@@ -202,7 +202,7 @@ pub async fn init_crypto_services(config: &SecurityConfig) -> Result<(), &'stati
         CRYPTO_PROVIDER = Some(provider);
     }
     
-    crate::serial_println!("✅ Cryptographic services initialized");
+    crate::println!("✅ Cryptographic services initialized");
     Ok(())
 }
 
@@ -263,7 +263,7 @@ impl CryptoProvider {
         self.hardware_acceleration = self.detect_crypto_extensions();
         
         if self.hardware_acceleration {
-            crate::serial_println!("🚀 Hardware crypto acceleration enabled");
+            crate::println!("🚀 Hardware crypto acceleration enabled");
         }
         
         Ok(())
@@ -510,8 +510,8 @@ impl RandomNumberGenerator {
         // Check for hardware RNG (RDRAND/RDSEED)
         #[cfg(target_arch = "x86_64")]
         {
-            let (_, _, ecx, _) = unsafe { core::arch::x86_64::__cpuid(1) };
-            self.hardware_rng_available = (ecx & (1 << 30)) != 0; // RDRAND
+            let cpuid_result = unsafe { core::arch::x86_64::__cpuid(1) };
+            self.hardware_rng_available = (cpuid_result.ecx & (1 << 30)) != 0; // RDRAND
         }
         
         // Seed entropy pool

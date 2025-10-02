@@ -5,6 +5,7 @@ use uart_16550::SerialPort;
 use spin::Mutex;
 use lazy_static::lazy_static;
 use core::fmt;
+use crate::println;
 
 // Standard COM1 port address
 const COM1_PORT: u16 = 0x3F8;
@@ -30,6 +31,9 @@ pub fn _print(args: fmt::Arguments) {
     });
 }
 
+// Export print functions for use by other modules
+pub use crate::{serial_print, serial_println};
+
 // Macro for printing to the serial port
 #[macro_export]
 macro_rules! serial_print {
@@ -46,8 +50,8 @@ macro_rules! serial_println {
 // Simple logging macros for no_std environment
 #[macro_export]
 macro_rules! log {
-    ($level:expr, $fmt:expr) => ($crate::serial_println!("[{}] {}", $level, $fmt));
-    ($level:expr, $fmt:expr, $($arg:tt)*) => ($crate::serial_println!("[{}] {}", $level, format_args!($fmt, $($arg)*)));
+    ($level:expr, $fmt:expr) => ($crate::println!("[{}] {}", $level, $fmt));
+    ($level:expr, $fmt:expr, $($arg:tt)*) => ($crate::println!("[{}] {}", $level, format_args!($fmt, $($arg)*)));
 }
 
 #[macro_export]
@@ -70,5 +74,5 @@ macro_rules! error {
 
 // Initialize the serial port
 pub fn init() {
-    serial_println!("📞 Serial port initialized");
+    println!("📞 Serial port initialized");
 }

@@ -8,13 +8,13 @@ use alloc::vec::Vec;
 use alloc::string::{String, ToString};
 use alloc::format;
 use core::sync::atomic::{AtomicU64, AtomicU32, Ordering};
-use spin::{Mutex, RwLock};
+use spin::RwLock;
 
 use crate::ai::mlops::MLOpsError;
 use crate::ai::personal_context_engine::{UserContext, PersonalContextEngine};
 
 /// Natural language command types
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum CommandType {
     SystemControl,
     FileManagement,
@@ -61,7 +61,7 @@ pub struct CommandEntity {
     pub confidence: f64,
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum EntityType {
     FileName,
     ProcessName,
@@ -116,6 +116,17 @@ pub enum Permission {
 pub struct CommandResult {
     pub command_id: String,
     pub status: ExecutionStatus,
+    pub output: String,
+    pub error_message: Option<String>,
+    pub execution_time_ms: u64,
+    pub system_changes: Vec<SystemChange>,
+    pub suggestions: Vec<String>,
+}
+
+/// Command execution result for natural language processing
+#[derive(Debug, Clone)]
+pub struct CommandExecutionResult {
+    pub success: bool,
     pub output: String,
     pub error_message: Option<String>,
     pub execution_time_ms: u64,
@@ -242,7 +253,7 @@ pub enum SafetyAction {
 impl NLProcessor {
     /// Create new NL processor
     pub fn new() -> Self {
-        let mut processor = Self {
+        let processor = Self {
             intent_classifier: IntentClassifier {
                 model_loaded: true,
                 confidence_threshold: 0.75,
@@ -592,6 +603,7 @@ impl CommandExecutor {
 
         // Execute system command
         let execution_result = self.system_interface.execute(&system_command);
+        let suggestions = self.generate_suggestions(&command, &execution_result);
 
         let result = CommandResult {
             command_id: command.command_id.clone(),
@@ -599,8 +611,8 @@ impl CommandExecutor {
             output: execution_result.output,
             error_message: execution_result.error,
             execution_time_ms: get_current_timestamp() - start_time,
-            system_changes: execution_result.changes,
-            suggestions: self.generate_suggestions(&command, &execution_result),
+            system_changes: execution_result.changes.clone(),
+            suggestions,
         };
 
         // Store in history
@@ -747,7 +759,7 @@ struct SystemExecutionResult {
 impl SystemInterface {
     /// Execute system command
     fn execute(&self, command: &str) -> SystemExecutionResult {
-        println!("Executing system command: {}", command);
+        crate::println!("Executing system command: {}", command);
 
         if self.dry_run_mode {
             return SystemExecutionResult {

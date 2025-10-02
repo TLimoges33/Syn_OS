@@ -112,7 +112,7 @@
     "workbench.startupEditor": "readme",
     "workbench.enableExperiments": false,
     "workbench.editor.enablePreview": false,
-    "workbench.editor.showTabs": true,
+    "workbench.editor.showTabs": "multiple",
 
     // 🔒 Privacy & Security
     "telemetry.telemetryLevel": "off",

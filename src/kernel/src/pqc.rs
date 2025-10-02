@@ -9,23 +9,23 @@ use super::{PQCAlgorithm, PQCKeyPair};
 
 /// Initialize post-quantum cryptography subsystem
 pub fn init() {
-    println!("🔒 Initializing Post-Quantum Cryptography...");
+    crate::println!("🔒 Initializing Post-Quantum Cryptography...");
     
     // Initialize quantum-resistant algorithms
     init_kyber();
     init_dilithium();
     
-    println!("   ✅ PQC Subsystem: Online");
+    crate::println!("   ✅ PQC Subsystem: Online");
 }
 
 /// Initialize KYBER key encapsulation mechanism
 fn init_kyber() {
-    println!("   • KYBER Key Encapsulation: Ready");
+    crate::println!("   • KYBER Key Encapsulation: Ready");
 }
 
 /// Initialize DILITHIUM digital signatures
 fn init_dilithium() {
-    println!("   • DILITHIUM Digital Signatures: Ready");
+    crate::println!("   • DILITHIUM Digital Signatures: Ready");
 }
 
 /// Generate a post-quantum key pair
@@ -48,7 +48,7 @@ fn generate_kyber_keypair(security_level: u16) -> Result<PQCKeyPair, &'static st
     let public_key = [0u8; 256];  // Simplified
     let private_key = [0u8; 512]; // Simplified
     
-    println!("   • Generated KYBER-{} keypair", security_level);
+    crate::println!("   • Generated KYBER-{} keypair", security_level);
     
     Ok(PQCKeyPair {
         algorithm: match security_level {
@@ -70,7 +70,7 @@ fn generate_dilithium_keypair(security_level: u8) -> Result<PQCKeyPair, &'static
     let public_key = [0u8; 256];  // Simplified
     let private_key = [0u8; 512]; // Simplified
     
-    println!("   • Generated DILITHIUM-{} keypair", security_level);
+    crate::println!("   • Generated DILITHIUM-{} keypair", security_level);
     
     Ok(PQCKeyPair {
         algorithm: match security_level {
@@ -92,7 +92,7 @@ pub fn verify_signature(
 ) -> bool {
     // In production, implement proper signature verification
     // For now, return true for demonstration
-    println!("   • Verifying {:?} signature", public_key.algorithm);
+    crate::println!("   • Verifying {:?} signature", public_key.algorithm);
     message.len() > 0 && signature.len() > 0
 }
 
@@ -100,7 +100,7 @@ pub fn verify_signature(
 pub fn encrypt(data: &[u8], public_key: &PQCKeyPair) -> Result<Vec<u8>, &'static str> {
     // In production, implement proper encryption
     // For now, return the data as-is
-    println!("   • Encrypting with {:?}", public_key.algorithm);
+    crate::println!("   • Encrypting with {:?}", public_key.algorithm);
     Ok(data.to_vec())
 }
 

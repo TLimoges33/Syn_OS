@@ -4,7 +4,7 @@
 
 use crate::println;
 use core::sync::atomic::{AtomicU64, AtomicBool, Ordering};
-use alloc::string::String;
+use alloc::string::{String, ToString};
 use alloc::vec::Vec;
 
 /// Global consciousness state
@@ -58,7 +58,7 @@ pub fn get_timestamp() -> u64 {
 
 /// Initialize the consciousness subsystem
 pub fn init() {
-    println!("Initializing consciousness subsystem...");
+    crate::println!("Initializing consciousness subsystem...");
     
     // Initialize consciousness components
     init_awareness();
@@ -67,7 +67,7 @@ pub fn init() {
     
     CONSCIOUSNESS_ACTIVE.store(true, Ordering::SeqCst);
     
-    println!("Consciousness subsystem initialized.");
+    crate::println!("Consciousness subsystem initialized.");
 }
 
 /// Check if consciousness is active

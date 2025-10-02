@@ -8,22 +8,10 @@ use alloc::vec::Vec;
 use alloc::string::{String, ToString};
 use alloc::format;
 use core::sync::atomic::{AtomicU64, AtomicU32, Ordering};
-use spin::{Mutex, RwLock};
+use spin::RwLock;
+use libm::{sqrt, powf, round};
 
 use crate::ai::mlops::MLOpsError;
-
-/// Simple sqrt implementation for no_std
-fn sqrt_f32(x: f32) -> f32 {
-    if x <= 0.0 {
-        return 0.0;
-    }
-    
-    let mut guess = x / 2.0;
-    for _ in 0..10 { // Newton's method iterations
-        guess = (guess + x / guess) / 2.0;
-    }
-    guess
-}
 
 /// Vector database abstraction layer
 pub trait VectorDatabase {
@@ -87,7 +75,7 @@ pub struct VectorEntry {
 }
 
 /// Metadata value types
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum MetadataValue {
     String(String),
     Integer(i64),
@@ -175,7 +163,7 @@ pub struct ChromaDBAdapter {
 }
 
 /// ChromaDB collection representation
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 struct ChromaCollection {
     pub id: String,
     pub config: CollectionConfig,
@@ -225,14 +213,14 @@ impl VectorDatabase for ChromaDBAdapter {
 
         collections.insert(collection_id.clone(), collection);
 
-        println!("Created ChromaDB collection: {} ({})", name, collection_id);
+        crate::println!("Created ChromaDB collection: {} ({})", name, collection_id);
         Ok(collection_id)
     }
 
     fn delete_collection(&self, collection_id: &str) -> Result<(), VectorDBError> {
         let mut collections = self.collections.write();
         if collections.remove(collection_id).is_some() {
-            println!("Deleted ChromaDB collection: {}", collection_id);
+            crate::println!("Deleted ChromaDB collection: {}", collection_id);
             Ok(())
         } else {
             Err(VectorDBError::CollectionNotFound)
@@ -266,7 +254,7 @@ impl VectorDatabase for ChromaDBAdapter {
                 inserted_ids.push(vector_id);
             }
 
-            println!("Inserted {} vectors into collection {}", inserted_ids.len(), collection_id);
+            crate::println!("Inserted {} vectors into collection {}", inserted_ids.len(), collection_id);
             Ok(inserted_ids)
         } else {
             Err(VectorDBError::CollectionNotFound)
@@ -386,8 +374,8 @@ impl ChromaDBAdapter {
     /// Calculate cosine similarity
     fn cosine_similarity(&self, a: &[f32], b: &[f32]) -> f64 {
         let dot_product: f32 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
-        let norm_a: f32 = sqrt_f32(a.iter().map(|x| x * x).sum::<f32>());
-        let norm_b: f32 = sqrt_f32(b.iter().map(|x| x * x).sum::<f32>());
+        let norm_a: f32 = sqrt(a.iter().map(|x| x * x).sum::<f32>() as f64) as f32;
+        let norm_b: f32 = sqrt(b.iter().map(|x| x * x).sum::<f32>() as f64) as f32;
 
         if norm_a == 0.0 || norm_b == 0.0 {
             0.0
@@ -399,9 +387,9 @@ impl ChromaDBAdapter {
     /// Calculate Euclidean distance
     fn euclidean_distance(&self, a: &[f32], b: &[f32]) -> f64 {
         let sum = a.iter().zip(b.iter())
-            .map(|(x, y)| (x - y).powi(2))
+            .map(|(x, y)| powf(x - y, 2.0))
             .sum::<f32>();
-        sqrt_f32(sum) as f64
+        sqrt(sum as f64) as f32 as f64
     }
 
     /// Calculate dot product
@@ -417,7 +405,7 @@ impl ChromaDBAdapter {
     /// Calculate Hamming distance (for binary vectors)
     fn hamming_distance(&self, a: &[f32], b: &[f32]) -> f64 {
         let different_bits = a.iter().zip(b.iter())
-            .filter(|(x, y)| (x.round() - y.round()).abs() > 0.01)
+            .filter(|(x, y)| (round(**x as f64) - round(**y as f64)).abs() > 0.01)
             .count();
         different_bits as f64 / a.len() as f64
     }
@@ -473,7 +461,7 @@ pub struct FAISSAdapter {
 }
 
 /// FAISS collection representation
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 struct FAISSCollection {
     pub id: String,
     pub config: CollectionConfig,
@@ -512,14 +500,14 @@ impl VectorDatabase for FAISSAdapter {
         let mut collections = self.collections.write();
         collections.insert(collection_id.clone(), collection);
 
-        println!("Created FAISS collection: {} ({})", name, collection_id);
+        crate::println!("Created FAISS collection: {} ({})", name, collection_id);
         Ok(collection_id)
     }
 
     fn delete_collection(&self, collection_id: &str) -> Result<(), VectorDBError> {
         let mut collections = self.collections.write();
         if collections.remove(collection_id).is_some() {
-            println!("Deleted FAISS collection: {}", collection_id);
+            crate::println!("Deleted FAISS collection: {}", collection_id);
             Ok(())
         } else {
             Err(VectorDBError::CollectionNotFound)
@@ -553,7 +541,7 @@ impl VectorDatabase for FAISSAdapter {
             }
 
             // Would rebuild FAISS index here
-            println!("Inserted {} vectors into FAISS collection {}", inserted_ids.len(), collection_id);
+            crate::println!("Inserted {} vectors into FAISS collection {}", inserted_ids.len(), collection_id);
             Ok(inserted_ids)
         } else {
             Err(VectorDBError::CollectionNotFound)
@@ -641,8 +629,8 @@ impl FAISSAdapter {
 
     fn cosine_similarity(&self, a: &[f32], b: &[f32]) -> f64 {
         let dot_product: f32 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
-        let norm_a: f32 = sqrt_f32(a.iter().map(|x| x * x).sum::<f32>());
-        let norm_b: f32 = sqrt_f32(b.iter().map(|x| x * x).sum::<f32>());
+        let norm_a: f32 = sqrt(a.iter().map(|x| x * x).sum::<f32>() as f64) as f32;
+        let norm_b: f32 = sqrt(b.iter().map(|x| x * x).sum::<f32>() as f64) as f32;
 
         if norm_a == 0.0 || norm_b == 0.0 {
             0.0
@@ -653,9 +641,9 @@ impl FAISSAdapter {
 
     fn euclidean_distance(&self, a: &[f32], b: &[f32]) -> f64 {
         let sum = a.iter().zip(b.iter())
-            .map(|(x, y)| (x - y).powi(2))
+            .map(|(x, y)| powf(x - y, 2.0))
             .sum::<f32>();
-        sqrt_f32(sum) as f64
+        sqrt(sum as f64) as f32 as f64
     }
 
     fn apply_filter(&self, _metadata: &BTreeMap<String, MetadataValue>, _filter: &Filter) -> bool {

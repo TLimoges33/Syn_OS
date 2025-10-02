@@ -90,8 +90,9 @@ impl TutorialManager {
     /// Shutdown tutorial manager
     pub async fn shutdown(&mut self) -> Result<(), &'static str> {
         // End all active tutorials
-        for (_, session) in self.active_tutorials.drain() {
-            // Sessions automatically end when dropped
+        let tutorial_keys: Vec<_> = self.active_tutorials.keys().cloned().collect();
+        for key in tutorial_keys {
+            self.active_tutorials.remove(&key);
         }
         
         self.initialized = false;
@@ -157,7 +158,7 @@ impl TutorialManager {
     
     /// Complete tutorial
     pub async fn complete_tutorial(&mut self, session_id: u32) -> Result<(), &'static str> {
-        if let Some(session) = self.active_tutorials.remove(&session_id) {
+        if let Some(_session) = self.active_tutorials.remove(&session_id) {
             // Award completion achievement
             // Update user progress
             Ok(())

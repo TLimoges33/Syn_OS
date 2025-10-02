@@ -28,10 +28,10 @@ fn panic(info: &PanicInfo) -> ! {
     security_log_panic(&panic_info);
     
     // Display panic information
-    println!("🚨 KERNEL SECURITY PANIC: {}", info);
+    crate::println!("🚨 KERNEL SECURITY PANIC: {}", info);
     
     if let Some(location) = info.location() {
-        println!(
+        crate::println!(
             "📍 Location: {}:{}:{}",
             location.file(),
             location.line(),
@@ -48,7 +48,7 @@ fn panic(info: &PanicInfo) -> ! {
     // Security: Wipe stack before halt
     wipe_stack_on_panic();
     
-    println!("🔒 Security: System halted safely");
+    crate::println!("🔒 Security: System halted safely");
     
     // Secure halt loop
     loop {
@@ -92,7 +92,7 @@ fn collect_panic_forensics(info: &PanicInfo) -> PanicForensics {
 fn security_log_panic(forensics: &PanicForensics) {
     // Security: Log to secure panic buffer
     // This would write to a protected memory region
-    println!("🔐 Security: Panic logged at timestamp {}", forensics.timestamp);
+    crate::println!("🔐 Security: Panic logged at timestamp {}", forensics.timestamp);
 }
 
 fn detect_memory_corruption() -> bool {
@@ -100,14 +100,14 @@ fn detect_memory_corruption() -> bool {
     // Check heap metadata integrity
     if let Some(heap_status) = crate::memory::get_heap_status() {
         if !heap_status.metadata_intact {
-            println!("⚠️  SECURITY: Heap corruption detected");
+            crate::println!("⚠️  SECURITY: Heap corruption detected");
             return true;
         }
     }
     
     // Check stack canaries
     if !check_stack_canaries() {
-        println!("⚠️  SECURITY: Stack canary corruption detected");
+        crate::println!("⚠️  SECURITY: Stack canary corruption detected");
         return true;
     }
     
@@ -126,7 +126,7 @@ fn check_stack_integrity() -> bool {
     let stack_size = crate::memory::get_kernel_stack_size();
     
     if current_sp < stack_base || current_sp > (stack_base + stack_size) {
-        println!("⚠️  SECURITY: Stack pointer corruption detected");
+        crate::println!("⚠️  SECURITY: Stack pointer corruption detected");
         return false;
     }
     

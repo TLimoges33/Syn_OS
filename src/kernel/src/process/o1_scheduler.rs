@@ -341,7 +341,7 @@ impl O1Scheduler {
     }
 
     /// Schedule next process on given CPU - O(1) operation
-    pub fn schedule_next(&self, cpu_id: CpuId) -> Result<ProcessId, SchedulerError> {
+    pub fn schedule_next(&mut self, cpu_id: CpuId) -> Result<ProcessId, SchedulerError> {
         if cpu_id as usize >= self.cpu_count {
             return Err(SchedulerError::InvalidCpuId);
         }
@@ -365,7 +365,7 @@ impl O1Scheduler {
     }
 
     /// Process time slice exhausted - move to expired queue
-    pub fn process_tick(&self, process_id: ProcessId, cpu_id: CpuId) -> Result<bool, SchedulerError> {
+    pub fn process_tick(&mut self, process_id: ProcessId, cpu_id: CpuId) -> Result<bool, SchedulerError> {
         let mut should_preempt = false;
 
         // Update process runtime and check time slice
@@ -478,14 +478,14 @@ mod tests {
 
     #[test]
     fn test_process_addition() {
-        let scheduler = O1Scheduler::new(2);
+        let mut scheduler = O1Scheduler::new(2);
         assert!(scheduler.add_process(1, 20).is_ok());
         assert_eq!(scheduler.total_processes.load(Ordering::Relaxed), 1);
     }
 
     #[test]
     fn test_o1_scheduling() {
-        let scheduler = O1Scheduler::new(1);
+        let mut scheduler = O1Scheduler::new(1);
         scheduler.add_process(1, 20).expect("Add process");
 
         let next = scheduler.schedule_next(0).expect("Schedule next");
@@ -494,7 +494,7 @@ mod tests {
 
     #[test]
     fn test_priority_ordering() {
-        let scheduler = O1Scheduler::new(1);
+        let mut scheduler = O1Scheduler::new(1);
         scheduler.add_process(1, 50).expect("Add low priority");
         scheduler.add_process(2, 10).expect("Add high priority");
 

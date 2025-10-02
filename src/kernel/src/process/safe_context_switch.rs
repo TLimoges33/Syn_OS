@@ -250,13 +250,13 @@ impl SafeContextSwitcher {
         // Pre-switch validation
         self.pre_switch_validation(current_state.as_deref(), next_state, security_ctx)?;
 
+        // Security checks before saving state  
+        self.security_validator.validate_transition(current_state.as_deref(), next_state, security_ctx)?;
+
         // Save current state if provided
         if let Some(current) = current_state {
             self.save_cpu_state(current)?;
         }
-
-        // Security checks
-        self.security_validator.validate_transition(current_state.as_deref(), next_state, security_ctx)?;
 
         // Memory barriers to ensure ordering
         fence(Ordering::SeqCst);

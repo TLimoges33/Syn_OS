@@ -523,6 +523,9 @@ impl FileSystem for SynFS {
     fn stat(&self, path: &str) -> Result<FileStats, FsError> {
         if path == "/" {
             Ok(FileStats {
+                block_size: 4096,
+                blocks: 1,
+                rdev: 0,
                 size: BLOCK_SIZE as u64,
                 created: 0,
                 modified: 0,

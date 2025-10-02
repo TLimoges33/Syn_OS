@@ -23,7 +23,7 @@ static PAGE_TABLE_MAPPER: Mutex<Option<OffsetPageTable<'static>>> = Mutex::new(N
 
 /// Initialize page tables
 pub fn init(boot_info: &'static BootInfo) {
-    println!("  • Initializing paging structures");
+    crate::println!("  • Initializing paging structures");
     
     // Get physical memory offset from bootloader
     let phys_mem_offset = VirtAddr::new(PHYS_MEM_OFFSET);
@@ -42,7 +42,7 @@ pub fn init(boot_info: &'static BootInfo) {
     // Set up kernel memory protection
     setup_kernel_protection();
     
-    println!("  ✓ Paging initialized");
+    crate::println!("  ✓ Paging initialized");
 }
 
 /// Initialize the page table mapper
@@ -65,7 +65,7 @@ unsafe fn active_level_4_table(physical_memory_offset: VirtAddr) -> &'static mut
 
 /// Set up kernel memory protection
 fn setup_kernel_protection() {
-    println!("  • Setting up kernel memory protection");
+    crate::println!("  • Setting up kernel memory protection");
     
     // Implementation would set up memory protection for kernel regions
     // For example, marking kernel code as read-only and executable

@@ -4,15 +4,10 @@
 //! with AI-enhanced driver management and educational features.
 
 use alloc::vec::Vec;
-use alloc::string::String;
+use alloc::vec;
+use alloc::boxed::Box;
 use crate::{Resolution, ColorFormat, GraphicsError};
 
-// Temporary logging macro
-macro_rules! log_info {
-    ($($arg:tt)*) => {
-        // TODO: Integrate with kernel logging system
-    };
-}
 
 /// Display driver trait for hardware abstraction
 pub trait DisplayDriver {
@@ -333,7 +328,11 @@ impl DisplayDriverManager {
     /// Get the active driver
     pub fn get_active_driver(&mut self) -> Option<&mut dyn DisplayDriver> {
         if let Some(index) = self.active_driver {
-            self.drivers.get_mut(index).map(|d| d.as_mut())
+            if let Some(driver) = self.drivers.get_mut(index) {
+                Some(driver.as_mut())
+            } else {
+                None
+            }
         } else {
             None
         }

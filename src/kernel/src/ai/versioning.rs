@@ -8,7 +8,7 @@ use alloc::vec::Vec;
 use alloc::string::{String, ToString};
 use alloc::format;
 use core::sync::atomic::{AtomicU64, AtomicU32, Ordering};
-use spin::{Mutex, RwLock};
+use spin::RwLock;
 use serde::{Serialize, Deserialize};
 
 use crate::ai::mlops::{ModelVersion, ModelStage, DeploymentConfig, MLOpsError};
@@ -379,7 +379,7 @@ impl ModelVersioningManager {
         let mut repositories = self.repositories.write();
         repositories.insert(repo_id.clone(), repository);
 
-        println!("Created model repository: {}", repo_id);
+        crate::println!("Created model repository: {}", repo_id);
         Ok(repo_id)
     }
 
@@ -419,7 +419,7 @@ impl ModelVersioningManager {
                 repo.commits.push(commit);
                 repo.last_updated = get_current_timestamp();
 
-                println!("Committed {} to branch {} in repository {}", commit_id, branch_name, repo_id);
+                crate::println!("Committed {} to branch {} in repository {}", commit_id, branch_name, repo_id);
                 Ok(commit_id)
             } else {
                 Err(MLOpsError::InvalidConfiguration)
@@ -454,7 +454,7 @@ impl ModelVersioningManager {
             repo.tags.push(tag);
             repo.last_updated = get_current_timestamp();
 
-            println!("Created tag {} in repository {}", tag_name, repo_id);
+            crate::println!("Created tag {} in repository {}", tag_name, repo_id);
             Ok(())
         } else {
             Err(MLOpsError::ModelNotFound)
@@ -464,7 +464,7 @@ impl ModelVersioningManager {
     /// Rollback to a specific version
     pub fn rollback_to_version(&self, repo_id: &str, target_version: String,
                               strategy: RollbackStrategy) -> Result<String, MLOpsError> {
-        println!("Initiating rollback to version {} in repository {}", target_version, repo_id);
+        crate::println!("Initiating rollback to version {} in repository {}", target_version, repo_id);
 
         let repositories = self.repositories.read();
         if let Some(repo) = repositories.get(repo_id) {
@@ -491,7 +491,7 @@ impl ModelVersioningManager {
                         }
                     }
 
-                    println!("Rollback to version {} completed successfully", target_version);
+                    crate::println!("Rollback to version {} completed successfully", target_version);
                     Ok(target_commit.commit_id.clone())
                 } else {
                     Err(MLOpsError::InvalidConfiguration)
@@ -507,31 +507,31 @@ impl ModelVersioningManager {
     /// Execute different rollback strategies
     fn execute_immediate_rollback(&self, _target_commit: &str, _strategy: RollbackStrategy) -> Result<(), MLOpsError> {
         // Immediate rollback: switch all traffic instantly
-        println!("Executing immediate rollback");
+        crate::println!("Executing immediate rollback");
         Ok(())
     }
 
     fn execute_gradual_rollback(&self, _target_commit: &str, _strategy: RollbackStrategy) -> Result<(), MLOpsError> {
         // Gradual rollback: slowly shift traffic over time
-        println!("Executing gradual rollback");
+        crate::println!("Executing gradual rollback");
         Ok(())
     }
 
     fn execute_blue_green_rollback(&self, _target_commit: &str, _strategy: RollbackStrategy) -> Result<(), MLOpsError> {
         // Blue-green rollback: switch between two environments
-        println!("Executing blue-green rollback");
+        crate::println!("Executing blue-green rollback");
         Ok(())
     }
 
     fn execute_canary_rollback(&self, _target_commit: &str, _strategy: RollbackStrategy) -> Result<(), MLOpsError> {
         // Canary rollback: test with small percentage first
-        println!("Executing canary rollback");
+        crate::println!("Executing canary rollback");
         Ok(())
     }
 
     fn execute_ring_rollback(&self, _target_commit: &str, _strategy: RollbackStrategy) -> Result<(), MLOpsError> {
         // Ring rollback: deploy in concentric rings
-        println!("Executing ring deployment rollback");
+        crate::println!("Executing ring deployment rollback");
         Ok(())
     }
 
@@ -566,7 +566,7 @@ impl ModelVersioningManager {
         let mut ab_tests = self.ab_tests.write();
         ab_tests.insert(test_id.clone(), ab_test);
 
-        println!("Started A/B test: {}", test_id);
+        crate::println!("Started A/B test: {}", test_id);
         Ok(test_id)
     }
 
@@ -580,7 +580,7 @@ impl ModelVersioningManager {
             // Analyze results
             let result = self.analyze_ab_test_results(test);
 
-            println!("A/B test {} completed. Winner: {:?}", test_id, result.winner);
+            crate::println!("A/B test {} completed. Winner: {:?}", test_id, result.winner);
             Ok(result)
         } else {
             Err(MLOpsError::ExperimentNotFound)

@@ -10,17 +10,25 @@ extern crate alloc;
 use alloc::vec::Vec;
 
 pub mod neural;
-pub mod pattern_recognition;
-pub mod security;
+pub mod consciousness;
 pub mod decision;
 pub mod inference;
+pub mod pattern_recognition;
+pub mod security;
+
+// Export main types for easier access
+pub use consciousness::{ConsciousnessState, ConsciousnessLayer, LearningInsight, InsightType};
+pub use decision::DecisionEngine;
+pub use inference::InferenceEngine;
+pub use pattern_recognition::PatternRecognizer;
+pub use security::SecurityIntegration;
 
 #[cfg(test)]
 mod tests;
 
 // Re-export commonly used items
 pub use neural::{NeuralNetwork, NeuralState};
-pub use decision::{Decision, DecisionEngine};
+pub use decision::{Decision};
 pub use pattern_recognition::{Pattern, PatternMatcher};
 
 /// AI engine version

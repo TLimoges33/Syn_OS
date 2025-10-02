@@ -8,14 +8,14 @@ use alloc::vec::Vec;
 use alloc::string::{String, ToString};
 use alloc::format;
 use core::sync::atomic::{AtomicU64, AtomicU32, Ordering};
-use spin::{Mutex, RwLock};
-// Serde disabled for no_std compatibility
+use spin::{RwLock, Mutex};
+use serde::{Serialize, Deserialize};
 
 use crate::ai::mlops::{ModelVersion, DeploymentConfig, MLOpsError};
 use crate::process::monitoring::{AlertType, AlertSeverity, MonitoringAlert};
 
 /// AI model performance metrics
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AIModelMetrics {
     pub model_id: String,
     pub deployment_id: String,
@@ -28,7 +28,7 @@ pub struct AIModelMetrics {
 }
 
 /// Inference performance metrics
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct InferenceMetrics {
     pub requests_per_second: f64,
     pub average_latency_ms: f64,
@@ -46,7 +46,7 @@ pub struct InferenceMetrics {
 }
 
 /// Resource utilization metrics
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ResourceMetrics {
     pub cpu_utilization: f64,
     pub memory_usage_mb: u64,
@@ -61,7 +61,7 @@ pub struct ResourceMetrics {
 }
 
 /// Model quality metrics
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct QualityMetrics {
     pub accuracy: f64,
     pub precision: f64,
@@ -75,7 +75,7 @@ pub struct QualityMetrics {
 }
 
 /// Data and concept drift metrics
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DriftMetrics {
     pub data_drift_score: f64,
     pub concept_drift_score: f64,
@@ -88,7 +88,7 @@ pub struct DriftMetrics {
 }
 
 /// Fairness and bias metrics
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FairnessMetrics {
     pub demographic_parity: f64,
     pub equalized_odds: f64,
@@ -98,7 +98,7 @@ pub struct FairnessMetrics {
     pub bias_metrics: BTreeMap<String, f64>, // Group-specific metrics
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum DriftSeverity {
     None,
     Low,
@@ -108,7 +108,7 @@ pub enum DriftSeverity {
 }
 
 /// Monitoring configuration for AI models
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MonitoringConfig {
     pub model_id: String,
     pub monitoring_enabled: bool,
@@ -121,7 +121,7 @@ pub struct MonitoringConfig {
 }
 
 /// Monitoring thresholds and limits
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MonitoringThresholds {
     pub max_latency_ms: f64,
     pub min_accuracy: f64,
@@ -134,7 +134,7 @@ pub struct MonitoringThresholds {
 }
 
 /// Data retention policy
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RetentionPolicy {
     pub raw_metrics_days: u32,
     pub aggregated_metrics_days: u32,
@@ -333,7 +333,7 @@ impl ContinuousAIMonitor {
         let mut history = self.metrics_history.write();
         history.insert(model_id.clone(), Vec::new());
 
-        println!("Registered model {} for continuous monitoring", model_id);
+        crate::println!("Registered model {} for continuous monitoring", model_id);
         Ok(())
     }
 
@@ -585,10 +585,10 @@ impl ContinuousAIMonitor {
                 let accuracy_drift = (current_metrics.quality_metrics.accuracy - baseline_accuracy).abs() / baseline_accuracy;
 
                 // Update drift metrics (simplified)
-                println!("Drift analysis for {}: accuracy drift = {:.3}", model_id, accuracy_drift);
+                crate::println!("Drift analysis for {}: accuracy drift = {:.3}", model_id, accuracy_drift);
 
                 if accuracy_drift > 0.1 {
-                    println!("⚠️  Significant accuracy drift detected for model {}", model_id);
+                    crate::println!("⚠️  Significant accuracy drift detected for model {}", model_id);
                 }
             }
         }

@@ -90,7 +90,7 @@ static VIOLATION_COUNT: AtomicU64 = AtomicU64::new(0);
 
 /// Initialize the memory guard subsystem
 pub fn init() {
-    println!("  • Initializing memory protection guard");
+    crate::println!("  • Initializing memory protection guard");
     
     // Clear protection regions
     PROTECTED_REGIONS.lock().clear();
@@ -104,7 +104,7 @@ pub fn init() {
     // Protect kernel memory regions
     protect_kernel_regions();
     
-    println!("  ✓ Memory guard initialized");
+    crate::println!("  ✓ Memory guard initialized");
 }
 
 /// Protect kernel memory regions
@@ -190,7 +190,7 @@ pub fn protect_region(
         access_count: 0,
     });
     
-    println!("  • Protected memory region: 0x{:x} - 0x{:x} ({}KB, level: {:?})",
+    crate::println!("  • Protected memory region: 0x{:x} - 0x{:x} ({}KB, level: {:?})",
              start_addr.as_u64(),
              end_addr.as_u64(),
              size / 1024,
@@ -296,7 +296,7 @@ pub fn verify_access(addr: VirtAddr, size: usize, write: bool, execute: bool) ->
 fn record_violation(addr: VirtAddr, reason: &str) {
     VIOLATION_COUNT.fetch_add(1, Ordering::SeqCst);
     
-    println!("WARNING: Memory protection violation at 0x{:x}: {}", 
+    crate::println!("WARNING: Memory protection violation at 0x{:x}: {}", 
              addr.as_u64(), reason);
     
     // In a real implementation, this would potentially trigger additional security measures

@@ -7,7 +7,7 @@ use crate::drivers::storage::ramdisk::init_ramdisk_driver;
 
 /// Initialize Phase 6 file system and device management
 pub fn init_phase6() -> Result<(), Phase6Error> {
-    println!("[Phase6] Initializing file system and device management");
+    crate::println!("[Phase6] Initializing file system and device management");
     
     // Step 1: Initialize device manager
     init_device_manager();
@@ -21,7 +21,7 @@ pub fn init_phase6() -> Result<(), Phase6Error> {
     let device_ids = probe_devices()
         .map_err(Phase6Error::DriverError)?;
     
-    println!("[Phase6] Found {} devices", device_ids.len());
+    crate::println!("[Phase6] Found {} devices", device_ids.len());
     
     // Step 4: Initialize all discovered devices
     initialize_all_devices()
@@ -31,68 +31,68 @@ pub fn init_phase6() -> Result<(), Phase6Error> {
     init_filesystem()
         .map_err(Phase6Error::FsError)?;
     
-    println!("[Phase6] File system and device management initialized successfully");
+    crate::println!("[Phase6] File system and device management initialized successfully");
     Ok(())
 }
 
 /// Test Phase 6 components
 pub fn test_phase6() -> bool {
-    println!("=== Starting Phase 6 File System & Device Management Testing ===");
+    crate::println!("=== Starting Phase 6 File System & Device Management Testing ===");
     
     let mut all_tests_passed = true;
     
     // Test 1: Device Manager
     print!("Testing device manager... ");
     if test_device_manager() {
-        println!("✅ PASSED");
+        crate::println!("✅ PASSED");
     } else {
-        println!("❌ FAILED");
+        crate::println!("❌ FAILED");
         all_tests_passed = false;
     }
     
     // Test 2: Storage Devices
     print!("Testing storage devices... ");
     if test_storage_devices() {
-        println!("✅ PASSED");
+        crate::println!("✅ PASSED");
     } else {
-        println!("❌ FAILED");
+        crate::println!("❌ FAILED");
         all_tests_passed = false;
     }
     
     // Test 3: Virtual File System
     print!("Testing virtual file system... ");
     if test_vfs() {
-        println!("✅ PASSED");
+        crate::println!("✅ PASSED");
     } else {
-        println!("❌ FAILED");
+        crate::println!("❌ FAILED");
         all_tests_passed = false;
     }
     
     // Test 4: File Operations
     print!("Testing file operations... ");
     if test_file_operations() {
-        println!("✅ PASSED");
+        crate::println!("✅ PASSED");
     } else {
-        println!("❌ FAILED");
+        crate::println!("❌ FAILED");
         all_tests_passed = false;
     }
     
     if all_tests_passed {
-        println!("✅ Phase 6 File System & Device Management: ALL TESTS PASSED");
-        println!("🎉 SynOS is ready for advanced file operations!");
-        println!();
-        println!("=== Phase 6 Deployment Ready ===");
-        println!("• Device Manager: ✓ Operational");
-        println!("• Storage Drivers: ✓ Operational");
-        println!("• Virtual File System: ✓ Operational");
-        println!("• File Operations: ✓ Operational");
-        println!("• Block Device Interface: ✓ Operational");
-        println!();
-        println!("🚀 Phase 6 File System & Device Management Complete!");
-        println!("   Ready for persistent storage and advanced file operations.");
+        crate::println!("✅ Phase 6 File System & Device Management: ALL TESTS PASSED");
+        crate::println!("🎉 SynOS is ready for advanced file operations!");
+        crate::println!();
+        crate::println!("=== Phase 6 Deployment Ready ===");
+        crate::println!("• Device Manager: ✓ Operational");
+        crate::println!("• Storage Drivers: ✓ Operational");
+        crate::println!("• Virtual File System: ✓ Operational");
+        crate::println!("• File Operations: ✓ Operational");
+        crate::println!("• Block Device Interface: ✓ Operational");
+        crate::println!();
+        crate::println!("🚀 Phase 6 File System & Device Management Complete!");
+        crate::println!("   Ready for persistent storage and advanced file operations.");
     } else {
-        println!("❌ Phase 6 File System & Device Management: Some tests failed");
-        println!("⚠️  Please review test results above");
+        crate::println!("❌ Phase 6 File System & Device Management: Some tests failed");
+        crate::println!("⚠️  Please review test results above");
     }
     
     all_tests_passed

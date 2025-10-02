@@ -8,12 +8,13 @@ use alloc::vec::Vec;
 use alloc::string::{String, ToString};
 use alloc::format;
 use core::sync::atomic::{AtomicU64, AtomicU32, Ordering};
-use spin::{Mutex, RwLock};
+use spin::RwLock;
 
 use crate::ai::mlops::MLOpsError;
 
 /// Security tool types available in SynOS
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[allow(non_camel_case_types)]
 pub enum SecurityTool {
     // Network Security
     Nmap,
@@ -431,7 +432,7 @@ enum IndicatorType {
 impl SecurityOrchestrator {
     /// Create new security orchestrator
     pub fn new() -> Self {
-        let mut orchestrator = Self {
+        let orchestrator = Self {
             workflows: RwLock::new(BTreeMap::new()),
             active_executions: RwLock::new(BTreeMap::new()),
             tool_interfaces: RwLock::new(BTreeMap::new()),
@@ -660,7 +661,7 @@ impl SecurityOrchestrator {
         drop(executions);
 
         // Execute workflow phases
-        println!("Starting security workflow execution: {} ({})", workflow.name, execution_id);
+        crate::println!("Starting security workflow execution: {} ({})", workflow.name, execution_id);
         self.execute_workflow_phases(execution_id.clone(), workflow, targets)?;
 
         Ok(execution_id)
@@ -669,7 +670,7 @@ impl SecurityOrchestrator {
     /// Execute workflow phases
     fn execute_workflow_phases(&self, execution_id: String, workflow: SecurityWorkflow, _targets: Vec<String>) -> Result<(), MLOpsError> {
         for phase in &workflow.phases {
-            println!("Executing phase: {}", phase.name);
+            crate::println!("Executing phase: {}", phase.name);
 
             let phase_result = self.execute_phase(&execution_id, phase)?;
 
@@ -696,7 +697,7 @@ impl SecurityOrchestrator {
             execution.end_time = Some(get_current_timestamp());
         }
 
-        println!("Security workflow execution completed: {}", execution_id);
+        crate::println!("Security workflow execution completed: {}", execution_id);
         Ok(())
     }
 
@@ -707,7 +708,7 @@ impl SecurityOrchestrator {
 
         // Execute tools in this phase
         for tool_config in &phase.tools {
-            println!("Executing tool: {:?}", tool_config.tool);
+            crate::println!("Executing tool: {:?}", tool_config.tool);
 
             let tool_output = self.execute_tool(execution_id, tool_config)?;
             tool_outputs.insert(tool_config.tool, tool_output);

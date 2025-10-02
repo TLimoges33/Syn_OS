@@ -1,0 +1,461 @@
+# PCI DSS 4.0 - Payment Card Industry Data Security Standard
+# Requirements for organizations that store, process, or transmit cardholder data
+
+framework:
+  name: "PCI DSS 4.0"
+  version: "4.0"
+  organization: "PCI Security Standards Council"
+  effective_date: "2024-03-31"
+  description: "Security standard for protecting payment card data"
+
+# Requirements
+requirements:
+  - id: "Requirement 1"
+    title: "Install and Maintain Network Security Controls"
+    description: "Network security controls (NSCs) protect cardholder data"
+    sub_requirements:
+      - id: "1.1.1"
+        title: "Processes and mechanisms for installing and maintaining NSCs are defined and understood"
+        implementation_guidance: |
+          - Document all NSC policies and procedures
+          - Define firewall and router configuration standards
+          - Establish change control processes
+        evidence_required:
+          - "Network security policy"
+          - "Firewall ruleset documentation"
+          - "Change control procedures"
+        automated_checks:
+          - check: "firewall_policy_documented"
+            script: "scripts/compliance/pci/check_firewall_policy.sh"
+            expected: "approved_and_current"
+        scoring:
+          weight: 8
+          max_points: 100
+          mandatory: true
+
+      - id: "1.2.1"
+        title: "Configuration standards for NSC rulesets are defined and implemented"
+        implementation_guidance: |
+          - Create baseline firewall configurations
+          - Implement deny-all, permit-by-exception
+          - Document all approved services and ports
+        evidence_required:
+          - "Firewall configuration standards"
+          - "Approved services list"
+          - "Rule justification documentation"
+        automated_checks:
+          - check: "deny_all_default_rule"
+            script: "scripts/compliance/pci/check_default_deny.sh"
+            expected: "configured"
+          - check: "rule_justifications_exist"
+            script: "scripts/compliance/pci/check_rule_docs.sh"
+            expected: "all_rules_documented"
+        scoring:
+          weight: 10
+          max_points: 100
+          mandatory: true
+
+      - id: "1.2.7"
+        title: "All inbound traffic to the cardholder data environment (CDE) is restricted"
+        implementation_guidance: |
+          - Define CDE network segments
+          - Implement strict ingress filtering
+          - Allow only necessary traffic to CDE
+        evidence_required:
+          - "CDE network diagram"
+          - "Firewall rules for CDE"
+          - "Traffic flow documentation"
+        automated_checks:
+          - check: "cde_ingress_restricted"
+            script: "scripts/compliance/pci/check_cde_ingress.sh"
+            expected: "only_approved_traffic"
+        scoring:
+          weight: 15
+          max_points: 100
+          mandatory: true
+
+  - id: "Requirement 2"
+    title: "Apply Secure Configurations to All System Components"
+    description: "Secure configurations prevent exploitation of vulnerabilities"
+    sub_requirements:
+      - id: "2.2.1"
+        title: "Configuration standards are developed, implemented, and maintained"
+        implementation_guidance: |
+          - Create hardening guides for all systems
+          - Implement CIS benchmarks where applicable
+          - Regular configuration compliance scanning
+        evidence_required:
+          - "System hardening standards"
+          - "CIS benchmark compliance reports"
+          - "Configuration scan results"
+        automated_checks:
+          - check: "hardening_standards_exist"
+            script: "scripts/compliance/pci/check_hardening.sh"
+            expected: "all_system_types_covered"
+          - check: "cis_compliance"
+            script: "scripts/compliance/pci/check_cis_compliance.sh"
+            expected: "95_percent_or_higher"
+        scoring:
+          weight: 12
+          max_points: 100
+          mandatory: true
+
+      - id: "2.2.2"
+        title: "Vendor default accounts are managed"
+        implementation_guidance: |
+          - Change all default passwords before deployment
+          - Disable or remove default accounts
+          - Document all account changes
+        evidence_required:
+          - "Default account inventory"
+          - "Password change records"
+          - "Account removal documentation"
+        automated_checks:
+          - check: "no_default_passwords"
+            script: "scripts/compliance/pci/check_default_creds.sh"
+            expected: "none_found"
+          - check: "default_accounts_disabled"
+            script: "scripts/compliance/pci/check_default_accounts.sh"
+            expected: "all_disabled_or_removed"
+        scoring:
+          weight: 15
+          max_points: 100
+          mandatory: true
+
+      - id: "2.2.4"
+        title: "Primary function for each system component is identified and documented"
+        implementation_guidance: |
+          - Create system inventory with function documentation
+          - Implement one primary function per server
+          - Segregate incompatible functions
+        evidence_required:
+          - "System inventory with functions"
+          - "Function segregation analysis"
+        automated_checks:
+          - check: "system_functions_documented"
+            script: "scripts/compliance/pci/check_system_functions.sh"
+            expected: "all_systems"
+        scoring:
+          weight: 8
+          max_points: 100
+
+  - id: "Requirement 3"
+    title: "Protect Stored Account Data"
+    description: "Protection methods such as encryption, truncation, masking, and hashing are critical"
+    sub_requirements:
+      - id: "3.3.1"
+        title: "Sensitive authentication data (SAD) is not retained after authorization"
+        implementation_guidance: |
+          - Never store full track data
+          - Never store CVV2/CVC2/CID
+          - Delete SAD immediately after authorization
+        evidence_required:
+          - "Data retention policy"
+          - "Application code review"
+          - "SAD deletion verification"
+        automated_checks:
+          - check: "no_sad_storage"
+            script: "scripts/compliance/pci/check_sad.sh"
+            expected: "none_found"
+        scoring:
+          weight: 20
+          max_points: 100
+          mandatory: true
+
+      - id: "3.5.1"
+        title: "Primary account number (PAN) is secured wherever stored"
+        implementation_guidance: |
+          - Encrypt PAN at rest using strong cryptography
+          - Implement disk-level or database-level encryption
+          - Protect encryption keys separately
+        evidence_required:
+          - "Encryption implementation documentation"
+          - "Key management procedures"
+          - "Encryption validation reports"
+        automated_checks:
+          - check: "pan_encrypted"
+            script: "scripts/compliance/pci/check_pan_encryption.sh"
+            expected: "all_instances"
+          - check: "encryption_strength"
+            script: "scripts/compliance/pci/check_crypto_strength.sh"
+            expected: "minimum_aes_256"
+        scoring:
+          weight: 20
+          max_points: 100
+          mandatory: true
+
+      - id: "3.6.1"
+        title: "Cryptographic keys are managed"
+        implementation_guidance: |
+          - Implement key generation procedures
+          - Secure key distribution methods
+          - Regular key rotation
+          - Secure key destruction
+        evidence_required:
+          - "Key management procedures"
+          - "Key rotation logs"
+          - "Key custody documentation"
+        automated_checks:
+          - check: "key_rotation_current"
+            script: "scripts/compliance/pci/check_key_rotation.sh"
+            expected: "within_policy"
+          - check: "key_strength_adequate"
+            script: "scripts/compliance/pci/check_key_strength.sh"
+            expected: "minimum_standards_met"
+        scoring:
+          weight: 15
+          max_points: 100
+          mandatory: true
+
+  - id: "Requirement 4"
+    title: "Protect Cardholder Data with Strong Cryptography During Transmission"
+    description: "Transmission of cardholder data across open, public networks must be encrypted"
+    sub_requirements:
+      - id: "4.2.1"
+        title: "Strong cryptography and security protocols are implemented"
+        implementation_guidance: |
+          - Use TLS 1.2 or higher for all transmissions
+          - Disable SSL, TLS 1.0, and TLS 1.1
+          - Implement strong cipher suites only
+        evidence_required:
+          - "TLS configuration documentation"
+          - "SSL/TLS scan results"
+          - "Cipher suite configuration"
+        automated_checks:
+          - check: "tls_version_compliant"
+            script: "scripts/compliance/pci/check_tls_version.sh"
+            expected: "tls_1.2_or_higher_only"
+          - check: "weak_ciphers_disabled"
+            script: "scripts/compliance/pci/check_ciphers.sh"
+            expected: "none_found"
+        scoring:
+          weight: 20
+          max_points: 100
+          mandatory: true
+
+  - id: "Requirement 8"
+    title: "Identify Users and Authenticate Access to System Components"
+    description: "Multi-factor authentication (MFA) and unique user IDs are required"
+    sub_requirements:
+      - id: "8.3.1"
+        title: "MFA is implemented for all access to the CDE"
+        implementation_guidance: |
+          - Deploy MFA for all user access to CDE
+          - Implement MFA for all administrative access
+          - Use phishing-resistant MFA methods
+        evidence_required:
+          - "MFA deployment documentation"
+          - "MFA coverage reports"
+          - "Authentication logs"
+        automated_checks:
+          - check: "mfa_required_cde"
+            script: "scripts/compliance/pci/check_mfa_cde.sh"
+            expected: "all_access_points"
+          - check: "mfa_required_admin"
+            script: "scripts/compliance/pci/check_mfa_admin.sh"
+            expected: "all_administrators"
+        scoring:
+          weight: 20
+          max_points: 100
+          mandatory: true
+
+      - id: "8.4.2"
+        title: "MFA is implemented for all non-console administrative access"
+        implementation_guidance: |
+          - Require MFA for SSH, RDP, and other remote admin
+          - Implement certificate-based authentication where possible
+          - No single-factor remote admin access
+        evidence_required:
+          - "Remote access policy"
+          - "MFA configuration for admin tools"
+          - "Access logs with MFA verification"
+        automated_checks:
+          - check: "remote_admin_mfa"
+            script: "scripts/compliance/pci/check_remote_mfa.sh"
+            expected: "enforced"
+        scoring:
+          weight: 15
+          max_points: 100
+          mandatory: true
+
+  - id: "Requirement 10"
+    title: "Log and Monitor All Access to System Components and Cardholder Data"
+    description: "Logging mechanisms and ability to track user activities are critical"
+    sub_requirements:
+      - id: "10.2.1"
+        title: "Audit logs capture all individual user access to cardholder data"
+        implementation_guidance: |
+          - Log all CDE access events
+          - Capture user ID, timestamp, action
+          - Include success and failure events
+        evidence_required:
+          - "Logging configuration"
+          - "Log samples showing required fields"
+          - "Log retention documentation"
+        automated_checks:
+          - check: "cde_access_logged"
+            script: "scripts/compliance/pci/check_access_logs.sh"
+            expected: "all_events"
+          - check: "log_fields_complete"
+            script: "scripts/compliance/pci/check_log_fields.sh"
+            expected: "required_fields_present"
+        scoring:
+          weight: 15
+          max_points: 100
+          mandatory: true
+
+      - id: "10.4.1"
+        title: "Audit logs are reviewed to identify anomalies or suspicious activity"
+        implementation_guidance: |
+          - Daily log review process
+          - Automated alerting for critical events
+          - Document review procedures
+        evidence_required:
+          - "Log review procedures"
+          - "Daily review records"
+          - "Alert configuration"
+        automated_checks:
+          - check: "daily_log_review"
+            script: "scripts/compliance/pci/check_log_review.sh"
+            expected: "completed_daily"
+          - check: "automated_alerts_configured"
+            script: "scripts/compliance/pci/check_log_alerts.sh"
+            expected: "critical_events_covered"
+        scoring:
+          weight: 12
+          max_points: 100
+          mandatory: true
+
+  - id: "Requirement 11"
+    title: "Test Security of Systems and Networks Regularly"
+    description: "Vulnerabilities are being discovered continually by malicious individuals and researchers"
+    sub_requirements:
+      - id: "11.3.1"
+        title: "Internal vulnerability scans are performed"
+        implementation_guidance: |
+          - Quarterly internal vulnerability scans
+          - Scan all CDE components
+          - Remediate high-risk vulnerabilities
+        evidence_required:
+          - "Scan schedule and results"
+          - "Remediation tracking"
+          - "Scan coverage reports"
+        automated_checks:
+          - check: "quarterly_scans_complete"
+            script: "scripts/compliance/pci/check_vuln_scans.sh"
+            expected: "last_90_days"
+          - check: "high_vulns_remediated"
+            script: "scripts/compliance/pci/check_vuln_remediation.sh"
+            expected: "within_30_days"
+        scoring:
+          weight: 15
+          max_points: 100
+          mandatory: true
+
+      - id: "11.3.2"
+        title: "External vulnerability scans are performed by PCI SSC Approved Scanning Vendor (ASV)"
+        implementation_guidance: |
+          - Engage PCI SSC approved vendor
+          - Quarterly external scans
+          - Achieve passing scan results
+        evidence_required:
+          - "ASV scan reports"
+          - "Passing scan attestation"
+          - "Remediation evidence"
+        automated_checks:
+          - check: "asv_scans_current"
+            script: "scripts/compliance/pci/check_asv_scans.sh"
+            expected: "passing_last_90_days"
+        scoring:
+          weight: 20
+          max_points: 100
+          mandatory: true
+
+      - id: "11.6.1"
+        title: "A change- and tamper-detection mechanism is deployed"
+        implementation_guidance: |
+          - Deploy file integrity monitoring (FIM)
+          - Monitor critical system files
+          - Alert on unauthorized changes
+        evidence_required:
+          - "FIM deployment documentation"
+          - "Monitored files list"
+          - "Alert configuration"
+        automated_checks:
+          - check: "fim_deployed"
+            script: "scripts/compliance/pci/check_fim.sh"
+            expected: "all_critical_systems"
+          - check: "fim_alerts_working"
+            script: "scripts/compliance/pci/check_fim_alerts.sh"
+            expected: "configured_and_tested"
+        scoring:
+          weight: 12
+          max_points: 100
+          mandatory: true
+
+  - id: "Requirement 12"
+    title: "Support Information Security with Organizational Policies and Programs"
+    description: "Strong security policy sets the security tone for the whole entity"
+    sub_requirements:
+      - id: "12.3.1"
+        title: "Security awareness training is provided to all personnel"
+        implementation_guidance: |
+          - Annual security awareness training
+          - PCI DSS-specific training for relevant roles
+          - Track completion and maintain records
+        evidence_required:
+          - "Training program documentation"
+          - "Completion records"
+          - "Training content (PCI DSS topics)"
+        automated_checks:
+          - check: "annual_training_complete"
+            script: "scripts/compliance/pci/check_training.sh"
+            expected: "all_personnel_current_year"
+        scoring:
+          weight: 10
+          max_points: 100
+          mandatory: true
+
+# Assessment Configuration
+assessment:
+  assessment_types:
+    - "Self-Assessment Questionnaire (SAQ)"
+    - "Report on Compliance (ROC) by QSA"
+    - "Internal Security Assessor (ISA) assessment"
+
+  merchant_levels:
+    level_1: "6M+ transactions annually"
+    level_2: "1-6M transactions annually"
+    level_3: "20K-1M e-commerce transactions annually"
+    level_4: "< 20K e-commerce or < 1M total transactions annually"
+
+  validation_frequency: "annual"
+  quarterly_requirements:
+    - "vulnerability_scans"
+    - "log_reviews"
+
+  compensating_controls:
+    allowed: true
+    documentation_required: true
+    validation_required: true
+
+  report_format:
+    - "executive_summary"
+    - "scope_definition"
+    - "requirement_testing_procedures"
+    - "findings_and_observations"
+    - "attestation_of_compliance"
+
+# Integration
+integration:
+  card_brands:
+    - "Visa"
+    - "Mastercard"
+    - "American Express"
+    - "Discover"
+    - "JCB"
+
+  automation:
+    continuous_compliance_monitoring: true
+    automated_evidence_collection: true
+    real_time_alerting: true

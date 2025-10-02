@@ -1,9 +1,11 @@
 //! # Ethernet Protocol Implementation
-//! 
+//!
 //! Provides Ethernet frame processing and basic Ethernet device support
 
+use alloc::string::ToString;
 use super::{NetworkError, MacAddress, NetworkPacket, NetworkStats, NetworkDevice};
-use crate::drivers::{Device, DeviceError, DeviceType, DeviceId};
+use crate::drivers::{Device, DriverError, DeviceType, DeviceId};
+use crate::devices::DeviceError;
 use alloc::{vec::Vec, boxed::Box, string::String};
 use core::fmt;
 
@@ -18,6 +20,7 @@ pub const ETHERNET_MAX_FRAME_SIZE: usize = 1518;
 
 /// Common Ethernet types
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(u16)]
 pub enum EtherType {
     IPv4 = 0x0800,
     ARP = 0x0806,
@@ -235,8 +238,9 @@ impl SimpleEthernetDevice {
 
     /// Simulate receiving a packet (for testing)
     pub fn simulate_receive(&mut self, packet: NetworkPacket) {
+        let packet_len = packet.len();
         self.rx_buffer.push(packet);
-        self.stats.record_receive(packet.len());
+        self.stats.record_receive(packet_len);
     }
 
     /// Check if we should accept this frame
@@ -252,43 +256,53 @@ impl SimpleEthernetDevice {
 
 impl Device for SimpleEthernetDevice {
     fn device_type(&self) -> DeviceType {
-        DeviceType::Network
+        DeviceType::NetworkDevice
     }
 
     fn device_id(&self) -> DeviceId {
         self.id
     }
 
-    fn set_device_id(&mut self, id: DeviceId) {
-        self.id = id;
-    }
-
-    fn device_name(&self) -> &str {
+    fn name(&self) -> &str {
         &self.name
     }
 
-    fn probe(&self) -> Result<(), DeviceError> {
-        // Simple device always probes successfully
-        Ok(())
+    fn capabilities(&self) -> crate::drivers::DeviceCapabilities {
+        crate::drivers::DeviceCapabilities {
+            can_read: true,
+            can_write: true,
+            can_seek: false,
+            supports_dma: false,
+            supports_interrupts: true,
+            hot_pluggable: false,
+        }
     }
 
-    fn init(&mut self) -> Result<(), DeviceError> {
+    fn initialize(&mut self) -> Result<(), DriverError> {
         self.is_up = false; // Start in down state
         Ok(())
     }
 
-    fn shutdown(&mut self) -> Result<(), DeviceError> {
+    fn shutdown(&mut self) -> Result<(), DriverError> {
         self.is_up = false;
         self.rx_buffer.clear();
         Ok(())
     }
 
-    fn reset(&mut self) -> Result<(), DeviceError> {
+    fn reset(&mut self) -> Result<(), DriverError> {
         self.is_up = false;
         self.promiscuous = false;
         self.rx_buffer.clear();
         self.stats = NetworkStats::new();
         Ok(())
+    }
+
+    fn status(&self) -> crate::drivers::DeviceStatus {
+        if self.is_up {
+            crate::drivers::DeviceStatus::Active
+        } else {
+            crate::drivers::DeviceStatus::Inactive
+        }
     }
 }
 

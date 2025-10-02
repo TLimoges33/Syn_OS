@@ -9,6 +9,7 @@ use alloc::vec::Vec;
 use alloc::string::String;
 use alloc::collections::BTreeMap;
 use core::sync::atomic::{AtomicBool, Ordering};
+use spin::Mutex;
 
 /// Complete Desktop Environment with AI and Educational Integration
 pub struct SynDesktopEnvironment {
@@ -518,17 +519,37 @@ impl SynDesktopEnvironment {
 
 // Supporting types and implementations
 
-#[derive(Debug)]
-pub enum DesktopError {
-    InitializationFailed,
-    RenderingError,
-    InputError,
-    AIError,
-    EducationalError,
-    PerformanceError,
-    ThemeError,
-    WindowError,
-    ResourceError,
+// DesktopError defined later with more detailed error types
+
+/// Desktop theme configuration
+#[derive(Debug, Clone, Default)]
+pub struct DesktopTheme {
+    pub name: String,
+    pub background_color: u32,
+    pub foreground_color: u32,
+    pub accent_color: u32,
+    pub consciousness_factor: f32,
+}
+
+/// Workspace information
+#[derive(Debug, Clone, Default)]
+pub struct WorkspaceInfo {
+    pub id: u32,
+    pub name: String,
+    pub current_workspace: u32,
+    pub total_workspaces: u32,
+    pub workspace_names: Vec<String>,
+    pub active_apps: Vec<String>,
+    pub ai_score: f32,
+    pub educational_context: String,
+}
+
+/// Touch event for touch input
+#[derive(Debug, Clone)]
+pub struct TouchEvent {
+    pub x: i32,
+    pub y: i32,
+    pub pressure: f32,
 }
 
 #[derive(Debug, Clone)]
@@ -735,7 +756,7 @@ impl_desktop_component!(PerformanceMonitor);
 #[derive(Default)] pub struct QuickSettingsPanel;
 #[derive(Default)] pub struct Notification;
 #[derive(Default)] pub struct NotificationHistory;
-#[derive(Default)] pub struct NotificationAction;
+// NotificationAction defined as enum below
 #[derive(Default)] pub struct Wallpaper;
 #[derive(Default)] pub struct EducationalWallpaper;
 #[derive(Default)] pub struct Application;
@@ -865,6 +886,83 @@ pub struct DesktopMetrics {
     pub satisfaction_score: f64,
     /// Desktop layout efficiency
     pub layout_efficiency: f64,
+}
+
+// Stub types for desktop components
+mod shell {
+    pub struct DesktopShell;
+    impl DesktopShell {
+        pub fn new() -> Self { Self }
+        pub fn start_ai_optimization(&mut self, _level: f32) -> Result<(), &'static str> { Ok(()) }
+        pub fn enable_educational_mode(&mut self) -> Result<(), &'static str> { Ok(()) }
+        pub fn update_theme(&mut self, _theme: &super::DesktopTheme) -> Result<(), &'static str> { Ok(()) }
+        pub fn setup_consciousness_hooks(&mut self) -> Result<(), &'static str> { Ok(()) }
+    }
+}
+mod icons {
+    pub struct IconManager;
+    impl IconManager {
+        pub fn new() -> Self { Self }
+        pub fn start_ai_optimization(&mut self, _level: f32) -> Result<(), &'static str> { Ok(()) }
+        pub fn enable_educational_mode(&mut self) -> Result<(), &'static str> { Ok(()) }
+        pub fn update_theme(&mut self, _theme: &super::DesktopTheme) -> Result<(), &'static str> { Ok(()) }
+        pub fn setup_consciousness_hooks(&mut self) -> Result<(), &'static str> { Ok(()) }
+    }
+}
+mod systray {
+    pub struct SystemTray;
+    impl SystemTray {
+        pub fn new() -> Self { Self }
+        pub fn start_ai_optimization(&mut self, _level: f32) -> Result<(), &'static str> { Ok(()) }
+        pub fn enable_educational_mode(&mut self) -> Result<(), &'static str> { Ok(()) }
+        pub fn update_theme(&mut self, _theme: &super::DesktopTheme) -> Result<(), &'static str> { Ok(()) }
+        pub fn setup_consciousness_hooks(&mut self) -> Result<(), &'static str> { Ok(()) }
+    }
+}
+mod notifications {
+    pub struct NotificationCenter;
+    impl NotificationCenter {
+        pub fn new() -> Self { Self }
+        pub fn start_ai_optimization(&mut self, _level: f32) -> Result<(), &'static str> { Ok(()) }
+        pub fn enable_educational_mode(&mut self) -> Result<(), &'static str> { Ok(()) }
+        pub fn update_theme(&mut self, _theme: &super::DesktopTheme) -> Result<(), &'static str> { Ok(()) }
+        pub fn setup_consciousness_hooks(&mut self) -> Result<(), &'static str> { Ok(()) }
+    }
+}
+mod wallpaper {
+    pub struct WallpaperManager;
+    impl WallpaperManager {
+        pub fn new() -> Self { Self }
+        pub fn start_ai_optimization(&mut self, _level: f32) -> Result<(), &'static str> { Ok(()) }
+        pub fn enable_educational_mode(&mut self) -> Result<(), &'static str> { Ok(()) }
+        pub fn update_theme(&mut self, _theme: &super::DesktopTheme) -> Result<(), &'static str> { Ok(()) }
+        pub fn set_wallpaper(&mut self, _path: &str) -> Result<(), &'static str> { Ok(()) }
+        pub fn setup_consciousness_hooks(&mut self) -> Result<(), &'static str> { Ok(()) }
+    }
+}
+mod launcher {
+    pub struct ApplicationLauncher;
+    impl ApplicationLauncher {
+        pub fn new() -> Self { Self }
+        pub fn start_ai_optimization(&mut self, _level: f32) -> Result<(), &'static str> { Ok(()) }
+        pub fn enable_educational_mode(&mut self) -> Result<(), &'static str> { Ok(()) }
+        pub fn update_theme(&mut self, _theme: &super::DesktopTheme) -> Result<(), &'static str> { Ok(()) }
+        pub fn setup_consciousness_hooks(&mut self) -> Result<(), &'static str> { Ok(()) }
+    }
+}
+
+/// Desktop environment structure
+pub struct DesktopEnvironment {
+    shell: shell::DesktopShell,
+    icon_manager: icons::IconManager,
+    system_tray: systray::SystemTray,
+    notifications: notifications::NotificationCenter,
+    wallpaper: wallpaper::WallpaperManager,
+    launcher: launcher::ApplicationLauncher,
+    consciousness_level: f32,
+    educational_mode: AtomicBool,
+    theme: DesktopTheme,
+    workspace: WorkspaceInfo,
 }
 
 /// Global desktop instance
@@ -1235,6 +1333,12 @@ pub enum DesktopError {
     WorkspaceError(String),
     /// Component communication failed
     ComponentCommunicationFailed(String),
+}
+
+impl From<&'static str> for DesktopError {
+    fn from(err: &'static str) -> Self {
+        DesktopError::InitializationFailed(String::from(err))
+    }
 }
 
 /// Initialize the global desktop environment

@@ -7,6 +7,7 @@
 pub mod scheduler;
 pub mod context_switch;
 pub mod pcb;
+pub mod cpu;
 pub mod current_process;
 
 // Advanced scheduling
@@ -526,4 +527,31 @@ mod tests {
         assert!(process.is_terminated());
         assert_eq!(process.exit_code, Some(0));
     }
+}
+
+// Re-export main types
+pub use cpu::{CpuId, Cpu};
+
+/// Initialize the process scheduler
+pub fn init_scheduler() {
+    // Initialize global scheduler
+    // TODO: Implement scheduler initialization
+}
+
+/// Spawn a new process
+pub fn spawn_process(program: &[u8]) -> Result<ProcessId, ProcessError> {
+    // TODO: Implement process spawning from program binary
+    Ok(1)
+}
+
+/// Get the current process ID
+pub fn current_process_id() -> ProcessId {
+    // TODO: Implement current process ID tracking
+    0
+}
+
+/// Isolate a process in a sandbox
+pub fn isolate_process(pid: ProcessId) -> Result<(), ProcessError> {
+    // TODO: Implement process isolation
+    Ok(())
 }

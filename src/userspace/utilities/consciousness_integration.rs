@@ -5,6 +5,7 @@
 
 use alloc::{format, string::String, vec::Vec};
 use crate::ai_enhanced_utilities::{AIUtilityManager, UtilityAI};
+use crate::memory::educational_memory_manager::SkillLevel;
 
 /// Main consciousness integration manager for system utilities
 pub struct ConsciousnessIntegrationManager {
@@ -102,13 +103,7 @@ pub struct PreferenceEvolution {
     stability_score: f32,
 }
 
-#[derive(Debug, Clone, Copy)]
-pub enum SkillLevel {
-    Beginner,
-    Intermediate,
-    Advanced,
-    Expert,
-}
+
 
 #[derive(Debug, Clone, Copy)]
 pub enum SafetyLevel {

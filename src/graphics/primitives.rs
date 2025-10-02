@@ -6,14 +6,8 @@
 use crate::{Color, Point, Rect, GraphicsError};
 use crate::framebuffer::Framebuffer;
 use alloc::vec::Vec;
-use alloc::string::String;
+use alloc::vec;
 
-// Temporary logging macro
-macro_rules! log_info {
-    ($($arg:tt)*) => {
-        // TODO: Integrate with kernel logging system
-    };
-}
 
 /// Graphics primitives with AI enhancement
 pub struct GraphicsPrimitives;
@@ -233,9 +227,9 @@ impl GraphicsPrimitives {
         rect: Rect,
         color: Color,
     ) -> Result<(), GraphicsError> {
-        for y in rect.y..(rect.y + rect.height) {
-            for x in rect.x..(rect.x + rect.width) {
-                if x < framebuffer.get_width() && y < framebuffer.get_height() {
+        for y in rect.y..(rect.y + rect.height as i32) {
+            for x in rect.x..(rect.x + rect.width as i32) {
+                if x < framebuffer.resolution().width as i32 && y < framebuffer.resolution().height as i32 {
                     framebuffer.set_pixel(Point::new(x, y), color)?;
                 }
             }
@@ -250,25 +244,25 @@ impl GraphicsPrimitives {
         color: Color,
     ) -> Result<(), GraphicsError> {
         // Draw top and bottom edges
-        for x in rect.x..(rect.x + rect.width) {
-            if x < framebuffer.get_width() {
-                if rect.y < framebuffer.get_height() {
+        for x in rect.x..(rect.x + rect.width as i32) {
+            if x < framebuffer.resolution().width as i32 {
+                if rect.y < framebuffer.resolution().height as i32 {
                     framebuffer.set_pixel(Point::new(x, rect.y), color)?;
                 }
-                if rect.y + rect.height - 1 < framebuffer.get_height() {
-                    framebuffer.set_pixel(Point::new(x, rect.y + rect.height - 1), color)?;
+                if rect.y + rect.height as i32 - 1 < framebuffer.resolution().height as i32 {
+                    framebuffer.set_pixel(Point::new(x, rect.y + rect.height as i32 - 1), color)?;
                 }
             }
         }
         
         // Draw left and right edges
-        for y in rect.y..(rect.y + rect.height) {
-            if y < framebuffer.get_height() {
-                if rect.x < framebuffer.get_width() {
+        for y in rect.y..(rect.y + rect.height as i32) {
+            if y < framebuffer.resolution().height as i32 {
+                if rect.x < framebuffer.resolution().width as i32 {
                     framebuffer.set_pixel(Point::new(rect.x, y), color)?;
                 }
-                if rect.x + rect.width - 1 < framebuffer.get_width() {
-                    framebuffer.set_pixel(Point::new(rect.x + rect.width - 1, y), color)?;
+                if rect.x + rect.width as i32 - 1 < framebuffer.resolution().width as i32 {
+                    framebuffer.set_pixel(Point::new(rect.x + rect.width as i32 - 1, y), color)?;
                 }
             }
         }
@@ -285,7 +279,7 @@ impl GraphicsPrimitives {
         for y in 0..glyph.height {
             for x in 0..glyph.width {
                 let bit_index = y * glyph.width + x;
-                let byte_index = bit_index / 8;
+                let byte_index = (bit_index / 8) as usize;
                 let bit_offset = bit_index % 8;
                 
                 if byte_index < glyph.data.len() {

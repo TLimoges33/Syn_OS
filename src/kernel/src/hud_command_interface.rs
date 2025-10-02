@@ -382,13 +382,13 @@ impl HUDCommandInterface {
 
     /// Show welcome message on initialization
     fn show_welcome_message(&self) -> Result<(), &'static str> {
-        println!("🎓 Welcome to SynOS Cybersecurity Learning Platform!");
-        println!("═══════════════════════════════════════════════════");
-        println!("Interactive tutorials with real-time HUD guidance");
-        println!("Start your cybersecurity journey today!");
-        println!("");
-        println!("💡 Quick start: Type 'help' for guidance or 'list' to see tutorials");
-        println!("🎯 HUD overlays will guide you through each step");
+        crate::println!("🎓 Welcome to SynOS Cybersecurity Learning Platform!");
+        crate::println!("═══════════════════════════════════════════════════");
+        crate::println!("Interactive tutorials with real-time HUD guidance");
+        crate::println!("Start your cybersecurity journey today!");
+        crate::println!("");
+        crate::println!("💡 Quick start: Type 'help' for guidance or 'list' to see tutorials");
+        crate::println!("🎯 HUD overlays will guide you through each step");
         Ok(())
     }
 

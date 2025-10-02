@@ -27,7 +27,7 @@ extern "C" {
 
 /// Initialize the heap allocator
 pub fn init(_boot_info: &'static BootInfo) {
-    println!("  • Setting up heap allocator");
+    crate::println!("  • Setting up heap allocator");
     
     // Map the heap pages
     map_heap();
@@ -38,7 +38,7 @@ pub fn init(_boot_info: &'static BootInfo) {
         allocator::ALLOCATOR.lock().init(HEAP_START as *mut u8, HEAP_SIZE);
     }
     
-    println!("  ✓ Heap allocator initialized ({}MB)", HEAP_SIZE / 1024 / 1024);
+    crate::println!("  ✓ Heap allocator initialized ({}MB)", HEAP_SIZE / 1024 / 1024);
 }
 
 /// Map the heap memory region
@@ -48,7 +48,7 @@ fn map_heap() {
     // to map the heap region with appropriate flags
     
     // For now, we'll simulate successful mapping
-    println!("  • Mapped heap region at 0x{:x} (size: {}MB)", 
+    crate::println!("  • Mapped heap region at 0x{:x} (size: {}MB)", 
              HEAP_START, HEAP_SIZE / 1024 / 1024);
 }
 

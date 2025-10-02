@@ -1,0 +1,405 @@
+# GDPR - General Data Protection Regulation
+# Technical and organizational measures for data protection
+
+framework:
+  name: "GDPR Technical Controls"
+  version: "2018"
+  organization: "European Union"
+  effective_date: "2018-05-25"
+  description: "Technical measures to ensure GDPR compliance"
+
+# Key Principles
+principles:
+  - principle: "Lawfulness, fairness and transparency"
+    description: "Processing must be lawful, fair and transparent to the data subject"
+
+  - principle: "Purpose limitation"
+    description: "Data collected for specified, explicit and legitimate purposes"
+
+  - principle: "Data minimisation"
+    description: "Adequate, relevant and limited to what is necessary"
+
+  - principle: "Accuracy"
+    description: "Data must be accurate and kept up to date"
+
+  - principle: "Storage limitation"
+    description: "Kept in a form which permits identification for no longer than necessary"
+
+  - principle: "Integrity and confidentiality"
+    description: "Processed in a manner that ensures appropriate security"
+
+  - principle: "Accountability"
+    description: "Controller responsible for and able to demonstrate compliance"
+
+# Technical Controls
+technical_controls:
+  - category: "Data Protection by Design and Default"
+    article: "Article 25"
+    controls:
+      - id: "GDPR-25.1"
+        title: "Privacy by Design Implementation"
+        description: "Implement technical measures to ensure data protection principles"
+        implementation_guidance: |
+          - Conduct Privacy Impact Assessments (PIA)
+          - Implement data minimization in system design
+          - Build privacy controls into architecture
+        evidence_required:
+          - "Privacy Impact Assessment reports"
+          - "System design documentation showing privacy controls"
+          - "Data flow diagrams with minimization"
+        automated_checks:
+          - check: "pia_completed"
+            script: "scripts/compliance/gdpr/check_pia.sh"
+            expected: "all_new_systems"
+          - check: "data_minimization_implemented"
+            script: "scripts/compliance/gdpr/check_minimization.sh"
+            expected: "validated"
+        scoring:
+          weight: 15
+          max_points: 100
+
+      - id: "GDPR-25.2"
+        title: "Privacy by Default Settings"
+        description: "Ensure default settings provide highest privacy protection"
+        implementation_guidance: |
+          - Set strictest privacy settings as default
+          - Require opt-in for data processing
+          - Limit data processing to necessary only
+        evidence_required:
+          - "Default privacy settings documentation"
+          - "Opt-in mechanisms"
+          - "Data processing scope limits"
+        automated_checks:
+          - check: "privacy_defaults_configured"
+            script: "scripts/compliance/gdpr/check_defaults.sh"
+            expected: "strictest_settings"
+        scoring:
+          weight: 12
+          max_points: 100
+
+  - category: "Security of Processing"
+    article: "Article 32"
+    controls:
+      - id: "GDPR-32.1"
+        title: "Pseudonymisation and Encryption"
+        description: "Implement pseudonymisation and encryption of personal data"
+        implementation_guidance: |
+          - Encrypt personal data at rest and in transit
+          - Implement pseudonymisation where applicable
+          - Use strong encryption (AES-256, TLS 1.3)
+        evidence_required:
+          - "Encryption implementation documentation"
+          - "Pseudonymisation procedures"
+          - "Cryptographic standards"
+        automated_checks:
+          - check: "personal_data_encrypted"
+            script: "scripts/compliance/gdpr/check_encryption.sh"
+            expected: "all_personal_data"
+          - check: "encryption_strength"
+            script: "scripts/compliance/gdpr/check_crypto_strength.sh"
+            expected: "minimum_aes_256"
+        scoring:
+          weight: 20
+          max_points: 100
+          mandatory: true
+
+      - id: "GDPR-32.2"
+        title: "Confidentiality, Integrity, Availability"
+        description: "Ensure ongoing confidentiality, integrity, availability and resilience"
+        implementation_guidance: |
+          - Implement access controls and authentication
+          - Deploy integrity monitoring
+          - Ensure high availability and redundancy
+        evidence_required:
+          - "Access control implementation"
+          - "Integrity monitoring system"
+          - "HA/DR documentation"
+        automated_checks:
+          - check: "access_controls_enforced"
+            script: "scripts/compliance/gdpr/check_access_controls.sh"
+            expected: "all_personal_data_systems"
+          - check: "integrity_monitoring_active"
+            script: "scripts/compliance/gdpr/check_integrity.sh"
+            expected: "deployed"
+        scoring:
+          weight: 18
+          max_points: 100
+          mandatory: true
+
+      - id: "GDPR-32.3"
+        title: "Resilience and Recovery"
+        description: "Ability to restore availability and access to personal data in a timely manner"
+        implementation_guidance: |
+          - Implement backup and recovery procedures
+          - Test disaster recovery plans
+          - Document RTO and RPO objectives
+        evidence_required:
+          - "Backup procedures"
+          - "DR test results"
+          - "RTO/RPO documentation"
+        automated_checks:
+          - check: "backups_current"
+            script: "scripts/compliance/gdpr/check_backups.sh"
+            expected: "within_24_hours"
+          - check: "dr_tested"
+            script: "scripts/compliance/gdpr/check_dr_tests.sh"
+            expected: "within_12_months"
+        scoring:
+          weight: 15
+          max_points: 100
+
+      - id: "GDPR-32.4"
+        title: "Testing and Evaluation"
+        description: "Regular testing and evaluation of technical and organizational measures"
+        implementation_guidance: |
+          - Conduct regular security assessments
+          - Perform penetration testing
+          - Review and update security measures
+        evidence_required:
+          - "Security assessment reports"
+          - "Penetration test results"
+          - "Continuous improvement records"
+        automated_checks:
+          - check: "security_assessment_current"
+            script: "scripts/compliance/gdpr/check_assessments.sh"
+            expected: "within_12_months"
+          - check: "pentest_current"
+            script: "scripts/compliance/gdpr/check_pentests.sh"
+            expected: "within_12_months"
+        scoring:
+          weight: 12
+          max_points: 100
+
+  - category: "Data Subject Rights"
+    articles: "Articles 15-22"
+    controls:
+      - id: "GDPR-15.1"
+        title: "Right of Access Implementation"
+        description: "Provide data subjects access to their personal data"
+        implementation_guidance: |
+          - Implement data access request portal
+          - Verify data subject identity
+          - Respond within 30 days
+        evidence_required:
+          - "Data access request system"
+          - "Identity verification procedures"
+          - "Response time tracking"
+        automated_checks:
+          - check: "access_portal_functional"
+            script: "scripts/compliance/gdpr/check_access_portal.sh"
+            expected: "operational"
+          - check: "response_time_compliant"
+            script: "scripts/compliance/gdpr/check_response_times.sh"
+            expected: "within_30_days"
+        scoring:
+          weight: 10
+          max_points: 100
+
+      - id: "GDPR-16.1"
+        title: "Right to Rectification"
+        description: "Enable data subjects to correct inaccurate personal data"
+        implementation_guidance: |
+          - Provide data correction mechanisms
+          - Validate and update data promptly
+          - Notify third parties of corrections
+        evidence_required:
+          - "Data correction workflows"
+          - "Update verification procedures"
+          - "Third-party notification process"
+        automated_checks:
+          - check: "correction_mechanism_exists"
+            script: "scripts/compliance/gdpr/check_corrections.sh"
+            expected: "implemented"
+        scoring:
+          weight: 8
+          max_points: 100
+
+      - id: "GDPR-17.1"
+        title: "Right to Erasure (Right to be Forgotten)"
+        description: "Enable deletion of personal data upon request"
+        implementation_guidance: |
+          - Implement secure data deletion procedures
+          - Track deletion requests
+          - Verify complete data removal
+        evidence_required:
+          - "Data deletion procedures"
+          - "Deletion request tracking"
+          - "Deletion verification logs"
+        automated_checks:
+          - check: "deletion_mechanism_functional"
+            script: "scripts/compliance/gdpr/check_deletion.sh"
+            expected: "operational"
+          - check: "deletion_complete"
+            script: "scripts/compliance/gdpr/check_deletion_verification.sh"
+            expected: "all_systems_cleared"
+        scoring:
+          weight: 15
+          max_points: 100
+
+      - id: "GDPR-20.1"
+        title: "Right to Data Portability"
+        description: "Provide personal data in structured, commonly used format"
+        implementation_guidance: |
+          - Implement data export functionality
+          - Provide data in machine-readable format (JSON, XML, CSV)
+          - Enable direct transfer to another controller
+        evidence_required:
+          - "Data export system"
+          - "Supported export formats"
+          - "Transfer mechanisms"
+        automated_checks:
+          - check: "export_functionality_exists"
+            script: "scripts/compliance/gdpr/check_export.sh"
+            expected: "multiple_formats"
+        scoring:
+          weight: 10
+          max_points: 100
+
+  - category: "Data Breach Notification"
+    article: "Article 33-34"
+    controls:
+      - id: "GDPR-33.1"
+        title: "Breach Detection and Notification (72 hours)"
+        description: "Detect and notify supervisory authority within 72 hours of breach"
+        implementation_guidance: |
+          - Implement breach detection systems
+          - Establish notification procedures
+          - Maintain breach register
+        evidence_required:
+          - "Breach detection systems"
+          - "Notification procedures"
+          - "Breach register"
+        automated_checks:
+          - check: "breach_detection_active"
+            script: "scripts/compliance/gdpr/check_breach_detection.sh"
+            expected: "real_time_monitoring"
+          - check: "notification_procedures_defined"
+            script: "scripts/compliance/gdpr/check_breach_procedures.sh"
+            expected: "documented_and_tested"
+        scoring:
+          weight: 20
+          max_points: 100
+          mandatory: true
+
+      - id: "GDPR-34.1"
+        title: "Communication to Data Subjects"
+        description: "Notify affected data subjects of high-risk breaches"
+        implementation_guidance: |
+          - Risk assessment process for breaches
+          - Data subject notification templates
+          - Communication tracking system
+        evidence_required:
+          - "Breach risk assessment procedures"
+          - "Notification templates"
+          - "Communication records"
+        automated_checks:
+          - check: "risk_assessment_process_exists"
+            script: "scripts/compliance/gdpr/check_breach_risk.sh"
+            expected: "documented"
+        scoring:
+          weight: 15
+          max_points: 100
+
+  - category: "Data Protection Officer (DPO) and Records"
+    articles: "Article 30, 37-39"
+    controls:
+      - id: "GDPR-30.1"
+        title: "Records of Processing Activities"
+        description: "Maintain records of all processing activities"
+        implementation_guidance: |
+          - Create processing activity register
+          - Document purpose, categories, recipients
+          - Update records regularly
+        evidence_required:
+          - "Processing activity register"
+          - "Data flow documentation"
+          - "Update logs"
+        automated_checks:
+          - check: "processing_register_complete"
+            script: "scripts/compliance/gdpr/check_processing_register.sh"
+            expected: "all_activities_documented"
+          - check: "register_current"
+            script: "scripts/compliance/gdpr/check_register_updates.sh"
+            expected: "updated_within_90_days"
+        scoring:
+          weight: 12
+          max_points: 100
+
+      - id: "GDPR-37.1"
+        title: "Data Protection Officer (DPO) Designation"
+        description: "Designate DPO where required"
+        implementation_guidance: |
+          - Assess DPO requirement
+          - Designate qualified DPO
+          - Publish DPO contact details
+        evidence_required:
+          - "DPO designation letter"
+          - "DPO qualifications"
+          - "Published contact information"
+        automated_checks:
+          - check: "dpo_designated"
+            script: "scripts/compliance/gdpr/check_dpo.sh"
+            expected: "if_required"
+        scoring:
+          weight: 8
+          max_points: 100
+
+  - category: "Cross-Border Data Transfers"
+    articles: "Article 44-50"
+    controls:
+      - id: "GDPR-46.1"
+        title: "Appropriate Safeguards for Transfers"
+        description: "Implement safeguards for international data transfers"
+        implementation_guidance: |
+          - Use Standard Contractual Clauses (SCC)
+          - Implement Binding Corporate Rules (BCR) if applicable
+          - Conduct Transfer Impact Assessments (TIA)
+        evidence_required:
+          - "SCCs or BCRs"
+          - "Transfer Impact Assessments"
+          - "List of international transfers"
+        automated_checks:
+          - check: "sccs_in_place"
+            script: "scripts/compliance/gdpr/check_sccs.sh"
+            expected: "all_international_transfers"
+          - check: "tia_completed"
+            script: "scripts/compliance/gdpr/check_tia.sh"
+            expected: "for_all_transfers"
+        scoring:
+          weight: 15
+          max_points: 100
+
+# Assessment Configuration
+assessment:
+  accountability_requirements:
+    - "Data Protection Impact Assessments (DPIA)"
+    - "Records of Processing Activities"
+    - "Breach notification procedures"
+    - "Data subject rights implementation"
+
+  penalties:
+    tier_1_max: "10M EUR or 2% of global annual turnover"
+    tier_2_max: "20M EUR or 4% of global annual turnover"
+
+  supervisory_authorities: "National Data Protection Authorities in EU member states"
+
+  documentation_requirements:
+    - "Privacy notices"
+    - "Consent records"
+    - "Processing registers"
+    - "DPIA reports"
+    - "Breach registers"
+
+# Integration
+integration:
+  privacy_management_tools: true
+  consent_management_platform: true
+  data_discovery_and_classification: true
+  dpo_collaboration_portal: true
+
+# Continuous Compliance
+monitoring:
+  enabled: true
+  privacy_metrics_dashboard: true
+  automated_privacy_checks: true
+  data_subject_request_tracking: true

@@ -6,7 +6,6 @@ use crate::memory::{
     init_page_fault_handler, get_global_memory_manager_mut
 };
 use crate::ai_bridge;
-use crate::println;
 use alloc::boxed::Box;
 use alloc::vec;
 
@@ -32,40 +31,40 @@ impl Default for MemoryConfig {
 
 /// Initialize the complete memory management system
 pub fn init_memory_system(config: MemoryConfig) -> Result<(), &'static str> {
-    println!("🧠 Initializing SynOS memory management system...");
+    crate::println!("🧠 Initializing SynOS memory management system...");
     
     // Step 1: Initialize page fault handler
     init_page_fault_handler();
-    println!("✅ Page fault handler initialized");
+    crate::println!("✅ Page fault handler initialized");
     
     // Step 2: Create memory map for frame allocator
     let memory_map = create_memory_map(config.memory_map_size)?;
-    println!("✅ Memory map created ({} bytes)", config.memory_map_size);
+    crate::println!("✅ Memory map created ({} bytes)", config.memory_map_size);
     
     // Step 3: Create frame allocator
     let max_frames = config.total_memory / 4096;
     let frame_allocator = unsafe { 
         BitmapFrameAllocator::new(memory_map, max_frames) 
     };
-    println!("✅ Frame allocator created ({} frames)", max_frames);
+    crate::println!("✅ Frame allocator created ({} frames)", max_frames);
     
     // Step 4: Initialize global memory manager
     init_global_memory_manager(Box::new(frame_allocator), config.total_memory);
-    println!("✅ Global memory manager initialized");
+    crate::println!("✅ Global memory manager initialized");
     
     // Step 5: Set up AI integration if enabled
     if config.enable_consciousness {
         if let Ok(()) = setup_ai_integration() {
             if let Some(manager) = get_global_memory_manager_mut() {
                 manager.init_with_ai();
-                println!("✅ AI integration enabled");
+                crate::println!("✅ AI integration enabled");
             }
         } else {
-            println!("⚠️  AI integration failed, continuing without it");
+            crate::println!("⚠️  AI integration failed, continuing without it");
         }
     }
     
-    println!("🎉 Memory management system fully initialized!");
+    crate::println!("🎉 Memory management system fully initialized!");
     print_memory_system_info();
     
     Ok(())
@@ -86,7 +85,7 @@ fn setup_ai_integration() -> Result<(), &'static str> {
     ai_bridge::init();
     
     if ai_bridge::is_initialized() {
-        println!("� AI bridge initialized for memory management");
+        crate::println!("� AI bridge initialized for memory management");
         Ok(())
     } else {
         Err("Failed to initialize AI bridge")
@@ -116,7 +115,7 @@ fn print_memory_system_info() {
 pub fn test_memory_system() -> Result<(), &'static str> {
     use crate::memory::{get_global_memory_manager, VirtualAddress, virtual_memory::PageTableFlags};
     
-    println!("🧪 Testing memory system...");
+    crate::println!("🧪 Testing memory system...");
     
     let manager = get_global_memory_manager()
         .ok_or("Global memory manager not initialized")?;
@@ -183,14 +182,14 @@ pub fn memory_health_check() -> Result<(), &'static str> {
     
     // Check for critical memory conditions
     if available < (1024 * 1024) { // Less than 1MB available
-        println!("🚨 CRITICAL: Low memory warning - {} bytes available", available);
+        crate::println!("🚨 CRITICAL: Low memory warning - {} bytes available", available);
         return Err("Critical memory shortage");
     }
     
     if stats.out_of_memory_events > 10 {
-        println!("⚠️  WARNING: High out-of-memory event count: {}", stats.out_of_memory_events);
+        crate::println!("⚠️  WARNING: High out-of-memory event count: {}", stats.out_of_memory_events);
     }
     
-    println!("✅ Memory system health check passed");
+    crate::println!("✅ Memory system health check passed");
     Ok(())
 }

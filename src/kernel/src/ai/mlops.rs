@@ -8,7 +8,7 @@ use alloc::vec::Vec;
 use alloc::string::{String, ToString};
 use alloc::format;
 use core::sync::atomic::{AtomicU64, AtomicU32, Ordering};
-use spin::{Mutex, RwLock};
+use spin::RwLock;
 use serde::{Serialize, Deserialize};
 
 use crate::ai::runtime::*;
@@ -310,6 +310,13 @@ impl MLOpsManager {
         }
     }
 
+    /// Get current timestamp (no_std compatible)
+    fn get_timestamp(&self) -> u64 {
+        // Simple counter-based timestamp for no_std environment
+        static COUNTER: AtomicU64 = AtomicU64::new(1);
+        COUNTER.fetch_add(1, Ordering::SeqCst)
+    }
+
     /// Register a new model version
     pub fn register_model_version(&self, model_name: String, version_data: ModelVersion) -> Result<String, MLOpsError> {
         let mut models = self.models.write();
@@ -324,7 +331,7 @@ impl MLOpsManager {
         model_versions.push(version_data.clone());
         model_versions.sort_by_key(|v| v.version);
 
-        println!("Registered model version: {} v{}", model_name, version_data.version);
+        crate::println!("Registered model version: {} v{}", model_name, version_data.version);
         Ok(version_data.model_id)
     }
 
@@ -368,28 +375,35 @@ impl MLOpsManager {
         let mut models = self.models.write();
 
         if let Some(model_versions) = models.get_mut(model_name) {
-            if let Some(model_version) = model_versions.iter_mut().find(|v| v.version == version) {
-
-                // Handle stage transition logic
-                match new_stage {
-                    ModelStage::Production => {
-                        // Only one model can be in production at a time
-                        for other in model_versions.iter_mut() {
-                            if other.stage == ModelStage::Production && other.version != version {
-                                other.stage = ModelStage::Staging;
-                            }
+            // Handle stage transition logic
+            match new_stage {
+                ModelStage::Production => {
+                    // Find versions to update first
+                    let versions_to_change: Vec<u32> = model_versions
+                        .iter()
+                        .filter(|v| v.stage == ModelStage::Production && v.version != version)
+                        .map(|v| v.version)
+                        .collect();
+                    
+                    // Update those versions
+                    for other in model_versions.iter_mut() {
+                        if versions_to_change.contains(&other.version) {
+                            other.stage = ModelStage::Staging;
                         }
                     }
-                    _ => {}
                 }
+                _ => {}
+            }
 
+            // Now find and update the target version
+            if let Some(model_version) = model_versions.iter_mut().find(|v| v.version == version) {
                 model_version.stage = new_stage;
                 model_version.last_updated = get_current_timestamp();
 
-                println!("Transitioned {} v{} to {:?}", model_name, version, new_stage);
+                crate::println!("Transitioned {} v{} to {:?}", model_name, version, new_stage);
                 Ok(())
             } else {
-                Err(MLOpsError::VersionNotFound)
+                Err(MLOpsError::ModelNotFound)
             }
         } else {
             Err(MLOpsError::ModelNotFound)
@@ -448,7 +462,7 @@ impl MLOpsManager {
             deployment.status = DeploymentStatus::Running;
             deployment.traffic_percentage = 100.0;
 
-            println!("Deployed model {} with {} instances", deployment_id, deployment.instances.len());
+            crate::println!("Deployed model {} with {} instances", deployment_id, deployment.instances.len());
             Ok(())
         } else {
             Err(MLOpsError::DeploymentNotFound)
@@ -494,7 +508,7 @@ impl MLOpsManager {
 
     /// Rollback deployment
     pub fn rollback_deployment(&self, deployment_id: &str, target_version: Option<u32>) -> Result<(), MLOpsError> {
-        println!("Initiating rollback for deployment: {}", deployment_id);
+        crate::println!("Initiating rollback for deployment: {}", deployment_id);
 
         // In a real system, this would:
         // 1. Stop current deployment
@@ -513,7 +527,7 @@ impl MLOpsManager {
 
             deployment.traffic_percentage = 0.0;
 
-            println!("Rollback completed for deployment: {}", deployment_id);
+            crate::println!("Rollback completed for deployment: {}", deployment_id);
             Ok(())
         } else {
             Err(MLOpsError::DeploymentNotFound)
@@ -538,13 +552,13 @@ impl MLOpsManager {
         let mut experiments = self.experiments.write();
         experiments.insert(experiment_id.clone(), experiment);
 
-        println!("Created experiment: {}", experiment_id);
+        crate::println!("Created experiment: {}", experiment_id);
         Ok(experiment_id)
     }
 
     /// Start experiment run
     pub fn start_run(&self, experiment_id: &str, run_name: String) -> Result<String, MLOpsError> {
-        let run_id = format!("run_{}_{}", experiment_id, chrono::Utc::now().timestamp());
+        let run_id = format!("run_{}_{}", experiment_id, self.get_timestamp());
 
         let run = ExperimentRun {
             run_id: run_id.clone(),
@@ -566,7 +580,7 @@ impl MLOpsManager {
             experiment.runs.push(run);
             experiment.last_updated = get_current_timestamp();
 
-            println!("Started run: {} in experiment: {}", run_id, experiment_id);
+            crate::println!("Started run: {} in experiment: {}", run_id, experiment_id);
             Ok(run_id)
         } else {
             Err(MLOpsError::ExperimentNotFound)

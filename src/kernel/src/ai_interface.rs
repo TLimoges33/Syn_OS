@@ -59,7 +59,7 @@ impl AIInterface {
         self.page_frequencies.insert(page_addr, frequency + 1);
 
         // Log consciousness event
-        println!("🧠 Consciousness: {} at 0x{:x} with data 0x{:x}", event_type, address, data);
+        crate::println!("🧠 Consciousness: {} at 0x{:x} with data 0x{:x}", event_type, address, data);
         
         // Adjust awareness level based on memory activity
         if self.memory_patterns.len() > 100 {
@@ -283,7 +283,7 @@ static OPTIMIZATION_COUNT: AtomicUsize = AtomicUsize::new(0);
 
 /// Initialize the consciousness-integrated memory subsystem
 pub fn init() {
-    println!("  • Initializing consciousness memory integration");
+    crate::println!("  • Initializing consciousness memory integration");
     
     // Reset state
     let mut state = CONSCIOUSNESS_STATE.lock();
@@ -296,10 +296,10 @@ pub fn init() {
     // Set optimization strategy based on quantum coherence
     if state.quantum_state.coherence >= QUANTUM_COHERENCE_THRESHOLD {
         state.strategy = OptimizationStrategy::QuantumEnhanced;
-        println!("  • Quantum-enhanced memory optimization enabled");
+        crate::println!("  • Quantum-enhanced memory optimization enabled");
     } else {
         state.strategy = OptimizationStrategy::Hybrid;
-        println!("  • Hybrid memory optimization enabled");
+        crate::println!("  • Hybrid memory optimization enabled");
     }
     
     // Initialize metrics
@@ -311,7 +311,7 @@ pub fn init() {
         optimization_rate: 0.0,
     };
     
-    println!("  ✓ Consciousness memory integration complete");
+    crate::println!("  ✓ Consciousness memory integration complete");
 }
 
 /// Allocate memory with consciousness awareness

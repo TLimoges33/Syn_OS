@@ -4,7 +4,7 @@
 //! including function signatures and data structures.
 
 use alloc::vec::Vec;
-use alloc::string::String;
+use alloc::string::{String, ToString};
 
 /// Main AI interface for kernel-AI engine interaction
 #[derive(Debug)]
@@ -63,7 +63,7 @@ pub enum AIParameter {
 }
 
 /// Stimulus data for consciousness processing
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct StimulusData {
     pub stimulus_type: StimulusType,
     pub intensity: f32,
@@ -84,7 +84,7 @@ pub enum StimulusType {
 }
 
 /// Decision making context
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct DecisionContext {
     pub decision_type: DecisionType,
     pub available_options: Vec<DecisionOption>,
@@ -103,7 +103,7 @@ pub enum DecisionType {
 }
 
 /// Decision option
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct DecisionOption {
     pub option_id: u32,
     pub description: String,
@@ -112,7 +112,7 @@ pub struct DecisionOption {
 }
 
 /// Decision constraint
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct DecisionConstraint {
     pub constraint_type: ConstraintType,
     pub value: f32,
@@ -130,7 +130,7 @@ pub enum ConstraintType {
 }
 
 /// Memory update information
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct MemoryUpdate {
     pub update_type: MemoryUpdateType,
     pub content: Vec<u8>,
@@ -149,7 +149,7 @@ pub enum MemoryUpdateType {
 }
 
 /// Learning data
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct LearningData {
     pub learning_type: LearningType,
     pub input_data: Vec<f32>,

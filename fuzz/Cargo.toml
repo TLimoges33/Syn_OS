@@ -1,0 +1,31 @@
+[package]
+name = "synos-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+# This is its own workspace, separate from parent
+[workspace]
+
+[dependencies]
+libfuzzer-sys = "0.4"
+
+# We'll create a simple fuzz-testable crate
+[dependencies.synos-fuzzable]
+path = "../fuzz-testable"
+
+# Fuzz targets
+[[bin]]
+name = "fuzz_input_validation"
+path = "fuzz_targets/fuzz_input_validation.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "fuzz_parser"
+path = "fuzz_targets/fuzz_parser.rs"
+test = false
+doc = false

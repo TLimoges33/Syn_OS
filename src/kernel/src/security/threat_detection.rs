@@ -4,10 +4,35 @@
 //! for identifying and mitigating security threats.
 
 use alloc::vec::Vec;
-use alloc::string::String;
+use alloc::string::{String, ToString};
 use alloc::collections::BTreeMap;
-use alloc::string::ToString;
 use crate::security::{SecurityConfig, SecurityEvent, SecurityEventType, SecuritySeverity};
+
+/// Threat alert structure for compatibility
+#[derive(Debug, Clone)]
+pub struct ThreatAlert {
+    pub threat_type: ThreatType,
+    pub severity: SecuritySeverity,
+    pub timestamp: u64,
+    pub source_pid: Option<u64>,
+    pub memory_address: Option<u64>,
+    pub description: String,
+    pub mitigation_applied: bool,
+}
+
+impl ThreatAlert {
+    pub fn new(threat_type: ThreatType, severity: SecuritySeverity, description: String) -> Self {
+        Self {
+            threat_type,
+            severity,
+            timestamp: crate::time::get_current_time(),
+            source_pid: None,
+            memory_address: None,
+            description,
+            mitigation_applied: false,
+        }
+    }
+}
 
 /// Threat detection system
 pub struct ThreatDetectionSystem {
@@ -189,7 +214,7 @@ static mut THREAT_DETECTION_SYSTEM: Option<ThreatDetectionSystem> = None;
 
 /// Initialize threat detection system
 pub async fn init_threat_detection(config: &SecurityConfig) -> Result<(), &'static str> {
-    crate::serial_println!("🔍 Initializing threat detection system...");
+    crate::println!("🔍 Initializing threat detection system...");
     
     let mut system = ThreatDetectionSystem::new();
     
@@ -206,7 +231,7 @@ pub async fn init_threat_detection(config: &SecurityConfig) -> Result<(), &'stat
         THREAT_DETECTION_SYSTEM = Some(system);
     }
     
-    crate::serial_println!("✅ Threat detection system initialized");
+    crate::println!("✅ Threat detection system initialized");
     Ok(())
 }
 
@@ -260,6 +285,10 @@ impl ThreatDetectionSystem {
             crate::security::SecurityLevel::Enhanced => SensitivityLevel::Medium,
             crate::security::SecurityLevel::Paranoid => SensitivityLevel::High,
             crate::security::SecurityLevel::Maximum => SensitivityLevel::Maximum,
+            crate::security::SecurityLevel::Internal => SensitivityLevel::Medium,
+            crate::security::SecurityLevel::Confidential => SensitivityLevel::High,
+            crate::security::SecurityLevel::Secret => SensitivityLevel::High,
+            crate::security::SecurityLevel::TopSecret => SensitivityLevel::Maximum,
         };
         
         // Adjust detector sensitivity

@@ -4,7 +4,6 @@
 //! stack protection, ASLR, DEP, and other security mitigations.
 
 use alloc::vec::Vec;
-use alloc::string::String;
 use crate::security::{SecurityConfig, SecurityLevel, SecurityPolicy};
 
 /// System hardening manager
@@ -53,7 +52,7 @@ pub enum HardeningFeature {
 
 /// Initialize system hardening
 pub async fn init_hardening(config: &SecurityConfig) -> Result<(), &'static str> {
-    crate::serial_println!("🔒 Initializing system hardening...");
+    crate::println!("🔒 Initializing system hardening...");
     
     // Enable stack protection
     enable_stack_protection()?;
@@ -76,13 +75,13 @@ pub async fn init_hardening(config: &SecurityConfig) -> Result<(), &'static str>
     // Enable control flow integrity
     enable_control_flow_integrity()?;
     
-    crate::serial_println!("✅ System hardening initialized");
+    crate::println!("✅ System hardening initialized");
     Ok(())
 }
 
 /// Apply hardening policy
 pub async fn apply_hardening_policy(policy: &SecurityPolicy) -> Result<(), &'static str> {
-    crate::serial_println!("🔧 Applying hardening policy: {}", policy.policy_name);
+    crate::println!("🔧 Applying hardening policy: {}", policy.policy_name);
     
     // Apply policy-specific hardening measures
     match policy.enforcement_level {
@@ -210,15 +209,15 @@ fn enable_control_flow_integrity() -> Result<(), &'static str> {
 /// Check CPU support for SMEP
 fn cpu_supports_smep() -> bool {
     // Check CPUID for SMEP support
-    let (_, _, _, edx) = unsafe { core::arch::x86_64::__cpuid(7) };
-    (edx & (1 << 7)) != 0
+    let cpuid_result = unsafe { core::arch::x86_64::__cpuid(7) };
+    (cpuid_result.edx & (1 << 7)) != 0
 }
 
 /// Check CPU support for SMAP
 fn cpu_supports_smap() -> bool {
     // Check CPUID for SMAP support
-    let (_, _, _, edx) = unsafe { core::arch::x86_64::__cpuid(7) };
-    (edx & (1 << 20)) != 0
+    let cpuid_result = unsafe { core::arch::x86_64::__cpuid(7) };
+    (cpuid_result.edx & (1 << 20)) != 0
 }
 
 // ASLR configuration functions

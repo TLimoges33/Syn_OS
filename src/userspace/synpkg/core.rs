@@ -11,7 +11,8 @@ use tokio::fs;
 use crate::repository::{RepositoryManager, PackageSource};
 use crate::dependency::DependencyResolver;
 use crate::cache::PackageCache;
-use syn_ai::ConsciousnessEngine;
+// TODO: Implement ConsciousnessEngine integration when available
+// use syn_ai::ConsciousnessEngine;
 use crate::security::SecurityValidator;
 
 /// Package information structure
@@ -59,7 +60,8 @@ pub struct SynPkgManager {
     repo_manager: RepositoryManager,
     dependency_resolver: DependencyResolver,
     cache: PackageCache,
-    consciousness: ConsciousnessEngine,
+    // TODO: Re-enable when ConsciousnessEngine is available
+    // consciousness: ConsciousnessEngine,
     security: SecurityValidator,
     config_dir: PathBuf,
     cache_dir: PathBuf,
@@ -78,14 +80,16 @@ impl SynPkgManager {
         let repo_manager = RepositoryManager::new(&config_dir).await?;
         let dependency_resolver = DependencyResolver::new();
         let cache = PackageCache::new(&cache_dir).await?;
-        let consciousness = ConsciousnessEngine::new().await?;
+        // TODO: Re-enable when ConsciousnessEngine is available
+        // let consciousness = ConsciousnessEngine::new().await?;
         let security = SecurityValidator::new().await?;
 
         Ok(Self {
             repo_manager,
             dependency_resolver,
             cache,
-            consciousness,
+            // TODO: Re-enable when ConsciousnessEngine is available
+            // consciousness,
             security,
             config_dir,
             cache_dir,
@@ -101,17 +105,19 @@ impl SynPkgManager {
     ) -> Result<()> {
         println!("🧠 Installing package with consciousness: {}", package_name);
 
-        // Get consciousness recommendation
-        let recommendation = self.consciousness.recommend_package(
-            package_name,
-            context,
-            preferred_source.map(|s| s.as_str())
-        ).await?;
+        // TODO: Re-enable when consciousness integration is available
+        // let recommendation = self.consciousness.recommend_package(
+        //     package_name,
+        //     context,
+        //     preferred_source.map(|s| s.as_str())
+        // ).await?;
 
-        println!("🎯 Consciousness recommendation: {:?}", recommendation);
+        // TODO: Use consciousness recommendation when available
+        // println!("🎯 Consciousness recommendation: {:?}", recommendation);
 
         // Find package in repositories
-        let package_info = self.find_package(package_name, recommendation.preferred_source).await?;
+        // TODO: Convert preferred_source string to PackageSource when needed
+        let package_info = self.find_package(package_name, None).await?;
 
         // Security validation
         self.security.validate_package(&package_info).await?;
@@ -139,7 +145,8 @@ impl SynPkgManager {
         }
 
         // Update consciousness learning
-        self.consciousness.record_installation(package_name, context, true).await?;
+        // TODO: Re-enable consciousness recording
+        // self.consciousness.record_installation(package_name, context, true).await?;
 
         println!("✅ Successfully installed {}", package_name);
         Ok(())
@@ -184,7 +191,9 @@ impl SynPkgManager {
         }
 
         // Get consciousness rankings
-        let ranked_results = self.consciousness.rank_search_results(results, query).await?;
+        // TODO: Re-enable consciousness ranking
+        let ranked_results = results;
+        // self.consciousness.rank_search_results(results, query).await?;
 
         println!("Found {} packages:", ranked_results.len());
         for (i, pkg) in ranked_results.iter().enumerate().take(20) {
@@ -224,7 +233,9 @@ impl SynPkgManager {
         }
 
         // Get consciousness optimization for upgrade order
-        let optimized_order = self.consciousness.optimize_upgrade_order(&upgradable).await?;
+        // TODO: Re-enable consciousness optimization
+        let optimized_order: Vec<String> = upgradable.iter().map(|p| p.clone()).collect();
+        // self.consciousness.optimize_upgrade_order(&upgradable).await?;
 
         for pkg_name in optimized_order.iter() {
             println!("⬆️  Upgrading {}...", pkg_name);
@@ -295,7 +306,9 @@ impl SynPkgManager {
     pub async fn get_consciousness_recommendations(&mut self, context: &str) -> Result<()> {
         println!("🧠 Getting consciousness recommendations for context: {}", context);
         
-        let recommendations = self.consciousness.get_recommendations(context).await?;
+        // TODO: Re-enable consciousness recommendations
+        let recommendations: Vec<String> = Vec::new();
+        // self.consciousness.get_recommendations(context).await?;
         
         if recommendations.is_empty() {
             println!("No recommendations available for this context");
@@ -304,8 +317,7 @@ impl SynPkgManager {
 
         println!("Recommendations:");
         for (i, rec) in recommendations.iter().enumerate() {
-            println!("{}. {} (confidence: {:.1}%)", i + 1, rec.package, rec.confidence * 100.0);
-            println!("   Reason: {}", rec.reason);
+            println!("{}. {}", i + 1, rec);
         }
 
         Ok(())
@@ -316,7 +328,9 @@ impl SynPkgManager {
         println!("🧠 Optimizing package configuration...");
         
         let installed = self.cache.get_installed_packages().await?;
-        let optimizations = self.consciousness.suggest_optimizations(&installed).await?;
+        // TODO: Re-enable consciousness optimizations
+        let optimizations: Vec<String> = Vec::new();
+        // self.consciousness.suggest_optimizations(&installed).await?;
         
         if optimizations.is_empty() {
             println!("No optimizations suggested");

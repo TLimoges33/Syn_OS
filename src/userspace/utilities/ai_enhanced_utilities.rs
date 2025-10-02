@@ -5,6 +5,7 @@
 
 use alloc::{collections::BTreeMap, format, string::String, vec::Vec};
 use core::{cmp::Ordering, fmt};
+use crate::memory::educational_memory_manager::SkillLevel;
 
 /// AI Enhancement Engine for system utilities
 pub struct UtilityAI {
@@ -137,12 +138,6 @@ pub struct WorkflowDetector {
 
 /// Educational system components
 #[derive(Debug, Clone)]
-pub enum SkillLevel {
-    Beginner,
-    Intermediate,
-    Advanced,
-    Expert,
-}
 
 #[derive(Debug, Clone)]
 pub struct LearningObjective {

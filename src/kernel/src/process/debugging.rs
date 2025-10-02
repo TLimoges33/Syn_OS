@@ -5,12 +5,12 @@
 
 use alloc::collections::BTreeMap;
 use alloc::vec::Vec;
-use alloc::string::{String, ToString};
+use alloc::string::String;
 use alloc::format;
 use core::sync::atomic::{AtomicU64, AtomicU32, Ordering};
 use spin::{Mutex, RwLock};
 
-use crate::process_lifecycle::{ProcessId, ProcessState, ProcessError, CpuState};
+use crate::process_lifecycle::{ProcessId, ProcessError, CpuState};
 use crate::ai::interface::AIInterface;
 
 /// Debug event types

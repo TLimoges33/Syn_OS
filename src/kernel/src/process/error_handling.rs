@@ -293,7 +293,7 @@ impl ErrorContext {
             line,
             timestamp: crate::time::get_current_time(),
             cpu_id: crate::cpu::current_cpu_id(),
-            process_id: crate::process::current_process_id(),
+            process_id: Some(crate::process::current_process_id() as u64),
             call_stack: capture_call_stack(),
         }
     }
@@ -414,26 +414,29 @@ impl ErrorRecoveryManager {
         match strategy {
             RecoveryStrategy::Retry { max_attempts, delay_ms } => {
                 // Implement retry logic
-                crate::log::warn!("Retrying operation (max: {}, delay: {}ms)", max_attempts, delay_ms);
+                log::warn!("Retrying operation (max: {}, delay: {}ms)", max_attempts, delay_ms);
             }
             RecoveryStrategy::Fallback { fallback_operation } => {
                 // Switch to fallback operation
-                crate::log::info!("Switching to fallback operation: {}", fallback_operation);
+                log::info!("Switching to fallback operation: {}", fallback_operation);
             }
             RecoveryStrategy::Isolate { affected_processes } => {
                 // Isolate affected processes
                 for &pid in affected_processes {
-                    crate::process::isolate_process(pid)?;
+                    if let Err(_) = crate::process::isolate_process(pid as u32) {
+                        log::error!("Failed to isolate process {}", pid);
+                        // Continue with other processes
+                    }
                 }
             }
             RecoveryStrategy::SystemRestart { component, preserve_state } => {
                 // Restart system component
-                crate::log::error!("Restarting component: {} (preserve_state: {})", component, preserve_state);
+                log::error!("Restarting component: {} (preserve_state: {})", component, preserve_state);
                 // Implement component restart
             }
             RecoveryStrategy::EmergencyShutdown { reason, save_core_dump } => {
                 // Emergency shutdown
-                crate::log::critical!("Emergency shutdown: {} (save_dump: {})", reason, save_core_dump);
+                log::error!("Emergency shutdown: {} (save_dump: {})", reason, save_core_dump);
                 if *save_core_dump {
                     crate::debug::save_core_dump()?;
                 }
@@ -449,19 +452,19 @@ impl ErrorRecoveryManager {
 
         match severity {
             ErrorSeverity::Critical => {
-                crate::log::critical!("CRITICAL ERROR: {} at {}:{} - Recovery: {:?}",
+                log::error!("CRITICAL ERROR: {} at {}:{} - Recovery: {:?}",
                                     error, context.file, context.line, strategy);
             }
             ErrorSeverity::High => {
-                crate::log::error!("ERROR: {} at {}:{} - Recovery: {:?}",
+                log::error!("ERROR: {} at {}:{} - Recovery: {:?}",
                                  error, context.file, context.line, strategy);
             }
             ErrorSeverity::Medium => {
-                crate::log::warn!("WARNING: {} at {}:{} - Recovery: {:?}",
+                log::warn!("WARNING: {} at {}:{} - Recovery: {:?}",
                                 error, context.file, context.line, strategy);
             }
             ErrorSeverity::Low => {
-                crate::log::info!("Info: {} at {}:{} - Recovery: {:?}",
+                log::info!("Info: {} at {}:{} - Recovery: {:?}",
                                 error, context.file, context.line, strategy);
             }
         }
@@ -551,20 +554,26 @@ fn capture_call_stack() -> Vec<String> {
     ]
 }
 
-/// Panic handler for process management errors
-#[panic_handler]
-fn panic(info: &PanicInfo) -> ! {
-    crate::log::critical!("KERNEL PANIC in process management: {}", info);
-
-    // Try to save critical state
-    if let Err(e) = crate::debug::save_emergency_state() {
-        crate::log::critical!("Failed to save emergency state: {:?}", e);
-    }
-
-    // Halt the system
-    loop {
-        unsafe {
-            core::arch::asm!("hlt");
+// From implementations for error conversion
+impl From<crate::debug::DebugError> for ProcessError {
+    fn from(debug_error: crate::debug::DebugError) -> Self {
+        use crate::debug::DebugError;
+        match debug_error {
+            DebugError::IoError(msg) => ProcessError::SystemCorruption {
+                component: "debug_system".to_string(),
+                corruption_detected: format!("Debug I/O error: {}", msg),
+                integrity_check_failed: false,
+            },
+            DebugError::InsufficientMemory => ProcessError::OutOfMemory {
+                requested: 0,
+                available: 0,
+                context: "debug_core_dump".to_string(),
+            },
+            DebugError::InvalidState => ProcessError::SystemCorruption {
+                component: "debug_system".to_string(),
+                corruption_detected: "Invalid debug system state".to_string(),
+                integrity_check_failed: true,
+            },
         }
     }
 }

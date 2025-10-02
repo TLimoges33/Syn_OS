@@ -8,10 +8,12 @@ license = "MIT"
 
 [dependencies]
 # AI runtime dependencies
+# TensorFlow Lite Integration (Candle-based) - use latest stable version
 candle-core = { workspace = true, optional = true }
 candle-nn = { workspace = true, optional = true }
 ort = { workspace = true, optional = true }         # ONNX Runtime
-tch = { workspace = true, optional = true }         # PyTorch
+# Python integration for PyTorch (instead of problematic tch crate)
+pyo3 = { version = "0.20", optional = true }        # Python integration
 
 # System integration
 tokio = { workspace = true }
@@ -40,6 +42,7 @@ libc = { workspace = true }
 # Cryptography for secure model loading
 ring = { workspace = true }
 chacha20poly1305 = { workspace = true }
+hex = "0.4"
 
 # Additional system dependencies
 num_cpus = "1.16"
@@ -50,7 +53,7 @@ default = ["lightweight"]
 lightweight = []
 tensorflow-lite = ["candle-core", "candle-nn"]
 onnx = ["ort"]
-pytorch = ["tch"]
+pytorch = ["pyo3"]
 full-ai = ["tensorflow-lite", "onnx", "pytorch"]
 hardware-acceleration = []
 linux-integration = ["systemd", "dbus"]

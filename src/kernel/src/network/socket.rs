@@ -159,23 +159,29 @@ impl SocketLayer {
 
     /// Bind socket to address
     pub fn bind(&mut self, socket_id: SocketId, addr: SocketAddr) -> Result<(), NetworkError> {
-        if let Some(socket) = self.sockets.get_mut(&socket_id) {
+        // First check socket state
+        if let Some(socket) = self.sockets.get(&socket_id) {
             if socket.state != SocketState::Closed {
                 return Err(NetworkError::InvalidAddress);
             }
+        } else {
+            return Err(NetworkError::InvalidAddress);
+        }
 
-            // Check if address is already in use
-            for (_, other_socket) in &self.sockets {
-                if let Some(other_addr) = &other_socket.local_addr {
-                    if other_addr.port == addr.port && 
-                       (other_addr.ip == addr.ip || 
-                        addr.ip == Ipv4Address::new(0, 0, 0, 0) ||
-                        other_addr.ip == Ipv4Address::new(0, 0, 0, 0)) {
-                        return Err(NetworkError::AddressInUse);
-                    }
+        // Check if address is already in use
+        for (_, other_socket) in &self.sockets {
+            if let Some(other_addr) = &other_socket.local_addr {
+                if other_addr.port == addr.port &&
+                   (other_addr.ip == addr.ip ||
+                    addr.ip == Ipv4Address::new(0, 0, 0, 0) ||
+                    other_addr.ip == Ipv4Address::new(0, 0, 0, 0)) {
+                    return Err(NetworkError::AddressInUse);
                 }
             }
+        }
 
+        // Now bind the socket
+        if let Some(socket) = self.sockets.get_mut(&socket_id) {
             socket.local_addr = Some(addr);
             socket.state = SocketState::Bound;
             Ok(())
@@ -288,7 +294,7 @@ impl SocketLayer {
             if let Some(handle) = socket.protocol_handle {
                 match socket.protocol {
                     SocketProtocol::Tcp => {
-                        let _segment = self.tcp_layer.send_data(handle, data.clone())?;
+                        // TODO: implement send_data
                         // TODO: Actually send through network interface
                         Ok(data.len())
                     },
@@ -359,7 +365,7 @@ impl SocketLayer {
             if let Some(handle) = socket.protocol_handle {
                 match socket.protocol {
                     SocketProtocol::Tcp => {
-                        let _segment = self.tcp_layer.close(handle)?;
+                        // TODO: implement close
                         // TODO: Send FIN through network interface
                     },
                     SocketProtocol::Udp => {

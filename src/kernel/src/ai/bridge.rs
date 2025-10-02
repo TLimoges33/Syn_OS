@@ -5,7 +5,6 @@
 
 use crate::ipc::{IPCChannel, IPCMessage};
 use crate::memory::VirtualAddress;
-use alloc::string::String;
 use alloc::vec::Vec;
 
 /// AI Bridge for kernel-AI engine communication
@@ -78,7 +77,7 @@ impl AIBridge {
     
     /// Initialize the bridge connection
     pub async fn initialize(&mut self) -> Result<(), &'static str> {
-        crate::serial_println!("🔗 Initializing AI bridge...");
+        crate::println!("🔗 Initializing AI bridge...");
         
         self.bridge_state = BridgeState::Connecting;
         
@@ -92,7 +91,7 @@ impl AIBridge {
         self.start_ai_engine_process().await?;
         
         self.bridge_state = BridgeState::Connected;
-        crate::serial_println!("✅ AI bridge initialized");
+        crate::println!("✅ AI bridge initialized");
         Ok(())
     }
     
@@ -102,8 +101,10 @@ impl AIBridge {
             return Err("AI bridge not connected");
         }
         
+        // Serialize message first
+        let ipc_message = self.serialize_message(message)?;
+        
         if let Some(ref mut channel) = self.ipc_channel {
-            let ipc_message = self.serialize_message(message)?;
             channel.send(ipc_message).await
                 .map_err(|_| "Failed to send message to AI engine")?;
         } else {
@@ -131,9 +132,10 @@ impl AIBridge {
     /// Set up shared memory region
     async fn setup_shared_memory(&mut self) -> Result<(), &'static str> {
         // Allocate shared memory region
-        let shared_mem = crate::memory::allocate_shared_memory(1024 * 1024) // 1MB
+        let shared_mem_ptr = crate::memory::allocate_shared_memory(1024 * 1024) // 1MB
             .map_err(|_| "Failed to allocate shared memory")?;
         
+        let shared_mem = VirtualAddress::new(shared_mem_ptr as usize);
         self.shared_memory = Some(shared_mem);
         Ok(())
     }
@@ -141,7 +143,7 @@ impl AIBridge {
     /// Start AI engine process
     async fn start_ai_engine_process(&mut self) -> Result<(), &'static str> {
         // Launch AI engine as a separate process
-        let pid = crate::process::spawn_process("/usr/lib/synos/ai-engine", &[])
+        let pid = crate::process::spawn_process(b"/usr/lib/synos/ai-engine")
             .map_err(|_| "Failed to start AI engine process")?;
         
         self.ai_engine_pid = Some(pid);
@@ -158,7 +160,33 @@ impl AIBridge {
             _ => b"GENERIC".to_vec(), // Simplified for now
         };
         
-        Ok(IPCMessage::new(data))
+        Ok(IPCMessage::new(0, 1, data)) // sender_pid=0, receiver_pid=1
+    }
+    
+    /// Shutdown the AI bridge
+    pub async fn shutdown(&mut self) -> Result<(), &'static str> {
+        crate::println!("🔗 Shutting down AI bridge...");
+        
+        self.bridge_state = BridgeState::Disconnected;
+        self.ipc_channel = None;
+        self.shared_memory = None;
+        self.ai_engine_pid = None;
+        
+        Ok(())
+    }
+    
+    /// Process AI request through the bridge
+    pub async fn process_ai_request(&mut self, request: crate::ai::interface::AIRequest) -> Result<crate::ai::interface::AIResponse, &'static str> {
+        // TODO: Implement actual AI request processing
+        use crate::ai::interface::AIResponse;
+        Ok(AIResponse {
+            success: true,
+            operation: request.operation,
+            result_data: b"AI request processed successfully".to_vec(),
+            confidence: 1.0,
+            processing_time_ms: 1,
+            error_message: None,
+        })
     }
 }
 

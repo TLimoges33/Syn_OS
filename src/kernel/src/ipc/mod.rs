@@ -30,6 +30,72 @@ pub static IPC_MANAGER: Mutex<Option<IPCManager>> = Mutex::new(None);
 /// IPC resource identifier
 pub type IPCId = u64;
 
+/// IPC Channel for communication
+#[derive(Debug, Clone)]
+pub struct IPCChannel {
+    pub id: IPCId,
+    pub channel_type: IPCResourceType,
+    pub buffer_size: usize,
+    pub permissions: IPCPermissions,
+}
+
+impl IPCChannel {
+    pub fn new(id: IPCId, channel_type: IPCResourceType, buffer_size: usize) -> Self {
+        Self {
+            id,
+            channel_type,
+            buffer_size,
+            permissions: IPCPermissions::default(),
+        }
+    }
+
+    /// Create a new IPC channel with a name
+    pub fn create(name: &str) -> Result<Self, &'static str> {
+        let id = name.len() as IPCId; // Simple ID generation
+        Ok(Self::new(id, IPCResourceType::Pipe, 4096))
+    }
+
+    /// Send a message through the channel
+    pub async fn send(&mut self, _message: IPCMessage) -> Result<(), &'static str> {
+        // TODO: Implement actual message sending
+        Ok(())
+    }
+}
+
+/// IPC Message structure
+#[derive(Debug, Clone)]
+pub struct IPCMessage {
+    pub sender_pid: u64,
+    pub receiver_pid: u64,
+    pub message_type: MessageType,
+    pub data: Vec<u8>,
+    pub timestamp: u64,
+    pub priority: MessagePriority,
+}
+
+/// Message types for IPC communication
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MessageType {
+    Data,
+    Control,
+    Signal,
+    Notification,
+    Emergency,
+}
+
+impl IPCMessage {
+    pub fn new(sender_pid: u64, receiver_pid: u64, data: Vec<u8>) -> Self {
+        Self {
+            sender_pid,
+            receiver_pid,
+            message_type: MessageType::Data,
+            data,
+            timestamp: 0, // TODO: Get actual timestamp
+            priority: MessagePriority::Normal,
+        }
+    }
+}
+
 /// IPC error types
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum IPCError {
@@ -557,4 +623,11 @@ mod tests {
         assert_eq!(manager.stats.active_pipes, 0);
         assert_eq!(manager.stats.total_resources, 0);
     }
+}
+
+/// Initialize the IPC system
+pub fn init_ipc_system() {
+    let mut manager_guard = IPC_MANAGER.lock();
+    *manager_guard = Some(IPCManager::new());
+    // TODO: Complete IPC system initialization
 }

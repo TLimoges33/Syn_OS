@@ -4,6 +4,7 @@ use alloc::vec::Vec;
 use alloc::string::{String, ToString};
 use alloc::collections::BTreeMap;
 use super::advanced_device_manager::*;
+use crate::memory::physical::PhysicalAddress;
 
 /// USB HID Driver (Keyboard, Mouse, Game Controllers)
 pub struct USBHIDDriver {

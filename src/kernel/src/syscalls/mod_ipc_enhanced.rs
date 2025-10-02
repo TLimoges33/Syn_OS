@@ -1,7 +1,7 @@
 /// Enhanced System Call Interface for SynOS with Complete IPC Support
 /// Provides POSIX-compatible system calls with consciousness integration
 
-use alloc::string::String;
+use alloc::string::{String, ToString};
 use alloc::vec::Vec;
 use core::ptr;
 use crate::memory::VirtualAddress;

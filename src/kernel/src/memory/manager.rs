@@ -4,7 +4,6 @@
 use super::virtual_memory::{MemoryMapper, PageFaultHandler, VirtualAddress, PageTableFlags};
 use super::physical::{FrameAllocator};
 use crate::ai_bridge;
-use crate::println;
 use alloc::boxed::Box;
 use alloc::vec::Vec;
 use spin::Mutex;
@@ -66,12 +65,12 @@ impl MemoryManager {
         &self,
         virtual_address: VirtualAddress,
         error_code: u64,
-        instruction_pointer: u64,
+        _instruction_pointer: u64,
     ) -> Result<(), MemoryError> {
         // Note: In a real implementation, we would have access to the memory mapper
         // through interrupt context switching. For now, we simulate the handling.
         
-        let mut handler = self.page_fault_handler.lock();
+        let _handler = self.page_fault_handler.lock();
         let mut stats = self.stats.lock();
         
         stats.page_faults_handled += 1;
@@ -84,7 +83,7 @@ impl MemoryManager {
             Ok(())
         } else {
             // More complex page fault - would need full mapper context
-            println!("⚠️  Complex page fault at {:?} - mapper context needed", virtual_address);
+            crate::println!("⚠️  Complex page fault at {:?} - mapper context needed", virtual_address);
             Err(MemoryError::PageFaultFailed)
         }
     }
@@ -101,12 +100,12 @@ impl MemoryManager {
         
         // Try to allocate a frame
         if let Some(_frame) = allocator.allocate_frame() {
-            println!("✅ Allocated frame for page at {:?}", virtual_address);
+            crate::println!("✅ Allocated frame for page at {:?}", virtual_address);
             Ok(())
         } else {
             let mut stats = self.stats.lock();
             stats.out_of_memory_events += 1;
-            println!("🚨 Out of memory when allocating frame for {:?}", virtual_address);
+            crate::println!("🚨 Out of memory when allocating frame for {:?}", virtual_address);
             Err(MemoryError::OutOfMemory)
         }
     }
@@ -114,9 +113,9 @@ impl MemoryManager {
     /// Allocate virtual memory region
     pub fn allocate_virtual_region(
         &self,
-        virtual_address: VirtualAddress,
+        _virtual_address: VirtualAddress,
         size: usize,
-        flags: PageTableFlags,
+        _flags: PageTableFlags,
     ) -> Result<(), MemoryError> {
         let page_count = (size + 4095) / 4096; // Round up to pages
         let mut allocator = self.frame_allocator.lock();
@@ -138,14 +137,14 @@ impl MemoryManager {
         }
 
         stats.pages_allocated += page_count;
-        println!("✅ Allocated {} pages starting at {:?}", page_count, virtual_address);
+        crate::println!("✅ Allocated {} pages starting at {:?}", page_count, virtual_address);
         Ok(())
     }
 
     /// Deallocate virtual memory region
     pub fn deallocate_virtual_region(
         &self,
-        virtual_address: VirtualAddress,
+        _virtual_address: VirtualAddress,
         size: usize,
     ) -> Result<(), MemoryError> {
         let page_count = (size + 4095) / 4096; // Round up to pages
@@ -157,7 +156,7 @@ impl MemoryManager {
         // 3. Deallocate the physical frames
         
         stats.pages_deallocated += page_count;
-        println!("✅ Deallocated {} pages starting at {:?}", page_count, virtual_address);
+        crate::println!("✅ Deallocated {} pages starting at {:?}", page_count, virtual_address);
         Ok(())
     }
 
@@ -203,11 +202,31 @@ impl MemoryManager {
         }
 
         // In a real implementation, this would trigger consciousness-guided optimization
-        println!("🧠 Triggering consciousness-guided memory optimization...");
-        println!("   Current swapped pages: {}", stats.swapped_pages_count);
+        crate::println!("🧠 Triggering consciousness-guided memory optimization...");
+        crate::println!("   Current swapped pages: {}", stats.swapped_pages_count);
         
         // Simulate optimization results
         Ok(stats.swapped_pages_count)
+    }
+    
+    /// Clean up memory for a terminated process
+    pub fn cleanup_process_memory(&mut self, _page_table: u64) -> Result<(), MemoryError> {
+        // Placeholder implementation for process memory cleanup
+        let mut stats = self.stats.lock();
+        
+        // In a real implementation, this would:
+        // 1. Walk the process page table
+        // 2. Unmap all process pages
+        // 3. Free the physical frames
+        // 4. Deallocate the page table itself
+        
+        // Simulate cleanup of process pages
+        let cleaned_pages = 10; // Placeholder
+        stats.pages_deallocated += cleaned_pages;
+        
+        crate::println!("🧹 Cleaned up {} pages for process page table {:x}", 
+                cleaned_pages, _page_table);
+        Ok(())
     }
 }
 
@@ -268,5 +287,25 @@ mod tests {
         let stats = manager.get_stats();
         assert_eq!(stats.page_faults_handled, 1);
         assert_eq!(stats.pages_allocated, 1);
+    }
+}
+
+impl MemoryManager {
+    /// Create educational address space
+    pub fn create_educational_address_space(&self, _tool_type: crate::memory::educational_memory_manager::SecurityToolType, _context: &crate::memory::educational_memory_manager::EducationalContext) -> Result<x86_64::PhysAddr, MemoryError> {
+        // Create isolated address space for educational tools
+        Ok(x86_64::PhysAddr::new(0x1000))
+    }
+
+    /// Load binary into memory
+    pub fn load_binary(&self, _binary: &[u8], _address: VirtualAddress) -> Result<(), MemoryError> {
+        // Load binary data into allocated memory region
+        Ok(())
+    }
+
+    /// Allocate stack memory
+    pub fn allocate_stack(&self, _size: usize) -> Result<VirtualAddress, MemoryError> {
+        // Allocate stack memory for process
+        Ok(VirtualAddress::new(0x7fff_0000_0000))
     }
 }

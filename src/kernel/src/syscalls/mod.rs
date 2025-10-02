@@ -67,8 +67,8 @@ pub enum SystemCall {
     Time = 201,
     Gettimeofday = 96,
     Settimeofday = 164,
-    Clock_gettime = 228,
-    Clock_settime = 229,
+    ClockGettime = 228,
+    ClockSettime = 229,
     Nanosleep = 35,
     Alarm = 37,
     
@@ -82,13 +82,13 @@ pub enum SystemCall {
     KillSignal = 129,
     
     // Process Scheduling
-    Sched_yield = 24,
-    Sched_setparam = 142,
-    Sched_getparam = 143,
-    Sched_setscheduler = 144,
-    Sched_getscheduler = 145,
-    Sched_get_priority_max = 146,
-    Sched_get_priority_min = 147,
+    SchedYield = 24,
+    SchedSetparam = 142,
+    SchedGetparam = 143,
+    SchedSetscheduler = 144,
+    SchedGetscheduler = 145,
+    SchedGetPriorityMax = 146,
+    SchedGetPriorityMin = 147,
     
     // User/Group Management
     Getuid = 102,
@@ -129,9 +129,9 @@ pub enum SystemCall {
     Fcntl = 55,
     Ioctl = 54,
     Select = 23,
-    Epoll_create = 254,
-    Epoll_ctl = 255,
-    Epoll_wait = 256,
+    EpollCreate = 254,
+    EpollCtl = 255,
+    EpollWait = 256,
 }
 
 /// System call arguments structure

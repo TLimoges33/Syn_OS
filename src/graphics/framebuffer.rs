@@ -4,16 +4,9 @@
 #![no_std]
 extern crate alloc;
 
-use alloc::vec::Vec;
 use core::ptr;
 use crate::{Resolution, Color, Point, Rect, ColorFormat, GraphicsError, GraphicsMetrics};
 
-// Temporary logging macro
-macro_rules! log_info {
-    ($($arg:tt)*) => {
-        // TODO: Integrate with kernel logging system
-    };
-}
 
 /// Framebuffer implementation with AI optimization
 pub struct Framebuffer {

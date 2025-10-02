@@ -8,7 +8,7 @@ use alloc::vec::Vec;
 use alloc::string::{String, ToString};
 use alloc::format;
 use core::sync::atomic::{AtomicU64, AtomicU32, Ordering};
-use spin::{Mutex, RwLock};
+use spin::RwLock;
 
 use crate::ai::mlops::MLOpsError;
 
@@ -54,7 +54,7 @@ pub struct TensorShape {
     pub data_type: DataType,
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum DataType {
     Float32,
     Float16,
@@ -276,7 +276,7 @@ impl ModelCache {
             cache.remove(&least_used_id);
             self.current_cache_size.fetch_sub(entry.model_data.len() as u64, Ordering::Relaxed);
 
-            println!("Evicted cached model: {}", least_used_id);
+            crate::println!("Evicted cached model: {}", least_used_id);
         }
 
         Ok(())
@@ -330,7 +330,7 @@ impl TensorFlowLiteRuntime {
 
     /// Load TFLite model
     pub fn load_model(&self, model_id: String, model_path: String) -> Result<LoadedModel, RuntimeError> {
-        println!("Loading TensorFlow Lite model: {} from {}", model_id, model_path);
+        crate::println!("Loading TensorFlow Lite model: {} from {}", model_id, model_path);
 
         // Simulate model loading
         let model_format = ModelFormat {
@@ -374,7 +374,7 @@ impl TensorFlowLiteRuntime {
         let mut models = self.loaded_models.write();
         models.insert(model_id, loaded_model.clone());
 
-        println!("TensorFlow Lite model loaded successfully: {}", loaded_model.model_id);
+        crate::println!("TensorFlow Lite model loaded successfully: {}", loaded_model.model_id);
         Ok(loaded_model)
     }
 
@@ -450,7 +450,7 @@ impl ONNXRuntime {
 
     /// Load ONNX model
     pub fn load_model(&self, model_id: String, model_path: String) -> Result<LoadedModel, RuntimeError> {
-        println!("Loading ONNX model: {} from {}", model_id, model_path);
+        crate::println!("Loading ONNX model: {} from {}", model_id, model_path);
 
         let model_format = ModelFormat {
             format_type: RuntimeType::ONNXRuntime,
@@ -492,7 +492,7 @@ impl ONNXRuntime {
         let mut models = self.loaded_models.write();
         models.insert(model_id, loaded_model.clone());
 
-        println!("ONNX model loaded successfully: {}", loaded_model.model_id);
+        crate::println!("ONNX model loaded successfully: {}", loaded_model.model_id);
         Ok(loaded_model)
     }
 

@@ -8,8 +8,6 @@
 #![no_std]
 extern crate alloc;
 
-use alloc::vec::Vec;
-
 // Exported logging macro for graphics modules
 #[macro_export]
 macro_rules! log_info {

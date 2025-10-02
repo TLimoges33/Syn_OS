@@ -10,7 +10,7 @@ use alloc::format;
 use core::sync::atomic::{AtomicU64, AtomicU32, Ordering};
 use spin::{Mutex, RwLock};
 
-use crate::process_lifecycle::{ProcessId, ProcessState, Priority, ProcessError};
+use crate::process_lifecycle::{ProcessId, Priority, ProcessError};
 use crate::process::migration::{ProcessMigrationManager, MigrationStrategy, CoreStats};
 use crate::ai::interface::AIInterface;
 
@@ -85,6 +85,15 @@ pub struct SchedulingDecision {
     pub predicted_execution_time: u64,
     pub reasoning: String,
     pub consciousness_factor: f32,
+    pub decision_type: SchedulingDecisionType,
+}
+
+/// Types of scheduling decisions
+#[derive(Debug, Clone)]
+pub enum SchedulingDecisionType {
+    EducationalPriority(ProcessId),
+    StandardScheduling,
+    LearningBreak,
 }
 
 /// Performance prediction model
@@ -133,7 +142,7 @@ pub struct IntelligentScheduler {
 impl IntelligentScheduler {
     /// Create a new intelligent scheduler
     pub fn new() -> Self {
-        let mut scheduler = Self {
+        let scheduler = Self {
             ready_queues: RwLock::new(BTreeMap::new()),
             process_classifications: RwLock::new(BTreeMap::new()),
             load_balancing_strategies: RwLock::new(Vec::new()),
@@ -339,6 +348,7 @@ impl IntelligentScheduler {
                 predicted_execution_time: self.predict_execution_time(selected_pid),
                 reasoning: format!("Consciousness-aware selection: score {:.2}", score),
                 consciousness_factor: score,
+                decision_type: SchedulingDecisionType::StandardScheduling,
             };
 
             Ok(Some(decision))
@@ -382,6 +392,7 @@ impl IntelligentScheduler {
                 predicted_execution_time: self.predict_execution_time(selected_pid),
                 reasoning: format!("Predictive selection: score {:.2}", score),
                 consciousness_factor: 0.0,
+                decision_type: SchedulingDecisionType::StandardScheduling,
             };
 
             Ok(Some(decision))
@@ -438,6 +449,7 @@ impl IntelligentScheduler {
                         predicted_execution_time: self.time_slice,
                         reasoning: "CFS selection".to_string(),
                         consciousness_factor: 0.0,
+                        decision_type: SchedulingDecisionType::StandardScheduling,
                     };
 
                     return Ok(Some(decision));
@@ -465,6 +477,7 @@ impl IntelligentScheduler {
                         predicted_execution_time: self.time_slice,
                         reasoning: format!("Priority selection: {:?}", priority),
                         consciousness_factor: 0.0,
+                        decision_type: SchedulingDecisionType::StandardScheduling,
                     };
 
                     return Ok(Some(decision));
@@ -492,6 +505,7 @@ impl IntelligentScheduler {
                     predicted_execution_time: self.time_slice,
                     reasoning: "Round-robin selection".to_string(),
                     consciousness_factor: 0.0,
+                    decision_type: SchedulingDecisionType::StandardScheduling,
                 };
 
                 return Ok(Some(decision));

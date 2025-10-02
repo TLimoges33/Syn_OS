@@ -3,7 +3,7 @@
 use crate::println;
 
 pub fn init() {
-    println!("📁 Filesystem initialized");
+    crate::println!("📁 Filesystem initialized");
     
     // Set up filesystem drivers
     setup_drivers();
@@ -14,10 +14,10 @@ pub fn init() {
 
 fn setup_drivers() {
     // Initialize filesystem drivers
-    println!("  ✅ Filesystem drivers loaded");
+    crate::println!("  ✅ Filesystem drivers loaded");
 }
 
 fn init_intelligent_caching() {
     // Set up AI-driven caching optimization
-    println!("  ✅ Intelligent caching ready");
+    crate::println!("  ✅ Intelligent caching ready");
 }

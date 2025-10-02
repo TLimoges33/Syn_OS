@@ -2,7 +2,7 @@
 /// Simplified testing and validation for all Phase 5 components
 use crate::process::phase5_mod::*;
 use alloc::format;
-use alloc::string::String;
+use alloc::string::{String, ToString};
 use alloc::vec::Vec;
 
 /// Phase 5 Test Suite Results
@@ -46,19 +46,19 @@ impl TestResults {
     }
 
     pub fn print_summary(&self) {
-        println!("=== Phase 5 Test Suite Results ===");
-        println!("Total Tests: {}", self.total_tests);
-        println!("Passed: {}", self.passed);
-        println!("Failed: {}", self.failed);
-        println!(
+        crate::println!("=== Phase 5 Test Suite Results ===");
+        crate::println!("Total Tests: {}", self.total_tests);
+        crate::println!("Passed: {}", self.passed);
+        crate::println!("Failed: {}", self.failed);
+        crate::println!(
             "Success Rate: {:.1}%",
             (self.passed as f64 / self.total_tests as f64) * 100.0
         );
-        println!();
+        crate::println!();
 
         for test in &self.test_details {
             let status = if test.passed { "PASS" } else { "FAIL" };
-            println!("[{}] {}: {}", status, test.name, test.details);
+            crate::println!("[{}] {}: {}", status, test.name, test.details);
         }
     }
 }
@@ -67,8 +67,8 @@ impl TestResults {
 pub fn run_phase5_tests() -> TestResults {
     let mut results = TestResults::new();
 
-    println!("Starting Phase 5 User Space Framework Testing...");
-    println!();
+    crate::println!("Starting Phase 5 User Space Framework Testing...");
+    crate::println!();
 
     // Test 1: Component Creation
     test_component_creation(&mut results);
@@ -84,7 +84,7 @@ pub fn run_phase5_tests() -> TestResults {
 
 /// Test basic component creation
 fn test_component_creation(results: &mut TestResults) {
-    println!("Testing Component Creation...");
+    crate::println!("Testing Component Creation...");
 
     // Test ELF Loader creation
     let _loader = crate::process::elf_loader::ElfLoader::new();
@@ -126,7 +126,7 @@ fn test_component_creation(results: &mut TestResults) {
 
 /// Test integration layer functionality
 fn test_integration_layer(results: &mut TestResults) {
-    println!("Testing Integration Layer...");
+    crate::println!("Testing Integration Layer...");
 
     // Test process manager initialization
     let init_result = init_process_manager(4);
@@ -157,7 +157,7 @@ fn test_integration_layer(results: &mut TestResults) {
 
 /// Test framework initialization
 fn test_framework_initialization(results: &mut TestResults) {
-    println!("Testing Framework Initialization...");
+    crate::println!("Testing Framework Initialization...");
 
     // Test context switcher initialization
     crate::process::context_switch::init_context_switchers(4);
@@ -179,51 +179,51 @@ fn test_framework_initialization(results: &mut TestResults) {
 
 /// Comprehensive system validation
 pub fn validate_phase5_system() -> bool {
-    println!("=== Phase 5 System Validation ===");
+    crate::println!("=== Phase 5 System Validation ===");
 
     let results = run_phase5_tests();
     results.print_summary();
 
-    println!();
-    println!("=== Component Status ===");
-    println!("✓ ELF Binary Loader: Operational");
-    println!("✓ User Space Memory Manager: Operational");
-    println!("✓ Process Control Blocks: Operational");
-    println!("✓ Multilevel Feedback Queue Scheduler: Operational");
-    println!("✓ CPU Context Switching: Operational");
-    println!("✓ Phase 5 Integration Layer: Operational");
+    crate::println!();
+    crate::println!("=== Component Status ===");
+    crate::println!("✓ ELF Binary Loader: Operational");
+    crate::println!("✓ User Space Memory Manager: Operational");
+    crate::println!("✓ Process Control Blocks: Operational");
+    crate::println!("✓ Multilevel Feedback Queue Scheduler: Operational");
+    crate::println!("✓ CPU Context Switching: Operational");
+    crate::println!("✓ Phase 5 Integration Layer: Operational");
 
-    println!();
-    println!("=== Phase 5 Capabilities ===");
-    println!("• Process Creation from ELF binaries");
-    println!("• Virtual memory management for user space");
-    println!("• Preemptive multitasking with priority scheduling");
-    println!("• Resource monitoring and limits");
-    println!("• Multi-core context switching");
-    println!("• File descriptor management");
-    println!("• System call infrastructure ready");
+    crate::println!();
+    crate::println!("=== Phase 5 Capabilities ===");
+    crate::println!("• Process Creation from ELF binaries");
+    crate::println!("• Virtual memory management for user space");
+    crate::println!("• Preemptive multitasking with priority scheduling");
+    crate::println!("• Resource monitoring and limits");
+    crate::println!("• Multi-core context switching");
+    crate::println!("• File descriptor management");
+    crate::println!("• System call infrastructure ready");
 
-    println!();
-    println!("=== Architecture Overview ===");
-    println!("┌─────────────────────────────────────────────────┐");
-    println!("│                 User Space                      │");
-    println!("├─────────────────────────────────────────────────┤");
-    println!("│ ELF Loader │ Memory Mgr │ Scheduler │ Context  │");
-    println!("│            │            │           │ Switch   │");
-    println!("├─────────────────────────────────────────────────┤");
-    println!("│              Process Manager                    │");
-    println!("├─────────────────────────────────────────────────┤");
-    println!("│                 SynOS Kernel                    │");
-    println!("└─────────────────────────────────────────────────┘");
+    crate::println!();
+    crate::println!("=== Architecture Overview ===");
+    crate::println!("┌─────────────────────────────────────────────────┐");
+    crate::println!("│                 User Space                      │");
+    crate::println!("├─────────────────────────────────────────────────┤");
+    crate::println!("│ ELF Loader │ Memory Mgr │ Scheduler │ Context  │");
+    crate::println!("│            │            │           │ Switch   │");
+    crate::println!("├─────────────────────────────────────────────────┤");
+    crate::println!("│              Process Manager                    │");
+    crate::println!("├─────────────────────────────────────────────────┤");
+    crate::println!("│                 SynOS Kernel                    │");
+    crate::println!("└─────────────────────────────────────────────────┘");
 
-    println!();
-    println!("=== Implementation Statistics ===");
-    println!("• Total Phase 5 Code: 2000+ lines");
-    println!("• Core Components: 6 major subsystems");
-    println!("• Multi-core Support: 4 CPU cores");
-    println!("• Memory Management: Full virtual memory");
-    println!("• Process Scheduling: Multilevel feedback queues");
-    println!("• Context Switching: Optimized assembly");
+    crate::println!();
+    crate::println!("=== Implementation Statistics ===");
+    crate::println!("• Total Phase 5 Code: 2000+ lines");
+    crate::println!("• Core Components: 6 major subsystems");
+    crate::println!("• Multi-core Support: 4 CPU cores");
+    crate::println!("• Memory Management: Full virtual memory");
+    crate::println!("• Process Scheduling: Multilevel feedback queues");
+    crate::println!("• Context Switching: Optimized assembly");
 
     results.failed == 0
 }

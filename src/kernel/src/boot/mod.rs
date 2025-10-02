@@ -56,7 +56,7 @@ pub async fn boot_kernel(config: BootConfig) -> Result<(), &'static str> {
     early_kernel_init()?;
     
     // Phase 2: Memory system setup
-    crate::memory::init_memory_system()?;
+    crate::memory::init_memory_system(crate::memory::init::MemoryConfig::default())?;
     
     // Phase 3: Interrupt handling setup
     crate::interrupts::init_interrupts()?;
@@ -75,14 +75,14 @@ pub async fn boot_kernel(config: BootConfig) -> Result<(), &'static str> {
 /// Start essential kernel services
 async fn start_kernel_services(config: &BootConfig) -> Result<(), &'static str> {
     // Start process scheduler
-    crate::process::init_scheduler()?;
+    crate::process::init_scheduler();
     
     // Start IPC system
-    crate::ipc::init_ipc_system()?;
+    crate::ipc::init_ipc_system();
     
     // Start education platform if enabled
     if config.enable_education {
-        crate::education::init_education_platform()?;
+        crate::education::init_education_platform();
     }
     
     Ok(())

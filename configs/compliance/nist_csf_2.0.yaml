@@ -1,0 +1,358 @@
+# NIST Cybersecurity Framework 2.0
+# Comprehensive control mapping for automated compliance assessment
+
+framework:
+  name: "NIST Cybersecurity Framework 2.0"
+  version: "2.0"
+  organization: "National Institute of Standards and Technology"
+  last_updated: "2024-02-26"
+  description: "Flexible framework for managing cybersecurity risk"
+
+# Core Functions
+functions:
+  - id: "GOVERN"
+    name: "Govern"
+    description: "Establish and monitor organization's cybersecurity risk management strategy"
+    categories:
+      - id: "GV.OC"
+        name: "Organizational Context"
+        controls:
+          - id: "GV.OC-01"
+            title: "Organizational mission is understood"
+            description: "The organizational mission and stakeholder expectations are understood and communicated"
+            implementation_guidance: |
+              - Document organizational mission statement
+              - Identify all stakeholders and their expectations
+              - Create communication plan for mission objectives
+            evidence_required:
+              - "Mission statement document"
+              - "Stakeholder analysis"
+              - "Communication plan"
+            automated_checks:
+              - check: "mission_documented"
+                script: "scripts/compliance/check_mission_docs.sh"
+                expected: "exists"
+              - check: "stakeholder_register"
+                script: "scripts/compliance/check_stakeholders.sh"
+                expected: "complete"
+            scoring:
+              weight: 5
+              max_points: 100
+
+          - id: "GV.OC-02"
+            title: "Legal, regulatory, and contractual requirements"
+            description: "Legal, regulatory, and contractual requirements are understood and managed"
+            implementation_guidance: |
+              - Maintain legal requirements register
+              - Track regulatory changes
+              - Monitor contract obligations
+            evidence_required:
+              - "Legal requirements register"
+              - "Regulatory compliance tracking"
+              - "Contract management system"
+            automated_checks:
+              - check: "legal_register_current"
+                script: "scripts/compliance/check_legal_register.sh"
+                expected: "updated_within_90_days"
+            scoring:
+              weight: 8
+              max_points: 100
+
+      - id: "GV.RM"
+        name: "Risk Management Strategy"
+        controls:
+          - id: "GV.RM-01"
+            title: "Risk management objectives"
+            description: "Risk management objectives are established and agreed to by organizational stakeholders"
+            implementation_guidance: |
+              - Define risk appetite and tolerance
+              - Establish risk management objectives
+              - Get stakeholder approval
+            evidence_required:
+              - "Risk appetite statement"
+              - "Risk management objectives"
+              - "Stakeholder approval records"
+            automated_checks:
+              - check: "risk_appetite_defined"
+                script: "scripts/compliance/check_risk_appetite.sh"
+                expected: "documented"
+            scoring:
+              weight: 10
+              max_points: 100
+
+  - id: "IDENTIFY"
+    name: "Identify"
+    description: "Understand cybersecurity risks to systems, people, assets, data, and capabilities"
+    categories:
+      - id: "ID.AM"
+        name: "Asset Management"
+        controls:
+          - id: "ID.AM-01"
+            title: "Inventories of hardware managed"
+            description: "Inventories of hardware managed by the organization are maintained"
+            implementation_guidance: |
+              - Implement automated asset discovery
+              - Maintain hardware inventory database
+              - Regular inventory reconciliation
+            evidence_required:
+              - "Hardware inventory database"
+              - "Asset discovery scan results"
+              - "Reconciliation reports"
+            automated_checks:
+              - check: "hardware_inventory_exists"
+                script: "scripts/compliance/check_hardware_inventory.sh"
+                expected: "complete"
+              - check: "inventory_freshness"
+                script: "scripts/compliance/check_inventory_age.sh"
+                expected: "updated_within_30_days"
+            scoring:
+              weight: 10
+              max_points: 100
+
+          - id: "ID.AM-02"
+            title: "Inventories of software managed"
+            description: "Inventories of software, services, and systems managed by the organization are maintained"
+            implementation_guidance: |
+              - Deploy software inventory tools
+              - Track all installed software and versions
+              - Monitor license compliance
+            evidence_required:
+              - "Software inventory database"
+              - "Version tracking system"
+              - "License compliance reports"
+            automated_checks:
+              - check: "software_inventory_exists"
+                script: "scripts/compliance/check_software_inventory.sh"
+                expected: "complete"
+            scoring:
+              weight: 10
+              max_points: 100
+
+      - id: "ID.RA"
+        name: "Risk Assessment"
+        controls:
+          - id: "ID.RA-01"
+            title: "Asset vulnerabilities identified"
+            description: "Asset vulnerabilities are identified, validated, and recorded"
+            implementation_guidance: |
+              - Regular vulnerability scanning
+              - Penetration testing schedule
+              - Vulnerability management process
+            evidence_required:
+              - "Vulnerability scan reports"
+              - "Penetration test results"
+              - "Remediation tracking"
+            automated_checks:
+              - check: "vulnerability_scan_current"
+                script: "scripts/compliance/check_vuln_scans.sh"
+                expected: "completed_within_7_days"
+              - check: "critical_vulns_remediated"
+                script: "scripts/compliance/check_critical_vulns.sh"
+                expected: "none_older_than_30_days"
+            scoring:
+              weight: 15
+              max_points: 100
+
+  - id: "PROTECT"
+    name: "Protect"
+    description: "Use safeguards to manage cybersecurity risks"
+    categories:
+      - id: "PR.AA"
+        name: "Identity Management, Authentication and Access Control"
+        controls:
+          - id: "PR.AA-01"
+            title: "Identities and credentials managed"
+            description: "Identities and credentials for authorized users, services, and hardware are managed by the organization"
+            implementation_guidance: |
+              - Implement identity lifecycle management
+              - Enforce strong authentication
+              - Regular access reviews
+            evidence_required:
+              - "Identity management system"
+              - "Authentication policies"
+              - "Access review reports"
+            automated_checks:
+              - check: "mfa_enabled"
+                script: "scripts/compliance/check_mfa.sh"
+                expected: "all_users"
+              - check: "access_review_current"
+                script: "scripts/compliance/check_access_reviews.sh"
+                expected: "completed_within_90_days"
+            scoring:
+              weight: 15
+              max_points: 100
+
+          - id: "PR.AA-02"
+            title: "Identities authenticated"
+            description: "Identities are proofed and bound to credentials based on the context of interactions"
+            implementation_guidance: |
+              - Implement identity proofing process
+              - Use strong authentication methods
+              - Context-aware authentication
+            evidence_required:
+              - "Identity proofing procedures"
+              - "Authentication method documentation"
+              - "Conditional access policies"
+            automated_checks:
+              - check: "strong_auth_enforced"
+                script: "scripts/compliance/check_auth_strength.sh"
+                expected: "all_systems"
+            scoring:
+              weight: 12
+              max_points: 100
+
+      - id: "PR.DS"
+        name: "Data Security"
+        controls:
+          - id: "PR.DS-01"
+            title: "Data at rest protected"
+            description: "Data at rest is protected"
+            implementation_guidance: |
+              - Encrypt sensitive data at rest
+              - Implement data classification
+              - Secure storage infrastructure
+            evidence_required:
+              - "Encryption implementation"
+              - "Data classification policy"
+              - "Storage security controls"
+            automated_checks:
+              - check: "encryption_at_rest"
+                script: "scripts/compliance/check_encryption.sh"
+                expected: "all_sensitive_data"
+            scoring:
+              weight: 15
+              max_points: 100
+
+          - id: "PR.DS-02"
+            title: "Data in transit protected"
+            description: "Data in transit is protected"
+            implementation_guidance: |
+              - Use TLS 1.2 or higher
+              - Disable legacy protocols
+              - Monitor encrypted traffic
+            evidence_required:
+              - "TLS configuration"
+              - "Protocol usage reports"
+              - "Traffic monitoring logs"
+            automated_checks:
+              - check: "tls_version"
+                script: "scripts/compliance/check_tls.sh"
+                expected: "tls_1.2_or_higher"
+            scoring:
+              weight: 15
+              max_points: 100
+
+  - id: "DETECT"
+    name: "Detect"
+    description: "Find and analyze possible cybersecurity attacks and compromises"
+    categories:
+      - id: "DE.CM"
+        name: "Continuous Monitoring"
+        controls:
+          - id: "DE.CM-01"
+            title: "Networks and network services monitored"
+            description: "Networks and network services are monitored to find potentially adverse events"
+            implementation_guidance: |
+              - Deploy network monitoring tools
+              - Configure SIEM integration
+              - Set up alerting rules
+            evidence_required:
+              - "Network monitoring system"
+              - "SIEM configuration"
+              - "Alert rules documentation"
+            automated_checks:
+              - check: "network_monitoring_active"
+                script: "scripts/compliance/check_network_monitoring.sh"
+                expected: "enabled"
+            scoring:
+              weight: 12
+              max_points: 100
+
+  - id: "RESPOND"
+    name: "Respond"
+    description: "Take action regarding a detected cybersecurity incident"
+    categories:
+      - id: "RS.MA"
+        name: "Incident Management"
+        controls:
+          - id: "RS.MA-01"
+            title: "Incident response plan executed"
+            description: "The incident response plan is executed in coordination with relevant stakeholders"
+            implementation_guidance: |
+              - Develop incident response plan
+              - Conduct regular drills
+              - Update based on lessons learned
+            evidence_required:
+              - "Incident response plan"
+              - "Drill results"
+              - "Plan update records"
+            automated_checks:
+              - check: "ir_plan_exists"
+                script: "scripts/compliance/check_ir_plan.sh"
+                expected: "current"
+            scoring:
+              weight: 15
+              max_points: 100
+
+  - id: "RECOVER"
+    name: "Recover"
+    description: "Restore assets and operations that were impacted by a cybersecurity incident"
+    categories:
+      - id: "RC.RP"
+        name: "Recovery Planning"
+        controls:
+          - id: "RC.RP-01"
+            title: "Recovery plan executed"
+            description: "The recovery plan is executed during or after a cybersecurity incident"
+            implementation_guidance: |
+              - Develop business continuity plan
+              - Test recovery procedures
+              - Maintain backup systems
+            evidence_required:
+              - "Business continuity plan"
+              - "Recovery test results"
+              - "Backup verification"
+            automated_checks:
+              - check: "backup_current"
+                script: "scripts/compliance/check_backups.sh"
+                expected: "successful_within_24_hours"
+            scoring:
+              weight: 15
+              max_points: 100
+
+# Assessment Configuration
+assessment:
+  scoring_method: "weighted"
+  passing_threshold: 70  # Percentage
+  critical_controls:
+    - "PR.AA-01"  # Identity management
+    - "PR.DS-01"  # Data at rest encryption
+    - "PR.DS-02"  # Data in transit encryption
+    - "ID.RA-01"  # Vulnerability management
+
+  evidence_retention_days: 2555  # 7 years
+
+  report_format:
+    - "executive_summary"
+    - "detailed_findings"
+    - "gap_analysis"
+    - "remediation_roadmap"
+
+  automation:
+    enabled: true
+    schedule: "weekly"
+    alert_on_failure: true
+
+# Integration
+integration:
+  siem_connectors:
+    - "splunk"
+    - "sentinel"
+    - "qradar"
+
+  data_sources:
+    - "vulnerability_scanner"
+    - "asset_inventory"
+    - "access_logs"
+    - "backup_systems"
+    - "network_monitors"

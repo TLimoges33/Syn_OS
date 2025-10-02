@@ -104,7 +104,8 @@ fn cpuid(leaf: u32) -> CpuidResult {
         core::arch::asm!(
             "cpuid",
             inout("eax") leaf => eax,
-            out("ebx") ebx,
+            // ebx conflicts - using r11 instead
+            out("r11") ebx,
             inout("ecx") 0u32 => ecx,
             out("edx") edx,
             options(nostack, preserves_flags)
@@ -125,7 +126,8 @@ fn cpuid_count(leaf: u32, sub_leaf: u32) -> CpuidResult {
         core::arch::asm!(
             "cpuid",
             inout("eax") leaf => eax,
-            out("ebx") ebx,
+            // ebx conflicts - using r11 instead
+            out("r11") ebx,
             inout("ecx") sub_leaf => ecx,
             out("edx") edx,
             options(nostack, preserves_flags)

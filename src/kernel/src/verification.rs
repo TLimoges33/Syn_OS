@@ -12,7 +12,7 @@ static VERIFICATION_SUCCESS: AtomicUsize = AtomicUsize::new(0);
 
 /// Initialize the verification subsystem
 pub fn init() {
-    println!("  • Initializing security verification");
+    crate::println!("  • Initializing security verification");
     
     // Reset counters
     VERIFICATION_REQUESTS.store(0, Ordering::SeqCst);

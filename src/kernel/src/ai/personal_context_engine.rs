@@ -8,8 +8,9 @@ use alloc::vec::Vec;
 use alloc::string::{String, ToString};
 use alloc::format;
 use core::sync::atomic::{AtomicU64, AtomicU32, Ordering};
-use spin::{Mutex, RwLock};
+use spin::RwLock;
 use serde::{Serialize, Deserialize};
+use libm::{sqrt, round, powf};
 
 use crate::ai::mlops::MLOpsError;
 
@@ -500,7 +501,7 @@ impl PersonalContextEngine {
         // Initialize default preferences
         self.initialize_default_preferences(&user_id)?;
 
-        println!("Initialized context for user: {}", user_id);
+        crate::println!("Initialized context for user: {}", user_id);
         Ok(context_id)
     }
 
@@ -598,13 +599,13 @@ impl PersonalContextEngine {
         let mut knowledge = self.knowledge_base.write();
         knowledge.insert(entry_id.clone(), entry);
 
-        println!("Added knowledge entry: {}", entry_id);
+        crate::println!("Added knowledge entry: {}", entry_id);
         Ok(entry_id)
     }
 
     /// Perform RAG query
     pub fn query_rag(&self, query: RAGQuery) -> Result<RAGResponse, MLOpsError> {
-        println!("Processing RAG query: {}", query.query_text);
+        crate::println!("Processing RAG query: {}", query.query_text);
 
         // Generate embedding for query
         let query_embedding = self.generate_embedding(&query.query_text);
@@ -617,7 +618,7 @@ impl PersonalContextEngine {
 
         let response = RAGResponse {
             response_id: format!("resp_{}", get_current_timestamp()),
-            query_id: query.query_id,
+            query_id: query.query_id.clone(),
             response_text,
             retrieved_context: retrieved_docs,
             confidence_score: 0.85, // Would be calculated from actual model
@@ -713,8 +714,8 @@ impl PersonalContextEngine {
         }
 
         let dot_product: f32 = a.iter().zip(b.iter()).map(|(x, y)| x * y).sum();
-        let norm_a: f32 = a.iter().map(|x| x * x).sum::<f32>().sqrt();
-        let norm_b: f32 = b.iter().map(|x| x * x).sum::<f32>().sqrt();
+        let norm_a: f32 = sqrt(a.iter().map(|x| x * x).sum::<f32>() as f64) as f32;
+        let norm_b: f32 = sqrt(b.iter().map(|x| x * x).sum::<f32>() as f64) as f32;
 
         if norm_a == 0.0 || norm_b == 0.0 {
             0.0

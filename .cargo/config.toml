@@ -1,13 +1,12 @@
 [build]
-# Optimized parallel builds - use all available cores
-jobs = 4  # Maximum parallel jobs (matches available cores)
+# Conservative parallel builds to prevent system freeze
+jobs = 2  # Two jobs for reasonable build speed without freezing
+# Force all workspace members to use workspace target directory
+target-dir = "target"
 rustflags = [
     "-C", "target-cpu=haswell",    # Specifically target Haswell CPU (detected)
-    "-Z", "tune-cpu=haswell",      # Tune for Haswell CPU specifically
-    "-Z", "emit-thin-lto=yes",     # Emit thin LTO for faster builds
     "-C", "prefer-dynamic=no",     # Prefer static linking for performance
     "-W", "unsafe-code",           # Warn on unsafe code
-    "-D", "warnings"               # Deny all warnings
 ]
 
 # Workspace-wide features
@@ -91,12 +90,8 @@ rustflags = [
     "-C", "target-cpu=haswell",      # Target specific CPU (Haswell supports AVX2)
     "-C", "target-feature=+crc32",   # Enable CRC32 instructions
     "-C", "target-feature=+popcnt",  # Enable POPCNT instruction
-    "-C", "target-feature=+avx2",    # Enable AVX2 for better vectorization
     "-C", "link-arg=--gc-sections",  # Remove unused sections
-    "-Z", "emit-stack-sizes",        # Track stack usage for kernel
     "-C", "force-frame-pointers=yes", # Better debugging/profiling
-    "-Z", "location-detail=none",    # Reduce binary size by removing location info
-    "-C", "symbol-mangling-version=v0", # Use latest symbol mangling
 ]
 
 # Security-hardened userspace target
@@ -113,16 +108,11 @@ rustflags = [
     "-C", "opt-level=s",
     "-C", "panic=abort",
     "-C", "link-arg=--gc-sections",
-    "-Z", "location-detail=none",
-    "-C", "target-feature=+avx2",    # Enable AVX2 for kernel
-    "-C", "target-feature=+fma"      # Enable FMA instructions
 ]
 
-# Unstable features for nightly
-[unstable]
-codegen-backend = true
-
 # Build std only for kernel targets
-[target.x86_64-unknown-none.unstable]
-build-std = "core,compiler_builtins,alloc"
-build-std-features = "compiler-builtins-mem"
+[target.x86_64-unknown-none.build-std]
+features = "panic_immediate_abort"
+
+[target.x86_64-unknown-none.build-std-features]
+core = "panic_immediate_abort"

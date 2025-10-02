@@ -8,7 +8,7 @@ use alloc::vec::Vec;
 use alloc::string::{String, ToString};
 use alloc::format;
 use core::sync::atomic::{AtomicU64, AtomicU32, Ordering};
-use spin::{Mutex, RwLock};
+use spin::RwLock;
 
 use crate::ai::mlops::{ModelVersion, MLOpsError};
 use crate::ai::continuous_monitoring::{AIModelMetrics, FairnessMetrics};
@@ -277,7 +277,7 @@ pub struct RegulationFramework {
 impl BiasDetectionFramework {
     /// Create new bias detection framework
     pub fn new() -> Self {
-        let mut framework = Self {
+        let framework = Self {
             analyses: RwLock::new(BTreeMap::new()),
             mitigation_techniques: RwLock::new(BTreeMap::new()),
             fairness_constraints: RwLock::new(BTreeMap::new()),
@@ -403,7 +403,7 @@ impl BiasDetectionFramework {
                              protected_attributes: Vec<ProtectedAttribute>) -> Result<String, MLOpsError> {
         let analysis_id = format!("bias_analysis_{}", self.next_analysis_id.fetch_add(1, Ordering::SeqCst));
 
-        println!("Starting bias analysis {} for model {}", analysis_id, model_id);
+        crate::println!("Starting bias analysis {} for model {}", analysis_id, model_id);
 
         // Perform fairness assessment
         let fairness_assessment = self.assess_fairness(test_data, &protected_attributes)?;
@@ -436,7 +436,7 @@ impl BiasDetectionFramework {
         let mut analyses = self.analyses.write();
         analyses.insert(analysis_id.clone(), analysis);
 
-        println!("Bias analysis {} completed with severity: {:?}", analysis_id, analysis.severity_level);
+        crate::println!("Bias analysis {} completed with severity: {:?}", analysis_id, analysis.severity_level);
         Ok(analysis_id)
     }
 

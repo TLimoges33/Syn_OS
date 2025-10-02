@@ -10,7 +10,7 @@ use alloc::{string::String, vec::Vec};
 pub struct ParsedCommand {
     pub name: String,
     pub args: Vec<String>,
-    pub command_type: CommandType,
+    pub command_type: ShellCommandType,
     pub input_redirect: Option<String>,
     pub output_redirect: Option<String>,
     pub append_output: bool,
@@ -20,7 +20,7 @@ pub struct ParsedCommand {
 
 /// Command type classification
 #[derive(Debug, Clone, PartialEq)]
-pub enum CommandType {
+pub enum ShellCommandType {
     Builtin,  // Built-in shell commands
     External, // External executable commands
     Network,  // Network-specific commands
@@ -254,13 +254,13 @@ impl CommandParser {
     /// Classify command type
     fn classify_command(&self, command: &str) -> CommandType {
         if self.builtin_commands.contains(&command) {
-            CommandType::Builtin
+            ShellCommandType::Builtin
         } else if self.network_commands.contains(&command) {
-            CommandType::Network
+            ShellCommandType::Network
         } else if self.security_commands.contains(&command) {
-            CommandType::Security
+            ShellCommandType::Security
         } else {
-            CommandType::External
+            ShellCommandType::External
         }
     }
 

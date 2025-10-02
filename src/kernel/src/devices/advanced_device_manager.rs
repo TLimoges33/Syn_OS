@@ -9,7 +9,8 @@ use spin::{Mutex, RwLock};
 use crate::security::SecurityLevel;
 
 use syn_ai::ConsciousnessState;
-use crate::memory::{VirtualAddress, PhysicalAddress};
+use crate::memory::VirtualAddress;
+use crate::memory::physical::PhysicalAddress;
 use crate::process::ProcessId;
 
 /// Advanced Device Management System
@@ -49,7 +50,7 @@ impl DeviceId {
 }
 
 /// Device classes for categorization
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum DeviceClass {
     // Storage devices
     Storage,
@@ -362,9 +363,6 @@ pub enum PerformanceMode {
     Performance,
     Custom,
 }
-
-// Use SecurityLevel from security module
-use crate::security::SecurityLevel;
 
 /// Configuration values
 #[derive(Debug, Clone)]
@@ -1283,9 +1281,9 @@ impl AdvancedDeviceManager {
     }
 
     /// Get device by ID
-    pub fn get_device(&self, device_id: DeviceId) -> Option<&Box<dyn AdvancedDeviceDriver>> {
+    pub fn get_device(&self, device_id: DeviceId) -> bool {
         let devices = self.devices.read();
-        devices.get(&device_id)
+        devices.contains_key(&device_id)
     }
 
     /// List devices by class
@@ -1362,7 +1360,7 @@ impl AdvancedDeviceManager {
             };
 
             // Apply optimization to device
-            if let Some(device) = self.get_device(device_id) {
+            if self.get_device(device_id) {
                 // Note: This would need mutable access in real implementation
                 // device.optimize_performance(optimization)?;
             }

@@ -79,7 +79,7 @@ unsafe impl<A: GlobalAlloc> GlobalAlloc for SecureAllocator<A> {
 pub fn detect_heap_corruption() -> bool {
     // Scan heap for corruption markers
     // This would implement actual heap scanning
-    println!("🔍 Scanning heap for corruption...");
+    crate::println!("🔍 Scanning heap for corruption...");
     false // Placeholder
 }
 

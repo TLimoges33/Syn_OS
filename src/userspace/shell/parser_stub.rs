@@ -7,11 +7,11 @@ use crate::shell::{ShellError};
 pub struct ParsedCommand {
     pub name: String,
     pub args: Vec<String>,
-    pub command_type: CommandType,
+    pub command_type: ShellCommandType,
 }
 
 #[derive(Debug, Clone)]
-pub enum CommandType {
+pub enum ShellCommandType {
     Builtin,
     External,
     Network,
@@ -36,10 +36,10 @@ impl CommandParser {
         let args = parts[1..].iter().map(|s| s.to_string()).collect();
 
         let command_type = match name.as_str() {
-            "help" | "exit" | "ls" | "cd" | "pwd" => CommandType::Builtin,
-            "ping" | "netstat" | "ifconfig" | "tcpdump" | "portscan" | "netmon" => CommandType::Network,
-            "integrity" | "loganalyze" => CommandType::Security,
-            _ => CommandType::External,
+            "help" | "exit" | "ls" | "cd" | "pwd" => ShellCommandType::Builtin,
+            "ping" | "netstat" | "ifconfig" | "tcpdump" | "portscan" | "netmon" => ShellCommandType::Network,
+            "integrity" | "loganalyze" => ShellCommandType::Security,
+            _ => ShellCommandType::External,
         };
 
         Ok(ParsedCommand {

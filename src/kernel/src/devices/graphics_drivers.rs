@@ -1,9 +1,10 @@
 /// Phase 2 Priority 4: Graphics Device Drivers
 /// Enterprise-grade graphics drivers with consciousness-optimized rendering
 use alloc::vec::Vec;
-use alloc::string::String;
+use alloc::string::{String, ToString};
 use alloc::collections::BTreeMap;
 use super::advanced_device_manager::*;
+use crate::memory::physical::PhysicalAddress;
 
 /// Graphics Driver for modern GPUs
 pub struct GraphicsDriver {
@@ -482,10 +483,10 @@ impl AdvancedDeviceDriver for GraphicsDriver {
         self.device_info.clone()
     }
 
-    fn initialize(&mut self, config: &DeviceConfiguration) -> Result<(), DeviceError> {
+    fn initialize(&mut self, _config: &DeviceConfiguration) -> Result<(), DeviceError> {
         // Set default display mode
-        if let Some(mode) = self.display_modes.first() {
-            self.set_display_mode(mode)?;
+        if let Some(mode) = self.display_modes.first().cloned() {
+            self.set_display_mode(&mode)?;
         }
         Ok(())
     }
@@ -586,12 +587,13 @@ impl AdvancedDeviceDriver for GraphicsDriver {
                         if args.len() >= 2 {
                             let width = args[0] as u32;
                             let height = args[1] as u32;
-                            // Find and set matching display mode
-                            for mode in &self.display_modes {
-                                if mode.width == width && mode.height == height {
-                                    self.set_display_mode(mode)?;
-                                    return Ok(DeviceResponse::Success);
-                                }
+                            // Find matching display mode
+                            let matching_mode = self.display_modes.iter()
+                                .find(|mode| mode.width == width && mode.height == height)
+                                .cloned();
+                            if let Some(mode) = matching_mode {
+                                self.set_display_mode(&mode)?;
+                                return Ok(DeviceResponse::Success);
                             }
                         }
                         Err(DeviceError::InvalidParameter)

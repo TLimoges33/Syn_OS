@@ -4,9 +4,8 @@
 //! for tracking security events and compliance monitoring.
 
 use alloc::vec::Vec;
-use alloc::string::String;
+use alloc::string::{String, ToString};
 use alloc::collections::{BTreeMap, VecDeque};
-use alloc::string::ToString;
 use crate::security::{SecurityConfig, SecurityEvent, SecurityEventType, SecuritySeverity, SecurityPolicy};
 
 /// Audit system manager
@@ -35,7 +34,7 @@ pub struct AuditLogEntry {
 }
 
 /// Types of audit events
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub enum AuditEventType {
     SecurityEvent,
     AccessAttempt,
@@ -137,6 +136,7 @@ pub struct ComplianceCheck {
 
 /// Compliance frameworks
 #[derive(Debug, Clone, PartialEq)]
+#[allow(non_camel_case_types)]
 pub enum ComplianceFramework {
     ISO27001,
     NIST,
@@ -218,7 +218,7 @@ static mut AUDIT_SYSTEM: Option<AuditSystem> = None;
 
 /// Initialize audit system
 pub async fn init_audit_system(config: &SecurityConfig) -> Result<(), &'static str> {
-    crate::serial_println!("📋 Initializing audit system...");
+    crate::println!("📋 Initializing audit system...");
     
     let mut system = AuditSystem::new();
     
@@ -235,7 +235,7 @@ pub async fn init_audit_system(config: &SecurityConfig) -> Result<(), &'static s
         AUDIT_SYSTEM = Some(system);
     }
     
-    crate::serial_println!("✅ Audit system initialized");
+    crate::println!("✅ Audit system initialized");
     Ok(())
 }
 
@@ -298,10 +298,10 @@ pub async fn get_recent_events(count: usize) -> Result<Vec<SecurityEvent>, &'sta
                 event_id: entry.entry_id,
                 event_type: SecurityEventType::from_audit_event(&entry),
                 severity: entry.severity,
-                source: entry.source,
+                source: entry.source.clone(),
                 timestamp: entry.timestamp,
-                description: entry.description,
-                data: entry.raw_data.unwrap_or_default(),
+                description: entry.description.clone(),
+                data: entry.raw_data.clone().unwrap_or_default(),
             });
         }
     }
@@ -340,6 +340,10 @@ impl AuditSystem {
             crate::security::SecurityLevel::Enhanced => AuditLevel::Basic,
             crate::security::SecurityLevel::Paranoid => AuditLevel::Detailed,
             crate::security::SecurityLevel::Maximum => AuditLevel::Verbose,
+            crate::security::SecurityLevel::Internal => AuditLevel::Basic,
+            crate::security::SecurityLevel::Confidential => AuditLevel::Detailed,
+            crate::security::SecurityLevel::Secret => AuditLevel::Detailed,
+            crate::security::SecurityLevel::TopSecret => AuditLevel::Verbose,
         };
         
         self.max_log_entries = match level {
@@ -348,6 +352,10 @@ impl AuditSystem {
             crate::security::SecurityLevel::Enhanced => 10000,
             crate::security::SecurityLevel::Paranoid => 50000,
             crate::security::SecurityLevel::Maximum => 100000,
+            crate::security::SecurityLevel::Internal => 10000,
+            crate::security::SecurityLevel::Confidential => 25000,
+            crate::security::SecurityLevel::Secret => 50000,
+            crate::security::SecurityLevel::TopSecret => 100000,
         };
         
         Ok(())

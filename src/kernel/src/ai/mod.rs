@@ -11,6 +11,7 @@ use core::sync::atomic::{AtomicBool, Ordering};
 pub mod bridge;
 pub mod interface;
 pub mod consciousness;
+pub mod consciousness_kernel;
 pub mod services;
 pub mod bias_detection;
 pub mod continuous_monitoring;
@@ -145,7 +146,7 @@ impl AISystem {
         }
         
         // Shutdown services
-        if let Some(services) = self.services.take() {
+        if let Some(mut services) = self.services.take() {
             services.shutdown().await?;
         }
         
@@ -213,56 +214,56 @@ pub async fn init_ai_system_internal(config: AIConfig) -> Result<(), &'static st
 
 /// Initialize AI integration system
 pub async fn init_ai_system(config: AIConfig) -> Result<(), &'static str> {
-    crate::serial_println!("🤖 Initializing AI integration system...");
+    crate::println!("🤖 Initializing AI integration system...");
 
     // Initialize AI bridge
     bridge::initialize_ai_bridge().await?;
 
     // Initialize consciousness system if enabled
     if config.enable_consciousness {
-        consciousness::init_consciousness().await?;
+        consciousness::init_consciousness()?;
     }
 
     // Initialize MLOps system
     if let Err(_) = mlops::init_mlops_manager("/var/lib/synos/mlflow".to_string()) {
-        crate::serial_println!("⚠️  MLOps initialization failed, continuing without MLOps");
+        crate::println!("⚠️  MLOps initialization failed, continuing without MLOps");
     } else {
-        crate::serial_println!("✅ MLOps system initialized");
+        crate::println!("✅ MLOps system initialized");
     }
 
     // Initialize Model Versioning system
     if let Err(_) = versioning::init_versioning_manager("/var/lib/synos/versions".to_string()) {
-        crate::serial_println!("⚠️  Versioning system initialization failed, continuing without versioning");
+        crate::println!("⚠️  Versioning system initialization failed, continuing without versioning");
     } else {
-        crate::serial_println!("✅ Model versioning system initialized");
+        crate::println!("✅ Model versioning system initialized");
     }
 
     // Initialize Continuous AI Monitoring
     if let Err(_) = continuous_monitoring::init_continuous_monitoring() {
-        crate::serial_println!("⚠️  AI monitoring initialization failed, continuing without AI monitoring");
+        crate::println!("⚠️  AI monitoring initialization failed, continuing without AI monitoring");
     } else {
-        crate::serial_println!("✅ Continuous AI monitoring initialized");
+        crate::println!("✅ Continuous AI monitoring initialized");
     }
 
     // Initialize Debian Packaging Pipeline
     if let Err(_) = packaging::init_packaging_pipeline("/var/lib/synos/packaging".to_string()) {
-        crate::serial_println!("⚠️  Packaging pipeline initialization failed, continuing without packaging");
+        crate::println!("⚠️  Packaging pipeline initialization failed, continuing without packaging");
     } else {
-        crate::serial_println!("✅ Debian packaging pipeline initialized");
+        crate::println!("✅ Debian packaging pipeline initialized");
     }
 
     // Initialize Bias Detection Framework
     if let Err(_) = bias_detection::init_bias_detection_framework() {
-        crate::serial_println!("⚠️  Bias detection initialization failed, continuing without bias detection");
+        crate::println!("⚠️  Bias detection initialization failed, continuing without bias detection");
     } else {
-        crate::serial_println!("✅ Algorithmic bias detection framework initialized");
+        crate::println!("✅ Algorithmic bias detection framework initialized");
     }
 
     // Initialize Personal Context Engine
     if let Err(_) = personal_context_engine::init_personal_context_engine() {
-        crate::serial_println!("⚠️  Personal Context Engine initialization failed, continuing without PCE");
+        crate::println!("⚠️  Personal Context Engine initialization failed, continuing without PCE");
     } else {
-        crate::serial_println!("✅ Personal Context Engine with RAG capabilities initialized");
+        crate::println!("✅ Personal Context Engine with RAG capabilities initialized");
     }
 
     // Initialize Vector Database
@@ -270,32 +271,35 @@ pub async fn init_ai_system(config: AIConfig) -> Result<(), &'static str> {
         "http://localhost:8000".to_string(),
         "Flat".to_string()
     ) {
-        crate::serial_println!("⚠️  Vector database initialization failed, continuing without vector DB");
+        crate::println!("⚠️  Vector database initialization failed, continuing without vector DB");
     } else {
-        crate::serial_println!("✅ Vector database (ChromaDB/FAISS) initialized");
+        crate::println!("✅ Vector database (ChromaDB/FAISS) initialized");
     }
 
     // Initialize AI Runtime Manager
     if let Err(_) = runtime::init_ai_runtime_manager() {
-        crate::serial_println!("⚠️  AI Runtime Manager initialization failed, continuing without runtime");
+        crate::println!("⚠️  AI Runtime Manager initialization failed, continuing without runtime");
     } else {
-        crate::serial_println!("✅ AI Runtime Manager (TensorFlow Lite/ONNX Runtime) initialized");
+        crate::println!("✅ AI Runtime Manager (TensorFlow Lite/ONNX Runtime) initialized");
     }
 
     // Initialize Natural Language Control System
     if let Err(_) = natural_language_control::init_natural_language_control() {
-        crate::serial_println!("⚠️  Natural Language Control initialization failed, continuing without NLC");
+        crate::println!("⚠️  Natural Language Control initialization failed, continuing without NLC");
     } else {
-        crate::serial_println!("✅ Natural Language Control System with voice interface initialized");
+        crate::println!("✅ Natural Language Control System with voice interface initialized");
     }
 
     // Initialize Security Orchestration System
     if let Err(_) = security_orchestration::init_security_orchestrator() {
-        crate::serial_println!("⚠️  Security Orchestrator initialization failed, continuing without security orchestration");
+        crate::println!("⚠️  Security Orchestrator initialization failed, continuing without security orchestration");
     } else {
-        crate::serial_println!("✅ AI-augmented Security Tool Orchestration initialized");
+        crate::println!("✅ AI-augmented Security Tool Orchestration initialized");
     }
 
-    crate::serial_println!("🎉 Complete AI integration system initialized - Phase 6 complete!");
+    crate::println!("🎉 Complete AI integration system initialized - Phase 6 complete!");
     Ok(())
 }
+
+// Re-export main types
+pub use consciousness_kernel::ConsciousnessKernel;

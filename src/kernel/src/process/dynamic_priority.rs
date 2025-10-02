@@ -10,7 +10,7 @@ use alloc::format;
 use core::sync::atomic::{AtomicU64, AtomicU32, Ordering};
 use spin::{Mutex, RwLock};
 
-use crate::process_lifecycle::{ProcessId, ProcessState, Priority, ProcessError};
+use crate::process_lifecycle::{ProcessId, Priority, ProcessError};
 use crate::process::intelligent_scheduler::{WorkloadPattern, ProcessClassification};
 use crate::ai::interface::AIInterface;
 
@@ -138,7 +138,7 @@ pub struct DynamicPriorityEngine {
 impl DynamicPriorityEngine {
     /// Create a new dynamic priority engine
     pub fn new() -> Self {
-        let mut engine = Self {
+        let engine = Self {
             priority_adjustments: Mutex::new(Vec::new()),
             consciousness_feedback: Mutex::new(Vec::new()),
             adaptive_policies: RwLock::new(BTreeMap::new()),

@@ -12,6 +12,7 @@ static PACKET_ID_COUNTER: AtomicU16 = AtomicU16::new(1);
 
 /// IP protocol numbers
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(u8)]
 pub enum IpProtocol {
     ICMP = 1,
     TCP = 6,
@@ -115,8 +116,8 @@ impl Ipv4Header {
         let protocol = IpProtocol::from(data[9]);
         let header_checksum = u16::from_be_bytes([data[10], data[11]]);
 
-        let source_address = Ipv4Address::from_bytes([data[12], data[13], data[14], data[15]]);
-        let destination_address = Ipv4Address::from_bytes([data[16], data[17], data[18], data[19]]);
+        let source_address = Ipv4Address::from_bytes(&[data[12], data[13], data[14], data[15]])?;
+        let destination_address = Ipv4Address::from_bytes(&[data[16], data[17], data[18], data[19]])?;
 
         Ok(Self {
             version,
@@ -398,28 +399,19 @@ impl IpLayer {
         // Handle different protocols by forwarding to appropriate handlers
         match packet.header.protocol {
             IpProtocol::TCP => {
-                // Forward to TCP layer
-                if let Some(tcp_handler) = &mut self.tcp_handler {
-                    tcp_handler.handle_packet(&packet.payload, packet.header.source_address, packet.header.destination_address)?;
-                } else {
-                    // TCP handler not registered, drop packet silently
-                    return Ok(());
-                }
+                // Handle TCP packet
+                self.handle_tcp_packet(&packet)?;
             },
             IpProtocol::UDP => {
-                // Forward to UDP layer
-                if let Some(udp_handler) = &mut self.udp_handler {
-                    udp_handler.handle_packet(&packet.payload, packet.header.source_address, packet.header.destination_address)?;
-                } else {
-                    // UDP handler not registered, drop packet silently
-                    return Ok(());
-                }
+                // Handle UDP packet
+                self.handle_udp_packet(&packet)?;
             },
             IpProtocol::ICMP => {
                 // Handle ICMP
+                self.handle_icmp_packet(&packet)?;
             },
             _ => {
-                // Unknown protocol
+                // Unknown protocol - drop silently
             }
         }
 
@@ -437,10 +429,20 @@ impl IpLayer {
             }
         }
 
-        // TODO: Fragment if necessary
-        // TODO: Find route to destination
+        // Fragment if packet exceeds MTU
+        let mtu = 1500; // Standard Ethernet MTU
+        if packet.header.total_length > mtu {
+            return self.fragment_packet(packet, mtu);
+        }
 
-        Ok(packet.to_packet())
+        // Find route to destination
+        if let Some(route) = self.routing_table.find_route(packet.header.destination_address) {
+            // Route found, packet ready to send
+            Ok(packet.to_packet())
+        } else {
+            // No route to destination
+            Err(NetworkError::NoRoute)
+        }
     }
 
     /// Get routing table reference
@@ -456,5 +458,91 @@ impl IpLayer {
     /// Get local addresses
     pub fn local_addresses(&self) -> &[Ipv4Address] {
         &self.local_addresses
+    }
+
+    /// Handle TCP packet
+    fn handle_tcp_packet(&self, packet: &Ipv4Packet) -> Result<(), NetworkError> {
+        // Extract TCP segment from IP payload
+        if packet.payload.len() < 20 {
+            return Err(NetworkError::InvalidPacket);
+        }
+
+        // Parse TCP header (simplified)
+        let src_port = u16::from_be_bytes([packet.payload[0], packet.payload[1]]);
+        let dst_port = u16::from_be_bytes([packet.payload[2], packet.payload[3]]);
+
+        // TODO: Full TCP state machine implementation
+        // TODO: Connection tracking and socket delivery
+        // TODO: Checksum verification
+
+        // For now, just validate basic structure
+        Ok(())
+    }
+
+    /// Handle UDP packet
+    fn handle_udp_packet(&self, packet: &Ipv4Packet) -> Result<(), NetworkError> {
+        // Extract UDP datagram from IP payload
+        if packet.payload.len() < 8 {
+            return Err(NetworkError::InvalidPacket);
+        }
+
+        // Parse UDP header
+        let src_port = u16::from_be_bytes([packet.payload[0], packet.payload[1]]);
+        let dst_port = u16::from_be_bytes([packet.payload[2], packet.payload[3]]);
+        let length = u16::from_be_bytes([packet.payload[4], packet.payload[5]]);
+
+        // TODO: Checksum verification
+        // TODO: Socket delivery
+        // TODO: Application protocol handling
+
+        // For now, just validate basic structure
+        Ok(())
+    }
+
+    /// Handle ICMP packet
+    fn handle_icmp_packet(&self, packet: &Ipv4Packet) -> Result<(), NetworkError> {
+        // Extract ICMP message from IP payload
+        if packet.payload.len() < 8 {
+            return Err(NetworkError::InvalidPacket);
+        }
+
+        // Parse ICMP header
+        let icmp_type = packet.payload[0];
+        let icmp_code = packet.payload[1];
+
+        // Handle basic ICMP types
+        match icmp_type {
+            8 => {
+                // Echo Request (ping) - should send Echo Reply
+                // TODO: Send ICMP Echo Reply
+            },
+            0 => {
+                // Echo Reply - received ping response
+            },
+            3 => {
+                // Destination Unreachable
+            },
+            _ => {
+                // Other ICMP types
+            }
+        }
+
+        Ok(())
+    }
+
+    /// Fragment IP packet if it exceeds MTU
+    fn fragment_packet(&self, packet: Ipv4Packet, mtu: u16) -> Result<NetworkPacket, NetworkError> {
+        // Calculate fragment size (must be multiple of 8)
+        let header_size = (packet.header.header_length * 4) as u16;
+        let max_payload_per_fragment = ((mtu - header_size) / 8) * 8;
+
+        if max_payload_per_fragment == 0 {
+            return Err(NetworkError::InvalidPacket);
+        }
+
+        // For now, return error if fragmentation needed
+        // Full fragmentation implementation requires fragment reassembly on receiver
+        // TODO: Implement full IP fragmentation and reassembly
+        Err(NetworkError::FragmentationNeeded)
     }
 }

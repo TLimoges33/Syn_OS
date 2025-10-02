@@ -8,6 +8,13 @@ name = "synos_graphics"
 path = "lib.rs"
 
 [dependencies]
+# Core allocator support for vec! macro
+spin = { workspace = true }
+
+[features]
+default = ["alloc"]
+alloc = []
+std = ["alloc"]
 
 [dev-dependencies]
 

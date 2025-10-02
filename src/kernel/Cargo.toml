@@ -23,11 +23,12 @@ hashbrown = { version = "0.14", default-features = false, features = ["ahash"] }
 # AI Engine integration
 syn-ai = { path = "../../core/ai" }
 
-# Serde for AI interface (no_std compatible) - temporarily disabled due to ASAN conflicts
-# serde = { version = "1.0", default-features = false, features = ["alloc", "derive"] }
-
-# Error handling - using built-in core::result and core::error
-# We don't need external error handling libraries for the kernel
+# Serde for AI interface (no_std compatible) 
+serde = { version = "1.0", default-features = false, features = ["alloc", "derive"] }
+log = { version = "0.4", default-features = false }
+heapless = { version = "0.8", default-features = false }
+chrono = { version = "0.4", default-features = false, features = ["alloc"] }
+libm = "0.2"
 # Additional dependencies for no_std environment
 uart_16550 = "0.2"
 
@@ -36,6 +37,8 @@ default = ["ai-integration"]
 ai-integration = []
 security-enhanced = []
 debug-mode = []
+consciousness = ["ai-integration", "syn-ai/consciousness"]
+ai-bridge = ["ai-integration", "syn-ai/ai-bridge"]
 
 # Profiles are managed at workspace level - removed from package
 

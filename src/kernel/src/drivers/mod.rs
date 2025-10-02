@@ -152,6 +152,8 @@ pub trait Device: Send + Sync {
 /// Device status
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum DeviceStatus {
+    Active,
+    Inactive,
     Unknown,
     Initializing,
     Ready,

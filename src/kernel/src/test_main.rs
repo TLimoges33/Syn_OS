@@ -50,7 +50,7 @@ fn panic(info: &PanicInfo) -> ! {
 // Test framework stuff (minimal)
 #[cfg(test)]
 fn test_runner(tests: &[&dyn Fn()]) {
-    println!("Running {} tests", tests.len());
+    crate::println!("Running {} tests", tests.len());
     for test in tests {
         test();
     }

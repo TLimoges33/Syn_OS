@@ -1,0 +1,444 @@
+# ISO/IEC 27001:2022 Information Security Management
+# International standard for information security management systems
+
+framework:
+  name: "ISO/IEC 27001:2022"
+  version: "2022"
+  organization: "International Organization for Standardization"
+  last_updated: "2022-10-25"
+  description: "Requirements for establishing, implementing, maintaining and continually improving an ISMS"
+
+# Annex A Controls
+controls:
+  - domain: "A.5 - Organizational Controls"
+    controls:
+      - id: "A.5.1"
+        title: "Policies for information security"
+        description: "Information security policy and topic-specific policies should be defined, approved by management, published, communicated to and acknowledged by relevant personnel and relevant interested parties"
+        implementation_guidance: |
+          - Develop comprehensive information security policy
+          - Get management approval and sign-off
+          - Communicate to all employees and contractors
+          - Maintain policy acknowledgement records
+        evidence_required:
+          - "Information security policy document"
+          - "Management approval record"
+          - "Distribution and acknowledgement logs"
+          - "Annual policy review documentation"
+        automated_checks:
+          - check: "policy_exists"
+            script: "scripts/compliance/iso27001/check_policy.sh"
+            expected: "approved_and_published"
+          - check: "policy_acknowledgements"
+            script: "scripts/compliance/iso27001/check_acknowledgements.sh"
+            expected: "all_personnel_acknowledged"
+        scoring:
+          weight: 10
+          max_points: 100
+          mandatory: true
+
+      - id: "A.5.2"
+        title: "Information security roles and responsibilities"
+        description: "Information security roles and responsibilities should be defined and allocated"
+        implementation_guidance: |
+          - Define ISMS roles (CISO, security team, data owners)
+          - Document responsibilities in job descriptions
+          - Establish RACI matrix for security activities
+        evidence_required:
+          - "Role definitions and responsibilities"
+          - "Job descriptions with security duties"
+          - "RACI matrix for ISMS processes"
+        automated_checks:
+          - check: "roles_defined"
+            script: "scripts/compliance/iso27001/check_roles.sh"
+            expected: "complete"
+        scoring:
+          weight: 8
+          max_points: 100
+          mandatory: true
+
+      - id: "A.5.7"
+        title: "Threat intelligence"
+        description: "Information relating to information security threats should be collected and analyzed to produce threat intelligence"
+        implementation_guidance: |
+          - Subscribe to threat intelligence feeds
+          - Implement threat analysis process
+          - Share relevant threat intelligence internally
+        evidence_required:
+          - "Threat intelligence sources list"
+          - "Threat analysis reports"
+          - "Internal threat sharing procedures"
+        automated_checks:
+          - check: "threat_feeds_active"
+            script: "scripts/compliance/iso27001/check_threat_intel.sh"
+            expected: "at_least_two_sources"
+        scoring:
+          weight: 7
+          max_points: 100
+
+      - id: "A.5.10"
+        title: "Acceptable use of information and other associated assets"
+        description: "Rules for the acceptable use of information and of assets associated with information and information processing facilities should be identified, documented and implemented"
+        implementation_guidance: |
+          - Create acceptable use policy (AUP)
+          - Define rules for BYOD, remote access, social media
+          - Implement technical controls to enforce AUP
+        evidence_required:
+          - "Acceptable use policy"
+          - "User acknowledgements"
+          - "Technical enforcement mechanisms"
+        automated_checks:
+          - check: "aup_acknowledged"
+            script: "scripts/compliance/iso27001/check_aup.sh"
+            expected: "all_users"
+        scoring:
+          weight: 6
+          max_points: 100
+
+  - domain: "A.6 - People Controls"
+    controls:
+      - id: "A.6.1"
+        title: "Screening"
+        description: "Background verification checks on all candidates for employment should be carried out prior to joining"
+        implementation_guidance: |
+          - Conduct background checks for all new hires
+          - Verify references and employment history
+          - Document screening results
+        evidence_required:
+          - "Background check procedures"
+          - "Screening results (anonymized)"
+          - "HR integration documentation"
+        automated_checks:
+          - check: "screening_completed"
+            script: "scripts/compliance/iso27001/check_screening.sh"
+            expected: "all_new_hires"
+        scoring:
+          weight: 8
+          max_points: 100
+          mandatory: true
+
+      - id: "A.6.2"
+        title: "Terms and conditions of employment"
+        description: "Employment contractual agreements should state the employee's and the organization's responsibilities for information security"
+        implementation_guidance: |
+          - Include security responsibilities in contracts
+          - Define confidentiality obligations
+          - Specify security incident reporting requirements
+        evidence_required:
+          - "Employment contract templates"
+          - "Security clauses documentation"
+          - "Legal review records"
+        automated_checks:
+          - check: "contracts_include_security"
+            script: "scripts/compliance/iso27001/check_contracts.sh"
+            expected: "all_templates_compliant"
+        scoring:
+          weight: 7
+          max_points: 100
+          mandatory: true
+
+      - id: "A.6.3"
+        title: "Information security awareness, education and training"
+        description: "Personnel of the organization and relevant interested parties should receive appropriate information security awareness, education and training"
+        implementation_guidance: |
+          - Develop security awareness program
+          - Conduct annual security training
+          - Provide role-specific security training
+          - Test effectiveness through simulations
+        evidence_required:
+          - "Training program documentation"
+          - "Training completion records"
+          - "Test results and metrics"
+        automated_checks:
+          - check: "annual_training_complete"
+            script: "scripts/compliance/iso27001/check_training.sh"
+            expected: "all_personnel_current_year"
+          - check: "phishing_test_results"
+            script: "scripts/compliance/iso27001/check_phishing_tests.sh"
+            expected: "failure_rate_below_10_percent"
+        scoring:
+          weight: 9
+          max_points: 100
+          mandatory: true
+
+  - domain: "A.8 - Technology Controls"
+    controls:
+      - id: "A.8.1"
+        title: "User endpoint devices"
+        description: "Information stored on, processed by or accessible via user endpoint devices should be protected"
+        implementation_guidance: |
+          - Deploy endpoint protection (EDR/XDR)
+          - Enforce full disk encryption
+          - Implement mobile device management
+        evidence_required:
+          - "Endpoint protection deployment"
+          - "Encryption status reports"
+          - "MDM configuration"
+        automated_checks:
+          - check: "endpoint_protection_coverage"
+            script: "scripts/compliance/iso27001/check_endpoints.sh"
+            expected: "100_percent"
+          - check: "disk_encryption_enabled"
+            script: "scripts/compliance/iso27001/check_encryption.sh"
+            expected: "all_devices"
+        scoring:
+          weight: 10
+          max_points: 100
+          mandatory: true
+
+      - id: "A.8.2"
+        title: "Privileged access rights"
+        description: "The allocation and use of privileged access rights should be restricted and managed"
+        implementation_guidance: |
+          - Implement privileged access management (PAM)
+          - Enforce just-in-time administration
+          - Log and monitor all privileged actions
+        evidence_required:
+          - "PAM solution deployment"
+          - "Privileged account inventory"
+          - "Privileged access audit logs"
+        automated_checks:
+          - check: "pam_deployed"
+            script: "scripts/compliance/iso27001/check_pam.sh"
+            expected: "all_privileged_accounts"
+          - check: "privileged_sessions_logged"
+            script: "scripts/compliance/iso27001/check_priv_logs.sh"
+            expected: "100_percent_coverage"
+        scoring:
+          weight: 12
+          max_points: 100
+          mandatory: true
+
+      - id: "A.8.3"
+        title: "Information access restriction"
+        description: "Access to information and other associated assets should be restricted in accordance with the established topic-specific policy on access control"
+        implementation_guidance: |
+          - Implement role-based access control (RBAC)
+          - Enforce least privilege principle
+          - Regular access reviews and recertification
+        evidence_required:
+          - "Access control policy"
+          - "RBAC implementation"
+          - "Access review reports"
+        automated_checks:
+          - check: "rbac_enforced"
+            script: "scripts/compliance/iso27001/check_rbac.sh"
+            expected: "all_systems"
+          - check: "quarterly_access_review"
+            script: "scripts/compliance/iso27001/check_access_review.sh"
+            expected: "completed_last_90_days"
+        scoring:
+          weight: 10
+          max_points: 100
+          mandatory: true
+
+      - id: "A.8.5"
+        title: "Secure authentication"
+        description: "Secure authentication technologies and procedures should be implemented based on information access restrictions and the topic-specific policy on access control"
+        implementation_guidance: |
+          - Implement multi-factor authentication
+          - Enforce strong password policies
+          - Deploy passwordless authentication where possible
+        evidence_required:
+          - "MFA deployment status"
+          - "Authentication policies"
+          - "Password policy configuration"
+        automated_checks:
+          - check: "mfa_coverage"
+            script: "scripts/compliance/iso27001/check_mfa.sh"
+            expected: "all_users_and_admins"
+          - check: "password_complexity"
+            script: "scripts/compliance/iso27001/check_passwords.sh"
+            expected: "meets_policy"
+        scoring:
+          weight: 15
+          max_points: 100
+          mandatory: true
+
+      - id: "A.8.9"
+        title: "Configuration management"
+        description: "Configurations, including security configurations, of hardware, software, services and networks should be established, documented, implemented, monitored and reviewed"
+        implementation_guidance: |
+          - Implement configuration management database (CMDB)
+          - Deploy security configuration baselines
+          - Automated configuration drift detection
+        evidence_required:
+          - "CMDB implementation"
+          - "Security baselines documentation"
+          - "Configuration compliance reports"
+        automated_checks:
+          - check: "cmdb_current"
+            script: "scripts/compliance/iso27001/check_cmdb.sh"
+            expected: "up_to_date"
+          - check: "baseline_compliance"
+            script: "scripts/compliance/iso27001/check_baselines.sh"
+            expected: "95_percent_or_higher"
+        scoring:
+          weight: 8
+          max_points: 100
+
+      - id: "A.8.10"
+        title: "Information deletion"
+        description: "Information stored in information systems, devices or in any other storage media should be deleted when no longer required"
+        implementation_guidance: |
+          - Implement data retention policy
+          - Deploy secure deletion tools
+          - Document deletion procedures
+        evidence_required:
+          - "Data retention policy"
+          - "Secure deletion procedures"
+          - "Deletion audit logs"
+        automated_checks:
+          - check: "retention_policy_enforced"
+            script: "scripts/compliance/iso27001/check_retention.sh"
+            expected: "automated"
+        scoring:
+          weight: 6
+          max_points: 100
+
+      - id: "A.8.16"
+        title: "Monitoring activities"
+        description: "Networks, systems and applications should be monitored for anomalous behaviour and appropriate actions taken to evaluate potential information security incidents"
+        implementation_guidance: |
+          - Deploy SIEM solution
+          - Configure security monitoring rules
+          - Establish SOC or monitoring team
+        evidence_required:
+          - "SIEM deployment documentation"
+          - "Monitoring rules and alerts"
+          - "SOC procedures"
+        automated_checks:
+          - check: "siem_operational"
+            script: "scripts/compliance/iso27001/check_siem.sh"
+            expected: "receiving_logs"
+          - check: "alert_response_time"
+            script: "scripts/compliance/iso27001/check_response_time.sh"
+            expected: "within_sla"
+        scoring:
+          weight: 12
+          max_points: 100
+          mandatory: true
+
+      - id: "A.8.23"
+        title: "Web filtering"
+        description: "Access to external websites should be managed to reduce exposure to malicious content"
+        implementation_guidance: |
+          - Deploy web filtering solution
+          - Block malicious and inappropriate categories
+          - Log and monitor web access
+        evidence_required:
+          - "Web filtering configuration"
+          - "Blocked categories list"
+          - "Web access logs"
+        automated_checks:
+          - check: "web_filter_active"
+            script: "scripts/compliance/iso27001/check_web_filter.sh"
+            expected: "all_endpoints"
+        scoring:
+          weight: 5
+          max_points: 100
+
+      - id: "A.8.24"
+        title: "Use of cryptography"
+        description: "Rules for the effective use of cryptography, including cryptographic key management, should be defined and implemented"
+        implementation_guidance: |
+          - Define cryptographic standards policy
+          - Implement key management system
+          - Use approved algorithms only (AES-256, RSA-2048+)
+        evidence_required:
+          - "Cryptographic policy"
+          - "Key management procedures"
+          - "Algorithm inventory"
+        automated_checks:
+          - check: "approved_algorithms_only"
+            script: "scripts/compliance/iso27001/check_crypto.sh"
+            expected: "no_weak_crypto"
+          - check: "key_rotation"
+            script: "scripts/compliance/iso27001/check_key_rotation.sh"
+            expected: "within_policy"
+        scoring:
+          weight: 10
+          max_points: 100
+          mandatory: true
+
+      - id: "A.8.26"
+        title: "Application security requirements"
+        description: "Information security requirements should be identified, specified and approved when developing or acquiring applications"
+        implementation_guidance: |
+          - Integrate security in SDLC
+          - Conduct security requirements analysis
+          - Perform security code reviews
+        evidence_required:
+          - "Secure SDLC documentation"
+          - "Security requirements templates"
+          - "Code review reports"
+        automated_checks:
+          - check: "sast_scans_current"
+            script: "scripts/compliance/iso27001/check_sast.sh"
+            expected: "all_apps_scanned"
+          - check: "security_requirements_documented"
+            script: "scripts/compliance/iso27001/check_app_security.sh"
+            expected: "all_projects"
+        scoring:
+          weight: 9
+          max_points: 100
+
+      - id: "A.8.28"
+        title: "Secure coding"
+        description: "Secure coding principles should be applied to software development"
+        implementation_guidance: |
+          - Adopt OWASP secure coding practices
+          - Implement automated security testing
+          - Train developers on secure coding
+        evidence_required:
+          - "Secure coding standards"
+          - "Developer training records"
+          - "Automated testing results"
+        automated_checks:
+          - check: "owasp_top10_tested"
+            script: "scripts/compliance/iso27001/check_owasp.sh"
+            expected: "all_applications"
+        scoring:
+          weight: 8
+          max_points: 100
+
+# Assessment Configuration
+assessment:
+  certification_body: "Accredited ISO certification body"
+  audit_frequency: "annual"
+  surveillance_audits: "semi-annual"
+
+  scoring_method: "pass_fail_per_control"
+  passing_criteria: "all_mandatory_controls_must_pass"
+
+  non_conformities:
+    major:
+      definition: "Absence or total breakdown of a control"
+      resolution_timeframe_days: 90
+    minor:
+      definition: "Partial implementation or isolated lapse"
+      resolution_timeframe_days: 180
+
+  evidence_retention_years: 3
+
+  report_sections:
+    - "executive_summary"
+    - "scope_definition"
+    - "control_assessment_results"
+    - "non_conformities"
+    - "corrective_action_plan"
+    - "certification_recommendation"
+
+# Integration
+integration:
+  siem_log_forwarding: true
+  vulnerability_scanner_integration: true
+  asset_inventory_sync: true
+  identity_management_integration: true
+
+# Continuous Compliance
+continuous_monitoring:
+  enabled: true
+  real_time_control_validation: true
+  automated_evidence_collection: true
+  compliance_dashboard: true

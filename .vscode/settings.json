@@ -23,7 +23,7 @@
         "RUST_BACKTRACE": "1",
         "SYNOS_DEV_MODE": "1",
         "CARGO_TARGET_DIR": "${workspaceFolder}/target",
-        "CARGO_BUILD_JOBS": "2",
+        "CARGO_BUILD_JOBS": "1",
         "PYTHONDONTWRITEBYTECODE": "1",
         "PATH": "${workspaceFolder}/scripts:${env:PATH}",
         "SYNOS_PROJECT_ROOT": "${workspaceFolder}"
@@ -47,6 +47,15 @@
         "SYNOS_BUILD_MODE": "1",
         "PATH": "${workspaceFolder}/linux-distribution/tools:${workspaceFolder}/scripts:${env:PATH}"
       }
+    },
+    "Claude Code AI": {
+      "path": "claude-code",
+      "icon": "robot",
+      "color": "terminal.ansiBlue",
+      "env": {
+        "SYNOS_PROJECT_ROOT": "${workspaceFolder}",
+        "CLAUDE_CONTEXT": "synos-development"
+      }
     }
   },
   "terminal.integrated.cwd": "${workspaceFolder}",
@@ -58,6 +67,11 @@
   "terminal.integrated.fontFamily": "monospace",
   "terminal.integrated.fontSize": 12,
   "terminal.integrated.scrollback": 10000,
+  "terminal.integrated.persistentSessionReviveProcess": "onExit",
+  "terminal.integrated.enableMultiLinePasteWarning": false,
+  "terminal.integrated.copyOnSelection": true,
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.rightClickBehavior": "paste",
   // 🦀 Rust Language Server Optimization
   "rust-analyzer.files.excludeDirs": [
     "archive",
@@ -65,7 +79,8 @@
     "backup",
     "backup-*",
     "custom-os-development",
-    "linux-distribution/SynOS-Linux-Builder/build",
+    "linux-distribution/SynOS-Linux-Builder",
+    "linux-distribution",
     "development/complete-docker-strategy",
     "multi_cloud",
     "advanced_ai/archive",
@@ -73,17 +88,33 @@
     "results",
     "reports",
     "target",
-    "build"
+    "build",
+    "fuzz"
   ],
   "rust-analyzer.cargo.unsetTest": [
     "archive",
     "backup",
     "custom-os-development"
   ],
-  "rust-analyzer.checkOnSave.allTargets": false,
-  "rust-analyzer.checkOnSave.command": "clippy",
+  "rust-analyzer.checkOnSave": false,
+  "rust-analyzer.check.enable": false,
+  "rust-analyzer.check.command": "check",
+  "rust-analyzer.check.allTargets": false,
+  "rust-analyzer.server.extraEnv": {
+    "RA_LOG": "error",
+    "CARGO_BUILD_JOBS": "1"
+  },
   "rust-analyzer.procMacro.enable": true,
-  "rust-analyzer.cargo.buildScripts.enable": false,
+  "rust-analyzer.cargo.buildScripts.enable": true,
+  "rust-analyzer.cargo.buildScripts.overrideCommand": null,
+  "rust-analyzer.completion.callable.snippets": "fill_arguments",
+  "rust-analyzer.assist.importGranularity": "module",
+  "rust-analyzer.diagnostics.disabled": ["unresolved-proc-macro"],
+  "rust-analyzer.cargo.loadOutDirsFromCheck": true,
+  "rust-analyzer.inlayHints.typeHints.enable": false,
+  "rust-analyzer.inlayHints.parameterHints.enable": false,
+  "rust-analyzer.lens.enable": false,
+  "rust-analyzer.completion.limit": 50,
   "rust-analyzer.linkedProjects": [
     "Cargo.toml",
     "src/ai-engine/Cargo.toml",
@@ -96,28 +127,48 @@
     "ai-bridge",
     "educational",
     "security-enhanced",
-    "cybersec-tools"
+    "cybersec-tools",
+    "mssp-platform",
+    "red-team-tools",
+    "blue-team-defense"
   ],
 
   // 🚀 Performance Optimization
+  "files.maxMemoryForLargeFilesMB": 256,
+  "files.watcherExcludeBoost": 10000,
   "workbench.editor.limit.enabled": true,
   "workbench.editor.limit.value": 8,
-  "files.maxMemoryForLargeFilesMB": 1024,
-  "search.maxResults": 5000,
+  "workbench.editor.closeEmptyGroups": true,
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.enablePreviewFromQuickOpen": false,
+  "workbench.tree.renderIndentGuides": "onHover",
+  "files.maxMemoryForLargeFilesMB": 512,
+  "search.maxResults": 10000,
   "search.smartCase": true,
   "search.useIgnoreFiles": true,
+  "search.useParentIgnoreFiles": true,
+  "search.followSymlinks": false,
+  "typescript.disableAutomaticTypeAcquisition": true,
+  "extensions.autoUpdate": false,
+  "git.decorations.enabled": true,
+  "scm.diffDecorationsGutterVisibility": "hover",
 
   // 🎭 Interface Configuration
   "workbench.colorTheme": "Default Dark+",
-  "workbench.iconTheme": "vs-seti",
-  "workbench.startupEditor": "readme",
+  "workbench.iconTheme": "a-file-icon-vscode",
+  "workbench.startupEditor": "welcomePageInEmptyWorkbench",
   "workbench.enableExperiments": false,
-  "workbench.editor.enablePreview": false,
+  "workbench.settings.enableNaturalLanguageSearch": false,
+  "workbench.tips.enabled": false,
+  "workbench.welcomePage.walkthroughs.openOnInstall": false,
 
   // 🔒 Privacy & Security
   "telemetry.telemetryLevel": "off",
   "update.mode": "manual",
   "extensions.autoCheckUpdates": false,
+  "security.workspace.trust.enabled": true,
+  "security.workspace.trust.banner": "always",
+  "security.workspace.trust.startupPrompt": "always",
 
   // 📁 File Associations
   "files.associations": {
@@ -141,9 +192,12 @@
     "*.yaml": "yaml"
   },
 
-  // 👁️ File Exclusions
+  // 👁️ File Exclusions (prevent workspace enumeration issues)
   "files.exclude": {
     "**/target": true,
+    "**/fuzz/corpus": true,
+    "**/fuzz/artifacts": true,
+    "workspace-audit-report.json": true,
     "**/.venv": true,
     "**/venv": true,
     "**/node_modules": true,
@@ -151,7 +205,7 @@
     "**/archive": true,
     "**/archive-consolidated": true,
     "**/build/logs": true,
-    "**/linux-distribution/SynOS-Linux-Builder/build": true,
+    "**/linux-distribution/SynOS-Linux-Builder": true,
     "**/dist": true,
     "**/.cache": true,
     "**/tmp": true,
@@ -163,7 +217,10 @@
     "**/cloud_native": true,
     "**/enterprise": true,
     "**/galactic": true,
-    "**/multi_cloud": true
+    "**/multi_cloud": true,
+    "**/*.iso": true,
+    "**/*.squashfs": true,
+    "**/*.img": true
   },
 
   "files.watcherExclude": {
@@ -177,7 +234,10 @@
     "**/dist/**": true,
     "**/.cache/**": true,
     "**/tmp/**": true,
-    "**/linux-distribution/SynOS-Linux-Builder/build/**": true
+    "**/linux-distribution/SynOS-Linux-Builder/**": true,
+    "**/*.iso": true,
+    "**/*.squashfs": true,
+    "**/*.img": true
   },
 
   "search.exclude": {
@@ -189,7 +249,11 @@
     "**/archive": true,
     "**/build": true,
     "**/dist": true,
-    "**/linux-distribution/SynOS-Linux-Builder/build": true
+    "**/linux-distribution/SynOS-Linux-Builder": true,
+    "**/*.iso": true,
+    "**/*.squashfs": true,
+    "**/*.img": true,
+    "**/.git/objects": true
   },
 
   // ✏️ Editor Configuration
@@ -198,13 +262,20 @@
   "editor.detectIndentation": true,
   "editor.rulers": [100, 120],
   "editor.wordWrap": "on",
-  "editor.minimap.enabled": true,
+  "editor.minimap.enabled": false,
   "editor.codeLens": true,
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
+  "editor.semanticHighlighting.enabled": true,
+  "editor.inlineSuggest.enabled": true,
+  "editor.suggestSelection": "first",
+  "editor.acceptSuggestionOnCommitCharacter": false,
+  "editor.acceptSuggestionOnEnter": "smart",
+  "editor.snippetSuggestions": "top",
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit",
-    "source.organizeImports": "explicit"
+    "source.organizeImports": "explicit",
+    "source.addMissingImports": "explicit"
   },
   "editor.quickSuggestions": {
     "other": true,
@@ -213,6 +284,10 @@
   },
   "editor.suggest.enabled": true,
   "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "editor.guides.indentation": true,
+  "editor.cursorBlinking": "smooth",
+  "editor.cursorSmoothCaretAnimation": "on",
 
   // 🔄 Git Configuration
   "git.autofetch": false,
@@ -221,17 +296,29 @@
   "git.ignoreLimitWarning": true,
 
   // 🐍 Python Configuration
-  "python.analysis.typeCheckingMode": "basic",
-  "python.linting.enabled": true,
-  "python.linting.pylintEnabled": true,
+  "python.analysis.typeCheckingMode": "off",
+  "python.analysis.memory.keepLibraryAst": false,
+  "python.analysis.indexing": false,
+  "python.linting.enabled": false,
+  "python.linting.pylintEnabled": false,
   "python.formatting.provider": "black",
 
   // 🔧 C/C++ Configuration
-  "C_Cpp.intelliSenseEngine": "default",
-  "C_Cpp.errorSquiggles": "enabled",
+  "C_Cpp.intelliSenseEngine": "disabled",
+  "C_Cpp.errorSquiggles": "disabled",
+  "C_Cpp.enhancedColorization": "disabled",
+  "C_Cpp.autocomplete": "disabled",
 
   // 🔨 Build Configuration
   "makefile.configureOnOpen": true,
+  "makefile.extensionOutputFolder": "./.vscode",
+  "makefile.launchConfigurations": [
+    {
+      "cwd": "/home/diablorain/Syn_OS",
+      "binaryPath": "${command:makefile.getLaunchTargetPath}",
+      "binaryArgs": []
+    }
+  ],
 
   // 🔍 Shell Script Configuration
   "shellcheck.enable": true,
@@ -247,6 +334,121 @@
     "chroot",
     "squashfs",
     "preseed",
-    "udev"
-  ]
+    "udev",
+    "grub",
+    "bootloader",
+    "initramfs",
+    "vmlinuz",
+    "kthreads",
+    "syscalls",
+    "ptrace"
+  ],
+
+  // 🦀 Rust-Specific Settings
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.semanticHighlighting.enabled": true
+  },
+
+  // 🐍 Python-Specific Settings
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+
+  // 📄 Markdown-Specific Settings
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "on",
+      "strings": "on",
+      "other": "on"
+    }
+  },
+
+  // 📋 TOML-Specific Settings
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
+
+  // 🔧 JSON-Specific Settings
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+
+  // 📜 Shell Script Settings
+  "[shellscript]": {
+    "editor.defaultFormatter": null,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+
+  // 🐳 Container Development
+  "dev.containers.copyGitConfig": true,
+  "dev.containers.gitCredentialHelperConfigLocation": "system",
+
+  // 🔧 Task Enhancement
+  "task.allowAutomaticTasks": "on",
+  "task.saveBeforeRun": "always",
+
+  // 🧪 Testing Framework
+  "testExplorer.useNativeTesting": true,
+  "rust-analyzer.runnables.cargoExtraArgs": ["--release"],
+
+  // 🎯 Debugging Enhancement
+  "debug.allowBreakpointsEverywhere": true,
+  "debug.openDebug": "openOnDebugBreak",
+  "debug.showBreakpointsInOverviewRuler": true,
+  "debug.terminal.clearBeforeReusing": true,
+
+  //  Color Customizations
+  "workbench.colorCustomizations": {
+    "terminal.background": "#1a1a1a",
+    "panel.background": "#1e1e1e",
+    "sideBar.background": "#1a1a1a",
+    "activityBar.background": "#1a1a1a",
+    "statusBar.background": "#007acc",
+    "statusBar.noFolderBackground": "#68217a"
+  },
+
+  // 📊 Problems Panel Enhancement
+  "problems.autoReveal": true,
+  "problems.defaultViewMode": "tree",
+  "problems.showCurrentInStatus": true,
+
+  // 🚀 Advanced Performance Optimizations
+  "search.experimental.asyncFileStreams": true,
+  "search.maxResults": 50000,
+  "search.smartCase": true,
+  "search.useGlobalIgnoreFiles": true,
+  "search.useParentIgnoreFiles": true,
+
+  // 🧠 Intelligent Code Assistance
+  "editor.suggest.localityBonus": true,
+  "editor.suggest.shareSuggestSelections": false,
+  "editor.suggestSelection": "first",
+  "editor.wordBasedSuggestions": "matchingDocuments",
+  "editor.wordBasedSuggestionsMode": "currentDocument",
+
+  // 🎮 Enhanced User Experience
+  "breadcrumbs.enabled": true,
+  "breadcrumbs.filePath": "on",
+  "breadcrumbs.symbolPath": "on",
+  "outline.showFiles": false,
+  "outline.showModules": true,
+
+  // 🔄 Advanced Git Integration
+  "git.autofetch": true,
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "git.defaultCloneDirectory": "/home/diablorain/Projects",
+  "scm.diffDecorations": "all",
+  "scm.diffDecorationsGutterWidth": 3
 }

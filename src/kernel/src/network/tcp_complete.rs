@@ -554,7 +554,7 @@ impl TcpLayer {
     /// Allocate an available port
     pub fn allocate_port(&self) -> Result<u16, NetworkError> {
         // Simple port allocation starting from 32768
-        for port in 32768..65536 {
+        for port in 32768..=65535 {
             if !self.connections.iter().any(|c| c.local_port == port) {
                 return Ok(port);
             }

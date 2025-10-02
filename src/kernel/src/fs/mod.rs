@@ -123,7 +123,7 @@ pub struct FileSystemStats {
 /// File system utilities
 pub mod utils {
     use super::*;
-    use alloc::string::String;
+    use alloc::string::{String, ToString};
     use alloc::vec::{self, Vec};
     
     /// Read entire file into a vector

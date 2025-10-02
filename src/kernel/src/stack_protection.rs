@@ -11,7 +11,7 @@ pub fn init_stack_protection() {
     unsafe {
         STACK_CANARY = generate_random_canary();
     }
-    println!("🛡️ Stack protection initialized");
+    crate::println!("🛡️ Stack protection initialized");
 }
 
 fn generate_random_canary() -> u64 {

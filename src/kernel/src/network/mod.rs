@@ -15,7 +15,7 @@
 //! Physical Layer       │ Network Device Drivers
 //! ```
 
-use crate::drivers::{Device, DeviceError, DeviceId, DeviceType};
+use crate::drivers::{Device, DriverError, DeviceId, DeviceType};
 use alloc::{boxed::Box, string::String, vec::Vec};
 use core::fmt;
 
@@ -47,6 +47,8 @@ pub enum NetworkError {
     InvalidAddress,
     PermissionDenied,
     ResourceBusy,
+    NoRoute,
+    FragmentationNeeded,
 }
 
 impl fmt::Display for NetworkError {
@@ -63,6 +65,8 @@ impl fmt::Display for NetworkError {
             NetworkError::InvalidAddress => write!(f, "Invalid network address"),
             NetworkError::PermissionDenied => write!(f, "Network permission denied"),
             NetworkError::ResourceBusy => write!(f, "Network resource busy"),
+            NetworkError::NoRoute => write!(f, "No route to destination"),
+            NetworkError::FragmentationNeeded => write!(f, "IP fragmentation needed"),
         }
     }
 }
@@ -125,7 +129,7 @@ impl fmt::Display for MacAddress {
 }
 
 /// IPv4 Address representation
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Ipv4Address([u8; 4]);
 
 impl Ipv4Address {

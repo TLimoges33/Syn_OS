@@ -12,7 +12,7 @@ use crate::{
 };
 
 // Import and re-export parser types
-pub use crate::parser_stub::{ParsedCommand, CommandType};
+pub use crate::parser_stub::{ParsedCommand, ShellCommandType};
 
 // Stub print macros for no_std environment
 macro_rules! print {
@@ -240,18 +240,18 @@ impl SynShell {
 
         // Execute based on command type
         match parsed_command.command_type {
-            CommandType::Builtin => self.builtins.execute(
+            ShellCommandType::Builtin => self.builtins.execute(
                 parsed_command,
                 &mut self.environment,
                 &mut self.current_directory,
                 &self.security_context,
             ),
-            CommandType::External => {
+            ShellCommandType::External => {
                 self.external
                     .execute(parsed_command, &self.environment, &self.security_context)
             }
-            CommandType::Network => self.execute_network_command(parsed_command),
-            CommandType::Security => self.execute_security_command(parsed_command),
+            ShellCommandType::Network => self.execute_network_command(parsed_command),
+            ShellCommandType::Security => self.execute_security_command(parsed_command),
         }
     }
 
@@ -296,18 +296,18 @@ impl SynShell {
     /// Check if command execution is permitted
     fn check_command_permissions(&self, command: &ParsedCommand) -> bool {
         match command.command_type {
-            CommandType::Builtin => true, // Builtins are generally safe
-            CommandType::External => {
+            ShellCommandType::Builtin => true, // Builtins are generally safe
+            ShellCommandType::External => {
                 // Check if external command is in allowed paths
                 self.is_command_in_path(&command.name)
             }
-            CommandType::Network => {
+            ShellCommandType::Network => {
                 // Network commands require network permissions
                 self.security_context
                     .network_permissions
                     .can_monitor_traffic
             }
-            CommandType::Security => {
+            ShellCommandType::Security => {
                 // Security commands require admin privileges
                 self.has_capability(Capability::SysAdmin)
             }

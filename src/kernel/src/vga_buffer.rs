@@ -185,7 +185,7 @@ pub fn _print(args: fmt::Arguments) {
 
 /// Initialize the VGA buffer
 pub fn init() {
-    println!("VGA buffer initialized");
+    crate::println!("VGA buffer initialized");
 }
 
 /// Change text color

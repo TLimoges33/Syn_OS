@@ -376,7 +376,7 @@ impl AdvancedProcessManager {
     pub fn exit_process(&self, pid: ProcessId, exit_code: i32) -> Result<(), ProcessError> {
         {
             let mut processes = self.processes.write();
-            if let Some(mut pcb) = processes.get_mut(&pid) {
+            if let Some(pcb) = processes.get_mut(&pid) {
                 pcb.state = ProcessState::Terminated;
             } else {
                 return Err(ProcessError::ProcessNotFound);

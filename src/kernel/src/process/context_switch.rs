@@ -3,7 +3,6 @@
 
 use crate::process::pcb::{CpuContext, ProcessId};
 use core::arch::asm;
-use crate::println;
 
 /// Context switch result
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -280,8 +279,8 @@ pub mod arch {
         // In a real kernel, this would set up proper segment descriptors and privilege levels
         
         // TODO: Implement proper user mode switching with GDT segments
-        println!("Warning: switch_to_user_mode not fully implemented");
-        println!("Would switch to user code at 0x{:x} with stack at 0x{:x}", user_code, user_stack);
+        crate::println!("Warning: switch_to_user_mode not fully implemented");
+        crate::println!("Would switch to user code at 0x{:x} with stack at 0x{:x}", user_code, user_stack);
     }
 
     /// Return from user mode to kernel mode

@@ -65,6 +65,7 @@ pub struct HardwareAbstractionLayer {
 #[derive(Debug, Clone)]
 pub enum ExecutionStrategy {
     CpuOnly,
+    CpuOptimized,
     GpuAccelerated { device_id: usize },
     NpuOptimized { device_id: usize },
     TpuAccelerated { device_id: usize },

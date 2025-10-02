@@ -46,7 +46,7 @@ fn init(boot_info: &'static mut BootInfo) {
     // Initialize advanced applications
     advanced_applications_minimal::init();
 
-    println!("🧠 SynapticOS V1.0 - Basic kernel ready!");
+    crate::println!("🧠 SynapticOS V1.0 - Basic kernel ready!");
 }
 
 entry_point!(kernel_main);
@@ -57,16 +57,16 @@ fn kernel_main(boot_info: &'static mut BootInfo) -> ! {
     #[cfg(test)]
     test_main();
 
-    println!("🧠 SynapticOS - Consciousness-Integrated Cybersecurity Education Platform");
-    println!("🔧 V1.0 Basic Build - Core functionality active");
+    crate::println!("🧠 SynapticOS - Consciousness-Integrated Cybersecurity Education Platform");
+    crate::println!("🔧 V1.0 Basic Build - Core functionality active");
     
     // Simple module status check
     if education_platform_minimal::is_platform_active() {
-        println!("✅ Education Platform: Active");
+        crate::println!("✅ Education Platform: Active");
     }
     
     if advanced_applications_minimal::is_apps_active() {
-        println!("✅ Advanced Applications: Active");  
+        crate::println!("✅ Advanced Applications: Active");  
     }
 
     // Basic kernel loop
@@ -76,7 +76,7 @@ fn kernel_main(boot_info: &'static mut BootInfo) -> ! {
         
         // Simple output every 10000 loops
         if loop_count % 10000 == 0 {
-            println!("🧠 Kernel running: {} iterations", loop_count);
+            crate::println!("🧠 Kernel running: {} iterations", loop_count);
         }
 
         // Halt to save CPU
@@ -89,15 +89,15 @@ fn kernel_main(boot_info: &'static mut BootInfo) -> ! {
 #[cfg(not(test))]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    println!("{}", info);
+    crate::println!("{}", info);
     loop {}
 }
 
 #[cfg(test)]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    serial_println!("[failed]\n");
-    serial_println!("Error: {}\n", info);
+    println!("[failed]\n");
+    println!("Error: {}\n", info);
     exit_qemu(QemuExitCode::Failed);
     loop {}
 }
@@ -120,7 +120,7 @@ pub fn exit_qemu(exit_code: QemuExitCode) {
 
 #[cfg(test)]
 fn test_runner(tests: &[&dyn Fn()]) {
-    serial_println!("Running {} tests", tests.len());
+    println!("Running {} tests", tests.len());
     for test in tests {
         test();
     }

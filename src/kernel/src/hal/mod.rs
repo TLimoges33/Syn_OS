@@ -12,6 +12,8 @@ pub mod io;
 pub mod pci;
 pub mod acpi;
 pub mod minimal_hal;
+pub mod gpu_detection;
+pub mod ai_accelerator_registry;
 
 // Re-export all HAL components
 pub use cpu::*;
@@ -19,6 +21,8 @@ pub use memory::*;
 pub use io::*;
 pub use pci::*;
 pub use acpi::*;
+pub use gpu_detection::*;
+pub use ai_accelerator_registry::*;
 
 /// Hardware abstraction layer manager
 #[derive(Debug)]
@@ -396,6 +400,7 @@ pub struct HardwareSummary {
 /// HAL error types
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum HalError {
+    DeviceNotFound,
     CpuDetectionFailed,
     MemoryDetectionFailed,
     IoInitializationFailed,
@@ -405,6 +410,7 @@ pub enum HalError {
     UnsupportedHardware,
     ResourceConflict,
     PermissionDenied,
+    InvalidOperation,
 }
 
 impl fmt::Display for HalError {
@@ -419,6 +425,8 @@ impl fmt::Display for HalError {
             HalError::UnsupportedHardware => write!(f, "Unsupported hardware"),
             HalError::ResourceConflict => write!(f, "Resource conflict"),
             HalError::PermissionDenied => write!(f, "Permission denied"),
+            HalError::InvalidOperation => write!(f, "Invalid operation"),
+            HalError::DeviceNotFound => write!(f, "Device not found"),
         }
     }
 }
@@ -516,11 +524,14 @@ impl HardwareAbstractionLayer {
     /// Initialize PCI subsystem
     fn init_pci(&mut self) -> Result<(), HalError> {
         self.pci_manager.scan_buses()?;
-        
-        crate::println!("  🚌 PCI: {} devices detected on {} buses", 
+
+        crate::println!("  🚌 PCI: {} devices detected on {} buses",
             self.pci_manager.devices.len(),
             self.pci_manager.buses.len());
-        
+
+        // Initialize AI accelerator registry after PCI scan
+        ai_accelerator_registry::init_ai_accelerator_registry(&self.pci_manager)?;
+
         Ok(())
     }
 

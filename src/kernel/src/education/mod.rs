@@ -135,8 +135,11 @@ impl EducationSystem {
         }
         
         // Shutdown all interactive sessions
-        for (_, mut session) in self.interactive_sessions.drain() {
-            session.end().await?;
+        let session_keys: Vec<_> = self.interactive_sessions.keys().cloned().collect();
+        for key in session_keys {
+            if let Some(mut session) = self.interactive_sessions.remove(&key) {
+                session.end().await?;
+            }
         }
         
         // Shutdown components
@@ -206,7 +209,7 @@ impl EducationSystem {
     }
     
     /// Update learning progress
-    pub async fn update_progress(&mut self, user_id: u32, tutorial_id: u32) -> Result<(), &'static str> {
+    pub async fn update_progress(&mut self, _user_id: u32, _tutorial_id: u32) -> Result<(), &'static str> {
         // Update user progress after completing tutorial
         // This would typically involve updating a database or persistent storage
         Ok(())
@@ -246,4 +249,10 @@ pub async fn init_education_system(config: EducationConfig) -> Result<(), &'stat
     // In a real implementation, this would use proper global state management
     
     Ok(())
+}
+
+/// Initialize the education platform
+pub fn init_education_platform() {
+    // TODO: Initialize education platform with default configuration
+    let _config = EducationConfig::default();
 }
