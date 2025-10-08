@@ -42,12 +42,10 @@ docker-compose
 python3-numpy
 python3-scipy
 python3-sklearn
-python3-tensorflow
-python3-torch
 
-# System Monitoring
-netstat
-ss
+# System Monitoring (fixed package names)
+net-tools
+iproute2
 lsof
 strace
 tcpdump

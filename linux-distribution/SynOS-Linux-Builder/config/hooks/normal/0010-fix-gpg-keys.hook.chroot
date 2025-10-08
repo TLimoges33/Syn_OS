@@ -1,0 +1,19 @@
+#!/bin/bash
+# Fix GPG keys in chroot before apt operations
+
+set -e
+
+echo "I: Fixing GPG keys in chroot..."
+
+# Update ca-certificates
+apt-get install -y --reinstall ca-certificates || true
+
+# Update debian-archive-keyring
+apt-get install -y --reinstall debian-archive-keyring || true
+
+# Import Debian keys manually
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 648ACFD622F3D138 || true
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 0E98404D386FA1D9 || true
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 605C66F00D6C9793 || true
+
+echo "I: GPG keys updated successfully"

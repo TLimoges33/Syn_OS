@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>ScubaGear</name>
+  <full_name>cisagov/ScubaGear</full_name>
+  <description>Automation to assess the state of your M365 tenant against CISA's baselines</description>
+  <url>https://github.com/cisagov/ScubaGear</url>
+  <clone_url>https://github.com/cisagov/ScubaGear.git</clone_url>
+  <ssh_url>git@github.com:cisagov/ScubaGear.git</ssh_url>
+  <metadata>
+    <language>PowerShell</language>
+    <stars>2279</stars>
+    <forks>310</forks>
+    <watchers>2279</watchers>
+    <size>36646</size>
+    <default_branch>main</default_branch>
+    <created_at>2022-07-21T16:46:41Z</created_at>
+    <updated_at>2025-08-26T15:15:24Z</updated_at>
+    <pushed_at>2025-08-26T21:44:32Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>assessment-tool</topic>
+    <topic>cisa</topic>
+    <topic>contributions-welcome</topic>
+    <topic>cybersecurity</topic>
+    <topic>m365</topic>
+    <topic>open-policy-agent</topic>
+    <topic>open-source</topic>
+    <topic>powershell</topic>
+    <topic>rego</topic>
+    <topic>scuba</topic>
+    <topic>scubaconnect</topic>
+    <topic>security</topic>
+    <topic>security-automation</topic>
+  </topics>
+  <license>
+    <name>Creative Commons Zero v1.0 Universal</name>
+    <spdx_id>CC0-1.0</spdx_id>
+  </license>
+  <owner>
+    <login>cisagov</login>
+    <type>Organization</type>
+    <url>https://github.com/cisagov</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 2279 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

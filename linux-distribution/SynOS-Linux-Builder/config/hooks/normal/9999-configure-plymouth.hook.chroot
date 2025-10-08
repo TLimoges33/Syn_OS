@@ -1,0 +1,49 @@
+#!/bin/bash
+# Configure Plymouth boot splash for SynOS
+
+set -e
+
+echo "I: Configuring SynOS Plymouth theme..."
+
+# Install Plymouth if not present
+if ! command -v plymouth &> /dev/null; then
+    apt-get update
+    apt-get install -y plymouth plymouth-themes
+fi
+
+# Create simple progress bar images using ImageMagick
+if command -v convert &> /dev/null; then
+    cd /usr/share/plymouth/themes/synos
+
+    # Progress box (600x20 outline)
+    convert -size 600x20 xc:none \
+        -stroke "#3366CC" -strokewidth 2 \
+        -draw "rectangle 0,0 599,19" \
+        progress_box.png
+
+    # Progress bar (600x20 filled)
+    convert -size 600x20 \
+        -define gradient:angle=0 \
+        gradient:"#00CCFF"-"#0066FF" \
+        progress_bar.png
+
+    echo "I: Created Plymouth progress bar images"
+else
+    echo "W: ImageMagick not available, creating placeholder images"
+    # Create minimal placeholder images
+    touch /usr/share/plymouth/themes/synos/progress_box.png
+    touch /usr/share/plymouth/themes/synos/progress_bar.png
+fi
+
+# Set SynOS as default Plymouth theme
+update-alternatives --install \
+    /usr/share/plymouth/themes/default.plymouth default.plymouth \
+    /usr/share/plymouth/themes/synos/synos.plymouth 100
+
+update-alternatives --set default.plymouth \
+    /usr/share/plymouth/themes/synos/synos.plymouth
+
+# Update initramfs
+update-initramfs -u
+
+echo "I: SynOS Plymouth theme configured successfully"

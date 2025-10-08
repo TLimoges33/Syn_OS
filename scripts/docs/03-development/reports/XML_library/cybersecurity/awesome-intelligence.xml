@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>awesome-intelligence</name>
+  <full_name>ARPSyndicate/awesome-intelligence</full_name>
+  <description>A collaboratively curated list of awesome Open-Source Intelligence (OSINT) Resources</description>
+  <url>https://github.com/ARPSyndicate/awesome-intelligence</url>
+  <clone_url>https://github.com/ARPSyndicate/awesome-intelligence.git</clone_url>
+  <ssh_url>git@github.com:ARPSyndicate/awesome-intelligence.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>2185</stars>
+    <forks>107</forks>
+    <watchers>2185</watchers>
+    <size>849</size>
+    <default_branch>main</default_branch>
+    <created_at>2023-01-02T10:17:04Z</created_at>
+    <updated_at>2025-08-25T17:10:00Z</updated_at>
+    <pushed_at>2025-06-26T23:21:05Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>awesome</topic>
+    <topic>awesome-intelligence</topic>
+    <topic>awesome-list</topic>
+    <topic>awesome-lists</topic>
+    <topic>crypto</topic>
+    <topic>cybersecurity</topic>
+    <topic>economics</topic>
+    <topic>geopolitics</topic>
+    <topic>hacktoberfest</topic>
+    <topic>hacktoberfest2024</topic>
+    <topic>malware</topic>
+    <topic>osint</topic>
+    <topic>stocks</topic>
+    <topic>terrorism</topic>
+    <topic>tor</topic>
+  </topics>
+  <license>
+    <name>Creative Commons Zero v1.0 Universal</name>
+    <spdx_id>CC0-1.0</spdx_id>
+  </license>
+  <owner>
+    <login>ARPSyndicate</login>
+    <type>Organization</type>
+    <url>https://github.com/ARPSyndicate</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 2185 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

@@ -1,0 +1,23 @@
+#!/bin/bash
+# Compile GSettings schemas for SynOS MATE panels
+
+echo "Compiling GSettings schemas..."
+
+# Compile schemas
+if [ -d /usr/share/glib-2.0/schemas ]; then
+    glib-compile-schemas /usr/share/glib-2.0/schemas/
+    echo "✓ GSettings schemas compiled"
+else
+    echo "⚠ Schemas directory not found"
+    exit 1
+fi
+
+# Verify compilation
+if [ -f /usr/share/glib-2.0/schemas/gschemas.compiled ]; then
+    echo "✓ Schema compilation successful"
+else
+    echo "⚠ Schema compilation may have failed"
+    exit 1
+fi
+
+exit 0

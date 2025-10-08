@@ -1,0 +1,29 @@
+#!/bin/bash
+# SynOS AI Chat Panel Toggle (F11)
+# Toggles the AI chat GTK window
+
+# Check if AI chat panel is running
+if pgrep -f "synos-ai-chat-panel" > /dev/null; then
+    # Panel is running, check if visible
+    WINDOW_ID=$(wmctrl -l | grep "Jarvis AI Assistant" | awk '{print $1}')
+
+    if [ -n "$WINDOW_ID" ]; then
+        # Window exists, toggle visibility
+        wmctrl -i -r "$WINDOW_ID" -b toggle,hidden
+
+        # Check new state
+        if wmctrl -l | grep -q "Jarvis AI Assistant"; then
+            notify-send "SynOS" "AI Chat Panel: VISIBLE" -i applications-chat -t 1000
+        else
+            notify-send "SynOS" "AI Chat Panel: HIDDEN" -i applications-chat -t 1000
+        fi
+    else
+        # Window doesn't exist, launch it
+        /usr/local/bin/synos-ai-chat-panel &
+        notify-send "SynOS" "AI Chat Panel: LAUNCHING" -i applications-chat -t 1000
+    fi
+else
+    # Panel not running, launch it
+    /usr/local/bin/synos-ai-chat-panel &
+    notify-send "SynOS" "AI Chat Panel: LAUNCHING" -i applications-chat -t 1000
+fi

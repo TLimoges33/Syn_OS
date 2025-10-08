@@ -1,0 +1,33 @@
+# SynOS Core Packages
+task-desktop
+task-mate-desktop
+
+# AI Framework Components
+python3
+python3-pip
+python3-numpy
+python3-scipy
+python3-torch
+python3-tensorflow
+python3-onnxruntime
+
+# NATS Messaging
+nats-server
+
+# Security Tools (from ParrotOS base)
+nmap
+wireshark
+metasploit-framework
+burpsuite
+hashcat
+
+# Development Tools
+git
+build-essential
+cmake
+rustc
+
+# System Services
+systemd
+dbus
+network-manager

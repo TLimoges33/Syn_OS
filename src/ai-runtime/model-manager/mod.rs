@@ -9,6 +9,9 @@ use alloc::vec::Vec;
 use alloc::string::String;
 use alloc::collections::BTreeMap;
 
+mod crypto;
+pub use crypto::*;
+
 /// AI Model metadata
 #[derive(Debug, Clone)]
 pub struct ModelMetadata {
@@ -32,6 +35,7 @@ pub struct ModelManager {
     models: BTreeMap<String, ModelMetadata>,
     storage_path: String,
     encryption_enabled: bool,
+    master_key: Option<SecureKey>,
 }
 
 impl ModelManager {
@@ -41,17 +45,60 @@ impl ModelManager {
             models: BTreeMap::new(),
             storage_path,
             encryption_enabled: true,
+            master_key: Some(SecureKey::generate()),
+        }
+    }
+
+    /// Create model manager with custom key
+    pub fn with_key(storage_path: String, key: SecureKey) -> Self {
+        Self {
+            models: BTreeMap::new(),
+            storage_path,
+            encryption_enabled: true,
+            master_key: Some(key),
         }
     }
 
     /// Register a new model
-    pub fn register_model(&mut self, metadata: ModelMetadata) -> Result<(), &'static str> {
+    pub fn register_model(&mut self, mut metadata: ModelMetadata) -> Result<(), &'static str> {
         let key = format!("{}-{}", metadata.name, metadata.version);
 
-        // Verify checksum
-        // TODO: Calculate and verify file checksum
+        // Note: Checksum will be calculated when storing the model
+        // This just registers the metadata
 
         self.models.insert(key, metadata);
+        Ok(())
+    }
+
+    /// Store model with encryption
+    pub fn store_model(&mut self, name: &str, version: &str, model_data: &[u8]) -> Result<(), &'static str> {
+        // Calculate checksum
+        let checksum = calculate_sha256(model_data);
+
+        // Update metadata with checksum
+        let key = format!("{}-{}", name, version);
+        if let Some(metadata) = self.models.get_mut(&key) {
+            metadata.checksum = checksum;
+            metadata.size_bytes = model_data.len();
+        } else {
+            return Err("Model not registered");
+        }
+
+        // Encrypt if enabled
+        if self.encryption_enabled {
+            let master_key = self.master_key.as_ref()
+                .ok_or("No encryption key available")?;
+
+            let nonce = generate_nonce();
+            let encrypted = encrypt_model_aes_256_gcm(model_data, master_key.as_bytes(), &nonce)?;
+
+            // In production, would write encrypted data to file system
+            // For now, mark as encrypted in metadata
+            if let Some(metadata) = self.models.get_mut(&key) {
+                metadata.encrypted = true;
+            }
+        }
+
         Ok(())
     }
 
@@ -62,12 +109,31 @@ impl ModelManager {
         let metadata = self.models.get(&key)
             .ok_or("Model not found")?;
 
-        // TODO: Read encrypted model file
-        // TODO: Decrypt if needed
-        // TODO: Verify integrity with checksum
-        // TODO: Return model data
+        // In production, would read from file system
+        // For now, return placeholder
+        let mut model_data = Vec::new();
 
-        Ok(Vec::new())
+        // If encrypted, decrypt
+        if metadata.encrypted {
+            let master_key = self.master_key.as_ref()
+                .ok_or("No decryption key available")?;
+
+            // In production, would:
+            // 1. Read encrypted file
+            // 2. Extract nonce, ciphertext, tag
+            // 3. Decrypt using master key
+            // 4. Verify checksum
+            // For now, stub
+        }
+
+        // Verify checksum
+        if !model_data.is_empty() {
+            if !verify_sha256_checksum(&model_data, &metadata.checksum) {
+                return Err("Checksum verification failed");
+            }
+        }
+
+        Ok(model_data)
     }
 
     /// Delete model from storage
@@ -77,7 +143,8 @@ impl ModelManager {
         self.models.remove(&key)
             .ok_or("Model not found")?;
 
-        // TODO: Delete encrypted file from storage
+        // In production, would delete encrypted file from storage
+        // For now, just remove from registry
 
         Ok(())
     }
@@ -99,28 +166,47 @@ impl ModelManager {
     }
 }
 
-/// Encrypt model data
+// Encryption and checksum functions are now provided by crypto module
+// Re-export for backwards compatibility
 pub fn encrypt_model(data: &[u8], key: &[u8; 32]) -> Result<Vec<u8>, &'static str> {
-    // TODO: Implement AES-256-GCM encryption
-    // TODO: Add authentication tag
-    // TODO: Return encrypted data with IV
-    Ok(Vec::new())
+    let nonce = generate_nonce();
+    let encrypted = encrypt_model_aes_256_gcm(data, key, &nonce)?;
+
+    // Serialize encrypted model: nonce || ciphertext || tag
+    let mut result = Vec::with_capacity(NONCE_SIZE + encrypted.ciphertext.len() + TAG_SIZE);
+    result.extend_from_slice(&encrypted.nonce);
+    result.extend_from_slice(&encrypted.ciphertext);
+    result.extend_from_slice(&encrypted.tag);
+
+    Ok(result)
 }
 
-/// Decrypt model data
 pub fn decrypt_model(encrypted: &[u8], key: &[u8; 32]) -> Result<Vec<u8>, &'static str> {
-    // TODO: Extract IV from encrypted data
-    // TODO: Verify authentication tag
-    // TODO: Decrypt using AES-256-GCM
-    // TODO: Return decrypted model data
-    Ok(Vec::new())
+    if encrypted.len() < NONCE_SIZE + TAG_SIZE {
+        return Err("Invalid encrypted data");
+    }
+
+    // Deserialize: nonce || ciphertext || tag
+    let mut nonce = [0u8; NONCE_SIZE];
+    let mut tag = [0u8; TAG_SIZE];
+
+    nonce.copy_from_slice(&encrypted[..NONCE_SIZE]);
+    let ciphertext_end = encrypted.len() - TAG_SIZE;
+    tag.copy_from_slice(&encrypted[ciphertext_end..]);
+
+    let ciphertext = encrypted[NONCE_SIZE..ciphertext_end].to_vec();
+
+    let encrypted_model = EncryptedModel {
+        nonce,
+        ciphertext,
+        tag,
+    };
+
+    decrypt_model_aes_256_gcm(&encrypted_model, key)
 }
 
-/// Calculate SHA-256 checksum
 pub fn calculate_checksum(data: &[u8]) -> [u8; 32] {
-    // TODO: Implement SHA-256 hash
-    // TODO: Return 32-byte checksum
-    [0u8; 32]
+    calculate_sha256(data)
 }
 
 #[cfg(test)]

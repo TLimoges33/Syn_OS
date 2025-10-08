@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Awesome-Cybersecurity-Datasets</name>
+  <full_name>shramos/Awesome-Cybersecurity-Datasets</full_name>
+  <description>A curated list of amazingly awesome Cybersecurity datasets</description>
+  <url>https://github.com/shramos/Awesome-Cybersecurity-Datasets</url>
+  <clone_url>https://github.com/shramos/Awesome-Cybersecurity-Datasets.git</clone_url>
+  <ssh_url>git@github.com:shramos/Awesome-Cybersecurity-Datasets.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>1768</stars>
+    <forks>305</forks>
+    <watchers>1768</watchers>
+    <size>27</size>
+    <default_branch>master</default_branch>
+    <created_at>2018-08-29T13:46:27Z</created_at>
+    <updated_at>2025-08-26T21:13:09Z</updated_at>
+    <pushed_at>2024-03-02T22:06:16Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>attack</topic>
+    <topic>cybersecurity</topic>
+    <topic>data</topic>
+    <topic>dataframe</topic>
+    <topic>datasets</topic>
+    <topic>deep</topic>
+    <topic>deeplearning</topic>
+    <topic>events</topic>
+    <topic>ids</topic>
+    <topic>ips</topic>
+    <topic>learning</topic>
+    <topic>logs</topic>
+    <topic>machinelearning</topic>
+    <topic>malware</topic>
+    <topic>security</topic>
+    <topic>traffic</topic>
+  </topics>
+  <owner>
+    <login>shramos</login>
+    <type>User</type>
+    <url>https://github.com/shramos</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 1768 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

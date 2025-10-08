@@ -1,0 +1,18 @@
+#!/bin/bash
+# SynOS File Tree Panel Toggle (F10)
+# Toggles the left panel showing AI-enhanced file tree
+
+PANEL_ID="left"
+
+# Check current state
+current_state=$(gsettings get org.mate.panel.toplevel:/org/mate/panel/toplevels/$PANEL_ID/ auto-hide)
+
+if [ "$current_state" = "true" ]; then
+    # Panel is hidden, show it
+    gsettings set org.mate.panel.toplevel:/org/mate/panel/toplevels/$PANEL_ID/ auto-hide false
+    notify-send "SynOS" "File Tree Panel: VISIBLE" -i folder -t 1000
+else
+    # Panel is visible, hide it
+    gsettings set org.mate.panel.toplevel:/org/mate/panel/toplevels/$PANEL_ID/ auto-hide true
+    notify-send "SynOS" "File Tree Panel: HIDDEN" -i folder -t 1000
+fi

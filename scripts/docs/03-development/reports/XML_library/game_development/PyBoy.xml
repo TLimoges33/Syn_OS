@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>PyBoy</name>
+  <full_name>Baekalfen/PyBoy</full_name>
+  <description>Game Boy emulator written in Python</description>
+  <url>https://github.com/Baekalfen/PyBoy</url>
+  <clone_url>https://github.com/Baekalfen/PyBoy.git</clone_url>
+  <ssh_url>git@github.com:Baekalfen/PyBoy.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>4962</stars>
+    <forks>510</forks>
+    <watchers>4962</watchers>
+    <size>47055</size>
+    <default_branch>master</default_branch>
+    <created_at>2015-05-29T11:58:11Z</created_at>
+    <updated_at>2025-08-26T21:17:45Z</updated_at>
+    <pushed_at>2025-06-02T13:05:53Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>game_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cython</topic>
+    <topic>emulator</topic>
+    <topic>gameboy</topic>
+    <topic>gameboy-emulator</topic>
+    <topic>gameboy-emulator-library</topic>
+    <topic>pypy</topic>
+    <topic>python</topic>
+  </topics>
+  <license>
+    <name>Other</name>
+    <spdx_id>NOASSERTION</spdx_id>
+  </license>
+  <owner>
+    <login>Baekalfen</login>
+    <type>User</type>
+    <url>https://github.com/Baekalfen</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 4962 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

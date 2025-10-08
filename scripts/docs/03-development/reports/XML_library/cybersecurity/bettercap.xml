@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>bettercap</name>
+  <full_name>bettercap/bettercap</full_name>
+  <description>The Swiss Army knife for 802.11, BLE, HID, CAN-bus, IPv4 and IPv6 networks reconnaissance and MITM attacks.</description>
+  <url>https://github.com/bettercap/bettercap</url>
+  <clone_url>https://github.com/bettercap/bettercap.git</clone_url>
+  <ssh_url>git@github.com:bettercap/bettercap.git</ssh_url>
+  <metadata>
+    <language>Go</language>
+    <stars>18030</stars>
+    <forks>1560</forks>
+    <watchers>18030</watchers>
+    <size>25809</size>
+    <default_branch>master</default_branch>
+    <created_at>2018-01-07T15:30:41Z</created_at>
+    <updated_at>2025-08-26T13:03:39Z</updated_at>
+    <pushed_at>2025-08-23T15:12:09Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>ble</topic>
+    <topic>deauthentication-attack</topic>
+    <topic>dot11</topic>
+    <topic>hacking</topic>
+    <topic>hid</topic>
+    <topic>mitm</topic>
+    <topic>monitoring</topic>
+    <topic>mousejack</topic>
+    <topic>network-attacks</topic>
+    <topic>password-sniffer</topic>
+    <topic>pmkid</topic>
+    <topic>proxy</topic>
+    <topic>redteam</topic>
+    <topic>redteaming</topic>
+    <topic>rogue-ap</topic>
+    <topic>security</topic>
+    <topic>spoofing</topic>
+    <topic>wifi</topic>
+    <topic>wifi-security</topic>
+    <topic>wpa2</topic>
+  </topics>
+  <license>
+    <name>Other</name>
+    <spdx_id>NOASSERTION</spdx_id>
+  </license>
+  <owner>
+    <login>bettercap</login>
+    <type>Organization</type>
+    <url>https://github.com/bettercap</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 18030 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

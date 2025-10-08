@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Red-Team</name>
+  <full_name>Al1ex/Red-Team</full_name>
+  <description>Red-Team Attack Guid</description>
+  <url>https://github.com/Al1ex/Red-Team</url>
+  <clone_url>https://github.com/Al1ex/Red-Team.git</clone_url>
+  <ssh_url>git@github.com:Al1ex/Red-Team.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>265</stars>
+    <forks>65</forks>
+    <watchers>265</watchers>
+    <size>106</size>
+    <default_branch>main</default_branch>
+    <created_at>2020-10-21T08:19:38Z</created_at>
+    <updated_at>2025-08-25T16:55:10Z</updated_at>
+    <pushed_at>2020-10-21T09:32:46Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>tools_utilities</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>red-team</topic>
+  </topics>
+  <owner>
+    <login>Al1ex</login>
+    <type>User</type>
+    <url>https://github.com/Al1ex</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 265 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

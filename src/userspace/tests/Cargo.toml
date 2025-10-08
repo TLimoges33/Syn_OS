@@ -1,0 +1,40 @@
+[package]
+name = "synos-userspace-tests"
+version = "1.0.0"
+edition = "2021"
+description = "Comprehensive test suite for SynOS userspace integration"
+
+[[bin]]
+name = "test_core_syscalls"
+path = "test_core_syscalls.rs"
+
+[[bin]]
+name = "test_network_syscalls"
+path = "test_network_syscalls.rs"
+
+[[bin]]
+name = "test_security_syscalls"
+path = "test_security_syscalls.rs"
+
+[[bin]]
+name = "test_ai_syscalls"
+path = "test_ai_syscalls.rs"
+
+[[bin]]
+name = "test_advanced_syscalls"
+path = "test_advanced_syscalls.rs"
+
+[[bin]]
+name = "test_integration_full"
+path = "test_integration_full.rs"
+
+[dependencies]
+libtsynos = { path = "../libtsynos" }
+
+# Build flags for freestanding binaries
+[build]
+target = "x86_64-unknown-none"
+
+# Use custom linker script
+[target.x86_64-unknown-none]
+linker = "rust-lld"

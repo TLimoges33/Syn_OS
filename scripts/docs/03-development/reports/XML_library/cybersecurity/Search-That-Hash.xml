@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Search-That-Hash</name>
+  <full_name>bee-san/Search-That-Hash</full_name>
+  <description>🔎Searches Hash APIs to crack your hash quickly🔎 If hash is not found, automatically pipes into HashCat⚡</description>
+  <url>https://github.com/bee-san/Search-That-Hash</url>
+  <clone_url>https://github.com/bee-san/Search-That-Hash.git</clone_url>
+  <ssh_url>git@github.com:bee-san/Search-That-Hash.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>1372</stars>
+    <forks>94</forks>
+    <watchers>1372</watchers>
+    <size>3683</size>
+    <default_branch>main</default_branch>
+    <created_at>2020-08-30T00:05:50Z</created_at>
+    <updated_at>2025-08-24T22:49:16Z</updated_at>
+    <pushed_at>2025-03-05T09:39:17Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cracks</topic>
+    <topic>cybersecurity</topic>
+    <topic>hacking</topic>
+    <topic>hacking-tool</topic>
+    <topic>hash</topic>
+    <topic>hashcat</topic>
+    <topic>infosec</topic>
+    <topic>john</topic>
+    <topic>tool</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>bee-san</login>
+    <type>User</type>
+    <url>https://github.com/bee-san</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 1372 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

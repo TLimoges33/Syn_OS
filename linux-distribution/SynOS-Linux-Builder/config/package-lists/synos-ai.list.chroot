@@ -3,10 +3,10 @@ python3-numpy
 python3-scipy
 python3-matplotlib
 python3-pandas
-python3-scikit-learn
+# python3-scikit-learn - not available in Debian stable
 python3-requests
 python3-flask
-python3-fastapi
+# python3-fastapi - not available in Debian stable
 python3-websockets
 python3-aiohttp
 python3-psutil
@@ -34,7 +34,7 @@ pkg-config
 git
 gitk
 meld
-code
+# code - VS Code not in repos, skip for now
 
 # Containerization
 docker.io
@@ -60,7 +60,7 @@ libswscale-dev
 libopencv-dev
 
 # Hardware Support
-nvidia-detect
+# nvidia-detect - not in standard repos
 mesa-utils
 vulkan-tools
 intel-gpu-tools

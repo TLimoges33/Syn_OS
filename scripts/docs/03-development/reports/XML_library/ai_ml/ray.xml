@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>ray</name>
+  <full_name>ray-project/ray</full_name>
+  <description>Ray is an AI compute engine. Ray consists of a core distributed runtime and a set of AI Libraries for accelerating ML workloads.</description>
+  <url>https://github.com/ray-project/ray</url>
+  <clone_url>https://github.com/ray-project/ray.git</clone_url>
+  <ssh_url>git@github.com:ray-project/ray.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>38656</stars>
+    <forks>6739</forks>
+    <watchers>38656</watchers>
+    <size>585109</size>
+    <default_branch>master</default_branch>
+    <created_at>2016-10-25T19:38:30Z</created_at>
+    <updated_at>2025-08-26T22:08:03Z</updated_at>
+    <pushed_at>2025-08-26T22:53:27Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>ai_ml</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>data-science</topic>
+    <topic>deep-learning</topic>
+    <topic>deployment</topic>
+    <topic>distributed</topic>
+    <topic>hyperparameter-optimization</topic>
+    <topic>hyperparameter-search</topic>
+    <topic>large-language-models</topic>
+    <topic>llm</topic>
+    <topic>llm-inference</topic>
+    <topic>llm-serving</topic>
+    <topic>machine-learning</topic>
+    <topic>optimization</topic>
+    <topic>parallel</topic>
+    <topic>python</topic>
+    <topic>pytorch</topic>
+    <topic>ray</topic>
+    <topic>reinforcement-learning</topic>
+    <topic>rllib</topic>
+    <topic>serving</topic>
+    <topic>tensorflow</topic>
+  </topics>
+  <license>
+    <name>Apache License 2.0</name>
+    <spdx_id>Apache-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>ray-project</login>
+    <type>Organization</type>
+    <url>https://github.com/ray-project</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 38656 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

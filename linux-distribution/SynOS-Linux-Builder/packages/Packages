@@ -1,0 +1,106 @@
+Package: synos-ai-daemon
+Version: 1.0.0
+Architecture: amd64
+Maintainer: SynOS Team <dev@synos.io>
+Depends: libc6 (>= 2.31), libssl3 (>= 3.0.0)
+Filename: ./synos-ai-daemon_1.0.0_amd64.deb
+Size: 512952
+MD5sum: 80054c6d8a403e62138cc2c17f51039f
+SHA1: b0f44917494bb2ee110320adcd65f5c9152da719
+SHA256: f72fe92fd76f6443ddec1abdfe1ba2185a5c59edc6a04c1c98300f692ae7d928
+Section: utils
+Priority: optional
+Description: SynOS AI Daemon - Core AI Consciousness and Orchestration Engine
+ Part of the SynOS AI-powered operating system.
+ This service provides critical AI functionality for the system.
+
+Package: synos-ai-engine
+Version: 1.0.0
+Architecture: amd64
+Essential: no
+Maintainer: SynOS Development Team <dev@synos.ai>
+Depends: libc6 (>= 2.34), libssl3 (>= 3.0.0), python3 (>= 3.9), python3-numpy, python3-scipy, systemd
+Filename: ./synos-ai-engine_1.0.0_amd64.deb
+Size: 4036
+MD5sum: 9fff45a052eb184bdf8b6b3d7dda4231
+SHA1: e266a87c75a5d129bcc7dc94c291d71d9927b06c
+SHA256: f4b72fe3a5fec906f08f7ce35abcf26bed09874a33c41235a0faba6a5c92ada6
+Section: science
+Priority: optional
+Homepage: https://github.com/synos-ai/synos
+Description: SynOS AI Consciousness Engine
+ The core AI consciousness engine for SynOS, providing neural darwinism
+ capabilities, personal context processing, and AI-augmented system operations.
+ .
+ This package includes:
+ - Neural Darwinism consciousness framework
+ - Personal Context Engine with RAG capabilities
+ - Vector database integration (ChromaDB/FAISS)
+ - AI Runtime management (TensorFlow Lite, ONNX)
+ - Natural language OS control interfaces
+ - Security tool orchestration system
+
+Package: synos-consciousness-daemon
+Version: 1.0.0
+Architecture: amd64
+Maintainer: SynOS Team <dev@synos.io>
+Depends: libc6 (>= 2.31), libssl3 (>= 3.0.0)
+Filename: ./synos-consciousness-daemon_1.0.0_amd64.deb
+Size: 423504
+MD5sum: a0b4c285992007b12fd17c8b6acddb32
+SHA1: ada3fa419757f5f2aff367a0c78fad1628f0240e
+SHA256: 7c043ac9ad1ef19b208855c068d1cdc17b1c721d36b45830ce3365dfcb765f6b
+Section: utils
+Priority: optional
+Description: SynOS Consciousness Daemon - Neural Darwinism AI Engine
+ Part of the SynOS AI-powered operating system.
+ This service provides critical AI functionality for the system.
+
+Package: synos-hardware-accel
+Version: 1.0.0
+Architecture: amd64
+Maintainer: SynOS Team <dev@synos.io>
+Depends: libc6 (>= 2.31), libssl3 (>= 3.0.0)
+Filename: ./synos-hardware-accel_1.0.0_amd64.deb
+Size: 470492
+MD5sum: 86f5542f2924519dbb92a4a54dbbdd2c
+SHA1: ec52ed34b6cd2bdd9985aae4356bb86543fab02f
+SHA256: d97c3bdc7cccd9ceefb55acf3abc402dcc83f740754e1dae121513eaf5670889
+Section: utils
+Priority: optional
+Description: SynOS Hardware Accelerator - GPU/NPU/TPU Management for AI
+ Part of the SynOS AI-powered operating system.
+ This service provides critical AI functionality for the system.
+
+Package: synos-llm-engine
+Version: 1.0.0
+Architecture: amd64
+Maintainer: SynOS Team <dev@synos.io>
+Depends: libc6 (>= 2.31), libssl3 (>= 3.0.0)
+Filename: ./synos-llm-engine_1.0.0_amd64.deb
+Size: 555780
+MD5sum: ae96fb6eae7778715a734fd07e360d26
+SHA1: afb1094ce3ae7e13a550eacd54a3ed65fac5c8f8
+SHA256: e3795dd332b41877289109c77ac1689182239fa8a3852b6c02ab75f956877dac
+Section: utils
+Priority: optional
+Description: SynOS LLM Engine - Local Language Model Inference API
+ Part of the SynOS AI-powered operating system.
+ This service provides critical AI functionality for the system.
+
+Package: synos-security-orchestrator
+Version: 1.0.0
+Architecture: amd64
+Maintainer: SynOS Team <dev@synos.io>
+Depends: libc6 (>= 2.31), libssl3 (>= 3.0.0)
+Filename: ./synos-security-orchestrator_1.0.0_amd64.deb
+Size: 430472
+MD5sum: 9ad7a3d7e4b28bee9931f969b1873f3c
+SHA1: 1034cafa32c6ba349e17b824b33cecb59f7ec684
+SHA256: 148cc3d3b4cfbaa214992774dc2564050c17c17e930c3ce1c3d0b51a5ba2e231
+Section: utils
+Priority: optional
+Description: SynOS Security Orchestrator - AI-Powered Security Tool Management
+ Part of the SynOS AI-powered operating system.
+ This service provides critical AI functionality for the system.
+

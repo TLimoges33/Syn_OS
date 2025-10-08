@@ -1,0 +1,19 @@
+[package]
+name = "synos-ai-runtime"
+version = "0.1.0"
+edition = "2021"
+description = "SynOS Native AI Runtime - Lightweight inference engine for no_std environments"
+authors = ["SynOS Team"]
+license = "MIT"
+
+[lib]
+path = "lib.rs"
+
+[dependencies]
+# Core no_std support
+spin = "0.9"
+lazy_static = { version = "1.4", features = ["spin_no_std"] }
+
+[features]
+default = []
+std = []

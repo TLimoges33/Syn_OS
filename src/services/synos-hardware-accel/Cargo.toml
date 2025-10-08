@@ -1,0 +1,30 @@
+[package]
+name = "synos-hardware-accel"
+version = "1.0.0"
+edition = "2021"
+
+[dependencies]
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+anyhow = { workspace = true }
+clap = { workspace = true }
+uuid = { workspace = true }
+async-trait = { workspace = true }
+
+# Hardware acceleration
+# candle-core and candle-nn removed due to rand dependency conflicts
+# Using ort for ONNX Runtime and optional tch for PyTorch
+tch = { workspace = true, optional = true }
+ort = { workspace = true }
+
+# System info
+sysinfo = { workspace = true }
+
+[features]
+default = []
+gpu = ["tch"]
+npu = []
+tpu = []

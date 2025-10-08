@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>Awesome-GPT-Agents</name>
+  <full_name>fr0gger/Awesome-GPT-Agents</full_name>
+  <description>A curated list of GPT agents for cybersecurity</description>
+  <url>https://github.com/fr0gger/Awesome-GPT-Agents</url>
+  <clone_url>https://github.com/fr0gger/Awesome-GPT-Agents.git</clone_url>
+  <ssh_url>git@github.com:fr0gger/Awesome-GPT-Agents.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>6201</stars>
+    <forks>681</forks>
+    <watchers>6201</watchers>
+    <size>142</size>
+    <default_branch>main</default_branch>
+    <created_at>2023-11-11T02:30:01Z</created_at>
+    <updated_at>2025-08-26T11:02:48Z</updated_at>
+    <pushed_at>2024-07-21T17:56:50Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>agents</topic>
+    <topic>cybersecurity</topic>
+    <topic>infosec</topic>
+    <topic>llm</topic>
+  </topics>
+  <license>
+    <name>Apache License 2.0</name>
+    <spdx_id>Apache-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>fr0gger</login>
+    <type>User</type>
+    <url>https://github.com/fr0gger</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 6201 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

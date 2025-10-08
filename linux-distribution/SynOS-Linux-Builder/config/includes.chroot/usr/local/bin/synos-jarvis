@@ -1,0 +1,385 @@
+#!/usr/bin/env python3
+"""
+SynOS Jarvis - AI Assistant Command-Line Interface
+Neural Darwinism consciousness interaction tool
+
+Usage:
+    synos-jarvis status              # Check AI services status
+    synos-jarvis query "question"    # Ask AI a question
+    synos-jarvis switch-client NAME  # Switch MSSP client context
+    synos-jarvis workflow save NAME  # Save current workflow
+    synos-jarvis workflow load NAME  # Load saved workflow
+    synos-jarvis learn               # Show learning insights
+    synos-jarvis help                # Show this help message
+"""
+
+import sys
+import os
+import json
+import subprocess
+from typing import Optional, Dict, Any
+
+# Color codes for terminal output
+class Colors:
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+
+def print_banner():
+    """Print Jarvis ASCII banner"""
+    banner = f"""{Colors.CYAN}{Colors.BOLD}
+╔══════════════════════════════════════════════════════════════╗
+║                    JARVIS AI ASSISTANT                       ║
+║              SynOS Neural Darwinism Interface                ║
+╚══════════════════════════════════════════════════════════════╝
+{Colors.ENDC}"""
+    print(banner)
+
+def check_service_status(service_name: str) -> Dict[str, Any]:
+    """Check systemd service status"""
+    try:
+        result = subprocess.run(
+            ['systemctl', 'is-active', service_name],
+            capture_output=True,
+            text=True,
+            timeout=5
+        )
+        active = result.stdout.strip() == 'active'
+
+        # Get service details
+        details_result = subprocess.run(
+            ['systemctl', 'status', service_name, '--no-pager'],
+            capture_output=True,
+            text=True,
+            timeout=5
+        )
+
+        return {
+            'name': service_name,
+            'active': active,
+            'status': result.stdout.strip(),
+            'details': details_result.stdout
+        }
+    except Exception as e:
+        return {
+            'name': service_name,
+            'active': False,
+            'status': 'error',
+            'error': str(e)
+        }
+
+def cmd_status():
+    """Check status of all AI services"""
+    print_banner()
+    print(f"\n{Colors.BOLD}AI Services Status:{Colors.ENDC}\n")
+
+    services = [
+        'synos-ai-daemon',
+        'synos-consciousness-daemon',
+        'synos-llm-engine',
+        'synos-security-orchestrator',
+        'synos-hardware-accel'
+    ]
+
+    all_active = True
+    for service in services:
+        status_info = check_service_status(service)
+
+        if status_info['active']:
+            status_icon = f"{Colors.GREEN}●{Colors.ENDC}"
+            status_text = f"{Colors.GREEN}ACTIVE{Colors.ENDC}"
+        else:
+            status_icon = f"{Colors.RED}●{Colors.ENDC}"
+            status_text = f"{Colors.RED}INACTIVE{Colors.ENDC}"
+            all_active = False
+
+        print(f"  {status_icon} {service:<30} {status_text}")
+
+    print()
+
+    if all_active:
+        print(f"{Colors.GREEN}{Colors.BOLD}✓ All AI services operational{Colors.ENDC}\n")
+    else:
+        print(f"{Colors.YELLOW}{Colors.BOLD}⚠ Some services are not running{Colors.ENDC}")
+        print(f"{Colors.YELLOW}  Run: sudo systemctl start <service-name>{Colors.ENDC}\n")
+
+    # Check for consciousness state file
+    state_file = '/var/lib/synos/consciousness.state'
+    if os.path.exists(state_file):
+        try:
+            with open(state_file, 'r') as f:
+                state_data = json.load(f)
+                print(f"{Colors.CYAN}Consciousness State:{Colors.ENDC}")
+                print(f"  Learning Phase: {state_data.get('learning_phase', 'Unknown')}")
+                print(f"  Patterns Recognized: {state_data.get('patterns_count', 0)}")
+                print(f"  Confidence Level: {state_data.get('confidence', 0)}%")
+        except Exception as e:
+            print(f"{Colors.YELLOW}Unable to read consciousness state: {e}{Colors.ENDC}")
+
+    return 0 if all_active else 1
+
+def cmd_query(question: str):
+    """Query the AI assistant"""
+    print_banner()
+    print(f"\n{Colors.BOLD}User Query:{Colors.ENDC} {question}\n")
+
+    # Check if synos-llm-engine is running
+    status = check_service_status('synos-llm-engine')
+    if not status['active']:
+        print(f"{Colors.RED}Error: synos-llm-engine is not running{Colors.ENDC}")
+        print(f"{Colors.YELLOW}Start it with: sudo systemctl start synos-llm-engine{Colors.ENDC}\n")
+        return 1
+
+    # Try to query via HTTP API (default port 8080)
+    try:
+        import requests
+        response = requests.post(
+            'http://localhost:8080/query',
+            json={'query': question, 'context': 'cli'},
+            timeout=30
+        )
+
+        if response.status_code == 200:
+            result = response.json()
+            print(f"{Colors.CYAN}Jarvis:{Colors.ENDC} {result.get('response', 'No response')}\n")
+
+            if 'confidence' in result:
+                confidence = result['confidence']
+                if confidence > 0.8:
+                    conf_color = Colors.GREEN
+                elif confidence > 0.5:
+                    conf_color = Colors.YELLOW
+                else:
+                    conf_color = Colors.RED
+                print(f"{conf_color}Confidence: {confidence:.1%}{Colors.ENDC}\n")
+
+            return 0
+        else:
+            print(f"{Colors.RED}Error: LLM engine returned status {response.status_code}{Colors.ENDC}\n")
+            return 1
+    except ImportError:
+        print(f"{Colors.YELLOW}Warning: 'requests' module not installed{Colors.ENDC}")
+        print(f"{Colors.YELLOW}Install with: pip3 install requests{Colors.ENDC}\n")
+        return 1
+    except Exception as e:
+        print(f"{Colors.RED}Error connecting to LLM engine: {e}{Colors.ENDC}\n")
+        return 1
+
+def cmd_switch_client(client_name: str):
+    """Switch MSSP client context"""
+    print_banner()
+    print(f"\n{Colors.BOLD}Switching to client context:{Colors.ENDC} {client_name}\n")
+
+    # Check if context file exists
+    context_dir = os.path.expanduser('~/.synos/contexts')
+    context_file = os.path.join(context_dir, f'{client_name}.json')
+
+    if not os.path.exists(context_dir):
+        os.makedirs(context_dir, exist_ok=True)
+
+    if os.path.exists(context_file):
+        try:
+            with open(context_file, 'r') as f:
+                context_data = json.load(f)
+
+            print(f"{Colors.GREEN}✓ Loaded context for: {context_data.get('name', client_name)}{Colors.ENDC}")
+            print(f"  Engagement Type: {context_data.get('type', 'Unknown')}")
+            print(f"  Vulnerabilities Tracked: {context_data.get('vulns_count', 0)}")
+            print(f"  Report Progress: {context_data.get('report_progress', 0)}%")
+
+            # Set current context
+            current_context_file = os.path.expanduser('~/.synos/current_context.json')
+            with open(current_context_file, 'w') as f:
+                json.dump({'client': client_name, 'context_file': context_file}, f)
+
+            print(f"\n{Colors.CYAN}Ready.{Colors.ENDC}\n")
+            return 0
+        except Exception as e:
+            print(f"{Colors.RED}Error loading context: {e}{Colors.ENDC}\n")
+            return 1
+    else:
+        print(f"{Colors.YELLOW}No context found for '{client_name}'{Colors.ENDC}")
+        print(f"{Colors.YELLOW}Create new context? (y/n): {Colors.ENDC}", end='')
+
+        response = input().strip().lower()
+        if response == 'y':
+            # Create new context
+            context_data = {
+                'name': client_name,
+                'type': 'Penetration Test',
+                'vulns_count': 0,
+                'report_progress': 0,
+                'created': subprocess.check_output(['date', '+%Y-%m-%d']).decode().strip()
+            }
+
+            with open(context_file, 'w') as f:
+                json.dump(context_data, f, indent=2)
+
+            print(f"\n{Colors.GREEN}✓ Created new context for: {client_name}{Colors.ENDC}\n")
+            return 0
+        else:
+            print(f"\n{Colors.YELLOW}Cancelled.{Colors.ENDC}\n")
+            return 1
+
+def cmd_workflow_save(workflow_name: str):
+    """Save current workflow state"""
+    print_banner()
+    print(f"\n{Colors.BOLD}Saving workflow:{Colors.ENDC} {workflow_name}\n")
+
+    workflows_dir = os.path.expanduser('~/.synos/workflows')
+    os.makedirs(workflows_dir, exist_ok=True)
+
+    workflow_file = os.path.join(workflows_dir, f'{workflow_name}.json')
+
+    # Capture current workspace state
+    workflow_data = {
+        'name': workflow_name,
+        'saved': subprocess.check_output(['date', '+%Y-%m-%d %H:%M:%S']).decode().strip(),
+        'working_directory': os.getcwd(),
+        'open_terminals': [],  # TODO: Detect open terminals
+        'environment_vars': dict(os.environ),
+    }
+
+    try:
+        with open(workflow_file, 'w') as f:
+            json.dump(workflow_data, f, indent=2)
+
+        print(f"{Colors.GREEN}✓ Workflow saved: {workflow_file}{Colors.ENDC}\n")
+        return 0
+    except Exception as e:
+        print(f"{Colors.RED}Error saving workflow: {e}{Colors.ENDC}\n")
+        return 1
+
+def cmd_workflow_load(workflow_name: str):
+    """Load saved workflow state"""
+    print_banner()
+    print(f"\n{Colors.BOLD}Loading workflow:{Colors.ENDC} {workflow_name}\n")
+
+    workflows_dir = os.path.expanduser('~/.synos/workflows')
+    workflow_file = os.path.join(workflows_dir, f'{workflow_name}.json')
+
+    if not os.path.exists(workflow_file):
+        print(f"{Colors.RED}Error: Workflow '{workflow_name}' not found{Colors.ENDC}\n")
+        return 1
+
+    try:
+        with open(workflow_file, 'r') as f:
+            workflow_data = json.load(f)
+
+        print(f"{Colors.GREEN}✓ Loaded workflow from: {workflow_data.get('saved', 'Unknown')}{Colors.ENDC}")
+        print(f"  Working Directory: {workflow_data.get('working_directory', 'N/A')}")
+        print(f"\n{Colors.CYAN}Workflow restored.{Colors.ENDC}\n")
+        return 0
+    except Exception as e:
+        print(f"{Colors.RED}Error loading workflow: {e}{Colors.ENDC}\n")
+        return 1
+
+def cmd_learn():
+    """Show learning insights from consciousness system"""
+    print_banner()
+    print(f"\n{Colors.BOLD}Learning Insights:{Colors.ENDC}\n")
+
+    insights_file = '/var/lib/synos/learning_insights.json'
+
+    if not os.path.exists(insights_file):
+        print(f"{Colors.YELLOW}No learning insights available yet.{Colors.ENDC}")
+        print(f"{Colors.YELLOW}The consciousness system is still observing your workflow.{Colors.ENDC}\n")
+        return 0
+
+    try:
+        with open(insights_file, 'r') as f:
+            insights = json.load(f)
+
+        print(f"{Colors.CYAN}Top Insights:{Colors.ENDC}\n")
+
+        for i, insight in enumerate(insights.get('insights', [])[:5], 1):
+            print(f"  {i}. {insight.get('description', 'N/A')}")
+            print(f"     Confidence: {insight.get('confidence', 0):.1%}")
+            print()
+
+        print(f"{Colors.GREEN}Neural Darwinism is adapting to your workflow.{Colors.ENDC}\n")
+        return 0
+    except Exception as e:
+        print(f"{Colors.RED}Error reading insights: {e}{Colors.ENDC}\n")
+        return 1
+
+def cmd_help():
+    """Show help message"""
+    print_banner()
+    print(__doc__)
+    print(f"\n{Colors.BOLD}Examples:{Colors.ENDC}\n")
+    print(f"  {Colors.CYAN}synos-jarvis status{Colors.ENDC}")
+    print(f"    Check if all AI services are running\n")
+    print(f"  {Colors.CYAN}synos-jarvis query \"What is SQL injection?\"{Colors.ENDC}")
+    print(f"    Ask Jarvis about cybersecurity concepts\n")
+    print(f"  {Colors.CYAN}synos-jarvis switch-client acme_corp{Colors.ENDC}")
+    print(f"    Switch to 'acme_corp' MSSP client context\n")
+    print(f"  {Colors.CYAN}synos-jarvis workflow save recon_phase{Colors.ENDC}")
+    print(f"    Save current workflow as 'recon_phase'\n")
+    return 0
+
+def main():
+    """Main entry point"""
+    if len(sys.argv) < 2:
+        cmd_help()
+        return 1
+
+    command = sys.argv[1].lower()
+
+    if command == 'status':
+        return cmd_status()
+
+    elif command == 'query':
+        if len(sys.argv) < 3:
+            print(f"{Colors.RED}Error: query requires a question{Colors.ENDC}")
+            print(f"{Colors.YELLOW}Usage: synos-jarvis query \"your question\"{Colors.ENDC}\n")
+            return 1
+        question = ' '.join(sys.argv[2:])
+        return cmd_query(question)
+
+    elif command == 'switch-client':
+        if len(sys.argv) < 3:
+            print(f"{Colors.RED}Error: switch-client requires a client name{Colors.ENDC}")
+            print(f"{Colors.YELLOW}Usage: synos-jarvis switch-client CLIENT_NAME{Colors.ENDC}\n")
+            return 1
+        client_name = sys.argv[2]
+        return cmd_switch_client(client_name)
+
+    elif command == 'workflow':
+        if len(sys.argv) < 4:
+            print(f"{Colors.RED}Error: workflow requires 'save' or 'load' and a name{Colors.ENDC}")
+            print(f"{Colors.YELLOW}Usage: synos-jarvis workflow save|load NAME{Colors.ENDC}\n")
+            return 1
+        action = sys.argv[2].lower()
+        workflow_name = sys.argv[3]
+
+        if action == 'save':
+            return cmd_workflow_save(workflow_name)
+        elif action == 'load':
+            return cmd_workflow_load(workflow_name)
+        else:
+            print(f"{Colors.RED}Error: unknown workflow action '{action}'{Colors.ENDC}\n")
+            return 1
+
+    elif command == 'learn':
+        return cmd_learn()
+
+    elif command == 'help' or command == '--help' or command == '-h':
+        return cmd_help()
+
+    else:
+        print(f"{Colors.RED}Error: Unknown command '{command}'{Colors.ENDC}\n")
+        cmd_help()
+        return 1
+
+if __name__ == '__main__':
+    try:
+        sys.exit(main())
+    except KeyboardInterrupt:
+        print(f"\n\n{Colors.YELLOW}Interrupted.{Colors.ENDC}\n")
+        sys.exit(130)

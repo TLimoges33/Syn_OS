@@ -1,0 +1,20 @@
+#!/bin/bash
+# SynOS Smart Terminal Toggle (F12)
+# Toggles Guake-style dropdown terminal with AI integration
+
+# Check if guake is installed and running
+if ! command -v guake &> /dev/null; then
+    # Fallback: Launch mate-terminal
+    mate-terminal --title="SynOS Smart Terminal" &
+    exit 0
+fi
+
+# Toggle guake terminal
+guake --toggle-visibility
+
+# If guake isn't running, start it
+if ! pgrep -x "guake" > /dev/null; then
+    guake &
+    sleep 0.5
+    guake --toggle-visibility
+fi

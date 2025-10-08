@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>API-s-for-OSINT</name>
+  <full_name>cipher387/API-s-for-OSINT</full_name>
+  <description>List of API's for gathering information about phone numbers, addresses, domains etc</description>
+  <url>https://github.com/cipher387/API-s-for-OSINT</url>
+  <clone_url>https://github.com/cipher387/API-s-for-OSINT.git</clone_url>
+  <ssh_url>git@github.com:cipher387/API-s-for-OSINT.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>2006</stars>
+    <forks>262</forks>
+    <watchers>2006</watchers>
+    <size>209</size>
+    <default_branch>main</default_branch>
+    <created_at>2021-10-29T09:39:50Z</created_at>
+    <updated_at>2025-08-26T09:39:42Z</updated_at>
+    <pushed_at>2025-05-16T23:40:15Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>api</topic>
+    <topic>api-rest</topic>
+    <topic>awesome</topic>
+    <topic>awesome-list</topic>
+    <topic>cybersecurity</topic>
+    <topic>information-gathering</topic>
+    <topic>osint</topic>
+  </topics>
+  <license>
+    <name>Creative Commons Zero v1.0 Universal</name>
+    <spdx_id>CC0-1.0</spdx_id>
+  </license>
+  <owner>
+    <login>cipher387</login>
+    <type>User</type>
+    <url>https://github.com/cipher387</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 2006 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

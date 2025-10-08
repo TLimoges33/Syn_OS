@@ -1,0 +1,113 @@
+// SynOS v1.0 Plymouth Boot Animation
+// Neural Darwinism AI-Enhanced Cybersecurity OS
+
+// Screen setup
+Window.GetMaxWidth = fun() { return Window.GetWidth(); };
+Window.GetMaxHeight = fun() { return Window.GetHeight(); };
+
+screen_width = Window.GetWidth();
+screen_height = Window.GetHeight();
+
+// Color scheme - Neural Blue
+neural_blue = [0.2, 0.4, 0.8];
+electric_cyan = [0.0, 0.8, 1.0];
+dark_bg = [0.05, 0.05, 0.1];
+
+// Background
+background.image = Image.Color(dark_bg[0], dark_bg[1], dark_bg[2], 1.0);
+background.sprite = Sprite(background.image);
+background.sprite.SetPosition(0, 0, 0);
+
+// Logo (ASCII art as text)
+logo_text = [
+    "   ███████╗██╗   ██╗███╗   ██╗ ██████╗ ███████╗",
+    "   ██╔════╝╚██╗ ██╔╝████╗  ██║██╔═══██╗██╔════╝",
+    "   ███████╗ ╚████╔╝ ██╔██╗ ██║██║   ██║███████╗",
+    "   ╚════██║  ╚██╔╝  ██║╚██╗██║██║   ██║╚════██║",
+    "   ███████║   ██║   ██║ ╚████║╚██████╔╝███████║",
+    "   ╚══════╝   ╚═╝   ╚═╝  ╚═══╝ ╚═════╝ ╚══════╝",
+    "",
+    "   🧠 AI-Enhanced Cybersecurity Operating System",
+    "      Neural Darwinism • MSSP Platform • v1.0"
+];
+
+// Position logo in upper center
+logo_y = screen_height * 0.25;
+for (i = 0; i < 9; i++) {
+    logo[i].image = Image.Text(logo_text[i], neural_blue[0], neural_blue[1], neural_blue[2]);
+    logo[i].sprite = Sprite(logo[i].image);
+    logo[i].sprite.SetPosition(screen_width / 2 - logo[i].image.GetWidth() / 2, logo_y + (i * 25), 10);
+}
+
+// Progress bar
+progress_box.image = Image("progress_box.png");
+progress_box.sprite = Sprite(progress_box.image);
+progress_box.x = screen_width / 2 - progress_box.image.GetWidth() / 2;
+progress_box.y = screen_height * 0.70;
+progress_box.sprite.SetPosition(progress_box.x, progress_box.y, 1);
+
+progress_bar.original_image = Image("progress_bar.png");
+progress_bar.sprite = Sprite();
+progress_bar.x = screen_width / 2 - progress_box.image.GetWidth() / 2;
+progress_bar.y = screen_height * 0.70;
+progress_bar.sprite.SetPosition(progress_bar.x, progress_bar.y, 2);
+
+// Status message
+message_sprite = Sprite();
+message_sprite.SetPosition(screen_width / 2, screen_height * 0.80, 10);
+
+// Neural animation effect - pulsing dots
+neural_dots = [];
+for (i = 0; i < 5; i++) {
+    neural_dots[i].image = Image.Text("●", electric_cyan[0], electric_cyan[1], electric_cyan[2]);
+    neural_dots[i].sprite = Sprite(neural_dots[i].image);
+    neural_dots[i].sprite.SetPosition(
+        screen_width / 2 - 100 + (i * 50),
+        screen_height * 0.85,
+        5
+    );
+    neural_dots[i].sprite.SetOpacity(0);
+}
+
+fun refresh_callback() {
+    // Animate neural dots (pulsing effect)
+    progress = Plymouth.GetBootProgress();
+    for (i = 0; i < 5; i++) {
+        phase = (Plymouth.GetTime() * 3 + i * 0.4) % 2;
+        if (phase < 1)
+            neural_dots[i].sprite.SetOpacity(phase);
+        else
+            neural_dots[i].sprite.SetOpacity(2 - phase);
+    }
+
+    // Update progress bar
+    new_progress_bar.image = progress_bar.original_image.Scale(
+        progress_box.image.GetWidth() * progress,
+        progress_bar.original_image.GetHeight()
+    );
+    progress_bar.sprite.SetImage(new_progress_bar.image);
+}
+
+Plymouth.SetRefreshFunction(refresh_callback);
+
+fun display_normal_callback() {
+    message_sprite.image = Image.Text("Initializing AI Consciousness...", electric_cyan[0], electric_cyan[1], electric_cyan[2]);
+    message_sprite.sprite = Sprite(message_sprite.image);
+    message_sprite.sprite.SetPosition(screen_width / 2 - message_sprite.image.GetWidth() / 2, screen_height * 0.80, 10);
+}
+
+fun display_password_callback(prompt, bullets) {
+    message_sprite.image = Image.Text(prompt, neural_blue[0], neural_blue[1], neural_blue[2]);
+    message_sprite.sprite = Sprite(message_sprite.image);
+    message_sprite.sprite.SetPosition(screen_width / 2 - message_sprite.image.GetWidth() / 2, screen_height * 0.80, 10);
+}
+
+fun message_callback(text) {
+    message_sprite.image = Image.Text(text, electric_cyan[0], electric_cyan[1], electric_cyan[2]);
+    message_sprite.sprite = Sprite(message_sprite.image);
+    message_sprite.sprite.SetPosition(screen_width / 2 - message_sprite.image.GetWidth() / 2, screen_height * 0.80, 10);
+}
+
+Plymouth.SetDisplayNormalFunction(display_normal_callback);
+Plymouth.SetDisplayPasswordFunction(display_password_callback);
+Plymouth.SetMessageFunction(message_callback);

@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>opensquat</name>
+  <full_name>atenreiro/opensquat</full_name>
+  <description>The openSquat is an open-source tool for detecting domain look-alikes by searching for newly registered domains that might be impersonating legit domains and brands.</description>
+  <url>https://github.com/atenreiro/opensquat</url>
+  <clone_url>https://github.com/atenreiro/opensquat.git</clone_url>
+  <ssh_url>git@github.com:atenreiro/opensquat.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>828</stars>
+    <forks>149</forks>
+    <watchers>828</watchers>
+    <size>6909</size>
+    <default_branch>master</default_branch>
+    <created_at>2020-05-04T18:22:30Z</created_at>
+    <updated_at>2025-08-26T15:05:28Z</updated_at>
+    <pushed_at>2025-06-23T04:25:01Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>blue-team</topic>
+    <topic>cybersecurity</topic>
+    <topic>cybersquatting</topic>
+    <topic>domain-name</topic>
+    <topic>domain-squatting</topic>
+    <topic>homograph-attack</topic>
+    <topic>infosec</topic>
+    <topic>malware</topic>
+    <topic>osint</topic>
+    <topic>phishing</topic>
+    <topic>phishing-detection</topic>
+    <topic>phishing-domains</topic>
+    <topic>python</topic>
+    <topic>scanner</topic>
+    <topic>security-tools</topic>
+    <topic>threat-hunting</topic>
+    <topic>threat-intelligence</topic>
+    <topic>typosquatting</topic>
+  </topics>
+  <license>
+    <name>GNU General Public License v3.0</name>
+    <spdx_id>GPL-3.0</spdx_id>
+  </license>
+  <owner>
+    <login>atenreiro</login>
+    <type>User</type>
+    <url>https://github.com/atenreiro</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 828 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

@@ -20,9 +20,7 @@ clap = { workspace = true }
 uuid = { workspace = true }
 async-trait = { workspace = true }
 
-# AI and ML libraries
-candle = { workspace = true }
-hf-hub = { workspace = true }
+# AI and ML libraries (pure Rust implementations)
 ndarray = { workspace = true }
 
 # Neural Darwinism specific

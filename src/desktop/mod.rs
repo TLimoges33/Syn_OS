@@ -1,13 +1,14 @@
 #![no_std]
 //! SynOS Desktop Environment (SynDE) - Complete Implementation
-//! 
+//!
 //! Revolutionary desktop environment with AI consciousness integration and comprehensive educational features.
 
 extern crate alloc;
 
-use alloc::vec::Vec;
-use alloc::string::String;
 use alloc::collections::BTreeMap;
+use alloc::format;
+use alloc::string::String;
+use alloc::vec::Vec;
 use core::sync::atomic::{AtomicBool, Ordering};
 use spin::Mutex;
 
@@ -287,6 +288,96 @@ pub struct PerformanceMonitor {
     educational_performance_insights: bool,
 }
 
+// Implementation blocks for component structs
+impl DesktopAI {
+    pub fn is_visible(&self) -> bool {
+        self.consciousness_level > 0.0
+    }
+
+    pub fn set_consciousness_level(&mut self, _level: f32) -> Result<(), DesktopError> {
+        Ok(())
+    }
+
+    pub fn get_optimization_suggestions(&self) -> Result<Vec<AISuggestion>, DesktopError> {
+        Ok(self.suggestions.clone())
+    }
+
+    pub fn optimize_application_placement(
+        &mut self,
+        _app: &EducationalApp,
+        _window: &Window,
+    ) -> Result<(), DesktopError> {
+        Ok(())
+    }
+}
+
+impl Taskbar {
+    pub fn set_ai_recommendations(&mut self, _enabled: bool) -> Result<(), DesktopError> {
+        Ok(())
+    }
+
+    pub fn set_educational_tips(&mut self, _enabled: bool) -> Result<(), DesktopError> {
+        Ok(())
+    }
+
+    pub fn apply_ai_optimization(
+        &mut self,
+        _suggestion: &AISuggestion,
+    ) -> Result<(), DesktopError> {
+        Ok(())
+    }
+}
+
+impl DesktopIcons {
+    pub fn set_ai_grouping(&mut self, _enabled: bool) -> Result<(), DesktopError> {
+        Ok(())
+    }
+
+    pub fn set_educational_categories(&mut self, _enabled: bool) -> Result<(), DesktopError> {
+        Ok(())
+    }
+
+    pub fn apply_ai_organization(
+        &mut self,
+        _suggestion: &AISuggestion,
+    ) -> Result<(), DesktopError> {
+        Ok(())
+    }
+}
+
+impl EducationalOverlay {
+    pub fn add_application_context(
+        &mut self,
+        _app: &EducationalApp,
+        _window_id: u32,
+    ) -> Result<(), DesktopError> {
+        Ok(())
+    }
+
+    pub fn set_enabled(&mut self, _enabled: bool) -> Result<(), DesktopError> {
+        Ok(())
+    }
+}
+
+impl ThemeManager {
+    pub fn apply_ai_theme(&mut self, _suggestion: &AISuggestion) -> Result<(), DesktopError> {
+        Ok(())
+    }
+}
+
+impl ApplicationLauncher {
+    pub fn get_application(&self, app_id: &str) -> Result<&EducationalApp, DesktopError> {
+        self.educational_apps
+            .iter()
+            .find(|app| app.name == app_id)
+            .ok_or(DesktopError::ApplicationNotFound)
+    }
+
+    pub fn record_launch(&mut self, _app: &EducationalApp) -> Result<(), DesktopError> {
+        Ok(())
+    }
+}
+
 impl SynDesktopEnvironment {
     /// Initialize the complete desktop environment
     pub fn new() -> Self {
@@ -321,17 +412,17 @@ impl SynDesktopEnvironment {
         self.notification_center.initialize()?;
         self.wallpaper_engine.initialize()?;
         self.launcher.initialize()?;
-        
+
         // Initialize AI systems if consciousness level is sufficient
         if self.consciousness_level > 0.3 {
             self.ai_assistant.initialize()?;
         }
-        
+
         // Initialize educational systems if enabled
         if self.educational_mode {
             self.educational_overlay.initialize()?;
         }
-        
+
         // Initialize remaining systems
         self.theme_manager.initialize()?;
         self.workspace_manager.initialize()?;
@@ -339,7 +430,7 @@ impl SynDesktopEnvironment {
         self.hotkey_manager.initialize()?;
         self.accessibility.initialize()?;
         self.performance_monitor.initialize()?;
-        
+
         Ok(())
     }
 
@@ -352,54 +443,61 @@ impl SynDesktopEnvironment {
         self.system_tray.update()?;
         self.notification_center.update()?;
         self.wallpaper_engine.update()?;
-        
+
         // Update AI assistant
         if self.consciousness_level > 0.3 {
             self.ai_assistant.update()?;
             self.apply_ai_optimizations()?;
         }
-        
+
         // Update educational overlay
         if self.educational_mode {
             self.educational_overlay.update()?;
         }
-        
+
         // Update performance monitoring
         self.performance_monitor.update()?;
-        
+
         Ok(())
     }
 
     /// Render the complete desktop
-    pub fn render(&self, framebuffer: &mut [u8], width: u32, height: u32) -> Result<(), DesktopError> {
+    pub fn render(
+        &self,
+        framebuffer: &mut [u8],
+        width: u32,
+        height: u32,
+    ) -> Result<(), DesktopError> {
         // Render wallpaper
         self.wallpaper_engine.render(framebuffer, width, height)?;
-        
+
         // Render desktop icons
         self.desktop_icons.render(framebuffer, width, height)?;
-        
+
         // Render windows
         self.window_manager.render(framebuffer, width, height)?;
-        
+
         // Render taskbar
         self.taskbar.render(framebuffer, width, height)?;
-        
+
         // Render system tray
         self.system_tray.render(framebuffer, width, height)?;
-        
+
         // Render notifications
-        self.notification_center.render(framebuffer, width, height)?;
-        
+        self.notification_center
+            .render(framebuffer, width, height)?;
+
         // Render educational overlay
         if self.educational_mode {
-            self.educational_overlay.render(framebuffer, width, height)?;
+            self.educational_overlay
+                .render(framebuffer, width, height)?;
         }
-        
+
         // Render AI assistant interface
         if self.consciousness_level > 0.3 && self.ai_assistant.is_visible() {
             self.ai_assistant.render(framebuffer, width, height)?;
         }
-        
+
         Ok(())
     }
 
@@ -409,37 +507,37 @@ impl SynDesktopEnvironment {
         if self.hotkey_manager.handle_input(&event)? {
             return Ok(());
         }
-        
+
         // Handle window manager input
         if self.window_manager.handle_input(&event)? {
             return Ok(());
         }
-        
+
         // Handle taskbar input
         if self.taskbar.handle_input(&event)? {
             return Ok(());
         }
-        
+
         // Handle desktop icons input
         if self.desktop_icons.handle_input(&event)? {
             return Ok(());
         }
-        
+
         // Handle system tray input
         if self.system_tray.handle_input(&event)? {
             return Ok(());
         }
-        
+
         // Handle educational overlay input
         if self.educational_mode && self.educational_overlay.handle_input(&event)? {
             return Ok(());
         }
-        
+
         // Handle AI assistant input
         if self.consciousness_level > 0.3 && self.ai_assistant.handle_input(&event)? {
             return Ok(());
         }
-        
+
         Ok(())
     }
 
@@ -462,6 +560,14 @@ impl SynDesktopEnvironment {
         Ok(())
     }
 
+    /// Apply performance optimizations
+    fn apply_performance_optimization(
+        &mut self,
+        _suggestion: &AISuggestion,
+    ) -> Result<(), DesktopError> {
+        Ok(())
+    }
+
     /// Apply AI optimizations to desktop layout
     fn apply_ai_optimizations(&mut self) -> Result<(), DesktopError> {
         if self.consciousness_level < 0.3 {
@@ -469,7 +575,7 @@ impl SynDesktopEnvironment {
         }
 
         let suggestions = self.ai_assistant.get_optimization_suggestions()?;
-        
+
         for suggestion in suggestions {
             match suggestion.suggestion_type {
                 OptimizationType::WindowLayout => {
@@ -489,30 +595,32 @@ impl SynDesktopEnvironment {
                 }
             }
         }
-        
+
         Ok(())
     }
 
     /// Launch application with AI and educational enhancements
     pub fn launch_application(&mut self, app_id: &str) -> Result<(), DesktopError> {
-        let app = self.launcher.get_application(app_id)?;
-        
+        let app = self.launcher.get_application(app_id)?.clone();
+
         // Create window for application
         let window = self.window_manager.create_window(&app)?;
-        
+
         // Add educational context if enabled
         if self.educational_mode {
-            self.educational_overlay.add_application_context(&app, window.id)?;
+            self.educational_overlay
+                .add_application_context(&app, window.id)?;
         }
-        
+
         // AI optimization for application placement
         if self.consciousness_level > 0.3 {
-            self.ai_assistant.optimize_application_placement(&app, &window)?;
+            self.ai_assistant
+                .optimize_application_placement(&app, &window)?;
         }
-        
+
         // Update usage statistics
         self.launcher.record_launch(&app)?;
-        
+
         Ok(())
     }
 }
@@ -585,15 +693,70 @@ pub enum InputEvent {
 
 #[derive(Debug)]
 pub enum KeyCode {
-    A, B, C, D, E, F, G, H, I, J, K, L, M,
-    N, O, P, Q, R, S, T, U, V, W, X, Y, Z,
-    Digit1, Digit2, Digit3, Digit4, Digit5,
-    Digit6, Digit7, Digit8, Digit9, Digit0,
-    Enter, Escape, Backspace, Tab, Space,
-    F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12,
-    LeftCtrl, RightCtrl, LeftAlt, RightAlt,
-    LeftShift, RightShift, Super,
-    Up, Down, Left, Right,
+    A,
+    B,
+    C,
+    D,
+    E,
+    F,
+    G,
+    H,
+    I,
+    J,
+    K,
+    L,
+    M,
+    N,
+    O,
+    P,
+    Q,
+    R,
+    S,
+    T,
+    U,
+    V,
+    W,
+    X,
+    Y,
+    Z,
+    Digit1,
+    Digit2,
+    Digit3,
+    Digit4,
+    Digit5,
+    Digit6,
+    Digit7,
+    Digit8,
+    Digit9,
+    Digit0,
+    Enter,
+    Escape,
+    Backspace,
+    Tab,
+    Space,
+    F1,
+    F2,
+    F3,
+    F4,
+    F5,
+    F6,
+    F7,
+    F8,
+    F9,
+    F10,
+    F11,
+    F12,
+    LeftCtrl,
+    RightCtrl,
+    LeftAlt,
+    RightAlt,
+    LeftShift,
+    RightShift,
+    Super,
+    Up,
+    Down,
+    Left,
+    Right,
 }
 
 #[derive(Debug)]
@@ -620,20 +783,48 @@ impl WindowManager {
         }
     }
 
-    pub fn initialize(&mut self) -> Result<(), DesktopError> { Ok(()) }
-    pub fn update(&mut self) -> Result<(), DesktopError> { Ok(()) }
-    pub fn render(&self, _framebuffer: &mut [u8], _width: u32, _height: u32) -> Result<(), DesktopError> { Ok(()) }
-    pub fn handle_input(&mut self, _event: &InputEvent) -> Result<bool, DesktopError> { Ok(false) }
-    pub fn set_ai_optimization(&mut self, _enabled: bool) -> Result<(), DesktopError> { Ok(()) }
-    pub fn apply_ai_layout(&mut self, _suggestion: &OptimizationSuggestion) -> Result<(), DesktopError> { Ok(()) }
-    pub fn create_window(&mut self, _app: &Application) -> Result<Window, DesktopError> { 
+    pub fn initialize(&mut self) -> Result<(), DesktopError> {
+        Ok(())
+    }
+    pub fn update(&mut self) -> Result<(), DesktopError> {
+        Ok(())
+    }
+    pub fn render(
+        &self,
+        _framebuffer: &mut [u8],
+        _width: u32,
+        _height: u32,
+    ) -> Result<(), DesktopError> {
+        Ok(())
+    }
+    pub fn handle_input(&mut self, _event: &InputEvent) -> Result<bool, DesktopError> {
+        Ok(false)
+    }
+    pub fn set_ai_optimization(&mut self, _enabled: bool) -> Result<(), DesktopError> {
+        Ok(())
+    }
+    pub fn apply_ai_layout(&mut self, _suggestion: &AISuggestion) -> Result<(), DesktopError> {
+        Ok(())
+    }
+    pub fn create_window(&mut self, _app: &EducationalApp) -> Result<Window, DesktopError> {
         Ok(Window {
-            id: 0, title: String::new(), position: Position { x: 0, y: 0 },
-            size: Size { width: 800, height: 600 }, state: WindowState::Normal,
-            application_type: ApplicationType::System, z_order: 0,
-            minimized: false, maximized: false, fullscreen: false,
-            always_on_top: false, decorations: WindowDecorations::default(),
-            content_buffer: Vec::new(), educational_context: None,
+            id: 0,
+            title: String::new(),
+            position: Position { x: 0, y: 0 },
+            size: Size {
+                width: 800,
+                height: 600,
+            },
+            state: WindowState::Normal,
+            application_type: ApplicationType::System,
+            z_order: 0,
+            minimized: false,
+            maximized: false,
+            fullscreen: false,
+            always_on_top: false,
+            decorations: WindowDecorations::default(),
+            content_buffer: Vec::new(),
+            educational_context: None,
         })
     }
 }
@@ -668,49 +859,111 @@ impl Default for TitleBar {
 
 // Enum definitions
 #[derive(Debug, Clone, Copy)]
-pub enum TaskbarPosition { Top, Bottom, Left, Right }
-
-#[derive(Debug, Clone, Copy)]
-pub enum IconSize { Small, Medium, Large, ExtraLarge }
-
-#[derive(Debug, Clone, Copy)]
-pub enum SelectionMode { Single, Multiple, Rectangle }
-
-#[derive(Debug, Clone, Copy)]
-pub enum IconType { Application, File, Folder, System, Educational }
-
-#[derive(Debug, Clone, Copy)]
-pub enum IconCategory { 
-    System, Development, Education, Multimedia, 
-    Productivity, Gaming, Network, Security 
+pub enum TaskbarPosition {
+    Top,
+    Bottom,
+    Left,
+    Right,
 }
 
 #[derive(Debug, Clone, Copy)]
-pub enum BorderStyle { None, Thin, Standard, Thick, Custom }
+pub enum IconSize {
+    Small,
+    Medium,
+    Large,
+    ExtraLarge,
+}
 
 #[derive(Debug, Clone, Copy)]
-pub enum WindowTheme { Default, Dark, Light, HighContrast, Educational }
+pub enum SelectionMode {
+    Single,
+    Multiple,
+    Rectangle,
+}
 
 #[derive(Debug, Clone, Copy)]
-pub enum WindowButton { Close, Minimize, Maximize, AIAssistant, Help }
+pub enum IconType {
+    Application,
+    File,
+    Folder,
+    System,
+    Educational,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum IconCategory {
+    System,
+    Development,
+    Education,
+    Multimedia,
+    Productivity,
+    Gaming,
+    Network,
+    Security,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum BorderStyle {
+    None,
+    Thin,
+    Standard,
+    Thick,
+    Custom,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum WindowTheme {
+    Default,
+    Dark,
+    Light,
+    HighContrast,
+    Educational,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum WindowButton {
+    Close,
+    Minimize,
+    Maximize,
+    AIAssistant,
+    Help,
+}
 
 #[derive(Debug, Clone, Copy)]
 pub enum OptimizationType {
-    WindowLayout, IconOrganization, TaskbarOptimization, 
-    ThemeAdjustment, PerformanceOptimization
+    WindowLayout,
+    IconOrganization,
+    TaskbarOptimization,
+    ThemeAdjustment,
+    PerformanceOptimization,
 }
 
 // Additional stub implementations for remaining subsystems
 macro_rules! impl_desktop_component {
     ($name:ident) => {
         impl $name {
-            pub fn new() -> Self { Default::default() }
-            pub fn initialize(&mut self) -> Result<(), DesktopError> { Ok(()) }
-            pub fn update(&mut self) -> Result<(), DesktopError> { Ok(()) }
-            pub fn render(&self, _framebuffer: &mut [u8], _width: u32, _height: u32) -> Result<(), DesktopError> { Ok(()) }
-            pub fn handle_input(&mut self, _event: &InputEvent) -> Result<bool, DesktopError> { Ok(false) }
+            pub fn new() -> Self {
+                Default::default()
+            }
+            pub fn initialize(&mut self) -> Result<(), DesktopError> {
+                Ok(())
+            }
+            pub fn update(&mut self) -> Result<(), DesktopError> {
+                Ok(())
+            }
+            pub fn render(
+                &self,
+                _framebuffer: &mut [u8],
+                _width: u32,
+                _height: u32,
+            ) -> Result<(), DesktopError> {
+                Ok(())
+            }
+            pub fn handle_input(&mut self, _event: &InputEvent) -> Result<bool, DesktopError> {
+                Ok(false)
+            }
         }
-        
+
         impl Default for $name {
             fn default() -> Self {
                 // Placeholder implementation
@@ -736,65 +989,156 @@ impl_desktop_component!(AccessibilityManager);
 impl_desktop_component!(PerformanceMonitor);
 
 // Stub types for complex components
-#[derive(Default)] pub struct LayoutEngine;
-#[derive(Default)] pub struct AnimationSystem;
-#[derive(Default)] pub struct SnappingSystem;
-#[derive(Default)] pub struct TransparencyEngine;
-#[derive(Default)] pub struct VirtualDesktop;
-#[derive(Default)] pub struct TaskbarItem;
-#[derive(Default)] pub struct SystemTrayArea;
-#[derive(Default)] pub struct StartMenu;
-#[derive(Default)] pub struct SmartSearchBar;
-#[derive(Default)] pub struct AppRecommendation;
-#[derive(Default)] pub struct EducationalTip;
-#[derive(Default)] pub struct QuickLaunchArea;
-#[derive(Default)] pub struct ClockWidget;
-#[derive(Default)] pub struct ResourceWidget;
-#[derive(Default)] pub struct TrayIcon;
-#[derive(Default)] pub struct NotificationArea;
-#[derive(Default)] pub struct StatusIndicator;
-#[derive(Default)] pub struct QuickSettingsPanel;
-#[derive(Default)] pub struct Notification;
-#[derive(Default)] pub struct NotificationHistory;
+#[derive(Default)]
+pub struct LayoutEngine;
+impl LayoutEngine {
+    pub fn new() -> Self {
+        Self::default()
+    }
+}
+
+#[derive(Default)]
+pub struct AnimationSystem;
+impl AnimationSystem {
+    pub fn new() -> Self {
+        Self::default()
+    }
+}
+
+#[derive(Default)]
+pub struct SnappingSystem;
+impl SnappingSystem {
+    pub fn new() -> Self {
+        Self::default()
+    }
+}
+
+#[derive(Default)]
+pub struct TransparencyEngine;
+impl TransparencyEngine {
+    pub fn new() -> Self {
+        Self::default()
+    }
+}
+
+#[derive(Default)]
+pub struct VirtualDesktop;
+#[derive(Default)]
+pub struct TaskbarItem;
+#[derive(Default)]
+pub struct SystemTrayArea;
+#[derive(Default)]
+pub struct StartMenu;
+#[derive(Default)]
+pub struct SmartSearchBar;
+#[derive(Default)]
+pub struct AppRecommendation;
+#[derive(Default)]
+pub struct EducationalTip;
+#[derive(Default)]
+pub struct QuickLaunchArea;
+#[derive(Default)]
+pub struct ClockWidget;
+#[derive(Default)]
+pub struct ResourceWidget;
+#[derive(Default)]
+pub struct TrayIcon;
+#[derive(Default)]
+pub struct NotificationArea;
+#[derive(Default)]
+pub struct StatusIndicator;
+#[derive(Default)]
+pub struct QuickSettingsPanel;
+#[derive(Default)]
+pub struct Notification;
+#[derive(Default)]
+pub struct NotificationHistory;
 // NotificationAction defined as enum below
-#[derive(Default)] pub struct Wallpaper;
-#[derive(Default)] pub struct EducationalWallpaper;
-#[derive(Default)] pub struct Application;
-#[derive(Default)] pub struct AppPrediction;
-#[derive(Default)] pub struct AppSearchEngine;
-#[derive(Default)] pub struct CategoryBrowser;
-#[derive(Default)] pub struct EducationalApp;
-#[derive(Default)] pub struct LaunchStatistics;
-#[derive(Default)] pub struct QuickAction;
-#[derive(Default)] pub struct UserBehaviorModel;
-#[derive(Default)] pub struct OptimizationEngine;
-#[derive(Default)] pub struct EducationalTutor;
-#[derive(Default)] pub struct ContextAwareness;
-#[derive(Default)] pub struct PredictiveAction;
-#[derive(Default)] pub struct AISuggestion;
-#[derive(Default)] pub struct OptimizationSuggestion;
-#[derive(Default)] pub struct Tutorial;
-#[derive(Default)] pub struct SkillAssessment;
-#[derive(Default)] pub struct ProgressTracker;
-#[derive(Default)] pub struct InteractiveGuide;
-#[derive(Default)] pub struct LearningObjective;
-#[derive(Default)] pub struct GamificationSystem;
-#[derive(Default)] pub struct AchievementSystem;
-#[derive(Default)] pub struct PeerLearningSystem;
-#[derive(Default)] pub struct Theme;
-#[derive(Default)] pub struct EducationalTheme;
-#[derive(Default)] pub struct AccessibilityTheme;
-#[derive(Default)] pub struct PerformanceTheme;
-#[derive(Default)] pub struct CustomTheme;
-#[derive(Default)] pub struct TransitionSystem;
-#[derive(Default)] pub struct Workspace;
-#[derive(Default)] pub struct WorkspaceSwitching;
-#[derive(Default)] pub struct WorkspacePreviews;
-#[derive(Default)] pub struct CrossWorkspaceOps;
-#[derive(Default)] pub struct ContextMenu;
-#[derive(Default)] pub struct Hotkey;
-#[derive(Default)] pub struct Icon;
-#[derive(Default)] pub struct EducationalContext;
+#[derive(Default)]
+pub struct Wallpaper;
+#[derive(Default)]
+pub struct EducationalWallpaper;
+#[derive(Default)]
+pub struct Application;
+#[derive(Default)]
+pub struct AppPrediction;
+#[derive(Default)]
+pub struct AppSearchEngine;
+#[derive(Default)]
+pub struct CategoryBrowser;
+
+#[derive(Default, Clone)]
+pub struct EducationalApp {
+    pub name: String,
+}
+
+#[derive(Default)]
+pub struct LaunchStatistics;
+#[derive(Default)]
+pub struct QuickAction;
+#[derive(Default)]
+pub struct UserBehaviorModel;
+#[derive(Default)]
+pub struct OptimizationEngine;
+#[derive(Default)]
+pub struct EducationalTutor;
+#[derive(Default)]
+pub struct ContextAwareness;
+#[derive(Default)]
+pub struct PredictiveAction;
+
+#[derive(Default, Clone)]
+pub struct AISuggestion {
+    pub suggestion_type: OptimizationType,
+}
+
+pub struct OptimizationSuggestion {
+    pub suggestion_type: String,
+}
+#[derive(Default)]
+pub struct Tutorial;
+#[derive(Default)]
+pub struct SkillAssessment;
+#[derive(Default)]
+pub struct ProgressTracker;
+#[derive(Default)]
+pub struct InteractiveGuide;
+#[derive(Default)]
+pub struct LearningObjective;
+#[derive(Default)]
+pub struct GamificationSystem;
+#[derive(Default)]
+pub struct AchievementSystem;
+#[derive(Default)]
+pub struct PeerLearningSystem;
+#[derive(Default)]
+pub struct Theme;
+#[derive(Default)]
+pub struct EducationalTheme;
+#[derive(Default)]
+pub struct AccessibilityTheme;
+#[derive(Default)]
+pub struct PerformanceTheme;
+#[derive(Default)]
+pub struct CustomTheme;
+#[derive(Default)]
+pub struct TransitionSystem;
+#[derive(Default)]
+pub struct Workspace;
+#[derive(Default)]
+pub struct WorkspaceSwitching;
+#[derive(Default)]
+pub struct WorkspacePreviews;
+#[derive(Default)]
+pub struct CrossWorkspaceOps;
+#[derive(Default)]
+pub struct ContextMenu;
+#[derive(Default)]
+pub struct Hotkey;
+#[derive(Default)]
+pub struct Icon;
+#[derive(Default)]
+pub struct EducationalContext;
 impl Default for OptimizationType {
     fn default() -> Self {
         OptimizationType::WindowLayout
@@ -809,15 +1153,24 @@ pub enum DesktopEvent {
     /// Icon interaction
     IconInteraction { icon_id: u32, action: IconAction },
     /// System tray event
-    SystemTrayEvent { component: String, event_type: String },
+    SystemTrayEvent {
+        component: String,
+        event_type: String,
+    },
     /// Notification event
-    NotificationEvent { notification_id: u32, action: NotificationAction },
+    NotificationEvent {
+        notification_id: u32,
+        action: NotificationAction,
+    },
     /// Workspace change
     WorkspaceChange { old_id: u32, new_id: u32 },
     /// Application launch
-    ApplicationLaunch { app_name: String, method: LaunchMethod },
+    ApplicationLaunch {
+        app_name: String,
+        method: LaunchMethod,
+    },
     /// AI consciousness level change
-    ConsciousnessChange { old_level: f64, new_level: f64 },
+    ConsciousnessChange { old_level: f32, new_level: f32 },
     /// Educational mode toggle
     EducationalToggle { enabled: bool },
 }
@@ -892,62 +1245,206 @@ pub struct DesktopMetrics {
 mod shell {
     pub struct DesktopShell;
     impl DesktopShell {
-        pub fn new() -> Self { Self }
-        pub fn start_ai_optimization(&mut self, _level: f32) -> Result<(), &'static str> { Ok(()) }
-        pub fn enable_educational_mode(&mut self) -> Result<(), &'static str> { Ok(()) }
-        pub fn update_theme(&mut self, _theme: &super::DesktopTheme) -> Result<(), &'static str> { Ok(()) }
-        pub fn setup_consciousness_hooks(&mut self) -> Result<(), &'static str> { Ok(()) }
+        pub fn new() -> Self {
+            Self
+        }
+        pub fn start_ai_optimization(&mut self, _level: f32) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn enable_educational_mode(&mut self) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn disable_educational_mode(&mut self) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn update_theme(&mut self, _theme: &super::DesktopTheme) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn setup_consciousness_hooks(&mut self) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn initialize(&mut self) -> Result<(), super::DesktopError> {
+            Ok(())
+        }
+        pub fn apply_theme(
+            &mut self,
+            _theme: &super::DesktopTheme,
+        ) -> Result<(), super::DesktopError> {
+            Ok(())
+        }
+        pub fn optimize_layout(&mut self, _level: f32) {}
+        pub fn handle_background_click(&mut self, _x: u32, _y: u32) {}
     }
 }
 mod icons {
     pub struct IconManager;
     impl IconManager {
-        pub fn new() -> Self { Self }
-        pub fn start_ai_optimization(&mut self, _level: f32) -> Result<(), &'static str> { Ok(()) }
-        pub fn enable_educational_mode(&mut self) -> Result<(), &'static str> { Ok(()) }
-        pub fn update_theme(&mut self, _theme: &super::DesktopTheme) -> Result<(), &'static str> { Ok(()) }
-        pub fn setup_consciousness_hooks(&mut self) -> Result<(), &'static str> { Ok(()) }
+        pub fn new() -> Self {
+            Self
+        }
+        pub fn start_ai_optimization(&mut self, _level: f32) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn enable_educational_mode(&mut self) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn disable_educational_mode(&mut self) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn update_theme(&mut self, _theme: &super::DesktopTheme) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn setup_consciousness_hooks(&mut self) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn initialize(&mut self) -> Result<(), super::DesktopError> {
+            Ok(())
+        }
+        pub fn apply_theme(
+            &mut self,
+            _theme: &super::DesktopTheme,
+        ) -> Result<(), super::DesktopError> {
+            Ok(())
+        }
+        pub fn optimize_layout(&mut self, _level: f32) {}
+        pub fn handle_interaction(&mut self, _icon_id: u32, _action: super::IconAction) {}
     }
 }
 mod systray {
+    use alloc::string::String;
+
     pub struct SystemTray;
     impl SystemTray {
-        pub fn new() -> Self { Self }
-        pub fn start_ai_optimization(&mut self, _level: f32) -> Result<(), &'static str> { Ok(()) }
-        pub fn enable_educational_mode(&mut self) -> Result<(), &'static str> { Ok(()) }
-        pub fn update_theme(&mut self, _theme: &super::DesktopTheme) -> Result<(), &'static str> { Ok(()) }
-        pub fn setup_consciousness_hooks(&mut self) -> Result<(), &'static str> { Ok(()) }
+        pub fn new() -> Self {
+            Self
+        }
+        pub fn start_ai_optimization(&mut self, _level: f32) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn enable_educational_mode(&mut self) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn disable_educational_mode(&mut self) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn update_theme(&mut self, _theme: &super::DesktopTheme) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn setup_consciousness_hooks(&mut self) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn initialize(&mut self) -> Result<(), super::DesktopError> {
+            Ok(())
+        }
+        pub fn apply_theme(
+            &mut self,
+            _theme: &super::DesktopTheme,
+        ) -> Result<(), super::DesktopError> {
+            Ok(())
+        }
+        pub fn optimize_layout(&mut self, _level: f32) {}
+        pub fn handle_event(&mut self, _component: String, _event_type: String) {}
     }
 }
 mod notifications {
     pub struct NotificationCenter;
     impl NotificationCenter {
-        pub fn new() -> Self { Self }
-        pub fn start_ai_optimization(&mut self, _level: f32) -> Result<(), &'static str> { Ok(()) }
-        pub fn enable_educational_mode(&mut self) -> Result<(), &'static str> { Ok(()) }
-        pub fn update_theme(&mut self, _theme: &super::DesktopTheme) -> Result<(), &'static str> { Ok(()) }
-        pub fn setup_consciousness_hooks(&mut self) -> Result<(), &'static str> { Ok(()) }
+        pub fn new() -> Self {
+            Self
+        }
+        pub fn start_ai_optimization(&mut self, _level: f32) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn enable_educational_mode(&mut self) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn disable_educational_mode(&mut self) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn update_theme(&mut self, _theme: &super::DesktopTheme) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn setup_consciousness_hooks(&mut self) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn initialize(&mut self) -> Result<(), super::DesktopError> {
+            Ok(())
+        }
+        pub fn apply_theme(
+            &mut self,
+            _theme: &super::DesktopTheme,
+        ) -> Result<(), super::DesktopError> {
+            Ok(())
+        }
+        pub fn handle_action(&mut self, _notification_id: u32, _action: super::NotificationAction) {
+        }
     }
 }
 mod wallpaper {
     pub struct WallpaperManager;
     impl WallpaperManager {
-        pub fn new() -> Self { Self }
-        pub fn start_ai_optimization(&mut self, _level: f32) -> Result<(), &'static str> { Ok(()) }
-        pub fn enable_educational_mode(&mut self) -> Result<(), &'static str> { Ok(()) }
-        pub fn update_theme(&mut self, _theme: &super::DesktopTheme) -> Result<(), &'static str> { Ok(()) }
-        pub fn set_wallpaper(&mut self, _path: &str) -> Result<(), &'static str> { Ok(()) }
-        pub fn setup_consciousness_hooks(&mut self) -> Result<(), &'static str> { Ok(()) }
+        pub fn new() -> Self {
+            Self
+        }
+        pub fn start_ai_optimization(&mut self, _level: f32) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn enable_educational_mode(&mut self) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn update_theme(&mut self, _theme: &super::DesktopTheme) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn set_wallpaper(&mut self, _path: &str) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn setup_consciousness_hooks(&mut self) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn initialize(&mut self) -> Result<(), super::DesktopError> {
+            Ok(())
+        }
+        pub fn apply_theme(
+            &mut self,
+            _theme: &super::DesktopTheme,
+        ) -> Result<(), super::DesktopError> {
+            Ok(())
+        }
     }
 }
 mod launcher {
+    use alloc::string::String;
+
     pub struct ApplicationLauncher;
     impl ApplicationLauncher {
-        pub fn new() -> Self { Self }
-        pub fn start_ai_optimization(&mut self, _level: f32) -> Result<(), &'static str> { Ok(()) }
-        pub fn enable_educational_mode(&mut self) -> Result<(), &'static str> { Ok(()) }
-        pub fn update_theme(&mut self, _theme: &super::DesktopTheme) -> Result<(), &'static str> { Ok(()) }
-        pub fn setup_consciousness_hooks(&mut self) -> Result<(), &'static str> { Ok(()) }
+        pub fn new() -> Self {
+            Self
+        }
+        pub fn start_ai_optimization(&mut self, _level: f32) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn enable_educational_mode(&mut self) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn disable_educational_mode(&mut self) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn update_theme(&mut self, _theme: &super::DesktopTheme) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn setup_consciousness_hooks(&mut self) -> Result<(), &'static str> {
+            Ok(())
+        }
+        pub fn initialize(&mut self) -> Result<(), super::DesktopError> {
+            Ok(())
+        }
+        pub fn apply_theme(
+            &mut self,
+            _theme: &super::DesktopTheme,
+        ) -> Result<(), super::DesktopError> {
+            Ok(())
+        }
+        pub fn handle_launch(&mut self, _app_name: String, _method: super::LaunchMethod) {}
     }
 }
 
@@ -1027,7 +1524,7 @@ impl DesktopEnvironment {
     }
 
     /// Set consciousness level for desktop optimization
-    pub fn set_consciousness_level(&mut self, level: f64) {
+    pub fn set_consciousness_level(&mut self, level: f32) {
         let old_level = self.consciousness_level;
         self.consciousness_level = level.clamp(0.0, 1.0);
 
@@ -1043,7 +1540,7 @@ impl DesktopEnvironment {
     }
 
     /// Get current consciousness level
-    pub fn get_consciousness_level(&self) -> f64 {
+    pub fn get_consciousness_level(&self) -> f32 {
         self.consciousness_level
     }
 
@@ -1090,10 +1587,16 @@ impl DesktopEnvironment {
             DesktopEvent::IconInteraction { icon_id, action } => {
                 self.handle_icon_interaction(icon_id, action);
             }
-            DesktopEvent::SystemTrayEvent { component, event_type } => {
+            DesktopEvent::SystemTrayEvent {
+                component,
+                event_type,
+            } => {
                 self.handle_system_tray_event(component, event_type);
             }
-            DesktopEvent::NotificationEvent { notification_id, action } => {
+            DesktopEvent::NotificationEvent {
+                notification_id,
+                action,
+            } => {
                 self.handle_notification_event(notification_id, action);
             }
             DesktopEvent::WorkspaceChange { old_id, new_id } => {
@@ -1102,7 +1605,10 @@ impl DesktopEnvironment {
             DesktopEvent::ApplicationLaunch { app_name, method } => {
                 self.handle_application_launch(app_name, method);
             }
-            DesktopEvent::ConsciousnessChange { old_level: _, new_level: _ } => {
+            DesktopEvent::ConsciousnessChange {
+                old_level: _,
+                new_level: _,
+            } => {
                 self.handle_consciousness_change();
             }
             DesktopEvent::EducationalToggle { enabled } => {
@@ -1170,9 +1676,12 @@ impl DesktopEnvironment {
         self.workspace = WorkspaceInfo {
             id: 1,
             name: String::from("Main Workspace"),
-            active_apps: 0,
+            current_workspace: 0,
+            total_workspaces: 1,
+            workspace_names: Vec::new(),
+            active_apps: Vec::new(),
             ai_score: 1.0,
-            educational_context: self.educational_mode.load(Ordering::Relaxed),
+            educational_context: String::from("Initialized"),
         };
 
         Ok(())
@@ -1182,9 +1691,12 @@ impl DesktopEnvironment {
     fn start_ai_optimization(&mut self) -> Result<(), DesktopError> {
         // Initialize AI optimization for all components
         self.shell.start_ai_optimization(self.consciousness_level)?;
-        self.icon_manager.start_ai_optimization(self.consciousness_level)?;
-        self.system_tray.start_ai_optimization(self.consciousness_level)?;
-        self.notifications.start_ai_optimization(self.consciousness_level)?;
+        self.icon_manager
+            .start_ai_optimization(self.consciousness_level)?;
+        self.system_tray
+            .start_ai_optimization(self.consciousness_level)?;
+        self.notifications
+            .start_ai_optimization(self.consciousness_level)?;
 
         Ok(())
     }
@@ -1219,7 +1731,7 @@ impl DesktopEnvironment {
         }
 
         // Update consciousness efficiency
-        stats.consciousness_efficiency = self.consciousness_level;
+        stats.consciousness_efficiency = self.consciousness_level as f64;
     }
 
     /// Analyze event with AI
@@ -1235,10 +1747,18 @@ impl DesktopEnvironment {
 
     /// Check if event was AI-assisted
     fn is_ai_assisted_event(&self, event: &DesktopEvent) -> bool {
-        matches!(event, 
-            DesktopEvent::IconInteraction { action: IconAction::AiSuggestion, .. } |
-            DesktopEvent::ApplicationLaunch { method: LaunchMethod::AiSuggestion, .. } |
-            DesktopEvent::NotificationEvent { action: NotificationAction::AiPriorityChange { .. }, .. }
+        matches!(
+            event,
+            DesktopEvent::IconInteraction {
+                action: IconAction::AiSuggestion,
+                ..
+            } | DesktopEvent::ApplicationLaunch {
+                method: LaunchMethod::AiSuggestion,
+                ..
+            } | DesktopEvent::NotificationEvent {
+                action: NotificationAction::AiPriorityChange { .. },
+                ..
+            }
         )
     }
 
@@ -1281,31 +1801,8 @@ impl DesktopEnvironment {
     }
 }
 
-impl Default for DesktopTheme {
-    fn default() -> Self {
-        Self {
-            primary_color: 0x2196F3,      // Material Blue
-            secondary_color: 0x03DAC6,    // Material Teal
-            background_color: 0x121212,   // Dark background
-            text_color: 0xFFFFFF,         // White text
-            accent_color: 0xFF6D00,       // Orange accent for AI features
-            consciousness_factor: 0.5,
-            educational_highlight: false,
-        }
-    }
-}
-
-impl Default for WorkspaceInfo {
-    fn default() -> Self {
-        Self {
-            id: 1,
-            name: String::from("Main Workspace"),
-            active_apps: 0,
-            ai_score: 1.0,
-            educational_context: false,
-        }
-    }
-}
+// Desktop theme and workspace info use derived Default implementations
+// (removed duplicate manual implementations)
 
 /// AI insights for desktop optimization
 #[derive(Default)]
@@ -1333,6 +1830,8 @@ pub enum DesktopError {
     WorkspaceError(String),
     /// Component communication failed
     ComponentCommunicationFailed(String),
+    /// Application not found
+    ApplicationNotFound,
 }
 
 impl From<&'static str> for DesktopError {
@@ -1380,7 +1879,7 @@ pub fn get_desktop_metrics() -> DesktopMetrics {
 pub fn set_desktop_consciousness(level: f64) {
     let mut guard = DESKTOP_ENVIRONMENT.lock();
     if let Some(ref mut desktop) = *guard {
-        desktop.set_consciousness_level(level);
+        desktop.set_consciousness_level(level as f32);
     }
 }
 
@@ -1390,7 +1889,9 @@ pub fn enable_desktop_education() -> Result<(), DesktopError> {
     if let Some(ref mut desktop) = *guard {
         desktop.enable_educational_mode()
     } else {
-        Err(DesktopError::ComponentCommunicationFailed(String::from("Desktop not initialized")))
+        Err(DesktopError::ComponentCommunicationFailed(String::from(
+            "Desktop not initialized",
+        )))
     }
 }
 
@@ -1400,7 +1901,9 @@ pub fn disable_desktop_education() -> Result<(), DesktopError> {
     if let Some(ref mut desktop) = *guard {
         desktop.disable_educational_mode()
     } else {
-        Err(DesktopError::ComponentCommunicationFailed(String::from("Desktop not initialized")))
+        Err(DesktopError::ComponentCommunicationFailed(String::from(
+            "Desktop not initialized",
+        )))
     }
 }
 
@@ -1420,11 +1923,11 @@ mod tests {
         let mut desktop = DesktopEnvironment::new();
         desktop.set_consciousness_level(0.8);
         assert_eq!(desktop.get_consciousness_level(), 0.8);
-        
+
         // Test clamping
         desktop.set_consciousness_level(1.5);
         assert_eq!(desktop.get_consciousness_level(), 1.0);
-        
+
         desktop.set_consciousness_level(-0.5);
         assert_eq!(desktop.get_consciousness_level(), 0.0);
     }
@@ -1433,10 +1936,10 @@ mod tests {
     fn test_educational_mode_toggle() {
         let mut desktop = DesktopEnvironment::new();
         assert!(!desktop.educational_mode.load(Ordering::Relaxed));
-        
+
         assert!(desktop.enable_educational_mode().is_ok());
         assert!(desktop.educational_mode.load(Ordering::Relaxed));
-        
+
         assert!(desktop.disable_educational_mode().is_ok());
         assert!(!desktop.educational_mode.load(Ordering::Relaxed));
     }
@@ -1444,10 +1947,10 @@ mod tests {
     #[test]
     fn test_desktop_event_processing() {
         let mut desktop = DesktopEnvironment::new();
-        
+
         let event = DesktopEvent::BackgroundClick { x: 100, y: 200 };
         desktop.process_desktop_event(event);
-        
+
         let metrics = desktop.get_desktop_metrics();
         assert!(metrics.total_interactions > 0);
     }
@@ -1457,7 +1960,7 @@ mod tests {
         let mut desktop = DesktopEnvironment::new();
         let mut theme = DesktopTheme::default();
         theme.primary_color = 0xFF0000; // Red
-        
+
         assert!(desktop.apply_theme(theme.clone()).is_ok());
         assert_eq!(desktop.theme.primary_color, 0xFF0000);
     }

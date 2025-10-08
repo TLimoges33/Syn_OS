@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>DDOS-RootSec</name>
+  <full_name>R00tS3c/DDOS-RootSec</full_name>
+  <description>Explore RootSec's DDOS Archive, featuring top-tier scanners, powerful botnets (Mirai &amp; QBot) and other variants, high-impact exploits, advanced methods, and efficient sniffers. Ideal for cybersecurity professionals and researchers.</description>
+  <url>https://github.com/R00tS3c/DDOS-RootSec</url>
+  <clone_url>https://github.com/R00tS3c/DDOS-RootSec.git</clone_url>
+  <ssh_url>git@github.com:R00tS3c/DDOS-RootSec.git</ssh_url>
+  <metadata>
+    <language>C</language>
+    <stars>899</stars>
+    <forks>443</forks>
+    <watchers>899</watchers>
+    <size>1174058</size>
+    <default_branch>master</default_branch>
+    <created_at>2019-02-22T17:36:28Z</created_at>
+    <updated_at>2025-08-24T03:13:08Z</updated_at>
+    <pushed_at>2024-10-03T02:05:40Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>api</topic>
+    <topic>botnet</topic>
+    <topic>cloudflare</topic>
+    <topic>ddos</topic>
+    <topic>dos</topic>
+    <topic>dstat</topic>
+    <topic>exploit</topic>
+    <topic>honeypot</topic>
+    <topic>http</topic>
+    <topic>layer4</topic>
+    <topic>layer7</topic>
+    <topic>methods</topic>
+    <topic>mirai</topic>
+    <topic>ovh</topic>
+    <topic>qbot</topic>
+    <topic>scanner</topic>
+    <topic>sniffer</topic>
+    <topic>stresser</topic>
+    <topic>tcp</topic>
+    <topic>udp</topic>
+  </topics>
+  <license>
+    <name>Other</name>
+    <spdx_id>NOASSERTION</spdx_id>
+  </license>
+  <owner>
+    <login>R00tS3c</login>
+    <type>User</type>
+    <url>https://github.com/R00tS3c</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 899 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

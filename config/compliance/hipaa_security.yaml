@@ -1,0 +1,104 @@
+# HIPAA Security Rule Compliance Configuration
+# Health Insurance Portability and Accountability Act
+
+framework:
+  name: "HIPAA Security Rule"
+  version: "2023"
+  description: "HIPAA technical safeguards for Protected Health Information (PHI)"
+  last_updated: "2024-10-02"
+
+# Administrative Safeguards
+categories:
+  - id: "HIPAA.AS"
+    name: "Administrative Safeguards"
+    controls:
+      - id: "HIPAA.AS-01"
+        title: "Risk Analysis"
+        description: "Conduct accurate and thorough assessment of risks to ePHI"
+        automated_check: "phi_risk_assessment"
+        severity: "CRITICAL"
+        required: true
+
+      - id: "HIPAA.AS-02"
+        title: "Security Training"
+        description: "Security awareness training for all workforce members"
+        automated_check: "training_completion"
+        severity: "HIGH"
+        required: true
+
+  - id: "HIPAA.PS"
+    name: "Physical Safeguards"
+    controls:
+      - id: "HIPAA.PS-01"
+        title: "Facility Access Controls"
+        description: "Limit physical access to ePHI systems"
+        automated_check: "physical_access_logs"
+        severity: "HIGH"
+        required: true
+
+      - id: "HIPAA.PS-02"
+        title: "Workstation Security"
+        description: "Implement policies for workstation use and security"
+        automated_check: "workstation_hardening"
+        severity: "MEDIUM"
+        required: true
+
+  - id: "HIPAA.TS"
+    name: "Technical Safeguards"
+    controls:
+      - id: "HIPAA.TS-01"
+        title: "Access Control"
+        description: "Unique user identification for ePHI access"
+        automated_check: "unique_user_id"
+        severity: "CRITICAL"
+        required: true
+
+      - id: "HIPAA.TS-02"
+        title: "Audit Controls"
+        description: "Hardware/software mechanisms to record and examine ePHI activity"
+        automated_check: "ephi_audit_logs"
+        severity: "CRITICAL"
+        required: true
+
+      - id: "HIPAA.TS-03"
+        title: "Integrity Controls"
+        description: "Protect ePHI from improper alteration or destruction"
+        automated_check: "data_integrity_check"
+        severity: "HIGH"
+        required: true
+
+      - id: "HIPAA.TS-04"
+        title: "Transmission Security"
+        description: "Guard against unauthorized access to ePHI during transmission"
+        automated_check: "encryption_in_transit"
+        severity: "CRITICAL"
+        required: true
+
+      - id: "HIPAA.TS-05"
+        title: "Encryption at Rest"
+        description: "Encrypt ePHI stored in systems (addressable)"
+        automated_check: "encryption_at_rest"
+        severity: "HIGH"
+        required: false  # Addressable, not required
+
+automated_checks:
+  phi_risk_assessment:
+    command: "synos-hipaa risk-analysis --phi-systems"
+    expected_result: "documented_complete"
+
+  ephi_audit_logs:
+    command: "synos-hipaa verify-audit --ephi"
+    expected_result: "compliant"
+
+  encryption_in_transit:
+    command: "synos-crypto verify --tls --min-version=1.2"
+    expected_result: "tls12_or_higher"
+
+  encryption_at_rest:
+    command: "synos-crypto verify --at-rest --phi-only"
+    expected_result: "aes256_enabled"
+
+scoring:
+  total_required_controls: 8
+  total_addressable_controls: 1
+  pass_threshold: 100  # All required controls must pass

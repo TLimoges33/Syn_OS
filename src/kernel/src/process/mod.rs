@@ -480,24 +480,30 @@ impl ProcessManager {
     }
 }
 
-/// Global process manager instance
-static mut PROCESS_MANAGER: Option<ProcessManager> = None;
+use spin::Mutex;
+
+/// Global process manager instance (thread-safe)
+static PROCESS_MANAGER: Mutex<Option<ProcessManager>> = Mutex::new(None);
 
 /// Initialize the process manager
 pub fn init() {
-    unsafe {
-        PROCESS_MANAGER = Some(ProcessManager::new());
-    }
+    *PROCESS_MANAGER.lock() = Some(ProcessManager::new());
 }
 
-/// Get a reference to the global process manager
-/// SAFETY: This is only safe to call after process manager initialization
-pub fn process_manager() -> &'static mut ProcessManager {
-    unsafe {
-        PROCESS_MANAGER
-            .as_mut()
-            .expect("Process manager not initialized")
-    }
+/// Execute a closure with mutable access to the process manager
+/// This is the safe way to access the global process manager
+pub fn with_process_manager<F, R>(f: F) -> R
+where
+    F: FnOnce(&mut ProcessManager) -> R,
+{
+    let mut guard = PROCESS_MANAGER.lock();
+    f(guard.as_mut().expect("Process manager not initialized"))
+}
+
+/// Get a reference to the process manager (for compatibility)
+/// Note: This returns a Mutex guard, not a raw reference
+pub fn process_manager() -> spin::MutexGuard<'static, Option<ProcessManager>> {
+    PROCESS_MANAGER.lock()
 }
 
 #[cfg(test)]

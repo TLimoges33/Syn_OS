@@ -1,0 +1,156 @@
+# FedRAMP Moderate Baseline Compliance Configuration
+# Federal Risk and Authorization Management Program
+
+framework:
+  name: "FedRAMP Moderate Baseline"
+  version: "Rev 5"
+  description: "NIST 800-53 controls for FedRAMP Moderate Impact Level"
+  last_updated: "2024-10-02"
+
+# FedRAMP Moderate: 325 controls from NIST 800-53
+# Showing key controls for automated assessment
+
+control_families:
+  - id: "AC"
+    name: "Access Control"
+    controls:
+      - id: "AC-1"
+        title: "Access Control Policy and Procedures"
+        description: "Organization develops, documents, and disseminates access control policy"
+        automated_check: "policy_documentation"
+        severity: "HIGH"
+
+      - id: "AC-2"
+        title: "Account Management"
+        description: "Organization manages information system accounts"
+        automated_check: "account_management_audit"
+        severity: "CRITICAL"
+
+      - id: "AC-3"
+        title: "Access Enforcement"
+        description: "System enforces approved authorizations for logical access"
+        automated_check: "access_enforcement"
+        severity: "CRITICAL"
+
+      - id: "AC-7"
+        title: "Unsuccessful Login Attempts"
+        description: "Enforce limit of consecutive invalid login attempts"
+        automated_check: "login_attempt_limit"
+        severity: "MEDIUM"
+
+      - id: "AC-17"
+        title: "Remote Access"
+        description: "Establish usage restrictions and implementation guidance for remote access"
+        automated_check: "remote_access_controls"
+        severity: "HIGH"
+
+  - id: "AU"
+    name: "Audit and Accountability"
+    controls:
+      - id: "AU-2"
+        title: "Auditable Events"
+        description: "Organization determines system is capable of auditing defined events"
+        automated_check: "auditable_events"
+        severity: "HIGH"
+
+      - id: "AU-3"
+        title: "Content of Audit Records"
+        description: "System generates audit records with required content"
+        automated_check: "audit_record_content"
+        severity: "HIGH"
+
+      - id: "AU-6"
+        title: "Audit Review, Analysis, and Reporting"
+        description: "Organization reviews and analyzes audit records"
+        automated_check: "audit_review_process"
+        severity: "HIGH"
+
+      - id: "AU-9"
+        title: "Protection of Audit Information"
+        description: "Protect audit information and tools from unauthorized access"
+        automated_check: "audit_protection"
+        severity: "CRITICAL"
+
+  - id: "IA"
+    name: "Identification and Authentication"
+    controls:
+      - id: "IA-2"
+        title: "User Identification and Authentication"
+        description: "System uniquely identifies and authenticates users"
+        automated_check: "unique_authentication"
+        severity: "CRITICAL"
+
+      - id: "IA-2(1)"
+        title: "Multi-Factor Authentication"
+        description: "MFA for network access to privileged accounts"
+        automated_check: "mfa_privileged"
+        severity: "CRITICAL"
+
+      - id: "IA-5"
+        title: "Authenticator Management"
+        description: "Organization manages information system authenticators"
+        automated_check: "password_policy"
+        severity: "HIGH"
+
+  - id: "SC"
+    name: "System and Communications Protection"
+    controls:
+      - id: "SC-7"
+        title: "Boundary Protection"
+        description: "System monitors and controls communications at external boundaries"
+        automated_check: "boundary_protection"
+        severity: "CRITICAL"
+
+      - id: "SC-8"
+        title: "Transmission Confidentiality"
+        description: "System protects confidentiality of transmitted information"
+        automated_check: "transmission_encryption"
+        severity: "CRITICAL"
+
+      - id: "SC-12"
+        title: "Cryptographic Key Management"
+        description: "Organization establishes and manages cryptographic keys"
+        automated_check: "key_management"
+        severity: "HIGH"
+
+      - id: "SC-13"
+        title: "Cryptographic Protection"
+        description: "System implements FIPS-validated cryptography"
+        automated_check: "fips_crypto"
+        severity: "CRITICAL"
+
+automated_checks:
+  account_management_audit:
+    command: "synos-fedramp audit-accounts"
+    expected_result: "compliant"
+
+  mfa_privileged:
+    command: "synos-fedramp check-mfa --privileged-only"
+    expected_result: "all_enabled"
+
+  fips_crypto:
+    command: "synos-crypto verify --fips-140-2"
+    expected_result: "validated"
+
+  transmission_encryption:
+    command: "synos-fedramp check-transmission --fips"
+    expected_result: "tls12_fips"
+
+fedramp_specific:
+  continuous_monitoring:
+    enabled: true
+    scan_frequency: "monthly"
+    
+  annual_assessment:
+    required: true
+    3pao_assessment: true
+
+  incident_response:
+    notification_timeframe: "1_hour"
+    us_cert_notification: true
+
+scoring:
+  total_moderate_controls: 325
+  automated_controls: 45
+  manual_controls: 280
+  pass_threshold: 100  # All controls must pass for FedRAMP authorization

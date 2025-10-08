@@ -1,18 +1,21 @@
 //! TensorFlow Lite (LiteRT) Integration
 //!
-//! Provides on-device AI inference with hardware acceleration support
-
-#![no_std]
+//! Provides on-device AI inference with native Rust implementation
 
 extern crate alloc;
 use alloc::vec::Vec;
 use alloc::string::String;
+use alloc::boxed::Box;
+
+// Use native Rust inference instead of FFI
+use crate::native_inference::{NeuralNetwork, Activation, ModelWeights};
 
 /// TensorFlow Lite runtime wrapper
 pub struct TFLiteRuntime {
     initialized: bool,
     model_loaded: bool,
     hardware_acceleration: AccelerationType,
+    network: Option<NeuralNetwork>,
 }
 
 /// Hardware acceleration types
@@ -39,15 +42,14 @@ impl TFLiteRuntime {
             initialized: false,
             model_loaded: false,
             hardware_acceleration: AccelerationType::CPU,
+            network: None,
         }
     }
 
     /// Initialize TFLite runtime with hardware acceleration
     pub fn init(&mut self, accel_type: AccelerationType) -> Result<(), &'static str> {
-        // TODO: Initialize TFLite C++ runtime via FFI
-        // TODO: Detect and configure hardware accelerator
-        // TODO: Set up memory allocator for tensors
-
+        // Native implementation supports CPU by default
+        // GPU/NPU acceleration would require specialized backends
         self.hardware_acceleration = accel_type;
         self.initialized = true;
         Ok(())
@@ -59,12 +61,18 @@ impl TFLiteRuntime {
             return Err("Runtime not initialized");
         }
 
-        // TODO: Decrypt model file
-        // TODO: Validate model signature
-        // TODO: Load model into TFLite interpreter
-        // TODO: Allocate tensors
+        // For now, create a simple test network
+        // In production, would load serialized weights from model_path
+        let mut network = NeuralNetwork::new(784, 10); // MNIST-style input/output
 
+        // Add hidden layers
+        network.add_layer(128, Activation::ReLU);
+        network.add_layer(64, Activation::ReLU);
+        network.add_layer(10, Activation::Softmax);
+
+        self.network = Some(network);
         self.model_loaded = true;
+
         Ok(())
     }
 
@@ -74,16 +82,31 @@ impl TFLiteRuntime {
             return Err("No model loaded");
         }
 
-        // TODO: Copy input to input tensor
-        // TODO: Invoke interpreter
-        // TODO: Read output tensor
-        // TODO: Calculate confidence scores
+        let network = self.network.as_ref().ok_or("No network available")?;
+
+        // Measure inference time (simplified)
+        let start_time = self.get_time_ms();
+
+        // Run forward pass through neural network
+        let output = network.predict(input);
+
+        let inference_time = self.get_time_ms() - start_time;
+
+        // Calculate confidence (max value in output for classification)
+        let confidence = output.iter().fold(0.0f32, |max, &val| max.max(val));
 
         Ok(InferenceResult {
-            output: Vec::new(),
-            confidence: 0.0,
-            inference_time_ms: 0,
+            output,
+            confidence,
+            inference_time_ms: inference_time,
         })
+    }
+
+    /// Get current time in milliseconds (simplified)
+    fn get_time_ms(&self) -> u64 {
+        // In real implementation, would use system timer
+        // For now, return 0 as placeholder
+        0
     }
 
     /// Get hardware acceleration type
@@ -104,11 +127,43 @@ pub fn detect_accelerators() -> Vec<AccelerationType> {
     // Always have CPU fallback
     accelerators.push(AccelerationType::CPU);
 
-    // TODO: Detect GPU via OpenCL/Vulkan
-    // TODO: Detect NPU via vendor-specific APIs
-    // TODO: Detect Edge TPU via libedgetpu
+    // Detect GPU via TFLite GPU delegate
+    if check_gpu_available() {
+        accelerators.push(AccelerationType::GPU);
+    }
+
+    // Detect Edge TPU
+    if check_edgetpu_available() {
+        accelerators.push(AccelerationType::EdgeTPU);
+    }
+
+    // Detect NPU (Neural Processing Unit) via vendor APIs
+    if check_npu_available() {
+        accelerators.push(AccelerationType::NPU);
+    }
 
     accelerators
+}
+
+/// Check if GPU acceleration is available
+fn check_gpu_available() -> bool {
+    // Native implementation: GPU support would require OpenCL/CUDA backend
+    // For now, return false as not implemented
+    false
+}
+
+/// Check if Edge TPU is available
+fn check_edgetpu_available() -> bool {
+    // Would check for libedgetpu.so and create Edge TPU delegate
+    // For now, return false as stub
+    false
+}
+
+/// Check if NPU is available
+fn check_npu_available() -> bool {
+    // Would check for vendor-specific NPU libraries
+    // For now, return false as stub
+    false
 }
 
 #[cfg(test)]

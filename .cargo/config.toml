@@ -62,8 +62,8 @@ c = "check --all-targets"
 b = "build --release"
 audit = "audit --deny warnings"
 security = ["audit", "deny check"]
-kernel-build = "build --manifest-path=src/kernel/Cargo.toml --target=x86_64-unknown-none"
-kernel-check = "check --manifest-path=src/kernel/Cargo.toml --target=x86_64-unknown-none"
+kernel-build = "build --manifest-path=src/kernel/Cargo.toml --target=x86_64-unknown-none --features=kernel-binary"
+kernel-check = "check --manifest-path=src/kernel/Cargo.toml --target=x86_64-unknown-none --features=kernel-binary"
 optimize = "build --release --target=x86_64-syn_os"
 clean-deps = "tree --duplicates"
 size-analysis = ["bloat", "--release", "--crates"]

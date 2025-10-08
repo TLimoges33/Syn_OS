@@ -1,0 +1,228 @@
+# ═══════════════════════════════════════════════════════════════
+# SynOS Ultimate Security Tools Collection
+# Combining best tools from Kali, ParrotOS, and BlackArch
+# ═══════════════════════════════════════════════════════════════
+
+# ─────────────────────────────────────────────────────────────
+# RECONNAISSANCE & INFORMATION GATHERING
+# ─────────────────────────────────────────────────────────────
+nmap
+masscan
+zmap
+dnsenum
+dnsrecon
+fierce
+sublist3r
+amass
+theharvester
+recon-ng
+maltego
+spiderfoot
+whatweb
+wafw00f
+wapiti
+nikto
+dirb
+gobuster
+dirbuster
+wfuzz
+ffuf
+feroxbuster
+
+# ─────────────────────────────────────────────────────────────
+# VULNERABILITY SCANNING & ANALYSIS
+# ─────────────────────────────────────────────────────────────
+openvas
+nexpose
+nessus
+nuclei
+nikto
+skipfish
+wpscan
+joomscan
+droopescan
+sqlmap
+commix
+xsser
+
+# ─────────────────────────────────────────────────────────────
+# EXPLOITATION FRAMEWORKS
+# ─────────────────────────────────────────────────────────────
+metasploit-framework
+armitage
+beef-xss
+exploitdb
+searchsploit
+social-engineer-toolkit
+routersploit
+
+# ─────────────────────────────────────────────────────────────
+# PASSWORD ATTACKS
+# ─────────────────────────────────────────────────────────────
+john
+hashcat
+hydra
+medusa
+ncrack
+patator
+crunch
+cewl
+rsmangler
+hashid
+hash-identifier
+
+# ─────────────────────────────────────────────────────────────
+# WIRELESS ATTACKS
+# ─────────────────────────────────────────────────────────────
+aircrack-ng
+reaver
+bully
+wifite
+kismet
+fern-wifi-cracker
+fluxion
+wifiphisher
+mdk4
+
+# ─────────────────────────────────────────────────────────────
+# WEB APPLICATION TESTING
+# ─────────────────────────────────────────────────────────────
+burpsuite
+zap
+sqlmap
+commix
+xsser
+wpscan
+joomscan
+whatweb
+nikto
+skipfish
+arachni
+w3af
+
+# ─────────────────────────────────────────────────────────────
+# NETWORK SNIFFING & SPOOFING
+# ─────────────────────────────────────────────────────────────
+wireshark
+tshark
+tcpdump
+ettercap-text-only
+ettercap-graphical
+bettercap
+mitmproxy
+sslstrip
+arpspoof
+dsniff
+
+# ─────────────────────────────────────────────────────────────
+# POST EXPLOITATION
+# ─────────────────────────────────────────────────────────────
+empire
+powersploit
+mimikatz
+bloodhound
+crackmapexec
+evil-winrm
+impacket-scripts
+responder
+weevely
+webacoo
+
+# ─────────────────────────────────────────────────────────────
+# FORENSICS & REVERSE ENGINEERING
+# ─────────────────────────────────────────────────────────────
+autopsy
+volatility3
+bulk-extractor
+foremost
+binwalk
+steghide
+stegcracker
+exiftool
+radare2
+ghidra
+ida-free
+gdb
+edb-debugger
+ollydbg
+
+# ─────────────────────────────────────────────────────────────
+# CRYPTOGRAPHY & STEGANOGRAPHY
+# ─────────────────────────────────────────────────────────────
+hashcat
+john
+steghide
+stegcracker
+stegsnow
+openstego
+covertool
+stegotools
+
+# ─────────────────────────────────────────────────────────────
+# SOCIAL ENGINEERING
+# ─────────────────────────────────────────────────────────────
+social-engineer-toolkit
+phishing-frenzy
+gophish
+evilginx2
+modlishka
+
+# ─────────────────────────────────────────────────────────────
+# REPORTING & DOCUMENTATION
+# ─────────────────────────────────────────────────────────────
+faraday
+dradis
+metagoofil
+pipal
+cutycapt
+eyewitness
+
+# ─────────────────────────────────────────────────────────────
+# NETWORKING UTILITIES
+# ─────────────────────────────────────────────────────────────
+netcat-openbsd
+netcat-traditional
+socat
+proxychains4
+tor
+torsocks
+openvpn
+stunnel4
+sshuttle
+ncat
+
+# ─────────────────────────────────────────────────────────────
+# ANONYMITY & PRIVACY
+# ─────────────────────────────────────────────────────────────
+tor
+torbrowser-launcher
+proxychains4
+macchanger
+mat2
+bleachbit
+
+# ─────────────────────────────────────────────────────────────
+# SYSTEM UTILITIES
+# ─────────────────────────────────────────────────────────────
+dnsutils
+whois
+traceroute
+netdiscover
+arp-scan
+nbtscan
+enum4linux
+smbclient
+ldapsearch
+rdesktop
+xfreerdp
+
+# ─────────────────────────────────────────────────────────────
+# MALWARE ANALYSIS & DETECTION
+# ─────────────────────────────────────────────────────────────
+clamav
+clamtk
+yara
+chkrootkit
+rkhunter
+lynis
+unhide

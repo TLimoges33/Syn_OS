@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>wazuh</name>
+  <full_name>wazuh/wazuh</full_name>
+  <description>Wazuh - The Open Source Security Platform. Unified XDR and SIEM protection for endpoints and cloud workloads.</description>
+  <url>https://github.com/wazuh/wazuh</url>
+  <clone_url>https://github.com/wazuh/wazuh.git</clone_url>
+  <ssh_url>git@github.com:wazuh/wazuh.git</ssh_url>
+  <metadata>
+    <language>C</language>
+    <stars>13195</stars>
+    <forks>1947</forks>
+    <watchers>13195</watchers>
+    <size>465756</size>
+    <default_branch>main</default_branch>
+    <created_at>2015-08-11T17:39:03Z</created_at>
+    <updated_at>2025-08-26T22:15:17Z</updated_at>
+    <pushed_at>2025-08-26T22:49:49Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>cloud-security</topic>
+    <topic>compliance</topic>
+    <topic>configuration-assessement</topic>
+    <topic>container-security</topic>
+    <topic>cybersecurity</topic>
+    <topic>file-integrity-monitoring</topic>
+    <topic>incident-response</topic>
+    <topic>infosec</topic>
+    <topic>log-analysis</topic>
+    <topic>malware-detection</topic>
+    <topic>pci-dss</topic>
+    <topic>security</topic>
+    <topic>security-audit</topic>
+    <topic>security-automation</topic>
+    <topic>security-hardening</topic>
+    <topic>security-tools</topic>
+    <topic>siem</topic>
+    <topic>vulnerability-detection</topic>
+    <topic>wazuh</topic>
+    <topic>xdr</topic>
+  </topics>
+  <license>
+    <name>Other</name>
+    <spdx_id>NOASSERTION</spdx_id>
+  </license>
+  <owner>
+    <login>wazuh</login>
+    <type>Organization</type>
+    <url>https://github.com/wazuh</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 13195 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

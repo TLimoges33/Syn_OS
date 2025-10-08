@@ -1,0 +1,81 @@
+# Sarbanes-Oxley Act (SOX) Compliance Configuration
+# Focus on IT General Controls (ITGC) for financial systems
+
+framework:
+  name: "SOX IT General Controls"
+  version: "2002"
+  description: "Sarbanes-Oxley Act IT compliance requirements"
+  last_updated: "2024-10-02"
+
+# SOX IT General Controls
+categories:
+  - id: "SOX.AC"
+    name: "Access Controls"
+    controls:
+      - id: "SOX.AC-01"
+        title: "User Access Management"
+        description: "Logical access to financial systems is restricted to authorized personnel"
+        automated_check: "access_control_audit"
+        severity: "CRITICAL"
+      
+      - id: "SOX.AC-02"
+        title: "Segregation of Duties"
+        description: "Incompatible duties are segregated to prevent fraud"
+        automated_check: "sod_violations"
+        severity: "CRITICAL"
+
+  - id: "SOX.CM"
+    name: "Change Management"
+    controls:
+      - id: "SOX.CM-01"
+        title: "Change Authorization"
+        description: "All changes to financial systems must be authorized and documented"
+        automated_check: "change_approval_audit"
+        severity: "HIGH"
+      
+      - id: "SOX.CM-02"
+        title: "Emergency Changes"
+        description: "Emergency changes are documented and reviewed"
+        automated_check: "emergency_change_log"
+        severity: "HIGH"
+
+  - id: "SOX.AU"
+    name: "Audit Logging"
+    controls:
+      - id: "SOX.AU-01"
+        title: "Financial Transaction Logging"
+        description: "All financial transactions are logged with timestamp and user"
+        automated_check: "transaction_log_completeness"
+        severity: "CRITICAL"
+      
+      - id: "SOX.AU-02"
+        title: "Log Retention"
+        description: "Audit logs are retained for minimum 7 years"
+        automated_check: "log_retention_policy"
+        severity: "HIGH"
+
+  - id: "SOX.BC"
+    name: "Business Continuity"
+    controls:
+      - id: "SOX.BC-01"
+        title: "Backup and Recovery"
+        description: "Financial system backups are tested regularly"
+        automated_check: "backup_test_results"
+        severity: "HIGH"
+
+automated_checks:
+  access_control_audit:
+    command: "synos-sox audit-access --financial-systems"
+    expected_result: "no_violations"
+  
+  sod_violations:
+    command: "synos-sox check-sod"
+    expected_result: "no_conflicts"
+
+  transaction_log_completeness:
+    command: "synos-sox verify-logs --financial"
+    expected_result: "100_percent_coverage"
+
+scoring:
+  total_controls: 7
+  pass_threshold: 100  # SOX requires 100% compliance

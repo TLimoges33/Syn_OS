@@ -1,9 +1,13 @@
 [package]
 name = "syn-kernel"
-version.workspace = true
+version = "4.4.0"
 edition.workspace = true
 license.workspace = true
 authors.workspace = true
+
+[lib]
+name = "syn_kernel"
+path = "src/lib.rs"
 
 # Mark this package as not using the standard library
 # This is critical for bare-metal development
@@ -18,12 +22,13 @@ pic8259 = { workspace = true }
 pc-keyboard = { workspace = true }
 linked_list_allocator = { workspace = true }
 lazy_static = { version = "1.5", features = ["spin_no_std"] }
-hashbrown = { version = "0.14", default-features = false, features = ["ahash"] }
+hashbrown = { version = "0.14", default-features = false, features = ["ahash"], package = "hashbrown" }
+ahash = { version = "0.8", default-features = false, features = ["compile-time-rng"] }
 
 # AI Engine integration
 syn-ai = { path = "../../core/ai" }
 
-# Serde for AI interface (no_std compatible) 
+# Serde for AI interface (no_std compatible)
 serde = { version = "1.0", default-features = false, features = ["alloc", "derive"] }
 log = { version = "0.4", default-features = false }
 heapless = { version = "0.8", default-features = false }
@@ -39,12 +44,14 @@ security-enhanced = []
 debug-mode = []
 consciousness = ["ai-integration", "syn-ai/consciousness"]
 ai-bridge = ["ai-integration", "syn-ai/ai-bridge"]
+kernel-binary = []  # Feature flag to enable kernel binary compilation
 
 # Profiles are managed at workspace level - removed from package
 
 [[bin]]
 name = "kernel"
 path = "src/main.rs"
+required-features = ["kernel-binary"]
 
 [build-dependencies]
 bootimage = "0.10"

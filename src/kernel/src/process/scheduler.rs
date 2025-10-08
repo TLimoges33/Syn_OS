@@ -1,7 +1,6 @@
 /// Process scheduler for SynOS kernel
-/// Implements round-robin scheduling with priority support
-
-use super::{ProcessId, ProcessManager, Priority};
+// Implements round-robin scheduling with priority support
+use super::{Priority, ProcessId, ProcessManager};
 use alloc::collections::VecDeque;
 
 /// Scheduling algorithms
@@ -112,17 +111,19 @@ impl Scheduler {
 
         // Then check other queues with time slicing
         for (priority, queue) in self.ready_queues.iter_mut().enumerate().rev() {
-            if priority == 3 { continue; } // Skip realtime (already checked)
-            
+            if priority == 3 {
+                continue;
+            } // Skip realtime (already checked)
+
             if let Some(pid) = queue.pop_front() {
                 // Longer time slices for higher priorities
                 let time_slice = match priority {
                     2 => self.config.time_slice * 2, // High priority
-                    1 => self.config.time_slice,     // Normal priority  
+                    1 => self.config.time_slice,     // Normal priority
                     0 => self.config.time_slice / 2, // Low priority
                     _ => self.config.time_slice,
                 };
-                
+
                 self.current_time_slice = time_slice;
                 return Some(pid);
             }
@@ -133,7 +134,7 @@ impl Scheduler {
     /// Handle timer tick for scheduling decisions
     pub fn timer_tick(&mut self, process_manager: &mut ProcessManager) -> Option<ProcessId> {
         self.total_ticks += 1;
-        
+
         // Check if we need to boost priorities (prevent starvation)
         if self.total_ticks - self.last_priority_boost >= self.config.priority_boost_interval {
             self.priority_boost(process_manager);
@@ -143,7 +144,7 @@ impl Scheduler {
         // Handle time slice expiration
         if self.current_time_slice > 0 {
             self.current_time_slice -= 1;
-            
+
             // Time slice expired, consider preemption
             if self.current_time_slice == 0 {
                 return self.handle_preemption(process_manager);
@@ -159,7 +160,7 @@ impl Scheduler {
         if let Some(current) = process_manager.current_process() {
             let current_pid = current.id;
             let current_priority = current.priority;
-            
+
             // Demote priority in multilevel feedback queue
             if matches!(self.config.algorithm, SchedulingAlgorithm::Multilevel) {
                 let new_priority = match current_priority {
@@ -168,11 +169,11 @@ impl Scheduler {
                     Priority::Normal => Priority::Low,
                     Priority::Low => Priority::Low, // Already at lowest
                 };
-                
+
                 if let Some(process) = process_manager.get_process_mut(current_pid) {
                     process.priority = new_priority;
                 }
-                
+
                 self.add_ready_process(current_pid, new_priority);
             } else {
                 self.add_ready_process(current_pid, current_priority);
@@ -195,12 +196,12 @@ impl Scheduler {
                     2 => Priority::Realtime,
                     _ => Priority::Realtime,
                 };
-                
+
                 // Update process priority
                 if let Some(process) = process_manager.get_process_mut(pid) {
                     process.priority = new_priority;
                 }
-                
+
                 self.ready_queues[new_priority as usize].push_back(pid);
             }
         }
@@ -210,29 +211,27 @@ impl Scheduler {
     pub fn schedule(&mut self, process_manager: &mut ProcessManager) -> Option<ProcessId> {
         // Update ready queues with any newly ready processes
         self.update_ready_queues(process_manager);
-        
+
         // Select next process
         let next_pid = self.select_next_process();
-        
+
         // Reset time slice for new process
         if next_pid.is_some() {
             self.current_time_slice = self.config.time_slice;
         }
-        
+
         next_pid
     }
 
     /// Update ready queues with processes that became ready
     fn update_ready_queues(&mut self, process_manager: &ProcessManager) {
         let ready_processes = process_manager.ready_processes();
-        
+
         for pid in ready_processes {
             if let Some(process) = process_manager.get_process(pid) {
                 // Only add if not already in a queue
-                let already_queued = self.ready_queues
-                    .iter()
-                    .any(|queue| queue.contains(&pid));
-                
+                let already_queued = self.ready_queues.iter().any(|queue| queue.contains(&pid));
+
                 if !already_queued {
                     self.add_ready_process(pid, process.priority);
                 }
@@ -249,7 +248,7 @@ impl Scheduler {
             self.ready_queues[2].len(),
             self.ready_queues[3].len(),
         ];
-        
+
         for &length in &queue_lengths {
             total_processes += length;
         }
@@ -285,25 +284,33 @@ pub fn init(config: SchedulerConfig) {
 }
 
 /// Get a reference to the global scheduler
-/// SAFETY: This is only safe to call after scheduler initialization
+/// SAFETY: This is only safe to call after scheduler initialization.
+/// Static mut is used here for kernel-level global state with controlled access.
+#[allow(static_mut_refs)]
 pub fn scheduler() -> &'static mut Scheduler {
-    unsafe {
-        SCHEDULER.as_mut().expect("Scheduler not initialized")
-    }
+    unsafe { SCHEDULER.as_mut().expect("Scheduler not initialized") }
 }
 
 /// Main scheduling function called by timer interrupt
 pub fn schedule_next() -> Option<ProcessId> {
     let scheduler = scheduler();
-    let process_manager = super::process_manager();
-    scheduler.schedule(process_manager)
+    let mut process_manager = super::process_manager();
+    if let Some(ref mut pm) = *process_manager {
+        scheduler.schedule(pm)
+    } else {
+        None
+    }
 }
 
 /// Handle timer tick for scheduling
 pub fn timer_tick() -> Option<ProcessId> {
     let scheduler = scheduler();
-    let process_manager = super::process_manager();
-    scheduler.timer_tick(process_manager)
+    let mut process_manager = super::process_manager();
+    if let Some(ref mut pm) = *process_manager {
+        scheduler.timer_tick(pm)
+    } else {
+        None
+    }
 }
 
 #[cfg(test)]
@@ -314,7 +321,7 @@ mod tests {
     fn test_scheduler_creation() {
         let config = SchedulerConfig::default();
         let scheduler = Scheduler::new(config);
-        
+
         let stats = scheduler.stats();
         assert_eq!(stats.total_ready_processes, 0);
         assert_eq!(stats.current_time_slice, 0);
@@ -324,10 +331,10 @@ mod tests {
     fn test_ready_queue_management() {
         let config = SchedulerConfig::default();
         let mut scheduler = Scheduler::new(config);
-        
+
         scheduler.add_ready_process(1, Priority::Normal);
         scheduler.add_ready_process(2, Priority::High);
-        
+
         let stats = scheduler.stats();
         assert_eq!(stats.total_ready_processes, 2);
         assert_eq!(stats.queue_lengths[1], 1); // Normal priority

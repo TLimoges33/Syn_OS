@@ -1,0 +1,414 @@
+#!/usr/bin/env python3
+"""
+SynOS AI Chat Panel
+GTK-based AI chat interface for the right sidebar
+
+Features:
+- Connects to synos-llm-engine via HTTP API
+- Real-time chat with local or cloud LLM
+- Context-aware suggestions
+- Conversation history
+- Keyboard shortcuts (Ctrl+Enter to send)
+"""
+
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk, Gdk, GLib, Pango
+import json
+import os
+import threading
+from datetime import datetime
+
+try:
+    import requests
+    REQUESTS_AVAILABLE = True
+except ImportError:
+    REQUESTS_AVAILABLE = False
+
+class ChatMessage:
+    """Represents a single chat message"""
+    def __init__(self, role: str, content: str, timestamp: str = None):
+        self.role = role  # 'user' or 'assistant'
+        self.content = content
+        self.timestamp = timestamp or datetime.now().strftime("%H:%M")
+
+class SynOSAIChatPanel(Gtk.Window):
+    """Main AI chat panel window"""
+
+    def __init__(self):
+        Gtk.Window.__init__(self, title="Jarvis AI Assistant")
+
+        # Window configuration
+        self.set_default_size(350, 600)
+        self.set_position(Gtk.WindowPosition.MOUSE)
+        self.set_decorated(True)
+        self.set_type_hint(Gdk.WindowTypeHint.UTILITY)
+
+        # Apply dark theme
+        self.set_name("synos-ai-chat")
+
+        # Message history
+        self.messages = []
+        self.llm_url = "http://localhost:8080/query"
+
+        # Load conversation history
+        self.history_file = os.path.expanduser("~/.synos/chat_history.json")
+        self.load_history()
+
+        # Build UI
+        self.build_ui()
+
+        # Connect signals
+        self.connect("destroy", Gtk.main_quit)
+        self.connect("key-press-event", self.on_key_press)
+
+        # Apply CSS styling
+        self.apply_css()
+
+    def build_ui(self):
+        """Build the UI components"""
+        # Main vertical box
+        main_vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+        self.add(main_vbox)
+
+        # Header
+        header = self.create_header()
+        main_vbox.pack_start(header, False, False, 0)
+
+        # Separator
+        sep1 = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        main_vbox.pack_start(sep1, False, False, 0)
+
+        # Chat messages area (scrollable)
+        scrolled = Gtk.ScrolledWindow()
+        scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        scrolled.set_vexpand(True)
+
+        # Messages container
+        self.messages_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        self.messages_box.set_margin_start(10)
+        self.messages_box.set_margin_end(10)
+        self.messages_box.set_margin_top(10)
+        self.messages_box.set_margin_bottom(10)
+
+        scrolled.add(self.messages_box)
+        main_vbox.pack_start(scrolled, True, True, 0)
+
+        # Store scrolled window for auto-scroll
+        self.scrolled_window = scrolled
+
+        # Separator
+        sep2 = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        main_vbox.pack_start(sep2, False, False, 0)
+
+        # Input area
+        input_area = self.create_input_area()
+        main_vbox.pack_start(input_area, False, False, 0)
+
+        # Render existing messages
+        for msg in self.messages:
+            self.add_message_widget(msg)
+
+    def create_header(self):
+        """Create header with title and controls"""
+        header_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
+        header_box.set_margin_start(10)
+        header_box.set_margin_end(10)
+        header_box.set_margin_top(5)
+        header_box.set_margin_bottom(5)
+
+        # Jarvis icon/label
+        icon_label = Gtk.Label()
+        icon_label.set_markup("<b>🤖 JARVIS</b>")
+        header_box.pack_start(icon_label, False, False, 0)
+
+        # Status indicator
+        self.status_label = Gtk.Label()
+        self.update_status_indicator()
+        header_box.pack_start(self.status_label, False, False, 0)
+
+        # Spacer
+        header_box.pack_start(Gtk.Label(), True, True, 0)
+
+        # Clear chat button
+        clear_btn = Gtk.Button(label="Clear")
+        clear_btn.connect("clicked", self.on_clear_chat)
+        header_box.pack_start(clear_btn, False, False, 0)
+
+        # Settings button
+        settings_btn = Gtk.Button(label="⚙")
+        settings_btn.connect("clicked", self.on_settings)
+        header_box.pack_start(settings_btn, False, False, 0)
+
+        return header_box
+
+    def create_input_area(self):
+        """Create input area with text entry and send button"""
+        input_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        input_box.set_margin_start(10)
+        input_box.set_margin_end(10)
+        input_box.set_margin_top(10)
+        input_box.set_margin_bottom(10)
+
+        # Text entry
+        self.input_entry = Gtk.Entry()
+        self.input_entry.set_placeholder_text("Ask Jarvis anything...")
+        self.input_entry.connect("activate", self.on_send_message)
+        input_box.pack_start(self.input_entry, True, True, 0)
+
+        # Send button
+        send_btn = Gtk.Button(label="Send")
+        send_btn.connect("clicked", self.on_send_message)
+        input_box.pack_start(send_btn, False, False, 0)
+
+        return input_box
+
+    def add_message_widget(self, msg: ChatMessage):
+        """Add a message widget to the chat area"""
+        msg_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=3)
+        msg_box.set_margin_top(5)
+
+        # Header (role + timestamp)
+        header_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+
+        role_label = Gtk.Label()
+        if msg.role == 'user':
+            role_label.set_markup(f"<b>You</b>")
+        else:
+            role_label.set_markup(f"<b>Jarvis</b>")
+        header_box.pack_start(role_label, False, False, 0)
+
+        time_label = Gtk.Label(label=msg.timestamp)
+        time_label.set_opacity(0.6)
+        header_box.pack_start(time_label, False, False, 0)
+
+        msg_box.pack_start(header_box, False, False, 0)
+
+        # Message content
+        content_label = Gtk.Label(label=msg.content)
+        content_label.set_line_wrap(True)
+        content_label.set_xalign(0)
+        content_label.set_selectable(True)
+        content_label.set_max_width_chars(50)
+
+        # Style based on role
+        if msg.role == 'user':
+            content_label.set_name("user-message")
+        else:
+            content_label.set_name("assistant-message")
+
+        msg_box.pack_start(content_label, False, False, 0)
+
+        # Add separator
+        sep = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        sep.set_margin_top(5)
+        msg_box.pack_start(sep, False, False, 0)
+
+        self.messages_box.pack_start(msg_box, False, False, 0)
+        msg_box.show_all()
+
+        # Auto-scroll to bottom
+        GLib.idle_add(self.scroll_to_bottom)
+
+    def scroll_to_bottom(self):
+        """Scroll chat to bottom"""
+        adj = self.scrolled_window.get_vadjustment()
+        adj.set_value(adj.get_upper() - adj.get_page_size())
+
+    def on_send_message(self, widget):
+        """Handle send message"""
+        text = self.input_entry.get_text().strip()
+        if not text:
+            return
+
+        # Add user message
+        user_msg = ChatMessage('user', text)
+        self.messages.append(user_msg)
+        self.add_message_widget(user_msg)
+
+        # Clear input
+        self.input_entry.set_text("")
+
+        # Query LLM in background thread
+        threading.Thread(target=self.query_llm, args=(text,), daemon=True).start()
+
+    def query_llm(self, question: str):
+        """Query the LLM engine"""
+        if not REQUESTS_AVAILABLE:
+            response = "Error: 'requests' module not installed. Install with: pip3 install requests"
+            GLib.idle_add(self.add_assistant_message, response)
+            return
+
+        try:
+            response = requests.post(
+                self.llm_url,
+                json={'query': question, 'context': 'chat-panel'},
+                timeout=30
+            )
+
+            if response.status_code == 200:
+                result = response.json()
+                answer = result.get('response', 'No response from AI')
+                GLib.idle_add(self.add_assistant_message, answer)
+            else:
+                error_msg = f"Error: LLM engine returned status {response.status_code}"
+                GLib.idle_add(self.add_assistant_message, error_msg)
+
+        except requests.exceptions.ConnectionError:
+            error_msg = "Error: Cannot connect to synos-llm-engine. Make sure it's running:\nsudo systemctl start synos-llm-engine"
+            GLib.idle_add(self.add_assistant_message, error_msg)
+
+        except Exception as e:
+            error_msg = f"Error: {str(e)}"
+            GLib.idle_add(self.add_assistant_message, error_msg)
+
+    def add_assistant_message(self, content: str):
+        """Add assistant message (called from main thread)"""
+        msg = ChatMessage('assistant', content)
+        self.messages.append(msg)
+        self.add_message_widget(msg)
+        self.save_history()
+
+    def on_clear_chat(self, widget):
+        """Clear chat history"""
+        dialog = Gtk.MessageDialog(
+            transient_for=self,
+            flags=0,
+            message_type=Gtk.MessageType.QUESTION,
+            buttons=Gtk.ButtonsType.YES_NO,
+            text="Clear chat history?"
+        )
+        response = dialog.run()
+        dialog.destroy()
+
+        if response == Gtk.ResponseType.YES:
+            self.messages = []
+            for child in self.messages_box.get_children():
+                self.messages_box.remove(child)
+            self.save_history()
+
+    def on_settings(self, widget):
+        """Show settings dialog"""
+        dialog = Gtk.MessageDialog(
+            transient_for=self,
+            flags=0,
+            message_type=Gtk.MessageType.INFO,
+            buttons=Gtk.ButtonsType.OK,
+            text="Settings"
+        )
+        dialog.format_secondary_text(
+            f"LLM Engine: {self.llm_url}\n"
+            f"Chat History: {self.history_file}\n\n"
+            "Configure settings in:\n~/.synos/ai-chat-config.json"
+        )
+        dialog.run()
+        dialog.destroy()
+
+    def update_status_indicator(self):
+        """Update connection status indicator"""
+        # Check if LLM engine is accessible
+        if REQUESTS_AVAILABLE:
+            try:
+                response = requests.get("http://localhost:8080/health", timeout=2)
+                if response.status_code == 200:
+                    self.status_label.set_markup('<span color="green">●</span> Online')
+                    return
+            except:
+                pass
+
+        self.status_label.set_markup('<span color="red">●</span> Offline')
+
+    def on_key_press(self, widget, event):
+        """Handle keyboard shortcuts"""
+        # Ctrl+Enter to send
+        if event.keyval == Gdk.KEY_Return and event.state & Gdk.ModifierType.CONTROL_MASK:
+            self.on_send_message(None)
+            return True
+
+        # Escape to close
+        if event.keyval == Gdk.KEY_Escape:
+            self.hide()
+            return True
+
+        return False
+
+    def load_history(self):
+        """Load conversation history from file"""
+        if os.path.exists(self.history_file):
+            try:
+                with open(self.history_file, 'r') as f:
+                    data = json.load(f)
+                    for msg_data in data.get('messages', []):
+                        msg = ChatMessage(
+                            msg_data['role'],
+                            msg_data['content'],
+                            msg_data.get('timestamp')
+                        )
+                        self.messages.append(msg)
+            except Exception as e:
+                print(f"Error loading history: {e}")
+
+    def save_history(self):
+        """Save conversation history to file"""
+        os.makedirs(os.path.dirname(self.history_file), exist_ok=True)
+
+        try:
+            data = {
+                'messages': [
+                    {
+                        'role': msg.role,
+                        'content': msg.content,
+                        'timestamp': msg.timestamp
+                    }
+                    for msg in self.messages[-50:]  # Keep last 50 messages
+                ]
+            }
+            with open(self.history_file, 'w') as f:
+                json.dump(data, f, indent=2)
+        except Exception as e:
+            print(f"Error saving history: {e}")
+
+    def apply_css(self):
+        """Apply custom CSS styling"""
+        css = b"""
+        #synos-ai-chat {
+            background-color: #1e1e2e;
+            color: #cdd6f4;
+        }
+
+        #user-message {
+            background-color: #313244;
+            color: #cdd6f4;
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        #assistant-message {
+            background-color: #45475a;
+            color: #89b4fa;
+            padding: 8px;
+            border-radius: 5px;
+        }
+        """
+
+        style_provider = Gtk.CssProvider()
+        style_provider.load_from_data(css)
+
+        Gtk.StyleContext.add_provider_for_screen(
+            Gdk.Screen.get_default(),
+            style_provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        )
+
+def main():
+    """Main entry point"""
+    app = SynOSAIChatPanel()
+    app.show_all()
+
+    # Update status every 5 seconds
+    GLib.timeout_add_seconds(5, app.update_status_indicator)
+
+    Gtk.main()
+
+if __name__ == '__main__':
+    main()

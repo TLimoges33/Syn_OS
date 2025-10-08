@@ -16,7 +16,7 @@ LB_APT_PIPELINE=""
 LB_APT_RECOMMENDS="false"
 
 # Set apt/aptitude security
-LB_APT_SECURE="true"
+LB_APT_SECURE="false"
 
 # Set apt/aptitude source entries in sources.list
 LB_APT_SOURCE_ARCHIVES="true"

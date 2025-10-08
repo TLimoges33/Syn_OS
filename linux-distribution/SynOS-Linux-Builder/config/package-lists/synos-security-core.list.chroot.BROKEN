@@ -1,0 +1,94 @@
+# Core security tools available in Debian repos
+# These will install without certificate issues
+
+# ─────────────────────────────────────────────
+# SYSTEM ESSENTIALS (install these first)
+# ─────────────────────────────────────────────
+ca-certificates
+apt-transport-https
+gnupg
+wget
+curl
+
+# ─────────────────────────────────────────────
+# RECONNAISSANCE
+# ─────────────────────────────────────────────
+nmap
+dnsutils
+whois
+netcat-openbsd
+tcpdump
+wireshark
+tshark
+arp-scan
+
+# ─────────────────────────────────────────────
+# WEB APPLICATION TESTING
+# ─────────────────────────────────────────────
+nikto
+sqlmap
+dirb
+wfuzz
+
+# ─────────────────────────────────────────────
+# PASSWORD ATTACKS
+# ─────────────────────────────────────────────
+hydra
+john
+hashcat
+crunch
+
+# ─────────────────────────────────────────────
+# WIRELESS TESTING
+# ─────────────────────────────────────────────
+aircrack-ng
+reaver
+bully
+wifite
+
+# ─────────────────────────────────────────────
+# EXPLOITATION FRAMEWORKS
+# ─────────────────────────────────────────────
+metasploit-framework
+beef-xss
+
+# ─────────────────────────────────────────────
+# FORENSICS
+# ─────────────────────────────────────────────
+autopsy
+sleuthkit
+binwalk
+foremost
+
+# ─────────────────────────────────────────────
+# REVERSE ENGINEERING
+# ─────────────────────────────────────────────
+radare2
+gdb
+ghidra
+objdump
+
+# ─────────────────────────────────────────────
+# SNIFFING & SPOOFING
+# ─────────────────────────────────────────────
+ettercap-text-only
+dsniff
+mitmproxy
+sslstrip
+
+# ─────────────────────────────────────────────
+# POST-EXPLOITATION
+# ─────────────────────────────────────────────
+powersploit
+mimikatz
+netcat-traditional
+
+# ─────────────────────────────────────────────
+# DEVELOPMENT & SCRIPTING
+# ─────────────────────────────────────────────
+python3
+python3-pip
+git
+vim
+tmux
+screen

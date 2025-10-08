@@ -1,0 +1,259 @@
+#!/bin/bash
+#
+# SynOS v1.0 First-Boot Wizard
+# AI-Enhanced Cybersecurity Operating System
+#
+# Professional onboarding experience for new users
+
+set -e
+
+# Colors for terminal output
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+BOLD='\033[1m'
+
+# ASCII Banner
+show_banner() {
+    clear
+    echo -e "${CYAN}"
+    cat << "EOF"
+╔══════════════════════════════════════════════════════════════╗
+║         SynOS v1.0 - AI-Enhanced Cybersecurity OS          ║
+║    Neural Darwinism • 500+ Security Tools • MSSP Platform   ║
+╚══════════════════════════════════════════════════════════════╝
+EOF
+    echo -e "${NC}\n"
+}
+
+# Welcome Screen
+show_welcome() {
+    show_banner
+    echo -e "${BOLD}Welcome to SynOS v1.0!${NC}\n"
+    echo "This wizard will help you:"
+    echo "  • Configure your security profile"
+    echo "  • Set up AI consciousness services"
+    echo "  • Choose your use case (MSSP, Red Team, Education, Blue Team)"
+    echo "  • Initialize the neural darwinism framework"
+    echo ""
+    read -p "Press Enter to continue..."
+}
+
+# User Profile Selection
+select_profile() {
+    show_banner
+    echo -e "${BOLD}Step 1: Select Your Primary Use Case${NC}\n"
+    echo "1) 🏢 MSSP Professional    - Managed Security Service Provider operations"
+    echo "2) 🔴 Red Team             - Offensive security & penetration testing"
+    echo "3) 🎓 Education            - Cybersecurity learning & labs"
+    echo "4) 🛡️  Blue Team           - Defensive security & threat hunting"
+    echo "5) 🔬 Security Research    - Vulnerability research & development"
+    echo ""
+
+    while true; do
+        read -p "Select profile (1-5): " profile_choice
+        case $profile_choice in
+            1) PROFILE="mssp"; break ;;
+            2) PROFILE="redteam"; break ;;
+            3) PROFILE="education"; break ;;
+            4) PROFILE="blueteam"; break ;;
+            5) PROFILE="research"; break ;;
+            *) echo -e "${RED}Invalid choice. Please select 1-5.${NC}" ;;
+        esac
+    done
+
+    # Save profile
+    echo "$PROFILE" > /etc/synos/user-profile
+    echo -e "\n${GREEN}✓ Profile set to: $PROFILE${NC}"
+    sleep 1
+}
+
+# AI Consciousness Configuration
+configure_ai() {
+    show_banner
+    echo -e "${BOLD}Step 2: AI Consciousness Configuration${NC}\n"
+    echo "SynOS includes a Neural Darwinism AI framework that learns from your"
+    echo "security operations and provides intelligent recommendations."
+    echo ""
+    echo "Enable AI features?"
+    echo "1) Yes - Full AI consciousness (recommended)"
+    echo "2) Yes - Basic AI assistance only"
+    echo "3) No  - Disable AI features"
+    echo ""
+
+    while true; do
+        read -p "Select option (1-3): " ai_choice
+        case $ai_choice in
+            1) AI_MODE="full"; break ;;
+            2) AI_MODE="basic"; break ;;
+            3) AI_MODE="disabled"; break ;;
+            *) echo -e "${RED}Invalid choice. Please select 1-3.${NC}" ;;
+        esac
+    done
+
+    # Save AI configuration
+    mkdir -p /etc/synos
+    echo "$AI_MODE" > /etc/synos/ai-mode
+
+    echo -e "\n${GREEN}✓ AI mode set to: $AI_MODE${NC}"
+    sleep 1
+}
+
+# Security Tools Configuration
+configure_tools() {
+    show_banner
+    echo -e "${BOLD}Step 3: Security Tools Configuration${NC}\n"
+    echo "SynOS includes 500+ security tools from ParrotOS."
+    echo ""
+    echo "Based on your profile ($PROFILE), we recommend:"
+    echo ""
+
+    case $PROFILE in
+        mssp)
+            echo "  • Burp Suite Professional"
+            echo "  • Metasploit Framework"
+            echo "  • Nessus/OpenVAS vulnerability scanners"
+            echo "  • SIEM integration (Splunk, Sentinel, QRadar)"
+            ;;
+        redteam)
+            echo "  • Metasploit Framework"
+            echo "  • Cobalt Strike integration"
+            echo "  • Custom payload generators"
+            echo "  • C2 infrastructure tools"
+            ;;
+        education)
+            echo "  • Sandbox environments"
+            echo "  • CTF challenge platform"
+            echo "  • Learning analytics dashboard"
+            echo "  • Safe practice labs"
+            ;;
+        blueteam)
+            echo "  • Threat hunting tools"
+            echo "  • SIEM connectors"
+            echo "  • Network monitoring (Wireshark, tcpdump)"
+            echo "  • Incident response playbooks"
+            ;;
+        research)
+            echo "  • Fuzzing frameworks (AFL, LibFuzzer)"
+            echo "  • Binary analysis (Ghidra, radare2)"
+            echo "  • Reverse engineering tools"
+            echo "  • Exploit development suite"
+            ;;
+    esac
+
+    echo ""
+    read -p "Press Enter to continue..."
+}
+
+# Network Configuration
+configure_network() {
+    show_banner
+    echo -e "${BOLD}Step 4: Network Configuration${NC}\n"
+    echo "Configure network settings?"
+    echo "1) Yes - Configure now"
+    echo "2) No  - Skip (use defaults)"
+    echo ""
+
+    while true; do
+        read -p "Select option (1-2): " net_choice
+        case $net_choice in
+            1)
+                echo -e "\n${CYAN}Launching NetworkManager...${NC}"
+                nmtui || true
+                break
+                ;;
+            2)
+                echo -e "\n${YELLOW}Skipping network configuration${NC}"
+                break
+                ;;
+            *) echo -e "${RED}Invalid choice. Please select 1-2.${NC}" ;;
+        esac
+    done
+
+    sleep 1
+}
+
+# Enable Services
+enable_services() {
+    show_banner
+    echo -e "${BOLD}Step 5: Enabling SynOS Services${NC}\n"
+    echo "Initializing services..."
+
+    # Enable AI services if configured
+    if [ "$AI_MODE" != "disabled" ]; then
+        echo -e "  ${CYAN}•${NC} Starting AI consciousness daemon..."
+        systemctl enable synos-ai-daemon 2>/dev/null || echo "    (AI daemon not yet installed)"
+
+        if [ "$AI_MODE" == "full" ]; then
+            echo -e "  ${CYAN}•${NC} Enabling neural darwinism framework..."
+            systemctl enable synos-consciousness-daemon 2>/dev/null || echo "    (Consciousness daemon not yet installed)"
+        fi
+    fi
+
+    # Profile-specific services
+    case $PROFILE in
+        mssp)
+            echo -e "  ${CYAN}•${NC} Enabling SIEM connectors..."
+            systemctl enable synos-siem-connector 2>/dev/null || echo "    (SIEM connector not yet installed)"
+            ;;
+        education)
+            echo -e "  ${CYAN}•${NC} Starting educational platform..."
+            systemctl enable synos-education-platform 2>/dev/null || echo "    (Education platform not yet installed)"
+            ;;
+    esac
+
+    echo -e "\n${GREEN}✓ Services configured${NC}"
+    sleep 2
+}
+
+# Completion Screen
+show_completion() {
+    show_banner
+    echo -e "${BOLD}${GREEN}✓ Setup Complete!${NC}\n"
+    echo "Your SynOS v1.0 system is ready."
+    echo ""
+    echo -e "${BOLD}Quick Start Guide:${NC}"
+    echo "  • Access AI dashboard:     http://localhost:8080"
+    echo "  • View consciousness CLI:  synos-consciousness --status"
+    echo "  • Launch security tools:   synos-launcher"
+    echo "  • Read documentation:      /usr/share/doc/synos/"
+    echo ""
+    echo -e "${BOLD}Next Steps:${NC}"
+    echo "  1. Update system:          sudo apt update && sudo apt upgrade"
+    echo "  2. Configure SSH keys:     ssh-keygen -t ed25519"
+    echo "  3. Review security audit:  sudo synos-security-audit"
+    echo ""
+    echo -e "${CYAN}Thank you for choosing SynOS!${NC}"
+    echo -e "${CYAN}Join us: https://github.com/TLimoges33/Syn_OS${NC}\n"
+
+    # Mark first-boot as complete
+    touch /etc/synos/.first-boot-complete
+
+    read -p "Press Enter to start desktop environment..."
+}
+
+# Main Execution
+main() {
+    # Check if already completed
+    if [ -f /etc/synos/.first-boot-complete ]; then
+        echo "First-boot wizard already completed."
+        exit 0
+    fi
+
+    # Create config directory
+    mkdir -p /etc/synos
+
+    # Run wizard steps
+    show_welcome
+    select_profile
+    configure_ai
+    configure_tools
+    configure_network
+    enable_services
+    show_completion
+}
+
+main "$@"

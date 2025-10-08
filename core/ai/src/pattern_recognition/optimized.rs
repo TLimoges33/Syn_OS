@@ -1,5 +1,5 @@
 //! Optimized Pattern Recognition Module
-//! 
+//!
 //! High-performance pattern matching with SIMD optimizations
 
 use alloc::vec::Vec;
@@ -13,7 +13,7 @@ fn approx_sqrt(x: f32) -> f32 {
     if x <= 0.0 {
         return 0.0;
     }
-    
+
     let mut guess = x / 2.0;
     for _ in 0..10 { // 10 iterations should be sufficient
         guess = (guess + x / guess) / 2.0;
@@ -25,7 +25,7 @@ fn approx_sqrt(x: f32) -> f32 {
 pub struct OptimizedPatternRecognizer {
     patterns: Vec<Pattern>,
     learning_buffer: Vec<DataPoint>,
-    threshold: f32,
+    _threshold: f32,  // Reserved for future threshold-based filtering
     // Performance optimization fields
     pattern_cache: BTreeMap<String, CachedSimilarity>,
     feature_normalization: FeatureNormalizer,
@@ -34,9 +34,9 @@ pub struct OptimizedPatternRecognizer {
 /// Cached similarity results for performance
 #[derive(Debug, Clone)]
 struct CachedSimilarity {
-    pattern_id: String,
-    similarity: f32,
-    last_updated: u64,
+    _pattern_id: String,  // Reserved for pattern identification
+    _similarity: f32,     // Reserved for similarity tracking
+    _last_updated: u64,   // Reserved for cache invalidation
 }
 
 /// Feature normalization for better pattern matching
@@ -54,7 +54,7 @@ impl OptimizedPatternRecognizer {
         OptimizedPatternRecognizer {
             patterns: Vec::new(),
             learning_buffer: Vec::new(),
-            threshold: 0.7,
+            _threshold: 0.7,
             pattern_cache: BTreeMap::new(),
             feature_normalization: FeatureNormalizer::new(),
         }
@@ -82,7 +82,7 @@ impl OptimizedPatternRecognizer {
                 let idx = start + j;
                 let val_a = a[idx];
                 let val_b = b[idx];
-                
+
                 dot_product += val_a * val_b;
                 magnitude_a += val_a * val_a;
                 magnitude_b += val_b * val_b;
@@ -93,7 +93,7 @@ impl OptimizedPatternRecognizer {
         for i in (chunks * CHUNK_SIZE)..a.len() {
             let val_a = a[i];
             let val_b = b[i];
-            
+
             dot_product += val_a * val_b;
             magnitude_a += val_a * val_a;
             magnitude_b += val_b * val_b;
@@ -118,7 +118,7 @@ impl OptimizedPatternRecognizer {
 
         // Use k-means clustering for better pattern extraction
         let clusters = self.extract_clusters_kmeans(&self.learning_buffer, 3);
-        
+
         for cluster in clusters {
             let pattern = Pattern {
                 id: format!("optimized_pattern_{}", self.patterns.len()),
@@ -127,7 +127,7 @@ impl OptimizedPatternRecognizer {
                 features: self.compute_cluster_centroid(&cluster),
                 metadata: BTreeMap::new(),
             };
-            
+
             self.patterns.push(pattern);
         }
 
@@ -139,7 +139,7 @@ impl OptimizedPatternRecognizer {
     fn extract_clusters_kmeans(&self, data: &[DataPoint], k: usize) -> Vec<Vec<DataPoint>> {
         // Simplified k-means implementation
         let mut clusters: Vec<Vec<DataPoint>> = vec![Vec::new(); k];
-        
+
         if data.is_empty() {
             return clusters;
         }
@@ -167,7 +167,7 @@ impl OptimizedPatternRecognizer {
                 for (i, centroid) in centroids.iter().enumerate() {
                     let similarity = self.calculate_similarity_simd(&point.values, centroid);
                     let distance = 1.0 - similarity; // Convert similarity to distance
-                    
+
                     if distance < best_distance {
                         best_distance = distance;
                         best_cluster = i;

@@ -1,3 +1,8 @@
+# SynOS Rust Toolchain Configuration
+# Updated: October 2, 2025
+# Nightly required for no_std kernel development
+# Target: x86_64-unknown-none for bare-metal OS
+
 [toolchain]
 channel = "nightly"
 targets = ["x86_64-unknown-none"]

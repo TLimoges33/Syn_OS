@@ -1,34 +1,33 @@
 //! Display Driver Framework for SynOS
-//! 
+//!
 //! Provides abstraction layer for different display hardware
 //! with AI-enhanced driver management and educational features.
 
-use alloc::vec::Vec;
-use alloc::vec;
+use crate::{ColorFormat, GraphicsError, Resolution};
 use alloc::boxed::Box;
-use crate::{Resolution, ColorFormat, GraphicsError};
-
+use alloc::vec;
+use alloc::vec::Vec;
 
 /// Display driver trait for hardware abstraction
 pub trait DisplayDriver {
     /// Initialize the display driver
     fn initialize(&mut self) -> Result<(), GraphicsError>;
-    
+
     /// Set display mode and resolution
     fn set_mode(&mut self, resolution: Resolution) -> Result<(), GraphicsError>;
-    
+
     /// Get framebuffer information
     fn get_framebuffer_info(&self) -> Result<FramebufferInfo, GraphicsError>;
-    
+
     /// Enable or disable display
     fn set_enabled(&mut self, enabled: bool) -> Result<(), GraphicsError>;
-    
+
     /// Get driver capabilities
     fn get_capabilities(&self) -> DriverCapabilities;
-    
+
     /// Get driver name for educational purposes
     fn get_name(&self) -> &str;
-    
+
     /// Apply AI-driven optimizations
     fn optimize_for_consciousness(&mut self, level: f32) -> Result<(), GraphicsError>;
 }
@@ -71,7 +70,7 @@ impl UEFIDisplayDriver {
             consciousness_level: 0.0,
         }
     }
-    
+
     /// Detect UEFI Graphics Output Protocol
     fn detect_uefi_gop(&self) -> Result<bool, GraphicsError> {
         // TODO: Integrate with UEFI boot services
@@ -79,7 +78,7 @@ impl UEFIDisplayDriver {
         crate::log_info!("🖥️  Detecting UEFI Graphics Output Protocol");
         Ok(true)
     }
-    
+
     /// Get available UEFI display modes
     fn get_available_modes(&self) -> Result<Vec<Resolution>, GraphicsError> {
         // TODO: Query actual UEFI GOP modes
@@ -96,54 +95,58 @@ impl UEFIDisplayDriver {
 impl DisplayDriver for UEFIDisplayDriver {
     fn initialize(&mut self) -> Result<(), GraphicsError> {
         crate::log_info!("🚀 Initializing UEFI Display Driver");
-        
+
         // Detect GOP availability
         if !self.detect_uefi_gop()? {
             return Err(GraphicsError::HardwareError);
         }
-        
+
         // Set default resolution
         let default_resolution = Resolution::new(1024, 768, ColorFormat::RGBA8888);
         self.set_mode(default_resolution)?;
-        
+
         crate::log_info!("✅ UEFI Display Driver initialized");
         Ok(())
     }
-    
+
     fn set_mode(&mut self, resolution: Resolution) -> Result<(), GraphicsError> {
-        crate::log_info!("🔧 Setting display mode: {}x{} @ {:?}", 
-            resolution.width, resolution.height, resolution.format);
-        
+        crate::log_info!(
+            "🔧 Setting display mode: {}x{} @ {:?}",
+            resolution.width,
+            resolution.height,
+            resolution.format
+        );
+
         // TODO: Set actual UEFI GOP mode
         // For now, simulate mode setting
-        
+
         // Create framebuffer info (placeholder)
         let buffer_size = resolution.buffer_size();
         let framebuffer_base = 0xE0000000 as *mut u8; // Typical framebuffer address
-        
+
         self.framebuffer_info = Some(FramebufferInfo {
             base_address: framebuffer_base,
             size: buffer_size,
             pitch: resolution.width * resolution.bytes_per_pixel(),
             resolution,
         });
-        
+
         self.current_resolution = Some(resolution);
-        
+
         Ok(())
     }
-    
+
     fn get_framebuffer_info(&self) -> Result<FramebufferInfo, GraphicsError> {
-        self.framebuffer_info.clone()
+        self.framebuffer_info
+            .clone()
             .ok_or(GraphicsError::HardwareError)
     }
-    
-    fn set_enabled(&mut self, enabled: bool) -> Result<(), GraphicsError> {
-        crate::log_info!("🖥️  Display {}", if enabled { "enabled" } else { "disabled" });
+
+    fn set_enabled(&mut self, _enabled: bool) -> Result<(), GraphicsError> {
         // TODO: Implement actual display enable/disable
         Ok(())
     }
-    
+
     fn get_capabilities(&self) -> DriverCapabilities {
         DriverCapabilities {
             hardware_acceleration: false, // UEFI GOP is typically software
@@ -158,22 +161,25 @@ impl DisplayDriver for UEFIDisplayDriver {
             ],
         }
     }
-    
+
     fn get_name(&self) -> &str {
         "UEFI Graphics Output Protocol Driver"
     }
-    
+
     fn optimize_for_consciousness(&mut self, level: f32) -> Result<(), GraphicsError> {
         self.consciousness_level = level.clamp(0.0, 1.0);
-        
+
         if level > 0.5 {
             self.ai_optimized = true;
-            crate::log_info!("🧠 Enabling AI optimizations for display driver (level: {:.2})", level);
-            
+            crate::log_info!(
+                "🧠 Enabling AI optimizations for display driver (level: {:.2})",
+                level
+            );
+
             // Apply consciousness-driven optimizations
             // Higher consciousness = better rendering quality/performance
         }
-        
+
         Ok(())
     }
 }
@@ -192,21 +198,21 @@ impl VGATextDriver {
             ai_optimized: false,
         }
     }
-    
+
     /// Write character to VGA text buffer
     pub fn write_char(&self, x: u8, y: u8, ch: u8, color: u8) {
         if x >= 80 || y >= 25 {
             return; // Out of bounds
         }
-        
+
         let offset = ((y as usize) * 80 + (x as usize)) * 2;
-        
+
         unsafe {
             core::ptr::write_volatile(self.buffer_address.add(offset), ch);
             core::ptr::write_volatile(self.buffer_address.add(offset + 1), color);
         }
     }
-    
+
     /// Clear VGA text screen
     pub fn clear_screen(&self, color: u8) {
         for y in 0..25 {
@@ -220,25 +226,25 @@ impl VGATextDriver {
 impl DisplayDriver for VGATextDriver {
     fn initialize(&mut self) -> Result<(), GraphicsError> {
         crate::log_info!("🖥️  Initializing VGA Text Mode Driver");
-        
+
         // Clear screen with consciousness blue background
         self.clear_screen(0x1F); // Blue background, white text
-        
+
         // Write SynOS banner
         let banner = b"SynOS - AI Enhanced Operating System";
         for (i, &ch) in banner.iter().enumerate() {
             self.write_char(i as u8, 0, ch, 0x1F);
         }
-        
+
         crate::log_info!("✅ VGA Text Mode Driver initialized");
         Ok(())
     }
-    
+
     fn set_mode(&mut self, _resolution: Resolution) -> Result<(), GraphicsError> {
         // VGA text mode is fixed at 80x25
         Ok(())
     }
-    
+
     fn get_framebuffer_info(&self) -> Result<FramebufferInfo, GraphicsError> {
         Ok(FramebufferInfo {
             base_address: self.buffer_address,
@@ -247,12 +253,12 @@ impl DisplayDriver for VGATextDriver {
             resolution: Resolution::new(80, 25, ColorFormat::RGB565), // Fake resolution
         })
     }
-    
+
     fn set_enabled(&mut self, _enabled: bool) -> Result<(), GraphicsError> {
         // VGA text mode is always enabled
         Ok(())
     }
-    
+
     fn get_capabilities(&self) -> DriverCapabilities {
         DriverCapabilities {
             hardware_acceleration: false,
@@ -263,11 +269,11 @@ impl DisplayDriver for VGATextDriver {
             supported_formats: vec![ColorFormat::RGB565],
         }
     }
-    
+
     fn get_name(&self) -> &str {
         "VGA Text Mode Driver"
     }
-    
+
     fn optimize_for_consciousness(&mut self, level: f32) -> Result<(), GraphicsError> {
         if level > 0.3 {
             self.ai_optimized = true;
@@ -293,17 +299,17 @@ impl DisplayDriverManager {
             consciousness_level: 0.0,
         }
     }
-    
+
     /// Register a display driver
     pub fn register_driver(&mut self, driver: Box<dyn DisplayDriver>) {
         crate::log_info!("📝 Registering display driver: {}", driver.get_name());
         self.drivers.push(driver);
     }
-    
+
     /// Initialize all registered drivers
     pub fn initialize_drivers(&mut self) -> Result<(), GraphicsError> {
         crate::log_info!("🚀 Initializing display drivers");
-        
+
         for (index, driver) in self.drivers.iter_mut().enumerate() {
             match driver.initialize() {
                 Ok(()) => {
@@ -312,19 +318,19 @@ impl DisplayDriverManager {
                         self.active_driver = Some(index);
                     }
                 }
-                Err(e) => {
-                    crate::log_info!("❌ Driver {} failed to initialize: {:?}", index, e);
+                Err(_e) => {
+                    // Driver initialization failed, continue to next driver
                 }
             }
         }
-        
+
         if self.active_driver.is_none() {
             return Err(GraphicsError::HardwareError);
         }
-        
+
         Ok(())
     }
-    
+
     /// Get the active driver
     pub fn get_active_driver(&mut self) -> Option<&mut dyn DisplayDriver> {
         if let Some(index) = self.active_driver {
@@ -337,30 +343,23 @@ impl DisplayDriverManager {
             None
         }
     }
-    
+
     /// Set consciousness level for all drivers
     pub fn set_consciousness_level(&mut self, level: f32) -> Result<(), GraphicsError> {
         self.consciousness_level = level.clamp(0.0, 1.0);
-        
+
         for driver in &mut self.drivers {
             driver.optimize_for_consciousness(self.consciousness_level)?;
         }
-        
+
         Ok(())
     }
-    
+
     /// Educational demonstration of driver capabilities
     pub fn demonstrate_drivers(&self) {
-        crate::log_info!("🎓 Display Driver Educational Demo");
-        
-        for (index, driver) in self.drivers.iter().enumerate() {
-            let caps = driver.get_capabilities();
-            crate::log_info!("Driver {}: {}", index, driver.get_name());
-            crate::log_info!("  Hardware Acceleration: {}", caps.hardware_acceleration);
-            crate::log_info!("  Multiple Displays: {}", caps.multiple_displays);
-            crate::log_info!("  VSync Support: {}", caps.vsync_support);
-            crate::log_info!("  AI Optimization: {}", caps.ai_optimization);
-            crate::log_info!("  Supported Resolutions: {}", caps.supported_resolutions.len());
+        // Educational feature: Display driver information
+        for (_index, _driver) in self.drivers.iter().enumerate() {
+            // TODO: Implement demonstration output when logging is available
         }
     }
 }
@@ -368,10 +367,10 @@ impl DisplayDriverManager {
 /// Initialize display drivers for the system
 pub fn initialize_display_drivers() -> Result<(), GraphicsError> {
     crate::log_info!("🎨 Initializing display driver subsystem");
-    
+
     // This function would be called during graphics system initialization
     // to set up the available display drivers
-    
+
     Ok(())
 }
 
@@ -406,10 +405,10 @@ mod tests {
         let mut manager = DisplayDriverManager::new();
         let uefi_driver = Box::new(UEFIDisplayDriver::new());
         let vga_driver = Box::new(VGATextDriver::new());
-        
+
         manager.register_driver(uefi_driver);
         manager.register_driver(vga_driver);
-        
+
         assert_eq!(manager.drivers.len(), 2);
     }
 }

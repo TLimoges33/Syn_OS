@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>NTHW</name>
+  <full_name>notthehiddenwiki/NTHW</full_name>
+  <description>Not The Hidden Wiki - The largest repository of links related to cybersecurity</description>
+  <url>https://github.com/notthehiddenwiki/NTHW</url>
+  <clone_url>https://github.com/notthehiddenwiki/NTHW.git</clone_url>
+  <ssh_url>git@github.com:notthehiddenwiki/NTHW.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>1587</stars>
+    <forks>250</forks>
+    <watchers>1587</watchers>
+    <size>36670</size>
+    <default_branch>nthw</default_branch>
+    <created_at>2024-01-11T21:42:13Z</created_at>
+    <updated_at>2025-08-26T18:38:32Z</updated_at>
+    <pushed_at>2025-08-26T18:38:27Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <license>
+    <name>Other</name>
+    <spdx_id>NOASSERTION</spdx_id>
+  </license>
+  <owner>
+    <login>notthehiddenwiki</login>
+    <type>User</type>
+    <url>https://github.com/notthehiddenwiki</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 1587 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

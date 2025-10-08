@@ -1,0 +1,17 @@
+afflib-tools	3.7.20-1
+autopsy	2.24-5
+dc3dd	7.2.646-6
+dcraw	9.28-3+b1
+ddrescue	1.99.13-0parrot2
+ewf-tools	20140813-1+b1
+foremost	1.5.7-11+b2
+guymager	0.8.13-2
+libafflib0v5:amd64	3.7.20-1
+libewf2	20140813-1+b1
+libnet-rawip-perl	0.25-3+b1
+libraw1394-11:amd64	2.1.2-2
+libraw20:amd64	0.20.2-2.1+deb12u1
+libreoffice-draw	4:25.2.3-2~bpo12+1
+libreoffice-uiconfig-draw	4:25.2.3-2~bpo12+1
+scalpel	1.60-10
+sleuthkit	4.11.1+dfsg-1+b1

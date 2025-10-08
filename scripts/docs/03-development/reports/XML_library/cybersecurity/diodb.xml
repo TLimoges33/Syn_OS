@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>diodb</name>
+  <full_name>disclose/diodb</full_name>
+  <description>Open-source vulnerability disclosure and bug bounty program database</description>
+  <url>https://github.com/disclose/diodb</url>
+  <clone_url>https://github.com/disclose/diodb.git</clone_url>
+  <ssh_url>git@github.com:disclose/diodb.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>1032</stars>
+    <forks>317</forks>
+    <watchers>1032</watchers>
+    <size>6825</size>
+    <default_branch>master</default_branch>
+    <created_at>2018-05-17T05:25:48Z</created_at>
+    <updated_at>2025-08-19T05:46:32Z</updated_at>
+    <pushed_at>2025-07-20T11:41:08Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>bug-bounty</topic>
+    <topic>bug-bounty-hunters</topic>
+    <topic>data</topic>
+    <topic>disclosure-policy</topic>
+    <topic>hackers</topic>
+    <topic>legal</topic>
+    <topic>responsible-disclosure</topic>
+    <topic>safe-harbor-framework</topic>
+    <topic>safety</topic>
+    <topic>security-research</topic>
+    <topic>simplicity</topic>
+    <topic>vulnerability-disclosure</topic>
+  </topics>
+  <license>
+    <name>Creative Commons Zero v1.0 Universal</name>
+    <spdx_id>CC0-1.0</spdx_id>
+  </license>
+  <owner>
+    <login>disclose</login>
+    <type>Organization</type>
+    <url>https://github.com/disclose</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 1032 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

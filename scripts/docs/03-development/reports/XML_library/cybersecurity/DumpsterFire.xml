@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>DumpsterFire</name>
+  <full_name>TryCatchHCF/DumpsterFire</full_name>
+  <description>&quot;Security Incidents In A Box!&quot;   A modular, menu-driven, cross-platform tool for building customized, time-delayed, distributed security events. Easily create custom event chains for Blue- &amp; Red Team drills and sensor / alert mapping. Red Teams can create decoy incidents, distractions, and lures to support and scale their operations. Build event sequences (&quot;narratives&quot;) to simulate realistic scenarios and generate corresponding network and filesystem artifacts.</description>
+  <url>https://github.com/TryCatchHCF/DumpsterFire</url>
+  <clone_url>https://github.com/TryCatchHCF/DumpsterFire.git</clone_url>
+  <ssh_url>git@github.com:TryCatchHCF/DumpsterFire.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>1024</stars>
+    <forks>146</forks>
+    <watchers>1024</watchers>
+    <size>31489</size>
+    <default_branch>master</default_branch>
+    <created_at>2017-10-05T23:44:54Z</created_at>
+    <updated_at>2025-08-25T23:05:41Z</updated_at>
+    <pushed_at>2020-05-27T15:00:56Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>automation</topic>
+    <topic>blue-team</topic>
+    <topic>blue-teams</topic>
+    <topic>hacking</topic>
+    <topic>hacking-tool</topic>
+    <topic>hacking-tools</topic>
+    <topic>infosec</topic>
+    <topic>pentest</topic>
+    <topic>pentest-tool</topic>
+    <topic>pentest-tools</topic>
+    <topic>pentesting</topic>
+    <topic>red-team</topic>
+    <topic>red-teams</topic>
+    <topic>security</topic>
+    <topic>security-tools</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>TryCatchHCF</login>
+    <type>User</type>
+    <url>https://github.com/TryCatchHCF</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 1024 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>RedGuard</name>
+  <full_name>wikiZ/RedGuard</full_name>
+  <description>RedGuard is a C2 front flow control tool,Can avoid Blue Teams,AVs,EDRs check.</description>
+  <url>https://github.com/wikiZ/RedGuard</url>
+  <clone_url>https://github.com/wikiZ/RedGuard.git</clone_url>
+  <ssh_url>git@github.com:wikiZ/RedGuard.git</ssh_url>
+  <metadata>
+    <language>Go</language>
+    <stars>1515</stars>
+    <forks>206</forks>
+    <watchers>1515</watchers>
+    <size>3380</size>
+    <default_branch>main</default_branch>
+    <created_at>2022-05-08T04:02:33Z</created_at>
+    <updated_at>2025-08-26T14:42:07Z</updated_at>
+    <pushed_at>2024-08-20T17:43:35Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>tools_utilities</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <license>
+    <name>GNU General Public License v2.0</name>
+    <spdx_id>GPL-2.0</spdx_id>
+  </license>
+  <owner>
+    <login>wikiZ</login>
+    <type>User</type>
+    <url>https://github.com/wikiZ</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 1515 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

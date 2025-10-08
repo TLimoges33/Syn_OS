@@ -1,0 +1,53 @@
+# Multi-stage build for SynOS Service Orchestrator
+FROM golang:1.21-alpine AS builder
+
+# Install build dependencies
+RUN apk add --no-cache git ca-certificates
+
+# Set working directory
+WORKDIR /app
+
+# Copy go mod files
+COPY go.mod go.sum ./
+
+# Download dependencies
+RUN go mod download
+
+# Copy source code
+COPY . .
+
+# Build the orchestrator
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o orchestrator cmd/main.go
+
+# Final stage
+FROM alpine:latest
+
+# Install runtime dependencies
+RUN apk add --no-cache ca-certificates tzdata
+
+# Create non-root user
+RUN addgroup -g 1001 synos && \
+    adduser -D -s /bin/sh -u 1001 -G synos synos
+
+# Set working directory
+WORKDIR /app
+
+# Copy binary from builder
+COPY --from=builder /app/orchestrator .
+COPY --from=builder /app/config ./config
+
+# Change ownership
+RUN chown -R synos:synos /app
+
+# Switch to non-root user
+USER synos
+
+# Expose port
+EXPOSE 8080
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+  CMD wget --quiet --tries=1 --spider http://localhost:8080/health || exit 1
+
+# Run the orchestrator
+CMD ["./orchestrator"]

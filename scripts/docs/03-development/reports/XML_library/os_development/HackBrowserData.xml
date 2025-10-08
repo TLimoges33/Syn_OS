@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>HackBrowserData</name>
+  <full_name>moonD4rk/HackBrowserData</full_name>
+  <description>Extract and decrypt browser data, supporting multiple data types, runnable on various operating systems (macOS, Windows, Linux).</description>
+  <url>https://github.com/moonD4rk/HackBrowserData</url>
+  <clone_url>https://github.com/moonD4rk/HackBrowserData.git</clone_url>
+  <ssh_url>git@github.com:moonD4rk/HackBrowserData.git</ssh_url>
+  <metadata>
+    <language>Go</language>
+    <stars>12828</stars>
+    <forks>1705</forks>
+    <watchers>12828</watchers>
+    <size>24883</size>
+    <default_branch>main</default_branch>
+    <created_at>2020-06-18T03:24:31Z</created_at>
+    <updated_at>2025-08-26T20:59:44Z</updated_at>
+    <pushed_at>2025-08-17T01:33:21Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>os_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>browser</topic>
+    <topic>browser-extension</topic>
+    <topic>chrome</topic>
+    <topic>edge</topic>
+    <topic>firefox</topic>
+    <topic>golang</topic>
+    <topic>hacking</topic>
+    <topic>macos</topic>
+    <topic>pentest-tool</topic>
+    <topic>windows</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>moonD4rk</login>
+    <type>User</type>
+    <url>https://github.com/moonD4rk</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 12828 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>xformers</name>
+  <full_name>facebookresearch/xformers</full_name>
+  <description>Hackable and optimized Transformers building blocks, supporting a composable construction.</description>
+  <url>https://github.com/facebookresearch/xformers</url>
+  <clone_url>https://github.com/facebookresearch/xformers.git</clone_url>
+  <ssh_url>git@github.com:facebookresearch/xformers.git</ssh_url>
+  <metadata>
+    <language>Python</language>
+    <stars>9887</stars>
+    <forks>711</forks>
+    <watchers>9887</watchers>
+    <size>43550</size>
+    <default_branch>main</default_branch>
+    <created_at>2021-10-13T18:08:50Z</created_at>
+    <updated_at>2025-08-26T22:16:32Z</updated_at>
+    <pushed_at>2025-08-23T06:47:00Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>False</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <license>
+    <name>Other</name>
+    <spdx_id>NOASSERTION</spdx_id>
+  </license>
+  <owner>
+    <login>facebookresearch</login>
+    <type>Organization</type>
+    <url>https://github.com/facebookresearch</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>7</score>
+    <assessment>Excellent potential for integration. High community engagement with 9887 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

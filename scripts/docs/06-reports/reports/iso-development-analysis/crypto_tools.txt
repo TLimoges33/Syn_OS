@@ -1,0 +1,17 @@
+gpg	2.2.40-1.1+deb12u1
+gpg-agent	2.2.40-1.1+deb12u1
+gpg-wks-client	2.2.40-1.1+deb12u1
+gpg-wks-server	2.2.40-1.1+deb12u1
+gpgconf	2.2.40-1.1+deb12u1
+gpgsm	2.2.40-1.1+deb12u1
+gpgv	2.2.40-1.1+deb12u1
+libevent-openssl-2.1-7:amd64	2.1.12-stable-8
+libgpg-error0:amd64	1.46-1
+libgpgme11:amd64	1.18.0-3+b1
+libgpgmepp6:amd64	1.18.0-3+b1
+libxmlsec1-openssl:amd64	1.2.37-2
+lighttpd-mod-openssl	1.4.69-1
+openssl	3.0.16-1~deb12u1
+perl-openssl-defaults:amd64	7+b1
+python3-gpg	1.18.0-3+b1
+python3-openssl	23.0.0-1

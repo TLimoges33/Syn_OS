@@ -1,0 +1,2 @@
+# SynOS Custom Repository
+deb [trusted=yes] file:///home/diablorain/Syn_OS/SynOS-Repository bookworm main

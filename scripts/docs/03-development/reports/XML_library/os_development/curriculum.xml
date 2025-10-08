@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>curriculum</name>
+  <full_name>bootdotdev/curriculum</full_name>
+  <description>An open roadmap for Boot.dev's backend development curriculum</description>
+  <url>https://github.com/bootdotdev/curriculum</url>
+  <clone_url>https://github.com/bootdotdev/curriculum.git</clone_url>
+  <ssh_url>git@github.com:bootdotdev/curriculum.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>2877</stars>
+    <forks>98</forks>
+    <watchers>2877</watchers>
+    <size>165</size>
+    <default_branch>main</default_branch>
+    <created_at>2021-01-26T03:36:38Z</created_at>
+    <updated_at>2025-08-26T20:22:31Z</updated_at>
+    <pushed_at>2025-07-02T16:29:33Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>os_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>algorithms</topic>
+    <topic>computer-science</topic>
+    <topic>curriculum</topic>
+    <topic>educational</topic>
+    <topic>golang</topic>
+    <topic>javascript</topic>
+    <topic>python</topic>
+    <topic>students</topic>
+  </topics>
+  <owner>
+    <login>bootdotdev</login>
+    <type>Organization</type>
+    <url>https://github.com/bootdotdev</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>8</score>
+    <assessment>Excellent potential for integration. High community engagement with 2877 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

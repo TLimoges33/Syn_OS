@@ -1,0 +1,25 @@
+[package]
+name = "synos-threat-intel"
+version = "1.0.0"
+edition = "2021"
+authors = ["SynOS Team"]
+description = "Threat Intelligence Feed Integration for SynOS"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+reqwest = { version = "0.11", features = ["json", "blocking"] }
+tokio = { version = "1.40", features = ["full"] }
+async-trait = "0.1"
+chrono = { version = "0.4", features = ["serde"] }
+sha2 = "0.10"
+thiserror = "1.0"
+tracing = "0.1"
+
+[lib]
+name = "threat_intel"
+path = "src/lib.rs"
+
+[[bin]]
+name = "synos-threat-intel"
+path = "src/main.rs"

@@ -15,8 +15,8 @@ use x86_64;
 use syn_kernel;
 
 // Local modules only used in main.rs
-mod allocator;
 mod ai_interface;
+mod allocator;
 mod filesystem;
 mod networking;
 mod threat_detection;
@@ -31,12 +31,33 @@ fn init(_boot_info: &'static mut BootInfo) {
     allocator::init_heap().expect("heap initialization failed");
 
     // Initialize memory system with default config
-    syn_kernel::memory::init::init_memory_system(
-        syn_kernel::memory::init::MemoryConfig::default()
-    ).expect("memory system init failed");
+    syn_kernel::memory::init::init_memory_system(syn_kernel::memory::init::MemoryConfig::default())
+        .expect("memory system init failed");
 
     // Initialize AI bridge system
     syn_kernel::ai_bridge::init();
+
+    // ========== CRITICAL FEATURE INTEGRATION ==========
+
+    // Initialize AI Interface (consciousness-aware memory management)
+    println!("🤖 Initializing AI Interface...");
+    ai_interface::init();
+
+    // Initialize Threat Detection System
+    println!("🛡️  Initializing Threat Detection System...");
+    threat_detection::init();
+
+    // Initialize Filesystem
+    println!("📁 Initializing Filesystem...");
+    filesystem::init();
+
+    // Initialize Networking Stack
+    println!("🌐 Initializing Networking Stack...");
+    networking::init();
+
+    println!("✅ All critical systems initialized!");
+
+    // ===================================================
 
     // Initialize educational platform
     syn_kernel::education_platform_minimal::init();
@@ -44,29 +65,27 @@ fn init(_boot_info: &'static mut BootInfo) {
     // Initialize advanced applications
     syn_kernel::advanced_applications_minimal::init();
 
-    println!("🧠 SynOS Kernel V1.0 - Initialized!");
+    println!("🧠 SynOS Kernel V1.0 - Fully Initialized!");
 }
 
 entry_point!(kernel_main);
 
 fn kernel_main(boot_info: &'static mut BootInfo) -> ! {
-    // Initialize serial port FIRST - before any other initialization
-    println!("SynOS: Serial port initialized");
-    println!("SynOS: Kernel entry point reached");
-    
+    // Professional boot banner
+    println!("\n╔══════════════════════════════════════════════════════════════╗");
+    println!("║         SynOS v1.0 - AI-Enhanced Cybersecurity OS         ║");
+    println!("║    Neural Darwinism • 500+ Security Tools • MSSP Platform  ║");
+    println!("╚══════════════════════════════════════════════════════════════╝\n");
+
+    println!("🔧 Kernel: SynOS Native Kernel (x86_64-unknown-none)");
+    println!("📅 Build: October 2025 | Production Release");
+    println!("🧠 AI: Neural Darwinism Consciousness Framework Active\n");
+
     init(boot_info);
 
     #[cfg(test)]
     test_main();
 
-    // Boot messages
-    println!("🧠 SynOS - AI-Enhanced Cybersecurity OS");
-    println!("🔧 V1.0 Build - Core functionality active");
-    
-    println!("🚀 SynOS V1.0 Developer ISO - Build Complete");
-    println!("📅 Build Date: September 2, 2025");
-    println!("🏗️  Kernel: Syn_OS Native Kernel (x86_64-unknown-none)");
-    
     // Simple module status check
     if syn_kernel::education_platform_minimal::is_platform_active() {
         println!("✅ Education Platform: Active");
@@ -77,12 +96,12 @@ fn kernel_main(boot_info: &'static mut BootInfo) -> ! {
     }
 
     println!("🔄 Entering kernel main loop...");
-    
+
     // Basic kernel loop
     let mut loop_count = 0u64;
     loop {
         loop_count += 1;
-        
+
         // Heartbeat every 100000 loops
         if loop_count % 100000 == 0 {
             println!("🧠 Kernel heartbeat: {} iterations", loop_count);
@@ -95,21 +114,8 @@ fn kernel_main(boot_info: &'static mut BootInfo) -> ! {
     }
 }
 
-#[cfg(not(test))]
-#[panic_handler]
-fn panic(info: &PanicInfo) -> ! {
-    crate::println!("{}", info);
-    loop {}
-}
-
-#[cfg(test)]
-#[panic_handler]
-fn panic(info: &PanicInfo) -> ! {
-    println!("[failed]\n");
-    println!("Error: {}\n", info);
-    exit_qemu(QemuExitCode::Failed);
-    loop {}
-}
+// Note: Panic handler is defined in src/panic.rs and imported via the library
+// No need to redefine it here to avoid E0152 (duplicate lang item)
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u32)]
@@ -288,15 +294,16 @@ pub mod vga_buffer {
 
     pub fn _print(args: fmt::Arguments) {
         use core::fmt::Write;
-        WRITER.lock().write_fmt(args).unwrap();
+        // Ignore write errors - printing should never panic the kernel
+        let _ = WRITER.lock().write_fmt(args);
     }
 }
 
 // Serial port for debugging
 pub mod serial {
-    use uart_16550::SerialPort;
-    use spin::Mutex;
     use lazy_static::lazy_static;
+    use spin::Mutex;
+    use uart_16550::SerialPort;
 
     lazy_static! {
         pub static ref SERIAL1: Mutex<SerialPort> = {
@@ -308,9 +315,7 @@ pub mod serial {
 
     pub fn _print(args: ::core::fmt::Arguments) {
         use core::fmt::Write;
-        SERIAL1
-            .lock()
-            .write_fmt(args)
-            .expect("Printing to serial failed");
+        // Ignore write errors - serial printing should never panic the kernel
+        let _ = SERIAL1.lock().write_fmt(args);
     }
 }

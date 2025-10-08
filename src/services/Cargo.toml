@@ -2,12 +2,13 @@
 resolver = "2"
 
 members = [
-    "synos-ai-daemon",
-    "synos-consciousness-daemon",
-    "synos-security-orchestrator",
-    "synos-hardware-accel",
-    "synos-llm-engine",
-    "synos-voice-interface"
+  "synos-ai-daemon",
+  "synos-consciousness-daemon",
+  "synos-security-orchestrator",
+  "synos-hardware-accel",
+  "synos-llm-engine",
+  # Future services (not yet implemented):
+  # "synos-voice-interface"
 ]
 
 [workspace.dependencies]
@@ -22,9 +23,10 @@ uuid = { version = "1.0", features = ["v4"] }
 async-trait = "0.1"
 
 # Hardware acceleration
-candle = "0.7"
+candle-core = { version = "0.5", features = [] }
+candle-nn = { version = "0.5", features = [] }
 tch = "0.16"
-ort = "2.0"
+ort = "2.0.0-rc.10"
 
 # Neural networks and AI
 ndarray = "0.16"
@@ -43,3 +45,9 @@ cpal = "0.15"
 # Networking
 quinn = "0.11"
 h3 = "0.0.4"
+
+# Additional dependencies
+axum = "0.7"
+sysinfo = "0.31"
+rand = "0.8"  # Pin to 0.8 for compatibility with candle-core
+rayon = "1.10"

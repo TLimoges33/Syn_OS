@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>keyhacks</name>
+  <full_name>streaak/keyhacks</full_name>
+  <description>Keyhacks is a repository which shows quick ways in which API keys leaked by a bug bounty program can be checked to see if they're valid.</description>
+  <url>https://github.com/streaak/keyhacks</url>
+  <clone_url>https://github.com/streaak/keyhacks.git</clone_url>
+  <ssh_url>git@github.com:streaak/keyhacks.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>5682</stars>
+    <forks>1134</forks>
+    <watchers>5682</watchers>
+    <size>244</size>
+    <default_branch>master</default_branch>
+    <created_at>2019-03-12T11:07:34Z</created_at>
+    <updated_at>2025-08-26T15:48:34Z</updated_at>
+    <pushed_at>2024-08-14T14:22:07Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>cybersecurity</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <owner>
+    <login>streaak</login>
+    <type>User</type>
+    <url>https://github.com/streaak</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>7</score>
+    <assessment>Excellent potential for integration. High community engagement with 5682 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>

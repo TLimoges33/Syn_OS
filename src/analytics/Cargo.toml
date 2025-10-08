@@ -1,0 +1,23 @@
+[package]
+name = "synos-analytics"
+version = "1.0.0"
+edition = "2021"
+authors = ["SynOS Team"]
+description = "Security Metrics & Analytics Dashboard for SynOS"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.40", features = ["full"] }
+async-trait = "0.1"
+chrono = { version = "0.4", features = ["serde"] }
+thiserror = "1.0"
+tracing = "0.1"
+
+[lib]
+name = "analytics"
+path = "src/lib.rs"
+
+[[bin]]
+name = "synos-analytics"
+path = "src/main.rs"

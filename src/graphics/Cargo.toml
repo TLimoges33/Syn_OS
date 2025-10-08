@@ -18,8 +18,4 @@ std = ["alloc"]
 
 [dev-dependencies]
 
-[[bin]]
-name = "graphics-test"
-path = "test_main.rs"
-
 # Profiles managed at workspace level - removed from package

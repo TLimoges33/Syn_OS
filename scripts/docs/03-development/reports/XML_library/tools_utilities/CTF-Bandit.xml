@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>CTF-Bandit</name>
+  <full_name>Whimmery/CTF-Bandit</full_name>
+  <description>Bandit OverTheWire Levels 0-27 (Completed)</description>
+  <url>https://github.com/Whimmery/CTF-Bandit</url>
+  <clone_url>https://github.com/Whimmery/CTF-Bandit.git</clone_url>
+  <ssh_url>git@github.com:Whimmery/CTF-Bandit.git</ssh_url>
+  <metadata>
+    <language>Unknown</language>
+    <stars>27</stars>
+    <forks>5</forks>
+    <watchers>27</watchers>
+    <size>67</size>
+    <default_branch>gh-pages</default_branch>
+    <created_at>2017-08-23T20:36:55Z</created_at>
+    <updated_at>2025-05-18T01:26:58Z</updated_at>
+    <pushed_at>2017-09-12T20:44:10Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>tools_utilities</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>True</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <owner>
+    <login>Whimmery</login>
+    <type>User</type>
+    <url>https://github.com/Whimmery</url>
+  </owner>
+  <development_potential>
+    <level>medium</level>
+    <score>4</score>
+    <assessment>Good potential for integration. Moderate community interest with 27 stars. Suitable for selective implementation.</assessment>
+  </development_potential>
+</repository>

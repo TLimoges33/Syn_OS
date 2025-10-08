@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<repository>
+  <name>developer-portfolio-v2</name>
+  <full_name>alexdeploy/developer-portfolio-v2</full_name>
+  <description>Awesome porfolio design for developers or designers, with easy configuration. Inspired by a code editor and with a snake game on homepage.</description>
+  <url>https://github.com/alexdeploy/developer-portfolio-v2</url>
+  <clone_url>https://github.com/alexdeploy/developer-portfolio-v2.git</clone_url>
+  <ssh_url>git@github.com:alexdeploy/developer-portfolio-v2.git</ssh_url>
+  <metadata>
+    <language>Vue</language>
+    <stars>238</stars>
+    <forks>82</forks>
+    <watchers>238</watchers>
+    <size>13883</size>
+    <default_branch>main</default_branch>
+    <created_at>2022-12-14T09:57:20Z</created_at>
+    <updated_at>2025-08-26T13:54:16Z</updated_at>
+    <pushed_at>2025-03-02T18:44:26Z</pushed_at>
+    <relationship>starred</relationship>
+    <category>web_development</category>
+    <is_fork>False</is_fork>
+    <is_private>False</is_private>
+    <has_wiki>True</has_wiki>
+    <has_pages>False</has_pages>
+    <has_downloads>True</has_downloads>
+  </metadata>
+  <topics>
+    <topic>designer-portfolio</topic>
+    <topic>developer</topic>
+    <topic>developer-portfolio</topic>
+    <topic>nuxt3</topic>
+    <topic>personal-site</topic>
+    <topic>portfolio</topic>
+    <topic>template</topic>
+    <topic>vuejs</topic>
+  </topics>
+  <license>
+    <name>MIT License</name>
+    <spdx_id>MIT</spdx_id>
+  </license>
+  <owner>
+    <login>alexdeploy</login>
+    <type>User</type>
+    <url>https://github.com/alexdeploy</url>
+  </owner>
+  <development_potential>
+    <level>high</level>
+    <score>9</score>
+    <assessment>Excellent potential for integration. High community engagement with 238 stars and active development. Consider for immediate evaluation.</assessment>
+  </development_potential>
+</repository>
