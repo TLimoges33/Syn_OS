@@ -965,6 +965,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "dev-utils"
+version = "4.4.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "serde",
+]
+
+[[package]]
 name = "digest"
 version = "0.10.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4143,7 +4152,7 @@ dependencies = [
 
 [[package]]
 name = "syn-kernel"
-version = "4.4.0"
+version = "1.0.0"
 dependencies = [
  "ahash 0.8.12",
  "bootimage",
@@ -4166,6 +4175,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "syn-libc"
+version = "1.0.0"
+
+[[package]]
 name = "syn-security"
 version = "4.4.0"
 dependencies = [
@@ -4182,7 +4195,7 @@ dependencies = [
 
 [[package]]
 name = "synaptic-ai-engine"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "anyhow",
  "candle-core",
@@ -4219,9 +4232,12 @@ checksum = "2047c6ded9c721764247e62cd3b03c09ffc529b2ba5b10ec482ae507a4a70160"
 
 [[package]]
 name = "synos-ai-runtime"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
+ "aes-gcm",
+ "getrandom 0.2.16",
  "lazy_static",
+ "sha2",
  "spin 0.9.8",
 ]
 
@@ -4270,7 +4286,7 @@ dependencies = [
 
 [[package]]
 name = "synos-graphics"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "spin 0.9.8",
 ]
@@ -4295,7 +4311,7 @@ dependencies = [
 
 [[package]]
 name = "synos-package-manager"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "anyhow",
  "blake3",
@@ -4378,13 +4394,6 @@ dependencies = [
  "thiserror 1.0.69",
  "tokio",
  "tracing",
-]
-
-[[package]]
-name = "synos-userspace-tests"
-version = "1.0.0"
-dependencies = [
- "libtsynos",
 ]
 
 [[package]]

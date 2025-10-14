@@ -1,0 +1,10 @@
+[package]
+name = "synos-boot-builder"
+version = "0.1.0"
+edition = "2021"
+
+# This is a standalone tool, not part of the workspace
+[workspace]
+
+[dependencies]
+bootloader = "0.11"

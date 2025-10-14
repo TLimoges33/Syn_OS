@@ -1,0 +1,6 @@
+[Scheme]
+Name=SynOS Red Alert
+ColorForeground=#ffffff
+ColorBackground=#000000
+ColorCursor=#ff0000
+ColorPalette=#000000;#ff0000;#00ff00;#ff9900;#0088ff;#ff00ff;#00ffff;#ffffff;#666666;#ff3333;#00ff66;#ffaa33;#33aaff;#ff33ff;#33ffff;#ffffff

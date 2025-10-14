@@ -1,0 +1,55 @@
+#!/bin/bash
+# SynOS Welcome Screen
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+MAGENTA='\033[0;35m'
+NC='\033[0m'
+
+clear
+echo -e "${RED}"
+cat << "EOF"
+   _____            ____  _____
+  / ___/__  _____  / __ \/ ___/
+  \__ \/ / / / __ \/ / / /\__ \
+ ___/ / /_/ / / / / /_/ /___/ /
+/____/\__, /_/ /_/\____//____/
+     /____/
+EOF
+echo -e "${NC}"
+echo -e "${CYAN}╔══════════════════════════════════════════════════════════════╗${NC}"
+echo -e "${CYAN}║                                                              ║${NC}"
+echo -e "${CYAN}║          ${RED}SynOS v1.0 - Red Phoenix Edition${CYAN}                 ║${NC}"
+echo -e "${CYAN}║                                                              ║${NC}"
+echo -e "${CYAN}║     ${GREEN}AI-Enhanced Cybersecurity Operating System${CYAN}          ║${NC}"
+echo -e "${CYAN}║                                                              ║${NC}"
+echo -e "${CYAN}╚══════════════════════════════════════════════════════════════╝${NC}"
+echo ""
+
+# Check if first boot setup needed
+if [ ! -f "$HOME/.synos-first-boot-complete" ]; then
+    echo -e "${YELLOW}⚡ First Boot Detected!${NC}"
+    echo ""
+    echo "Run setup wizard to configure security tools and options:"
+    echo -e "  ${GREEN}synos-first-boot-setup${NC}"
+    echo ""
+fi
+
+echo -e "${YELLOW}System Status:${NC}"
+systemctl is-active synos-ai-engine &>/dev/null && echo -e "  ${GREEN}✓${NC} AI Engine: Running" || echo -e "  ${RED}✗${NC} AI Engine: Stopped"
+systemctl is-active synos-consciousness &>/dev/null && echo -e "  ${GREEN}✓${NC} Consciousness: Running" || echo -e "  ${RED}✗${NC} Consciousness: Stopped"
+
+echo ""
+echo -e "${YELLOW}Quick Commands:${NC}"
+echo -e "  ${CYAN}alfred${NC}                    - Launch AI assistant"
+echo -e "  ${CYAN}synos-ai-status${NC}           - Check AI system status"
+echo -e "  ${CYAN}synos-education${NC}           - Start learning platform"
+echo -e "  ${CYAN}synos-install-security-tools${NC} - Install additional tools"
+echo ""
+echo -e "${YELLOW}Documentation:${NC}"
+echo "  /usr/share/doc/synos/   - Complete documentation"
+echo "  /usr/src/synos/         - Full source code (175,000+ lines)"
+echo ""

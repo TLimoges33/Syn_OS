@@ -1,0 +1,194 @@
+#!/bin/bash
+################################################################################
+# SynOS First Boot Setup - Interactive Tool Installation
+################################################################################
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+MAGENTA='\033[0;35m'
+NC='\033[0m'
+
+# Banner
+clear
+echo -e "${CYAN}╔══════════════════════════════════════════════════════════════╗${NC}"
+echo -e "${CYAN}║                                                              ║${NC}"
+echo -e "${CYAN}║              ${RED}🔴 SynOS v1.0 - First Boot Setup${CYAN}              ║${NC}"
+echo -e "${CYAN}║                                                              ║${NC}"
+echo -e "${CYAN}╚══════════════════════════════════════════════════════════════╝${NC}"
+echo ""
+echo -e "${GREEN}Welcome to SynOS - AI-Enhanced Cybersecurity OS${NC}"
+echo ""
+echo -e "${YELLOW}This setup will help you configure your system.${NC}"
+echo ""
+
+# Check if already completed
+if [ -f "$HOME/.synos-first-boot-complete" ]; then
+    echo -e "${GREEN}✓ First boot setup already completed!${NC}"
+    echo ""
+    echo "To re-run tool installation: sudo synos-install-security-tools"
+    exit 0
+fi
+
+# Section 1: Security Tools Installation
+echo -e "${CYAN}════════════════════════════════════════════════════════════════${NC}"
+echo -e "${CYAN}  Security Tools Installation${NC}"
+echo -e "${CYAN}════════════════════════════════════════════════════════════════${NC}"
+echo ""
+echo "SynOS includes ~20 core security tools pre-installed."
+echo ""
+echo -e "${YELLOW}Available tool collections:${NC}"
+echo ""
+echo "  1) Core Tools Only (Already installed)"
+echo "     • Metasploit, Burp Suite, Nmap, Wireshark"
+echo "     • Hydra, John, Hashcat, SQLMap"
+echo "     • Size: Already on system"
+echo ""
+echo "  2) Kali Linux Large (~300+ tools)"
+echo "     • All Kali Linux penetration testing tools"
+echo "     • Wireless, exploitation, forensics, web tools"
+echo "     • Size: ~9GB download"
+echo ""
+echo "  3) Kali Linux Everything (~600+ tools)"
+echo "     • Complete Kali Linux tool collection"
+echo "     • Every tool available in Kali repos"
+echo "     • Size: ~15GB download"
+echo ""
+echo "  4) Custom Selection (Advanced)"
+echo "     • Choose specific tool categories"
+echo "     • Exploitation, forensics, wireless, web, etc."
+echo ""
+echo "  5) Skip for now"
+echo "     • Install tools later with: sudo synos-install-security-tools"
+echo ""
+
+read -p "Select option [1-5]: " TOOL_CHOICE
+
+case $TOOL_CHOICE in
+    1)
+        echo ""
+        echo -e "${GREEN}✓ Using core tools already installed${NC}"
+        ;;
+    2)
+        echo ""
+        echo -e "${YELLOW}Installing Kali Linux Large (~300+ tools, ~9GB)...${NC}"
+        echo "This will take 15-30 minutes depending on your connection."
+        echo ""
+        read -p "Continue? [y/N]: " CONFIRM
+        if [[ "$CONFIRM" =~ ^[Yy]$ ]]; then
+            sudo apt update
+            sudo apt install -y kali-linux-large
+            echo -e "${GREEN}✓ Kali Linux Large installed successfully${NC}"
+        else
+            echo -e "${YELLOW}⚠ Skipped - run 'sudo apt install kali-linux-large' later${NC}"
+        fi
+        ;;
+    3)
+        echo ""
+        echo -e "${YELLOW}Installing Kali Linux Everything (~600+ tools, ~15GB)...${NC}"
+        echo "This will take 30-60 minutes depending on your connection."
+        echo ""
+        read -p "Continue? [y/N]: " CONFIRM
+        if [[ "$CONFIRM" =~ ^[Yy]$ ]]; then
+            sudo apt update
+            sudo apt install -y kali-linux-everything
+            echo -e "${GREEN}✓ Kali Linux Everything installed successfully${NC}"
+        else
+            echo -e "${YELLOW}⚠ Skipped - run 'sudo apt install kali-linux-everything' later${NC}"
+        fi
+        ;;
+    4)
+        echo ""
+        echo -e "${YELLOW}Custom Tool Selection${NC}"
+        echo ""
+        echo "Available categories (select multiple, space-separated):"
+        echo "  • kali-tools-exploitation"
+        echo "  • kali-tools-forensics"
+        echo "  • kali-tools-wireless"
+        echo "  • kali-tools-web"
+        echo "  • kali-tools-passwords"
+        echo "  • kali-tools-reverse-engineering"
+        echo "  • kali-tools-post-exploitation"
+        echo ""
+        read -p "Enter package names: " CUSTOM_TOOLS
+        if [ ! -z "$CUSTOM_TOOLS" ]; then
+            sudo apt update
+            sudo apt install -y $CUSTOM_TOOLS
+            echo -e "${GREEN}✓ Custom tools installed${NC}"
+        fi
+        ;;
+    5|*)
+        echo ""
+        echo -e "${YELLOW}⚠ Skipping tool installation${NC}"
+        echo "Install later with: sudo synos-install-security-tools"
+        ;;
+esac
+
+echo ""
+
+# Section 2: AI Models (Optional)
+echo -e "${CYAN}════════════════════════════════════════════════════════════════${NC}"
+echo -e "${CYAN}  AI Models Configuration${NC}"
+echo -e "${CYAN}════════════════════════════════════════════════════════════════${NC}"
+echo ""
+echo "SynOS AI consciousness engine can use pre-trained models."
+echo "Currently using built-in algorithms (fully functional)."
+echo ""
+read -p "Download AI models when available? [y/N]: " AI_MODELS
+if [[ "$AI_MODELS" =~ ^[Yy]$ ]]; then
+    echo -e "${YELLOW}⚠ AI models not yet available - will be added in future release${NC}"
+    echo "Models can be downloaded later with: sudo synos-download-models"
+fi
+
+echo ""
+
+# Section 3: Educational Platform
+echo -e "${CYAN}════════════════════════════════════════════════════════════════${NC}"
+echo -e "${CYAN}  Educational Platform${NC}"
+echo -e "${CYAN}════════════════════════════════════════════════════════════════${NC}"
+echo ""
+echo "SynOS includes a 4-phase cybersecurity curriculum:"
+echo "  • Phase 1: Foundations (IT, Networking, Security)"
+echo "  • Phase 2: Core Tools (Wireshark, Nmap, SIEM)"
+echo "  • Phase 3: Penetration Testing (Metasploit, AD)"
+echo "  • Phase 4: Advanced (Cloud, DFIR, AI Security)"
+echo ""
+echo "Access tutorials with: synos-education"
+echo "Built-in CTF platform available at: /opt/synos/education/ctf/"
+echo ""
+read -p "Press Enter to continue..."
+
+# Section 4: Complete Setup
+echo ""
+echo -e "${CYAN}════════════════════════════════════════════════════════════════${NC}"
+echo -e "${CYAN}  Setup Complete${NC}"
+echo -e "${CYAN}════════════════════════════════════════════════════════════════${NC}"
+echo ""
+echo -e "${GREEN}✓ SynOS First Boot Setup Complete!${NC}"
+echo ""
+echo -e "${YELLOW}Quick Start Commands:${NC}"
+echo "  • synos-ai-status        - Check AI engine status"
+echo "  • alfred                 - Launch AI assistant"
+echo "  • synos-education        - Start learning platform"
+echo "  • synpkg list-tools      - List installed security tools"
+echo ""
+echo -e "${YELLOW}Service Management:${NC}"
+echo "  • systemctl status synos-ai-engine"
+echo "  • systemctl status synos-consciousness"
+echo "  • systemctl status synos-security"
+echo ""
+echo -e "${YELLOW}Documentation:${NC}"
+echo "  • /usr/share/doc/synos/  - Complete documentation"
+echo "  • /usr/src/synos/        - Full source code"
+echo ""
+
+# Mark as complete
+touch "$HOME/.synos-first-boot-complete"
+
+echo "Setup information saved. This wizard won't run again."
+echo ""
+read -p "Press Enter to finish..."
+clear

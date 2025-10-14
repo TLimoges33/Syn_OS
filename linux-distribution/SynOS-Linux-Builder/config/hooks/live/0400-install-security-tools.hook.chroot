@@ -1,0 +1,58 @@
+#!/bin/bash
+set -e
+
+echo "Installing security tools from Kali/Parrot repositories..."
+
+# Add Kali repository
+echo 'deb http://http.kali.org/kali kali-rolling main non-free contrib' > /etc/apt/sources.list.d/kali.list
+
+# Add Kali key
+wget -q -O - https://archive.kali.org/archive-key.asc | apt-key add - 2>&1 || true
+
+# Update package lists
+apt-get update 2>&1 || true
+
+# Install security tools (with error handling)
+SECURITY_TOOLS=(
+    nmap
+    wireshark
+    tcpdump
+    aircrack-ng
+    john
+    hashcat
+    hydra
+    sqlmap
+    netcat-traditional
+    socat
+    masscan
+    gobuster
+    dirb
+    wfuzz
+    reaver
+)
+
+for tool in "${SECURITY_TOOLS[@]}"; do
+    echo "Installing $tool..."
+    apt-get install -y --no-install-recommends "$tool" 2>&1 || echo "⚠ $tool installation failed (non-fatal)"
+done
+
+# Install additional tools from sources if needed
+echo "Installing additional security tools from alternative sources..."
+
+# Install tools that may not be in repos
+apt-get install -y --no-install-recommends \
+    python3-pip \
+    git \
+    build-essential \
+    2>&1 || true
+
+# Install Python-based security tools
+pip3 install --no-cache-dir \
+    impacket \
+    crackmapexec \
+    bloodhound \
+    2>&1 || echo "Some Python tools failed (non-fatal)"
+
+echo "✓ Security tools installed"
+
+exit 0

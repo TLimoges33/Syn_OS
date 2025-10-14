@@ -1,10 +1,10 @@
 //! Security validation for SynPkg packages
-//! 
+//!
 //! Handles signature verification, vulnerability scanning, and security policies
 
-use std::collections::HashMap;
-use anyhow::{Result, anyhow};
+use anyhow::{anyhow, Result};
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 use crate::core::{PackageInfo, SecurityRating};
 use crate::repository::PackageSource;
@@ -42,10 +42,10 @@ pub enum VulnerabilitySeverity {
 /// Trust level for packages
 #[derive(Debug, Clone)]
 pub enum TrustLevel {
-    FullyTrusted,    // Official repositories, verified signatures
-    Trusted,         // Community packages with good track record
-    Cautious,        // New or less verified packages
-    Untrusted,       // Suspicious or unverified packages
+    FullyTrusted, // Official repositories, verified signatures
+    Trusted,      // Community packages with good track record
+    Cautious,     // New or less verified packages
+    Untrusted,    // Suspicious or unverified packages
 }
 
 /// Security validator for packages
@@ -85,13 +85,16 @@ impl SecurityValidator {
         self.source_trust.insert(PackageSource::BlackArch, 0.75);
 
         // Initialize known vulnerabilities (examples)
-        self.add_vulnerability("openssl", Vulnerability {
-            id: "SYNOS-2023-001".to_string(),
-            severity: VulnerabilitySeverity::High,
-            description: "SSL/TLS vulnerability in older versions".to_string(),
-            cve_id: Some("CVE-2023-12345".to_string()),
-            fixed_version: Some("3.0.0".to_string()),
-        });
+        self.add_vulnerability(
+            "openssl",
+            Vulnerability {
+                id: "SYNOS-2023-001".to_string(),
+                severity: VulnerabilitySeverity::High,
+                description: "SSL/TLS vulnerability in older versions".to_string(),
+                cve_id: Some("CVE-2023-12345".to_string()),
+                fixed_version: Some("3.0.0".to_string()),
+            },
+        );
 
         // Initialize blacklist (examples of malicious packages)
         self.blacklist.extend(vec![
@@ -103,7 +106,8 @@ impl SecurityValidator {
         // Initialize trust scores for common packages
         self.trust_scores.insert("nmap".to_string(), 0.95);
         self.trust_scores.insert("wireshark".to_string(), 0.9);
-        self.trust_scores.insert("metasploit-framework".to_string(), 0.85);
+        self.trust_scores
+            .insert("metasploit-framework".to_string(), 0.85);
         self.trust_scores.insert("burpsuite".to_string(), 0.9);
         self.trust_scores.insert("john".to_string(), 0.8);
         self.trust_scores.insert("hashcat".to_string(), 0.85);
@@ -112,7 +116,10 @@ impl SecurityValidator {
     }
 
     /// Validate package security
-    pub async fn validate_package(&self, package: &PackageInfo) -> Result<SecurityValidationResult> {
+    pub async fn validate_package(
+        &self,
+        package: &PackageInfo,
+    ) -> Result<SecurityValidationResult> {
         let mut warnings = Vec::new();
         let mut is_safe = true;
         let mut security_score = 0.5; // Base score
@@ -139,25 +146,34 @@ impl SecurityValidator {
 
         // Check for known vulnerabilities
         let vulnerabilities = self.get_package_vulnerabilities(&package.name, &package.version);
-        
+
         for vulnerability in &vulnerabilities {
             match vulnerability.severity {
                 VulnerabilitySeverity::Critical => {
                     security_score -= 0.5;
-                    warnings.push(format!("Critical vulnerability: {}", vulnerability.description));
+                    warnings.push(format!(
+                        "Critical vulnerability: {}",
+                        vulnerability.description
+                    ));
                     is_safe = false;
-                },
+                }
                 VulnerabilitySeverity::High => {
                     security_score -= 0.3;
-                    warnings.push(format!("High severity vulnerability: {}", vulnerability.description));
-                },
+                    warnings.push(format!(
+                        "High severity vulnerability: {}",
+                        vulnerability.description
+                    ));
+                }
                 VulnerabilitySeverity::Medium => {
                     security_score -= 0.1;
-                    warnings.push(format!("Medium severity vulnerability: {}", vulnerability.description));
-                },
+                    warnings.push(format!(
+                        "Medium severity vulnerability: {}",
+                        vulnerability.description
+                    ));
+                }
                 VulnerabilitySeverity::Low => {
                     security_score -= 0.05;
-                },
+                }
                 VulnerabilitySeverity::Info => {
                     // No score reduction for informational
                 }
@@ -172,7 +188,7 @@ impl SecurityValidator {
             SecurityRating::Experimental => {
                 security_score -= 0.1;
                 warnings.push("Package is experimental".to_string());
-            },
+            }
             SecurityRating::Unknown => {
                 security_score -= 0.2;
                 warnings.push("Package security rating is unknown".to_string());
@@ -180,13 +196,21 @@ impl SecurityValidator {
         }
 
         // Additional security checks
-        self.perform_additional_checks(package, &mut warnings, &mut security_score).await?;
+        self.perform_additional_checks(package, &mut warnings, &mut security_score)
+            .await?;
 
         // Determine trust level
         let trust_level = self.calculate_trust_level(security_score, &vulnerabilities);
 
         // Final safety determination
-        if security_score < 0.3 || !vulnerabilities.iter().all(|v| matches!(v.severity, VulnerabilitySeverity::Low | VulnerabilitySeverity::Info)) {
+        if security_score < 0.3
+            || !vulnerabilities.iter().all(|v| {
+                matches!(
+                    v.severity,
+                    VulnerabilitySeverity::Low | VulnerabilitySeverity::Info
+                )
+            })
+        {
             is_safe = false;
         }
 
@@ -207,7 +231,8 @@ impl SecurityValidator {
         security_score: &mut f64,
     ) -> Result<()> {
         // Check package size (unusually large packages may be suspicious)
-        if package.size > 100 * 1024 * 1024 { // 100MB
+        if package.size > 100 * 1024 * 1024 {
+            // 100MB
             warnings.push("Package is unusually large".to_string());
             *security_score -= 0.05;
         }
@@ -235,9 +260,17 @@ impl SecurityValidator {
     }
 
     /// Calculate trust level based on security score and vulnerabilities
-    fn calculate_trust_level(&self, security_score: f64, vulnerabilities: &[Vulnerability]) -> TrustLevel {
-        let has_critical = vulnerabilities.iter().any(|v| matches!(v.severity, VulnerabilitySeverity::Critical));
-        let has_high = vulnerabilities.iter().any(|v| matches!(v.severity, VulnerabilitySeverity::High));
+    fn calculate_trust_level(
+        &self,
+        security_score: f64,
+        vulnerabilities: &[Vulnerability],
+    ) -> TrustLevel {
+        let has_critical = vulnerabilities
+            .iter()
+            .any(|v| matches!(v.severity, VulnerabilitySeverity::Critical));
+        let has_high = vulnerabilities
+            .iter()
+            .any(|v| matches!(v.severity, VulnerabilitySeverity::High));
 
         if has_critical || security_score < 0.3 {
             TrustLevel::Untrusted
@@ -253,7 +286,8 @@ impl SecurityValidator {
     /// Get vulnerabilities for a specific package and version
     fn get_package_vulnerabilities(&self, package_name: &str, version: &str) -> Vec<Vulnerability> {
         if let Some(vulnerabilities) = self.vulnerability_db.get(package_name) {
-            vulnerabilities.iter()
+            vulnerabilities
+                .iter()
                 .filter(|vuln| self.is_version_affected(version, vuln))
                 .cloned()
                 .collect()
@@ -278,18 +312,32 @@ impl SecurityValidator {
     /// Check if package name is suspicious
     fn is_suspicious_name(&self, name: &str) -> bool {
         let suspicious_patterns = [
-            "fake-", "malware-", "trojan-", "virus-", "hack-", "crack-",
-            "pirate-", "illegal-", "stolen-", "backdoor-"
+            "fake-",
+            "malware-",
+            "trojan-",
+            "virus-",
+            "hack-",
+            "crack-",
+            "pirate-",
+            "illegal-",
+            "stolen-",
+            "backdoor-",
         ];
 
-        suspicious_patterns.iter().any(|pattern| name.contains(pattern))
+        suspicious_patterns
+            .iter()
+            .any(|pattern| name.contains(pattern))
     }
 
     /// Check if maintainer is trusted
     fn is_trusted_maintainer(&self, maintainer: &str) -> bool {
         let trusted_maintainers = [
-            "Kali Linux Team", "SynOS Team", "Parrot Security Team",
-            "Ubuntu Developers", "Debian Maintainers", "BlackArch Team"
+            "Kali Linux Team",
+            "SynOS Team",
+            "Parrot Security Team",
+            "Ubuntu Developers",
+            "Debian Maintainers",
+            "BlackArch Team",
         ];
 
         trusted_maintainers.contains(&maintainer)
@@ -297,9 +345,7 @@ impl SecurityValidator {
 
     /// Check if dependency is risky
     fn is_risky_dependency(&self, dependency: &str) -> bool {
-        let risky_deps = [
-            "remote-access", "keylogger", "network-backdoor"
-        ];
+        let risky_deps = ["remote-access", "keylogger", "network-backdoor"];
 
         risky_deps.contains(&dependency)
     }
@@ -321,15 +367,18 @@ impl SecurityValidator {
         // 4. Save to persistent storage
 
         println!("Updating vulnerability database...");
-        
+
         // Simulate fetching new vulnerability data
-        self.add_vulnerability("example-package", Vulnerability {
-            id: "SYNOS-2023-002".to_string(),
-            severity: VulnerabilitySeverity::Medium,
-            description: "Example vulnerability for testing".to_string(),
-            cve_id: Some("CVE-2023-67890".to_string()),
-            fixed_version: Some("2.0.0".to_string()),
-        });
+        self.add_vulnerability(
+            "example-package",
+            Vulnerability {
+                id: "SYNOS-2023-002".to_string(),
+                severity: VulnerabilitySeverity::Medium,
+                description: "Example vulnerability for testing".to_string(),
+                cve_id: Some("CVE-2023-67890".to_string()),
+                fixed_version: Some("2.0.0".to_string()),
+            },
+        );
 
         println!("Vulnerability database updated");
         Ok(())
@@ -365,19 +414,25 @@ impl SecurityValidator {
     }
 
     /// Generate security recommendations
-    async fn generate_security_recommendations(&self, package: &PackageInfo) -> Result<Vec<String>> {
+    async fn generate_security_recommendations(
+        &self,
+        package: &PackageInfo,
+    ) -> Result<Vec<String>> {
         let mut recommendations = Vec::new();
 
         // Check if package has known vulnerabilities
         let vulnerabilities = self.get_package_vulnerabilities(&package.name, &package.version);
         if !vulnerabilities.is_empty() {
-            recommendations.push("Consider updating to a newer version to address known vulnerabilities".to_string());
+            recommendations.push(
+                "Consider updating to a newer version to address known vulnerabilities".to_string(),
+            );
         }
 
         // Check source trust
         let source_trust = self.source_trust.get(&package.source).unwrap_or(&0.5);
         if *source_trust < 0.8 {
-            recommendations.push("Package is from a less trusted source - verify manually".to_string());
+            recommendations
+                .push("Package is from a less trusted source - verify manually".to_string());
         }
 
         // Check if there are safer alternatives
@@ -420,7 +475,7 @@ mod tests {
     #[tokio::test]
     async fn test_blacklist_detection() {
         let validator = SecurityValidator::new().await.unwrap();
-        
+
         let malicious_package = PackageInfo {
             name: "malicious-package".to_string(),
             version: "1.0.0".to_string(),
@@ -440,7 +495,10 @@ mod tests {
             educational_value: 1,
         };
 
-        let result = validator.validate_package(&malicious_package).await.unwrap();
+        let result = validator
+            .validate_package(&malicious_package)
+            .await
+            .unwrap();
         assert!(!result.is_safe);
         assert_eq!(result.security_score, 0.0);
     }

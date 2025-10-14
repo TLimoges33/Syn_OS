@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+
+echo "Copying pre-downloaded security tool packages..."
+
+# Create directory for local packages
+mkdir -p /root/synos-packages
+
+# Note: The packages in config/packages.chroot/ are automatically copied
+# by live-build, but we want them in a specific location for our installer
+
+# Copy any .deb files to our local package directory
+if [ -d /root ]; then
+    find /root -maxdepth 1 -name "*.deb" -exec mv {} /root/synos-packages/ \; 2>/dev/null || true
+fi
+
+echo "✓ Security packages prepared"
+
+exit 0

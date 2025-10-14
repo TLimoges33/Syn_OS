@@ -1,0 +1,245 @@
+#!/bin/bash
+################################################################################
+# SynOS Red Phoenix - Custom Bash Configuration
+# Cyberpunk tactical terminal experience
+################################################################################
+
+# ═══════════════════════════════════════════════════════════════════
+# CUSTOM PROMPT
+# ═══════════════════════════════════════════════════════════════════
+
+# Cyberpunk multi-line prompt
+export PS1='\[\e[1;31m\]┌─[\[\e[0m\]\[\e[1;37m\]Syn_OS\[\e[0m\]\[\e[1;31m\]]─[\[\e[0m\]\[\e[1;37m\]\u@\h\[\e[0m\]\[\e[1;31m\]]─[\[\e[0m\]\[\e[1;37m\]\w\[\e[0m\]\[\e[1;31m\]]\[\e[0m\]\n\[\e[1;31m\]└─▶\[\e[0m\] '
+
+# Shorter alternative (single line)
+# export PS1='\[\e[1;31m\][\[\e[0m\]\[\e[1;37m\]Syn_OS\[\e[0m\]\[\e[1;31m\]]\[\e[0m\] \[\e[1;37m\]\w\[\e[0m\] \[\e[1;31m\]▶\[\e[0m\] '
+
+# ═══════════════════════════════════════════════════════════════════
+# ASCII ART BANNER
+# ═══════════════════════════════════════════════════════════════════
+
+cat << 'BANNER_EOF'
+[1;31m
+   ███████╗██╗   ██╗███╗   ██╗     ██████╗ ███████╗
+   ██╔════╝╚██╗ ██╔╝████╗  ██║    ██╔═══██╗██╔════╝
+   ███████╗ ╚████╔╝ ██╔██╗ ██║    ██║   ██║███████╗
+   ╚════██║  ╚██╔╝  ██║╚██╗██║    ██║   ██║╚════██║
+   ███████║   ██║   ██║ ╚████║    ╚██████╔╝███████║
+   ╚══════╝   ╚═╝   ╚═╝  ╚═══╝     ╚═════╝ ╚══════╝
+[0m
+[1;37m   🔴 Red Phoenix v1.0 - Neural Dominance Active 🔴[0m
+[0;36m   ═══════════════════════════════════════════════════[0m
+[0;37m   System:  $(hostname)[0m
+[0;37m   User:    $(whoami)[0m
+[0;37m   Uptime:  $(uptime -p)[0m
+[0;36m   ═══════════════════════════════════════════════════[0m
+[0m
+BANNER_EOF
+
+# ═══════════════════════════════════════════════════════════════════
+# CUSTOM ALIASES
+# ═══════════════════════════════════════════════════════════════════
+
+# Enhanced ls
+alias ls='ls --color=auto'
+alias ll='ls -lah --color=auto'
+alias la='ls -A --color=auto'
+alias l='ls -CF --color=auto'
+
+# Safety nets
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+# Colorful commands
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias diff='diff --color=auto'
+
+# Navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias back='cd -'
+
+# System info
+alias sysinfo='neofetch'
+alias ports='netstat -tulanp'
+alias cpu='lscpu'
+alias mem='free -h'
+alias disk='df -h'
+
+# Security shortcuts
+alias scan='nmap -A'
+alias listen='netstat -tunlp'
+alias firewall='sudo ufw status verbose'
+alias vulns='vulnscan'
+
+# Git shortcuts
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit -m'
+alias gp='git push'
+alias gl='git log --oneline --graph --all'
+
+# SynOS specific
+alias ai='synos-ai-cli'
+alias threats='tail -f /var/log/security/threats.log 2>/dev/null || echo "Threat log not available"'
+alias neural='systemctl status synos-ai-daemon'
+
+# ═══════════════════════════════════════════════════════════════════
+# CUSTOM FUNCTIONS
+# ═══════════════════════════════════════════════════════════════════
+
+# Enhanced scan function
+function scan() {
+    echo -e "\e[1;31m[*] Scanning target: $1\e[0m"
+    echo -e "\e[0;36m════════════════════════════════════\e[0m"
+    if command -v nmap &> /dev/null; then
+        nmap -A $1
+    else
+        echo -e "\e[1;33m[!] nmap not installed\e[0m"
+    fi
+}
+
+# Extract various archive types
+function extract() {
+    if [ -f $1 ]; then
+        case $1 in
+            *.tar.bz2)   tar xjf $1     ;;
+            *.tar.gz)    tar xzf $1     ;;
+            *.bz2)       bunzip2 $1     ;;
+            *.rar)       unrar e $1     ;;
+            *.gz)        gunzip $1      ;;
+            *.tar)       tar xf $1      ;;
+            *.tbz2)      tar xjf $1     ;;
+            *.tgz)       tar xzf $1     ;;
+            *.zip)       unzip $1       ;;
+            *.Z)         uncompress $1  ;;
+            *.7z)        7z x $1        ;;
+            *)           echo "'$1' cannot be extracted" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+# Make directory and cd into it
+function mkcd() {
+    mkdir -p "$1" && cd "$1"
+}
+
+# Quick backup
+function backup() {
+    cp "$1" "$1.backup-$(date +%Y%m%d-%H%M%S)"
+}
+
+# Search command history
+function h() {
+    history | grep "$1"
+}
+
+# Quick note taking
+function note() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" >> ~/notes.txt
+}
+
+# Show todos
+function todo() {
+    if [ "$1" == "add" ]; then
+        shift
+        echo "[ ] $*" >> ~/todo.txt
+    else
+        cat ~/todo.txt 2>/dev/null || echo "No todos yet. Use: todo add <task>"
+    fi
+}
+
+# ═══════════════════════════════════════════════════════════════════
+# ENVIRONMENT VARIABLES
+# ═══════════════════════════════════════════════════════════════════
+
+# Editor
+export EDITOR='nano'
+export VISUAL='nano'
+
+# Pager
+export PAGER='less'
+export LESS='-R'
+
+# History settings
+export HISTSIZE=10000
+export HISTFILESIZE=20000
+export HISTCONTROL=ignoredups:erasedups
+
+# Colored man pages
+export LESS_TERMCAP_mb=$'\e[1;31m'     # begin bold
+export LESS_TERMCAP_md=$'\e[1;31m'     # begin blink
+export LESS_TERMCAP_me=$'\e[0m'        # reset bold/blink
+export LESS_TERMCAP_so=$'\e[01;44;37m' # begin reverse video
+export LESS_TERMCAP_se=$'\e[0m'        # reset reverse video
+export LESS_TERMCAP_us=$'\e[1;32m'     # begin underline
+export LESS_TERMCAP_ue=$'\e[0m'        # reset underline
+
+# SynOS paths
+export SYNOS_HOME="/opt/synos"
+export PATH="$PATH:$SYNOS_HOME/bin"
+
+# ═══════════════════════════════════════════════════════════════════
+# BASH OPTIONS
+# ═══════════════════════════════════════════════════════════════════
+
+# Append to history file, don't overwrite
+shopt -s histappend
+
+# Check window size after each command
+shopt -s checkwinsize
+
+# Enable extended pattern matching
+shopt -s extglob
+
+# Enable recursive globbing with **
+shopt -s globstar
+
+# Correct minor errors in directory spelling
+shopt -s cdspell
+
+# ═══════════════════════════════════════════════════════════════════
+# COMPLETION
+# ═══════════════════════════════════════════════════════════════════
+
+# Enable bash completion if available
+if ! shopt -oq posix; then
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
+fi
+
+# ═══════════════════════════════════════════════════════════════════
+# WELCOME MESSAGE
+# ═══════════════════════════════════════════════════════════════════
+
+echo -e "\e[0;36m  Type 'help-synos' for command reference\e[0m"
+echo -e "\e[0;36m  Type 'ai' to interact with Neural Consciousness\e[0m"
+echo ""
+
+# ═══════════════════════════════════════════════════════════════════
+# SECURITY REMINDERS
+# ═══════════════════════════════════════════════════════════════════
+
+# Check for critical security updates (if available)
+if command -v apt &> /dev/null; then
+    UPDATES=$(apt list --upgradable 2>/dev/null | grep -i security | wc -l)
+    if [ "$UPDATES" -gt 0 ]; then
+        echo -e "\e[1;33m  ⚠️  $UPDATES security updates available\e[0m"
+        echo -e "\e[0;36m  Run: sudo apt update && sudo apt upgrade\e[0m"
+        echo ""
+    fi
+fi
+
+# ═══════════════════════════════════════════════════════════════════
+# END OF SYNOS BASH CONFIGURATION
+# 🔴 RED MEANS POWER. RED MEANS SYNOS. 🔴
+# ═══════════════════════════════════════════════════════════════════

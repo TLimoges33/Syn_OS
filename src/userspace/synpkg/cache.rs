@@ -1,14 +1,14 @@
 //! Package cache management for SynPkg
-//! 
+//!
 //! Handles local package caching, metadata storage, and cache cleanup
 
-use std::collections::HashMap;
-use std::path::{PathBuf, Path};
-use anyhow::{Result, anyhow};
+use anyhow::{anyhow, Result};
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
+use std::path::{Path, PathBuf};
 use tokio::fs;
 
-use crate::core::{PackageInfo, InstallStatus};
+use crate::core::{InstallStatus, PackageInfo};
 
 /// Tracks installed packages and their metadata
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -52,7 +52,7 @@ impl PackageCache {
     /// Create new package cache
     pub async fn new(cache_dir: &Path) -> Result<Self> {
         let database_path = cache_dir.join("installed.json");
-        
+
         let mut cache = Self {
             cache_dir: cache_dir.to_path_buf(),
             installed_packages: HashMap::new(),
@@ -85,7 +85,11 @@ impl PackageCache {
     }
 
     /// Add installed package record
-    pub async fn add_package(&mut self, package: &PackageInfo, executable_path: Option<PathBuf>) -> Result<()> {
+    pub async fn add_package(
+        &mut self,
+        package: &PackageInfo,
+        executable_path: Option<PathBuf>,
+    ) -> Result<()> {
         let record = InstalledPackageRecord {
             name: package.name.clone(),
             version: package.version.clone(),
@@ -120,7 +124,10 @@ impl PackageCache {
     }
 
     /// Get installed package info
-    pub async fn get_installed_package(&self, package_name: &str) -> Option<&InstalledPackageRecord> {
+    pub async fn get_installed_package(
+        &self,
+        package_name: &str,
+    ) -> Option<&InstalledPackageRecord> {
         self.installed_packages.get(package_name)
     }
 
@@ -132,13 +139,13 @@ impl PackageCache {
     /// Get cache statistics
     pub async fn get_stats(&self) -> Result<CacheStats> {
         let total_packages = self.installed_packages.len();
-        let total_size = self.installed_packages.values()
-            .map(|p| p.size_bytes)
-            .sum();
+        let total_size = self.installed_packages.values().map(|p| p.size_bytes).sum();
 
         let category_count: HashMap<String, u32> = HashMap::new();
-        
-        let recent_installs = self.installed_packages.values()
+
+        let recent_installs = self
+            .installed_packages
+            .values()
             .map(|p| p.name.clone())
             .take(10)
             .collect();
@@ -158,7 +165,7 @@ impl PackageCache {
 
         // Scan cache directory for orphaned files
         // This would typically check for downloaded packages not in the database
-        
+
         Ok(CleanupResults {
             files_removed,
             space_freed_bytes: space_freed,
@@ -176,8 +183,9 @@ impl PackageCache {
             size_bytes: 0,
             executable_path: None,
         };
-        
-        self.installed_packages.insert(package_name.to_string(), record);
+
+        self.installed_packages
+            .insert(package_name.to_string(), record);
         self.save_database().await?;
         Ok(())
     }

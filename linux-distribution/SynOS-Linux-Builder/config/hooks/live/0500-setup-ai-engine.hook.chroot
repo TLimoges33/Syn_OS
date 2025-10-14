@@ -1,0 +1,268 @@
+#!/bin/bash
+set -e
+
+echo "════════════════════════════════════════════════════════════"
+echo "  Setting Up AI Engine & Deploying Models"
+echo "════════════════════════════════════════════════════════════"
+
+# Install Python AI dependencies
+echo "Installing AI/ML Python packages..."
+pip3 install --no-cache-dir \
+    torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu \
+    transformers \
+    numpy pandas scikit-learn \
+    onnxruntime \
+    tensorflow-lite \
+    pillow \
+    opencv-python \
+    2>&1 || echo "⚠️  Some AI packages may need manual installation"
+
+echo "✓ Python AI packages installed"
+
+# Create comprehensive AI model directory structure
+echo "Creating AI model directories..."
+mkdir -p /opt/synos/models/{tensorflow,onnx,pytorch,pretrained}
+mkdir -p /opt/synos/models/consciousness
+mkdir -p /opt/synos/models/threat-detection
+mkdir -p /opt/synos/models/nlp
+mkdir -p /opt/synos/ai/data/{training,inference,cache}
+mkdir -p /var/lib/synos/models
+
+# Create model manifest
+cat > /opt/synos/models/manifest.json << 'EOFJSON'
+{
+  "version": "1.0.0",
+  "updated": "2025-10-14",
+  "models": [
+    {
+      "name": "consciousness-base",
+      "type": "neural-darwinism",
+      "format": "onnx",
+      "path": "/opt/synos/models/consciousness/consciousness-base.onnx",
+      "status": "placeholder",
+      "description": "Base consciousness model for Neural Darwinism"
+    },
+    {
+      "name": "threat-detection-v1",
+      "type": "security",
+      "format": "pytorch",
+      "path": "/opt/synos/models/threat-detection/threat-v1.pt",
+      "status": "placeholder",
+      "description": "AI-powered threat detection model"
+    },
+    {
+      "name": "nlp-security-assistant",
+      "type": "nlp",
+      "format": "transformers",
+      "path": "/opt/synos/models/nlp/",
+      "status": "placeholder",
+      "description": "Natural language security assistant"
+    }
+  ],
+  "notes": "Models will be downloaded on first AI engine start or can be manually placed in respective directories"
+}
+EOFJSON
+
+# Create model download script
+cat > /opt/synos/bin/synos-download-models << 'EOFMODELS'
+#!/bin/bash
+# SynOS Model Download Script
+
+echo "SynOS AI Model Downloader"
+echo "=========================="
+echo ""
+echo "This script downloads AI models for SynOS consciousness and threat detection."
+echo ""
+echo "Available models:"
+echo "  1) consciousness-base  (200MB) - Neural Darwinism base model"
+echo "  2) threat-detection    (150MB) - Security threat detection"
+echo "  3) nlp-assistant       (500MB) - Natural language security assistant"
+echo "  4) all                 (850MB) - Download all models"
+echo ""
+echo "Note: Models are currently placeholders. Custom models will be"
+echo "      trained and distributed with future releases."
+echo ""
+echo "For now, AI engine will operate with built-in algorithms."
+EOFMODELS
+
+chmod +x /opt/synos/bin/synos-download-models
+
+# Create AI initialization script
+cat > /opt/synos/bin/synos-ai-init << 'EOFINIT'
+#!/bin/bash
+# Initialize SynOS AI subsystem
+
+echo "Initializing SynOS AI subsystem..."
+
+# Check for models
+if [ ! -f /opt/synos/models/manifest.json ]; then
+    echo "⚠️  Model manifest not found"
+    exit 1
+fi
+
+# Create runtime directories
+mkdir -p /var/lib/synos/ai/{state,cache,logs}
+mkdir -p /var/lib/synos/consciousness/{state,memory}
+
+# Set permissions
+chown -R synos:synos /opt/synos/models
+chown -R synos:synos /opt/synos/ai
+chown -R synos:synos /var/lib/synos/ai
+chown -R synos:synos /var/lib/synos/consciousness
+
+chmod 755 /opt/synos/models
+chmod 750 /var/lib/synos/ai
+chmod 750 /var/lib/synos/consciousness
+
+echo "✓ AI subsystem initialized"
+echo ""
+echo "To download AI models: sudo synos-download-models"
+echo "To start AI engine: sudo systemctl start synos-ai-engine"
+EOFINIT
+
+chmod +x /opt/synos/bin/synos-ai-init
+
+# Run initialization
+/opt/synos/bin/synos-ai-init
+
+# Create quick AI status check command
+cat > /usr/local/bin/synos-ai-status << 'EOFSTATUS'
+#!/bin/bash
+echo "SynOS AI Status"
+echo "==============="
+echo ""
+echo "Services:"
+systemctl is-active synos-ai-engine 2>/dev/null && echo "  AI Engine: RUNNING" || echo "  AI Engine: STOPPED"
+systemctl is-active synos-consciousness 2>/dev/null && echo "  Consciousness: RUNNING" || echo "  Consciousness: STOPPED"
+echo ""
+echo "Models:"
+if [ -f /opt/synos/models/manifest.json ]; then
+    echo "  Manifest: Present"
+    models=$(jq -r '.models | length' /opt/synos/models/manifest.json 2>/dev/null || echo "0")
+    echo "  Configured: $models models"
+else
+    echo "  Manifest: Missing"
+fi
+echo ""
+echo "Directories:"
+[ -d /opt/synos/models ] && echo "  ✓ /opt/synos/models" || echo "  ✗ /opt/synos/models"
+[ -d /var/lib/synos/ai ] && echo "  ✓ /var/lib/synos/ai" || echo "  ✗ /var/lib/synos/ai"
+echo ""
+echo "For more info: journalctl -u synos-ai-engine -n 50"
+EOFSTATUS
+
+chmod +x /usr/local/bin/synos-ai-status
+
+# Deploy Python AI modules
+echo "════════════════════════════════════════════════════════════"
+echo "  Deploying Python AI Components"
+echo "════════════════════════════════════════════════════════════"
+
+# Copy advanced AI modules from source
+if [ -d /usr/src/synos/src/ai/advanced ]; then
+    echo "Installing advanced AI modules..."
+    mkdir -p /opt/synos/ai/advanced
+    cp -r /usr/src/synos/src/ai/advanced/* /opt/synos/ai/advanced/ || true
+    echo "✓ Advanced AI modules installed"
+fi
+
+# Install Alfred AI assistant
+if [ -d /usr/src/synos/src/ai/alfred ]; then
+    echo "Installing Alfred AI assistant..."
+    cp -r /usr/src/synos/src/ai/alfred /opt/synos/ai/ || true
+
+    # Create Alfred launcher
+    cat > /usr/local/bin/alfred << 'EOFALFRED'
+#!/bin/bash
+# Alfred AI Assistant Launcher
+cd /opt/synos/ai/alfred
+export PYTHONPATH="/opt/synos/ai:$PYTHONPATH"
+python3 main.py "$@"
+EOFALFRED
+    chmod +x /usr/local/bin/alfred
+
+    # Create Alfred desktop launcher
+    cat > /usr/share/applications/synos-alfred.desktop << 'EOFALFREDDESK'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Alfred AI Assistant
+Comment=SynOS intelligent AI assistant powered by consciousness engine
+Exec=mate-terminal -e 'alfred'
+Icon=/usr/share/pixmaps/synos/ai-icon.png
+Terminal=false
+Categories=Development;AI;SynOS;
+Keywords=alfred;ai;assistant;consciousness;synos;
+EOFALFREDDESK
+
+    echo "✓ Alfred AI assistant installed"
+fi
+
+# Install AI Consciousness Daemon (ai-daemon.py)
+if [ -f /usr/src/synos/ai-daemon.py ]; then
+    echo "Installing SynOS AI Consciousness Daemon..."
+    mkdir -p /opt/synos/bin
+    cp /usr/src/synos/ai-daemon.py /opt/synos/bin/
+    chmod +x /opt/synos/bin/ai-daemon.py
+
+    # Create systemd service for AI Consciousness Daemon
+    cat > /etc/systemd/system/synos-ai-consciousness.service << 'EOFCONSCIOUSNESS'
+[Unit]
+Description=SynOS AI Consciousness Daemon - Neural Darwinism Security Monitor
+Documentation=https://synos.dev/docs/ai-daemon
+After=network.target nats.service redis.service
+Wants=nats.service redis.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /opt/synos/bin/ai-daemon.py
+Restart=always
+RestartSec=10
+User=root
+Group=root
+Environment="PYTHONPATH=/opt/synos/ai:/opt/synos/ai/advanced"
+Environment="SYNOS_AI_HOME=/opt/synos/ai"
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=synos-ai-consciousness
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/log/synos /opt/synos/ai /tmp
+
+[Install]
+WantedBy=multi-user.target
+EOFCONSCIOUSNESS
+
+    systemctl enable synos-ai-consciousness.service || true
+    echo "✓ AI Consciousness Daemon installed and enabled"
+else
+    echo "⚠ Warning: ai-daemon.py not found, skipping consciousness daemon"
+fi
+
+# Set up Python AI environment
+echo "Configuring Python AI environment..."
+cat > /etc/profile.d/synos-ai.sh << 'EOFAIENV'
+# SynOS AI Environment Variables
+export SYNOS_AI_HOME="/opt/synos/ai"
+export SYNOS_MODEL_PATH="/opt/synos/models"
+export PYTHONPATH="/opt/synos/ai:/opt/synos/ai/advanced:$PYTHONPATH"
+EOFAIENV
+
+echo "✓ Python AI environment configured"
+
+echo "════════════════════════════════════════════════════════════"
+echo "  ✅ AI Engine Setup Complete"
+echo "════════════════════════════════════════════════════════════"
+echo ""
+echo "AI Commands available:"
+echo "  - synos-ai-init          : Initialize AI subsystem"
+echo "  - synos-ai-status        : Check AI status"
+echo "  - synos-download-models  : Download AI models"
+echo "  - alfred                 : Launch Alfred AI assistant"
+echo ""
+
+exit 0

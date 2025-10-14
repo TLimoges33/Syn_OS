@@ -1,10 +1,10 @@
 //! Dependency resolution for SynPkg
-//! 
+//!
 //! Implements advanced dependency resolution with conflict detection
 //! and consciousness-aware optimization
 
+use anyhow::{anyhow, Result};
 use std::collections::{HashMap, HashSet, VecDeque};
-use anyhow::{Result, anyhow};
 
 use crate::core::PackageInfo;
 use crate::repository::RepositoryManager;
@@ -33,7 +33,11 @@ impl DependencyResolver {
     }
 
     /// Resolve dependencies for a package
-    pub async fn resolve(&mut self, package: &PackageInfo, repo_manager: &RepositoryManager) -> Result<DependencyResolution> {
+    pub async fn resolve(
+        &mut self,
+        package: &PackageInfo,
+        repo_manager: &RepositoryManager,
+    ) -> Result<DependencyResolution> {
         let mut to_install = Vec::new();
         let mut conflicts = Vec::new();
         let mut warnings = Vec::new();
@@ -81,7 +85,9 @@ impl DependencyResolver {
         }
 
         // Optimize installation order using topological sort
-        let install_order = self.optimize_install_order(&to_install, repo_manager).await?;
+        let install_order = self
+            .optimize_install_order(&to_install, repo_manager)
+            .await?;
 
         Ok(DependencyResolution {
             install_order,
@@ -92,14 +98,20 @@ impl DependencyResolver {
     }
 
     /// Optimize installation order using dependency analysis
-    async fn optimize_install_order(&self, packages: &[String], repo_manager: &RepositoryManager) -> Result<Vec<String>> {
+    async fn optimize_install_order(
+        &self,
+        packages: &[String],
+        repo_manager: &RepositoryManager,
+    ) -> Result<Vec<String>> {
         let mut graph: HashMap<String, Vec<String>> = HashMap::new();
         let mut in_degree: HashMap<String, usize> = HashMap::new();
 
         // Build dependency graph
         for pkg_name in packages {
             let pkg_info = repo_manager.find_package(pkg_name, None).await?;
-            let dependencies: Vec<String> = pkg_info.dependencies.iter()
+            let dependencies: Vec<String> = pkg_info
+                .dependencies
+                .iter()
                 .filter(|dep| packages.contains(dep))
                 .cloned()
                 .collect();
@@ -120,7 +132,8 @@ impl DependencyResolver {
         }
 
         // Topological sort (Kahn's algorithm)
-        let mut queue: VecDeque<String> = in_degree.iter()
+        let mut queue: VecDeque<String> = in_degree
+            .iter()
             .filter(|(_, &degree)| degree == 0)
             .map(|(pkg, _)| pkg.clone())
             .collect();
@@ -162,13 +175,18 @@ impl DependencyResolver {
     }
 
     /// Get dependency tree for visualization
-    pub async fn get_dependency_tree(&self, package: &PackageInfo, repo_manager: &RepositoryManager) -> Result<DependencyTree> {
+    pub async fn get_dependency_tree(
+        &self,
+        package: &PackageInfo,
+        repo_manager: &RepositoryManager,
+    ) -> Result<DependencyTree> {
         let mut tree = DependencyTree {
             package: package.name.clone(),
             dependencies: Vec::new(),
         };
 
-        self.build_dependency_tree(&mut tree, &package.name, repo_manager, &mut HashSet::new()).await?;
+        self.build_dependency_tree(&mut tree, &package.name, repo_manager, &mut HashSet::new())
+            .await?;
         Ok(tree)
     }
 
@@ -177,7 +195,7 @@ impl DependencyResolver {
         tree: &mut DependencyTree,
         package_name: &str,
         repo_manager: &RepositoryManager,
-        visited: &mut HashSet<String>
+        visited: &mut HashSet<String>,
     ) -> Result<()> {
         if visited.contains(package_name) {
             return Ok(()); // Avoid cycles
@@ -193,7 +211,8 @@ impl DependencyResolver {
             };
 
             // Use Box::pin to handle recursion in async function
-            Box::pin(self.build_dependency_tree(&mut dep_tree, dep_name, repo_manager, visited)).await?;
+            Box::pin(self.build_dependency_tree(&mut dep_tree, dep_name, repo_manager, visited))
+                .await?;
             tree.dependencies.push(dep_tree);
         }
 
@@ -250,12 +269,10 @@ mod tests {
                 },
                 DependencyTree {
                     package: "dep2".to_string(),
-                    dependencies: vec![
-                        DependencyTree {
-                            package: "dep2-1".to_string(),
-                            dependencies: vec![],
-                        }
-                    ],
+                    dependencies: vec![DependencyTree {
+                        package: "dep2-1".to_string(),
+                        dependencies: vec![],
+                    }],
                 },
             ],
         };

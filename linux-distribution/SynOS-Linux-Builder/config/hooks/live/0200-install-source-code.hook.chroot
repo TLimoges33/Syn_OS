@@ -1,0 +1,179 @@
+#!/bin/bash
+set -e
+
+echo "════════════════════════════════════════════════════════════"
+echo "  Installing SynOS Source Code & Documentation"
+echo "════════════════════════════════════════════════════════════"
+
+if [ -f /tmp/synos-source-code.tar.gz ]; then
+    # Install to /usr/src/synos/ (developer access)
+    echo "Extracting source code to /usr/src/synos/..."
+    mkdir -p /usr/src/synos
+    tar -xzf /tmp/synos-source-code.tar.gz -C /usr/src/synos/
+    chown -R root:root /usr/src/synos
+    chmod -R 755 /usr/src/synos
+    echo "✓ Source code installed to /usr/src/synos/"
+
+    # Also copy to /opt/synos/src/ (for integrated access)
+    echo "Copying source reference to /opt/synos/src/..."
+    cp -r /usr/src/synos/* /opt/synos/src/
+    echo "✓ Source reference copied to /opt/synos/src/"
+
+    # Deploy documentation to system paths
+    if [ -d /usr/src/synos/docs ]; then
+        echo "Deploying documentation..."
+
+        # Copy to /usr/share/doc/synos/
+        mkdir -p /usr/share/doc/synos
+        cp -r /usr/src/synos/docs/* /usr/share/doc/synos/
+
+        # Copy to /opt/synos/share/doc/
+        mkdir -p /opt/synos/share/doc
+        cp -r /usr/src/synos/docs/* /opt/synos/share/doc/
+
+        # Create README symlink
+        if [ -f /usr/src/synos/README.md ]; then
+            cp /usr/src/synos/README.md /usr/share/doc/synos/
+            cp /usr/src/synos/README.md /opt/synos/share/doc/
+        fi
+
+        echo "✓ Documentation deployed to:"
+        echo "  - /usr/share/doc/synos/"
+        echo "  - /opt/synos/share/doc/"
+    fi
+
+    # Create convenient access script
+    cat > /usr/local/bin/synos-docs << 'EOFDOCS'
+#!/bin/bash
+# SynOS Documentation Access
+
+case "$1" in
+    wiki)
+        if command -v firefox &> /dev/null; then
+            firefox /usr/share/doc/synos/wiki/Home.md &
+        else
+            less /usr/share/doc/synos/wiki/Home.md
+        fi
+        ;;
+    api)
+        less /usr/share/doc/synos/API-Reference.md
+        ;;
+    *)
+        echo "SynOS Documentation Access"
+        echo "Usage: synos-docs {wiki|api|<filename>}"
+        echo ""
+        echo "Documentation locations:"
+        echo "  - /usr/share/doc/synos/"
+        echo "  - /opt/synos/share/doc/"
+        echo ""
+        echo "Available docs:"
+        ls /usr/share/doc/synos/
+        ;;
+esac
+EOFDOCS
+
+    chmod +x /usr/local/bin/synos-docs
+    echo "✓ Documentation access command created: synos-docs"
+fi
+
+# Deploy development environment configuration
+if [ -d /usr/src/synos/development ]; then
+    echo "Deploying development environment..."
+    mkdir -p /opt/synos/dev
+
+    # Copy development configuration files
+    [ -f /usr/src/synos/development/pyproject.toml ] && cp /usr/src/synos/development/pyproject.toml /opt/synos/dev/
+    [ -f /usr/src/synos/development/requirements.txt ] && cp /usr/src/synos/development/requirements.txt /opt/synos/dev/
+    [ -f /usr/src/synos/development/package.json ] && cp /usr/src/synos/development/package.json /opt/synos/dev/
+    [ -f /usr/src/synos/development/.env ] && cp /usr/src/synos/development/.env /opt/synos/dev/env.example
+
+    echo "✓ Development environment configured at /opt/synos/dev/"
+fi
+
+# Deploy utility scripts (177 scripts from scripts/ directory)
+if [ -d /usr/src/synos/scripts ]; then
+    echo "Deploying SynOS utility scripts..."
+    mkdir -p /opt/synos/scripts/{deployment,build,maintenance,testing,automation,utilities}
+
+    # Copy script categories
+    [ -d /usr/src/synos/scripts/01-deployment ] && cp -r /usr/src/synos/scripts/01-deployment/* /opt/synos/scripts/deployment/ 2>/dev/null || true
+    [ -d /usr/src/synos/scripts/03-maintenance ] && cp -r /usr/src/synos/scripts/03-maintenance/* /opt/synos/scripts/maintenance/ 2>/dev/null || true
+    [ -d /usr/src/synos/scripts/04-testing ] && cp -r /usr/src/synos/scripts/04-testing/* /opt/synos/scripts/testing/ 2>/dev/null || true
+    [ -d /usr/src/synos/scripts/05-automation ] && cp -r /usr/src/synos/scripts/05-automation/* /opt/synos/scripts/automation/ 2>/dev/null || true
+    [ -d /usr/src/synos/scripts/06-utilities ] && cp -r /usr/src/synos/scripts/06-utilities/* /opt/synos/scripts/utilities/ 2>/dev/null || true
+
+    # Make all scripts executable
+    find /opt/synos/scripts -name "*.sh" -type f -exec chmod +x {} \; 2>/dev/null || true
+    find /opt/synos/scripts -name "*.py" -type f -exec chmod +x {} \; 2>/dev/null || true
+
+    # Create convenient wrapper
+    cat > /usr/local/bin/synos-scripts << 'EOFSCRIPTS'
+#!/bin/bash
+# SynOS Utility Scripts Access
+
+if [ -z "$1" ]; then
+    echo "SynOS Utility Scripts"
+    echo "Usage: synos-scripts <category> [script]"
+    echo ""
+    echo "Available categories:"
+    echo "  deployment  - Deployment and orchestration scripts"
+    echo "  maintenance - System maintenance utilities"
+    echo "  testing     - Testing and validation tools"
+    echo "  automation  - Automation and CI/CD scripts"
+    echo "  utilities   - General utility scripts"
+    echo ""
+    echo "Example: synos-scripts maintenance"
+    exit 0
+fi
+
+CATEGORY="$1"
+SCRIPT_DIR="/opt/synos/scripts/$CATEGORY"
+
+if [ ! -d "$SCRIPT_DIR" ]; then
+    echo "Error: Category '$CATEGORY' not found"
+    exit 1
+fi
+
+if [ -z "$2" ]; then
+    echo "Available scripts in $CATEGORY:"
+    ls -1 "$SCRIPT_DIR"
+else
+    SCRIPT="$SCRIPT_DIR/$2"
+    if [ -f "$SCRIPT" ]; then
+        "$SCRIPT" "${@:3}"
+    else
+        echo "Error: Script '$2' not found in $CATEGORY"
+        exit 1
+    fi
+fi
+EOFSCRIPTS
+
+    chmod +x /usr/local/bin/synos-scripts
+
+    SCRIPT_COUNT=$(find /opt/synos/scripts -name "*.sh" -o -name "*.py" | wc -l)
+    echo "✓ Deployed $SCRIPT_COUNT utility scripts"
+    echo "✓ Access via: synos-scripts <category>"
+fi
+
+# Deploy deployment infrastructure templates (optional)
+if [ -d /usr/src/synos/deployment ]; then
+    echo "Deploying infrastructure templates..."
+    mkdir -p /opt/synos/templates/{docker,kubernetes,monitoring}
+
+    # Copy deployment templates for reference
+    [ -d /usr/src/synos/deployment/docker ] && cp -r /usr/src/synos/deployment/docker /opt/synos/templates/ 2>/dev/null || true
+    [ -d /usr/src/synos/deployment/kubernetes ] && cp -r /usr/src/synos/deployment/kubernetes /opt/synos/templates/ 2>/dev/null || true
+    [ -d /usr/src/synos/deployment/helm ] && cp -r /usr/src/synos/deployment/helm /opt/synos/templates/ 2>/dev/null || true
+    [ -d /usr/src/synos/deployment/monitoring ] && cp -r /usr/src/synos/deployment/monitoring /opt/synos/templates/ 2>/dev/null || true
+
+    # Make deploy script executable
+    [ -f /opt/synos/templates/deploy.sh ] && chmod +x /opt/synos/templates/deploy.sh
+
+    echo "✓ Infrastructure templates deployed to /opt/synos/templates/"
+fi
+
+echo "════════════════════════════════════════════════════════════"
+echo "  ✅ Source Code & Documentation Installation Complete"
+echo "════════════════════════════════════════════════════════════"
+
+exit 0

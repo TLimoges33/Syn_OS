@@ -1,0 +1,465 @@
+/* ═══════════════════════════════════════════════════════════════════
+   SynOS Dark Red - GTK3 Theme
+   Revolutionary Red/Black Cyberpunk Interface
+   v1.0 - Red Phoenix Era
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════════
+   COLOR PALETTE
+   ═══════════════════════════════════════════════════════════════════ */
+
+@define-color bg_color #000000;              /* Pure black background */
+@define-color fg_color #ffffff;              /* White text */
+@define-color base_color #0a0a0a;            /* Input fields */
+@define-color text_color #e0e0e0;            /* Input text */
+
+@define-color selected_bg_color #ff0000;     /* Red selection */
+@define-color selected_fg_color #000000;     /* Black text on red */
+
+@define-color insensitive_bg_color #1a1a1a;  /* Disabled background */
+@define-color insensitive_fg_color #666666;  /* Disabled text */
+
+@define-color borders #2a2a2a;               /* Border color */
+@define-color unfocused_borders #1a1a1a;     /* Unfocused borders */
+
+@define-color link_color #ff3333;            /* Links */
+@define-color visited_link_color #cc0000;    /* Visited links */
+
+@define-color success_color #00ff00;         /* Matrix green */
+@define-color warning_color #ff9900;         /* Orange */
+@define-color error_color #ff0000;           /* Red */
+@define-color info_color #00ffff;            /* Cyan */
+
+/* ═══════════════════════════════════════════════════════════════════
+   WINDOW BASE
+   ═══════════════════════════════════════════════════════════════════ */
+
+* {
+    background-color: @bg_color;
+    color: @fg_color;
+    font-family: "Inter", sans-serif;
+    font-size: 10pt;
+}
+
+window {
+    background-color: @bg_color;
+    color: @fg_color;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   BUTTONS
+   ═══════════════════════════════════════════════════════════════════ */
+
+button {
+    background-color: #1a1a1a;
+    color: @fg_color;
+    border: 1px solid @borders;
+    border-radius: 3px;
+    padding: 6px 12px;
+    min-height: 24px;
+}
+
+button:hover {
+    background-color: #2a2a2a;
+    border-color: #ff0000;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+}
+
+button:active {
+    background-color: #ff0000;
+    color: #000000;
+    border-color: #ff0000;
+}
+
+button:disabled {
+    background-color: @insensitive_bg_color;
+    color: @insensitive_fg_color;
+    border-color: @unfocused_borders;
+}
+
+button.suggested-action {
+    background-color: #ff0000;
+    color: #000000;
+    border-color: #ff0000;
+}
+
+button.destructive-action {
+    background-color: #cc0000;
+    color: #ffffff;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ENTRIES (TEXT INPUTS)
+   ═══════════════════════════════════════════════════════════════════ */
+
+entry {
+    background-color: @base_color;
+    color: @text_color;
+    border: 1px solid @borders;
+    border-radius: 3px;
+    padding: 6px;
+    min-height: 24px;
+}
+
+entry:focus {
+    border-color: #ff0000;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+}
+
+entry:disabled {
+    background-color: @insensitive_bg_color;
+    color: @insensitive_fg_color;
+}
+
+entry selection {
+    background-color: @selected_bg_color;
+    color: @selected_fg_color;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SELECTIONS & HIGHLIGHTS
+   ═══════════════════════════════════════════════════════════════════ */
+
+selection,
+*:selected {
+    background-color: @selected_bg_color;
+    color: @selected_fg_color;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MENUS & POPUPS
+   ═══════════════════════════════════════════════════════════════════ */
+
+menu,
+.menu {
+    background-color: #000000;
+    border: 1px solid #ff0000;
+    padding: 4px;
+}
+
+menuitem {
+    padding: 6px 12px;
+    border-radius: 2px;
+}
+
+menuitem:hover {
+    background-color: #ff0000;
+    color: #000000;
+}
+
+menuitem:disabled {
+    color: @insensitive_fg_color;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PROGRESS BARS
+   ═══════════════════════════════════════════════════════════════════ */
+
+progressbar {
+    background-color: #1a1a1a;
+    border: 1px solid @borders;
+    border-radius: 3px;
+}
+
+progressbar progress {
+    background-color: #ff0000;
+    border-radius: 2px;
+}
+
+progressbar trough {
+    background-color: #0a0a0a;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CHECKBOXES & RADIO BUTTONS
+   ═══════════════════════════════════════════════════════════════════ */
+
+checkbutton check,
+radiobutton radio {
+    background-color: @base_color;
+    border: 1px solid @borders;
+    min-width: 16px;
+    min-height: 16px;
+}
+
+checkbutton check:checked,
+radiobutton radio:checked {
+    background-color: #ff0000;
+    border-color: #ff0000;
+    color: #000000;
+}
+
+checkbutton check:hover,
+radiobutton radio:hover {
+    border-color: #ff0000;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SCROLLBARS
+   ═══════════════════════════════════════════════════════════════════ */
+
+scrollbar {
+    background-color: #0a0a0a;
+    border: none;
+}
+
+scrollbar slider {
+    background-color: #2a2a2a;
+    border: 1px solid @borders;
+    border-radius: 3px;
+    min-width: 12px;
+    min-height: 40px;
+}
+
+scrollbar slider:hover {
+    background-color: #3a3a3a;
+    border-color: #ff0000;
+}
+
+scrollbar slider:active {
+    background-color: #ff0000;
+}
+
+/* Thin scrollbars */
+scrollbar.vertical slider {
+    min-width: 10px;
+}
+
+scrollbar.horizontal slider {
+    min-height: 10px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   NOTEBOOK TABS
+   ═══════════════════════════════════════════════════════════════════ */
+
+notebook {
+    background-color: @bg_color;
+}
+
+notebook header {
+    background-color: #0a0a0a;
+    border-bottom: 1px solid @borders;
+}
+
+notebook tab {
+    background-color: #1a1a1a;
+    color: #808080;
+    border: 1px solid @borders;
+    padding: 6px 12px;
+    margin: 2px;
+}
+
+notebook tab:checked {
+    background-color: #000000;
+    color: #ff0000;
+    border-bottom-color: #ff0000;
+}
+
+notebook tab:hover {
+    background-color: #2a2a2a;
+    color: #ffffff;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TOOLTIPS
+   ═══════════════════════════════════════════════════════════════════ */
+
+tooltip {
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid #ff0000;
+    border-radius: 3px;
+    padding: 6px 8px;
+}
+
+tooltip decoration {
+    background-color: transparent;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SWITCHES
+   ═══════════════════════════════════════════════════════════════════ */
+
+switch {
+    background-color: #1a1a1a;
+    border: 1px solid @borders;
+    border-radius: 12px;
+    min-width: 44px;
+    min-height: 24px;
+}
+
+switch:checked {
+    background-color: #ff0000;
+}
+
+switch slider {
+    background-color: #ffffff;
+    border-radius: 50%;
+    min-width: 20px;
+    min-height: 20px;
+    margin: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TOOLBARS
+   ═══════════════════════════════════════════════════════════════════ */
+
+toolbar {
+    background-color: #0a0a0a;
+    border-bottom: 1px solid @borders;
+    padding: 4px;
+}
+
+toolbar button {
+    background-color: transparent;
+    border: none;
+}
+
+toolbar button:hover {
+    background-color: #1a1a1a;
+    border: 1px solid @borders;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   LISTS & TREEVIEWS
+   ═══════════════════════════════════════════════════════════════════ */
+
+list,
+treeview {
+    background-color: @base_color;
+    color: @text_color;
+    border: 1px solid @borders;
+}
+
+list row,
+treeview row {
+    padding: 4px;
+}
+
+list row:selected,
+treeview row:selected {
+    background-color: @selected_bg_color;
+    color: @selected_fg_color;
+}
+
+list row:hover,
+treeview row:hover {
+    background-color: #1a1a1a;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   HEADERS
+   ═══════════════════════════════════════════════════════════════════ */
+
+headerbar {
+    background-color: #000000;
+    color: @fg_color;
+    border-bottom: 1px solid #ff0000;
+    padding: 6px;
+    min-height: 40px;
+}
+
+headerbar button {
+    background-color: transparent;
+    border: 1px solid transparent;
+}
+
+headerbar button:hover {
+    background-color: #1a1a1a;
+    border-color: @borders;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   LINKS
+   ═══════════════════════════════════════════════════════════════════ */
+
+link,
+link:link {
+    color: @link_color;
+    text-decoration: underline;
+}
+
+link:visited {
+    color: @visited_link_color;
+}
+
+link:hover {
+    color: #ff6666;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SPINNERS & LOADING
+   ═══════════════════════════════════════════════════════════════════ */
+
+spinner {
+    color: #ff0000;
+    -gtk-icon-source: -gtk-icontheme("process-working-symbolic");
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { -gtk-icon-transform: rotate(1turn); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SPECIAL ELEMENTS
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Info bars */
+.info {
+    background-color: rgba(0, 255, 255, 0.1);
+    border-left: 3px solid @info_color;
+}
+
+.warning {
+    background-color: rgba(255, 153, 0, 0.1);
+    border-left: 3px solid @warning_color;
+}
+
+.error {
+    background-color: rgba(255, 0, 0, 0.1);
+    border-left: 3px solid @error_color;
+}
+
+.success,
+.question {
+    background-color: rgba(0, 255, 0, 0.1);
+    border-left: 3px solid @success_color;
+}
+
+/* Separators */
+separator {
+    background-color: @borders;
+    min-width: 1px;
+    min-height: 1px;
+}
+
+/* Labels */
+label {
+    color: @fg_color;
+}
+
+label:disabled {
+    color: @insensitive_fg_color;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   APPLICATION SPECIFIC
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Thunar (File Manager) */
+.thunar {
+    background-color: @base_color;
+}
+
+/* Terminal */
+.terminal {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   END OF THEME
+   🔴 RED MEANS POWER. RED MEANS SYNOS. 🔴
+   ═══════════════════════════════════════════════════════════════════ */

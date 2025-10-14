@@ -1,0 +1,288 @@
+#!/bin/bash
+set -e
+
+echo "Customizing MATE desktop..."
+
+# Install SynOS branding assets
+echo "Installing SynOS branding..."
+mkdir -p /usr/share/backgrounds/synos
+mkdir -p /usr/share/pixmaps/synos
+mkdir -p /usr/share/icons/synos
+
+# Copy wallpapers from extracted source
+if [ -d /usr/src/synos/assets/branding/backgrounds ]; then
+    cp /usr/src/synos/assets/branding/backgrounds/synos-neural-dark.jpg /usr/share/backgrounds/synos/synos-wallpaper.jpg || true
+    cp /usr/src/synos/assets/branding/backgrounds/synos-neural-blue.jpg /usr/share/backgrounds/synos/ || true
+    cp /usr/src/synos/assets/branding/backgrounds/red-phoenix/mandala-wallpaper-1080p.png /usr/share/backgrounds/synos/ || true
+fi
+
+# Copy logos for applications
+if [ -d /usr/src/synos/assets/branding/logos ]; then
+    cp /usr/src/synos/assets/branding/logos/synos-logo-*.png /usr/share/pixmaps/synos/ || true
+    cp /usr/src/synos/assets/branding/logos/phoenix/phoenix-512.png /usr/share/pixmaps/synos/synos-icon.png || true
+    cp /usr/src/synos/assets/branding/logos/neural-lock/neural-lock-128.png /usr/share/pixmaps/synos/security-icon.png || true
+    cp /usr/src/synos/assets/branding/logos/neural-spiral/neural-spiral-128.png /usr/share/pixmaps/synos/ai-icon.png || true
+fi
+
+# Install GRUB theme if available
+if [ -d /usr/src/synos/assets/branding/grub ]; then
+    mkdir -p /boot/grub/themes/synos
+    cp /usr/src/synos/assets/branding/grub/synos-grub-16x9.png /boot/grub/themes/synos/background.png || true
+    cat > /boot/grub/themes/synos/theme.txt << 'EOFGRUB'
+title-text: "SynOS v1.0"
+desktop-image: "background.png"
+title-color: "#00BFFF"
+title-font: "DejaVu Sans Bold 24"
+EOFGRUB
+fi
+
+# Install Plymouth boot splash if available
+if [ -d /usr/src/synos/assets/branding/plymouth/synos-neural ]; then
+    cp -r /usr/src/synos/assets/branding/plymouth/synos-neural/ /usr/share/plymouth/themes/ || true
+    if command -v plymouth-set-default-theme >/dev/null 2>&1; then
+        plymouth-set-default-theme -R synos-neural || true
+    fi
+fi
+
+# Install GTK theme if available
+if [ -d /usr/src/synos/assets/themes/synos-dark-red ]; then
+    cp -r /usr/src/synos/assets/themes/synos-dark-red/ /usr/share/themes/ || true
+fi
+
+echo "✓ SynOS branding installed"
+
+# Configure MATE settings
+mkdir -p /etc/dconf/db/local.d
+
+cat > /etc/dconf/db/local.d/00-synos-settings << 'EOFDCONF'
+[org/mate/desktop/background]
+picture-filename='/usr/share/backgrounds/synos/synos-wallpaper.jpg'
+picture-options='zoom'
+primary-color='#1a1a2e'
+secondary-color='#8b0000'
+
+[org/mate/panel]
+default-layout='synos'
+
+[org/mate/terminal]
+default-profile='synos-default'
+
+[org/mate/interface]
+gtk-theme='synos-dark-red'
+icon-theme='Adwaita-dark'
+EOFDCONF
+
+dconf update
+
+echo "Installing SynOS desktop launchers..."
+
+# Create application launchers directory
+mkdir -p /usr/share/applications
+
+# SynOS Control Panel launcher
+cat > /usr/share/applications/synos-control-panel.desktop << 'EOFLAUNCHER'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=SynOS Control Panel
+Comment=Configure and manage SynOS system settings
+Exec=/opt/synos/bin/synos-web-interface
+Icon=preferences-system
+Terminal=false
+Categories=System;Settings;SynOS;
+Keywords=control;settings;configuration;synos;
+EOFLAUNCHER
+
+# SynOS AI Console launcher
+cat > /usr/share/applications/synos-ai-console.desktop << 'EOFLAUNCHER'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=SynOS AI Console
+Comment=Interact with SynOS AI consciousness engine
+Exec=mate-terminal -e '/opt/synos/bin/synos-ai-repl'
+Icon=applications-science
+Terminal=false
+Categories=Development;Science;SynOS;
+Keywords=ai;consciousness;neural;synos;
+EOFLAUNCHER
+
+# SynOS Security Monitor launcher
+cat > /usr/share/applications/synos-security-monitor.desktop << 'EOFLAUNCHER'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=SynOS Security Monitor
+Comment=Monitor system security and threat detection
+Exec=/opt/synos/bin/synos-security-dashboard
+Icon=security-high
+Terminal=false
+Categories=System;Security;SynOS;
+Keywords=security;monitor;threats;firewall;synos;
+EOFLAUNCHER
+
+# SynOS Package Manager launcher
+cat > /usr/share/applications/synos-package-manager.desktop << 'EOFLAUNCHER'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=SynOS Package Manager
+Comment=Install, update, and manage packages
+Exec=mate-terminal -e 'bash -c "synpkg status; echo; echo Press ENTER to continue...; read"'
+Icon=system-software-install
+Terminal=false
+Categories=System;PackageManager;SynOS;
+Keywords=package;install;update;apt;synpkg;synos;
+EOFLAUNCHER
+
+# SynOS Documentation launcher
+cat > /usr/share/applications/synos-documentation.desktop << 'EOFLAUNCHER'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=SynOS Documentation
+Comment=Browse SynOS documentation and guides
+Exec=mate-terminal -e 'bash -c "synos-docs list; echo; echo Type command to view docs or press ENTER to exit...; read cmd; if [ -n \"$cmd\" ]; then $cmd; fi"'
+Icon=help-browser
+Terminal=false
+Categories=Documentation;Education;SynOS;
+Keywords=docs;help;manual;guide;wiki;synos;
+EOFLAUNCHER
+
+# SynOS System Info launcher
+cat > /usr/share/applications/synos-system-info.desktop << 'EOFLAUNCHER'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=SynOS System Info
+Comment=View SynOS system information and status
+Exec=mate-terminal -e 'bash -c "echo \"=== SynOS System Information ===\"; echo; /opt/synos/bin/synos-ai-status; echo; echo Press ENTER to continue...; read"'
+Icon=utilities-system-monitor
+Terminal=false
+Categories=System;Monitor;SynOS;
+Keywords=info;status;system;monitor;synos;
+EOFLAUNCHER
+
+# SynOS Security Tools launcher
+cat > /usr/share/applications/synos-security-tools.desktop << 'EOFLAUNCHER'
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=SynOS Security Tools
+Comment=Access SynOS security tool collection
+Exec=mate-terminal -e 'bash -c "synpkg list-tools; echo; echo Press ENTER to continue...; read"'
+Icon=applications-utilities
+Terminal=false
+Categories=System;Security;Utility;SynOS;
+Keywords=security;tools;hacking;pentesting;synos;
+EOFLAUNCHER
+
+# Make all launchers executable
+chmod +x /usr/share/applications/synos-*.desktop
+
+echo "Creating SynOS menu category..."
+
+# Create SynOS menu category
+mkdir -p /usr/share/desktop-directories
+cat > /usr/share/desktop-directories/synos.directory << 'EOFDIR'
+[Desktop Entry]
+Version=1.0
+Type=Directory
+Name=SynOS
+Comment=SynOS System Tools and Applications
+Icon=synos-icon
+EOFDIR
+
+# Add SynOS category to menu
+mkdir -p /etc/xdg/menus/applications-merged
+cat > /etc/xdg/menus/applications-merged/synos.menu << 'EOFMENU'
+<!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
+ "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
+<Menu>
+  <Name>Applications</Name>
+  <Menu>
+    <Name>SynOS</Name>
+    <Directory>synos.directory</Directory>
+    <Include>
+      <Category>SynOS</Category>
+    </Include>
+  </Menu>
+</Menu>
+EOFMENU
+
+echo "Setting up desktop shortcuts..."
+
+# Create default desktop shortcuts in /etc/skel
+mkdir -p /etc/skel/Desktop
+cp /usr/share/applications/synos-control-panel.desktop /etc/skel/Desktop/
+cp /usr/share/applications/synos-documentation.desktop /etc/skel/Desktop/
+cp /usr/share/applications/synos-security-tools.desktop /etc/skel/Desktop/
+chmod +x /etc/skel/Desktop/*.desktop
+
+echo "Creating welcome screen..."
+
+# Create welcome screen script
+cat > /usr/local/bin/synos-welcome << 'EOFWELCOME'
+#!/bin/bash
+
+# SynOS Welcome Screen
+clear
+cat << 'EOFBANNER'
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║   ███████╗██╗   ██╗███╗   ██╗ ██████╗ ███████╗                          ║
+║   ██╔════╝╚██╗ ██╔╝████╗  ██║██╔═══██╗██╔════╝                          ║
+║   ███████╗ ╚████╔╝ ██╔██╗ ██║██║   ██║███████╗                          ║
+║   ╚════██║  ╚██╔╝  ██║╚██╗██║██║   ██║╚════██║                          ║
+║   ███████║   ██║   ██║ ╚████║╚██████╔╝███████║                          ║
+║   ╚══════╝   ╚═╝   ╚═╝  ╚═══╝ ╚═════╝ ╚══════╝                          ║
+║                                                                           ║
+║                   Welcome to SynOS v1.0                                   ║
+║              Custom AI-Powered Security Distribution                      ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+EOFBANNER
+
+echo ""
+echo "System Status:"
+echo "─────────────────────────────────────────────────────────────────────"
+systemctl is-active --quiet synos-ai-engine && echo "✓ AI Engine: Running" || echo "✗ AI Engine: Stopped"
+systemctl is-active --quiet synos-security-monitor && echo "✓ Security Monitor: Running" || echo "✗ Security Monitor: Stopped"
+systemctl is-active --quiet synos-consciousness && echo "✓ Consciousness Layer: Running" || echo "✗ Consciousness Layer: Stopped"
+systemctl is-active --quiet synos-web-interface && echo "✓ Web Interface: Running" || echo "✗ Web Interface: Stopped"
+echo ""
+
+echo "Quick Start Guide:"
+echo "─────────────────────────────────────────────────────────────────────"
+echo "  • synpkg status          - View package manager status"
+echo "  • synos-docs list        - Browse documentation"
+echo "  • synos-ai-status        - Check AI subsystem"
+echo "  • synpkg list-tools      - View security tools (500+)"
+echo ""
+echo "Desktop Shortcuts:"
+echo "  • SynOS Control Panel    - System configuration"
+echo "  • SynOS Security Tools   - Access security suite"
+echo "  • SynOS Documentation    - Full documentation"
+echo ""
+echo "Documentation: /opt/synos/share/doc/"
+echo "Configuration: /etc/synos/"
+echo "─────────────────────────────────────────────────────────────────────"
+echo ""
+EOFWELCOME
+
+chmod +x /usr/local/bin/synos-welcome
+
+# Add welcome screen to default bashrc
+cat >> /etc/skel/.bashrc << 'EOFBASHRC'
+
+# Show SynOS welcome screen on first login
+if [ ! -f "$HOME/.synos-welcome-shown" ]; then
+    synos-welcome
+    touch "$HOME/.synos-welcome-shown"
+fi
+EOFBASHRC
+
+echo "✓ Desktop customized with full SynOS integration"
+
+exit 0

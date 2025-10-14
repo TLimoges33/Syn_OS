@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e
+
+echo "Customizing MATE desktop..."
+
+# Set default wallpaper
+mkdir -p /usr/share/backgrounds/synos
+# Wallpaper will be added in next hook
+
+# Configure MATE settings
+mkdir -p /etc/dconf/db/local.d
+
+cat > /etc/dconf/db/local.d/00-synos-settings << 'EOFDCONF'
+[org/mate/desktop/background]
+picture-filename='/usr/share/backgrounds/synos/synos-wallpaper.png'
+picture-options='zoom'
+
+[org/mate/panel]
+default-layout='synos'
+
+[org/mate/terminal]
+default-profile='synos-default'
+EOFDCONF
+
+dconf update
+
+echo "✓ Desktop customized"
+
+exit 0

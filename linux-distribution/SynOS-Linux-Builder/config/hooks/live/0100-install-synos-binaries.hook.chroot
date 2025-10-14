@@ -1,0 +1,70 @@
+#!/bin/bash
+set -e
+
+echo "════════════════════════════════════════════════════════════"
+echo "  Installing SynOS Components - Complete Integration"
+echo "════════════════════════════════════════════════════════════"
+
+# Create complete /opt/synos/ directory structure (as per wiki)
+echo "Creating /opt/synos/ directory structure..."
+mkdir -p /opt/synos/{bin,lib,share,data,models,config}
+mkdir -p /opt/synos/consciousness/{models,data,logs,config}
+mkdir -p /opt/synos/education/{modules,tutorials,labs,assessments}
+mkdir -p /opt/synos/dashboard/{web,api,config,logs}
+mkdir -p /opt/synos/security/{tools,policies,logs,config}
+mkdir -p /opt/synos/ai/{models,data,config}
+mkdir -p /opt/synos/src
+echo "✓ /opt/synos/ structure created"
+
+if [ -d /tmp/synos-binaries ]; then
+    # Install kernel to /boot/synos/
+    if [ -d /tmp/synos-binaries/kernel ]; then
+        mkdir -p /boot/synos
+        cp -av /tmp/synos-binaries/kernel/* /boot/synos/
+        chmod 644 /boot/synos/*
+        echo "✓ Kernel installed to /boot/synos/"
+    fi
+
+    # Install binaries to /opt/synos/bin/ (PRIMARY location)
+    if [ -d /tmp/synos-binaries/bin ]; then
+        echo "Installing SynOS binaries to /opt/synos/bin/..."
+        cp -av /tmp/synos-binaries/bin/* /opt/synos/bin/
+        chmod +x /opt/synos/bin/*
+
+        # Create symlinks in /usr/local/bin/ for PATH access
+        echo "Creating symlinks in /usr/local/bin/..."
+        for binary in /opt/synos/bin/*; do
+            if [ -f "$binary" ] && [ -x "$binary" ]; then
+                ln -sf "$binary" /usr/local/bin/$(basename "$binary")
+            fi
+        done
+
+        echo "✓ Binaries installed to /opt/synos/bin/"
+        echo "✓ Symlinks created in /usr/local/bin/"
+    fi
+
+    # Install libraries to /opt/synos/lib/
+    if [ -d /tmp/synos-binaries/lib ]; then
+        echo "Installing SynOS libraries to /opt/synos/lib/..."
+        cp -av /tmp/synos-binaries/lib/* /opt/synos/lib/
+
+        # Add to library path
+        echo "/opt/synos/lib" > /etc/ld.so.conf.d/synos.conf
+        ldconfig
+
+        echo "✓ Libraries installed to /opt/synos/lib/"
+        echo "✓ Library path configured"
+    fi
+fi
+
+# Set ownership and permissions
+chown -R root:root /opt/synos
+chmod -R 755 /opt/synos/bin
+chmod -R 755 /opt/synos/lib
+chmod -R 755 /opt/synos/share
+
+echo "════════════════════════════════════════════════════════════"
+echo "  ✅ SynOS Binary Installation Complete"
+echo "════════════════════════════════════════════════════════════"
+
+exit 0

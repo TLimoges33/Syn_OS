@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2025 Syn_OS Project Contributors
+Copyright (c) 2025 SynOS Project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,27 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-## Third-Party Licenses
-
-This project incorporates components under various licenses:
-
-### Security Components
-- Rust crypto libraries (Apache 2.0 / MIT)
-- OpenSSL (Apache 2.0)
-- TPM libraries (BSD-3-Clause)
-
-### AI/ML Components  
-- PyTorch (BSD-3-Clause)
-- HuggingFace Transformers (Apache 2.0)
-- NumPy (BSD-3-Clause)
-
-### System Components
-- Linux Kernel modules (GPL-2.0)
-- eBPF programs (GPL-2.0 compatible)
-- ZeroMQ (MPL-2.0)
-
-All third-party components retain their original licenses. See individual
-component directories for specific license files.

@@ -488,22 +488,38 @@ deployment/
 
 ## 🔧 BUILD SYSTEM
 
-### Canonical Build Location
+### Build Scripts Location
 
-**Primary:** `deployment/infrastructure/build-system/` (12 production scripts)
+**Primary:** `scripts/02-build/` (50+ organized scripts in 8 categories)
+
+**Legacy:** `deployment/infrastructure/build-system/` (12 legacy production scripts)
 
 ### Key Build Scripts
 
 ```bash
-# Quick development build
-./deployment/infrastructure/build-system/build-simple-kernel-iso.sh
+# Recommended: Ultimate ISO with all features
+./scripts/02-build/core/ultimate-iso-builder.sh
 
-# Production ISO
+# Complete v1.0 build
+./scripts/02-build/core/build-synos-v1.0-complete.sh
+
+# Minimal variant
+./scripts/02-build/variants/build-synos-minimal-iso.sh
+
+# Legacy production ISO
 ./deployment/infrastructure/build-system/build-production-iso.sh
-
-# Enhanced production (full features)
-./deployment/infrastructure/build-system/build-enhanced-production-iso.sh
 ```
+
+### Build Script Categories
+
+- **core/** - Complete ISO builds from scratch (30-90 min)
+- **variants/** - Specialized builds (minimal, lightweight)
+- **enhancement/** - Add features to existing builds (6 phases)
+- **tools/** - Install specific tool sets
+- **optimization/** - Fix issues, optimize size
+- **monitoring/** - Build progress monitoring
+- **auditing/** - Pre-build audits and verification
+- **launchers/** - Build launcher scripts
 
 ### Build Tasks (VS Code)
 
@@ -557,32 +573,51 @@ python3 scripts/purple-team/orchestrator.py
 
 ## 📚 DOCUMENTATION STRUCTURE
 
-### Key Documentation Files
+**NEW:** Documentation reorganized October 12, 2025 - 11 numbered categories
+
+### Main Documentation Hub
+
+**Location:** `docs/README.md` - Comprehensive navigation to all documentation
+
+### Documentation Categories
 
 ```
 docs/
-├── planning/                           # Roadmaps and planning
-│   ├── SYNOS_LINUX_DISTRIBUTION_ROADMAP.md
-│   ├── TODO_10X_CYBERSECURITY_ROADMAP.md
-│   └── WHATS_NEXT.md
-├── project-status/                     # Status reports
-│   ├── ARCHITECTURAL_REORGANIZATION_COMPLETE.md
-│   ├── SYNOS_V1_FINAL_AUDIT_REPORT.md
-│   └── SYNOS_V1_MASTERPIECE_STATUS.md
-├── security/                           # Security documentation
-│   ├── SECURITY_AUDIT_COMPLETE.md
-│   ├── THREAT_MODEL.md
-│   └── VULNERABILITY_DISCLOSURE.md
-├── CLEANUP_SESSION_OCT2_2025.md       # Latest cleanup session
-└── WORKSPACE_GUIDE.md                  # Team onboarding guide (271 lines)
+├── 01-getting-started/        # User onboarding (Quick-Start, Installation, First-Steps)
+├── 02-user-guide/             # End-user guides (VM testing, workspace, build guide)
+├── 03-build/                  # Build system docs (ISO build, checklists, enhancement guides)
+├── 04-development/            # Developer guides (architecture, API, contributing, standards)
+├── 05-planning/               # Roadmaps, checklists, priorities
+│   ├── ROADMAP.md             # Master roadmap
+│   ├── REORGANIZATION_PLAN.md # Documentation reorganization plan (this reorganization)
+│   ├── roadmaps/              # Detailed roadmaps (WHATS_NEXT, CRITICAL_PRIORITIES)
+│   └── checklists/            # Launch and release checklists
+├── 06-project-status/         # Current status & archives
+│   ├── PROJECT_STATUS.md      # CURRENT STATUS (single source of truth)
+│   ├── TODO.md                # Master TODO list (single source of truth)
+│   ├── recent/                # Last 30 days
+│   └── archives/oct2025/      # October 2025 archives (status, build, completion, audit reports)
+├── 07-audits/                 # Audit reports (comprehensive audits, ISO build audits)
+├── 08-security/               # Security docs (SECURITY.md, audits, threat models)
+├── 09-api/                    # API documentation (syscall reference, API progress)
+├── 10-wiki/                   # Wiki content (public, restricted, internal)
+└── 11-archives/               # Historical documentation
 ```
 
-### Root Documentation
+### Root Documentation (Minimal)
 
 -   `README.md` - Project overview and quick start
--   `TODO.md` - Master progress board (1068 lines, single source of truth)
--   `CLAUDE.md` - This file - AI agent comprehensive overview
--   `SECURITY.md` - Security policies and vulnerability disclosure
+-   `CLAUDE.md` - This file - AI agent comprehensive overview (789 lines)
+-   `CHANGELOG.md` - Version history
+-   `CODE_OF_CONDUCT.md` - Community guidelines
+-   `CONTRIBUTING.md` - Contribution guide
+
+### Single Sources of Truth
+
+-   **Project Status:** `docs/project-status/PROJECT_STATUS.md`
+-   **TODO List:** `docs/project-status/TODO.md`
+-   **Roadmap:** `docs/05-planning/ROADMAP.md`
+-   **Security Policy:** `docs/08-security/SECURITY.md`
 
 ---
 

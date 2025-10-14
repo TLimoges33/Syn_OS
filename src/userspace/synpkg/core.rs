@@ -1,16 +1,16 @@
 //! Core SynPkg package manager implementation
-//! 
+//!
 //! Provides the main SynPkgManager struct and its core functionality
 
+use anyhow::{anyhow, Result};
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
-use anyhow::{Result, anyhow};
-use serde::{Deserialize, Serialize};
 use tokio::fs;
 
-use crate::repository::{RepositoryManager, PackageSource};
-use crate::dependency::DependencyResolver;
 use crate::cache::PackageCache;
+use crate::dependency::DependencyResolver;
+use crate::repository::{PackageSource, RepositoryManager};
 // TODO: Implement ConsciousnessEngine integration when available
 // use syn_ai::ConsciousnessEngine;
 use crate::security::SecurityValidator;
@@ -101,7 +101,7 @@ impl SynPkgManager {
         &mut self,
         package_name: &str,
         _context: &str,
-        _preferred_source: Option<&String>
+        _preferred_source: Option<&String>,
     ) -> Result<()> {
         println!("🧠 Installing package with consciousness: {}", package_name);
 
@@ -123,7 +123,10 @@ impl SynPkgManager {
         self.security.validate_package(&package_info).await?;
 
         // Resolve dependencies
-        let resolution = self.dependency_resolver.resolve(&package_info, &self.repo_manager).await?;
+        let resolution = self
+            .dependency_resolver
+            .resolve(&package_info, &self.repo_manager)
+            .await?;
 
         println!("📦 Installation plan:");
         for pkg in &resolution.install_order {
@@ -141,7 +144,9 @@ impl SynPkgManager {
         // Install packages in dependency order
         for pkg_name in &resolution.install_order {
             self.install_single_package(pkg_name).await?;
-            self.cache.mark_installed(pkg_name, &package_info.version).await?;
+            self.cache
+                .mark_installed(pkg_name, &package_info.version)
+                .await?;
         }
 
         // Update consciousness learning
@@ -183,8 +188,11 @@ impl SynPkgManager {
     pub async fn search_packages(&mut self, query: &str, category: Option<&String>) -> Result<()> {
         println!("🔍 Searching for: {}", query);
 
-        let results = self.repo_manager.search(query, category.map(|s| s.as_str())).await?;
-        
+        let results = self
+            .repo_manager
+            .search(query, category.map(|s| s.as_str()))
+            .await?;
+
         if results.is_empty() {
             println!("No packages found matching '{}'", query);
             return Ok(());
@@ -200,7 +208,10 @@ impl SynPkgManager {
             println!("{}. {} ({})", i + 1, pkg.name, pkg.version);
             println!("   {}", pkg.description);
             println!("   Source: {:?}, Category: {}", pkg.source, pkg.category);
-            println!("   Consciousness compatibility: {:.1}%", pkg.consciousness_compatibility * 100.0);
+            println!(
+                "   Consciousness compatibility: {:.1}%",
+                pkg.consciousness_compatibility * 100.0
+            );
             println!();
         }
 
@@ -219,9 +230,9 @@ impl SynPkgManager {
     /// Upgrade all packages
     pub async fn upgrade_packages(&mut self) -> Result<()> {
         println!("⬆️  Checking for package upgrades...");
-        
+
         let upgradable = self.cache.get_upgradable_packages().await?;
-        
+
         if upgradable.is_empty() {
             println!("All packages are up to date");
             return Ok(());
@@ -263,7 +274,10 @@ impl SynPkgManager {
         println!("License: {}", package_info.license);
         println!("Security Rating: {:?}", package_info.security_rating);
         println!("Status: {:?}", install_status);
-        println!("Consciousness Compatibility: {:.1}%", package_info.consciousness_compatibility * 100.0);
+        println!(
+            "Consciousness Compatibility: {:.1}%",
+            package_info.consciousness_compatibility * 100.0
+        );
         println!("Educational Value: {}/10", package_info.educational_value);
 
         if let Some(homepage) = &package_info.homepage {
@@ -304,12 +318,15 @@ impl SynPkgManager {
 
     /// Get consciousness-based recommendations
     pub async fn get_consciousness_recommendations(&mut self, context: &str) -> Result<()> {
-        println!("🧠 Getting consciousness recommendations for context: {}", context);
-        
+        println!(
+            "🧠 Getting consciousness recommendations for context: {}",
+            context
+        );
+
         // TODO: Re-enable consciousness recommendations
         let recommendations: Vec<String> = Vec::new();
         // self.consciousness.get_recommendations(context).await?;
-        
+
         if recommendations.is_empty() {
             println!("No recommendations available for this context");
             return Ok(());
@@ -326,12 +343,12 @@ impl SynPkgManager {
     /// Optimize installed packages
     pub async fn optimize_packages(&mut self) -> Result<()> {
         println!("🧠 Optimizing package configuration...");
-        
+
         let installed = self.cache.get_installed_packages().await?;
         // TODO: Re-enable consciousness optimizations
         let optimizations: Vec<String> = Vec::new();
         // self.consciousness.suggest_optimizations(&installed).await?;
-        
+
         if optimizations.is_empty() {
             println!("No optimizations suggested");
             return Ok(());
@@ -346,7 +363,11 @@ impl SynPkgManager {
     }
 
     // Helper methods
-    async fn find_package(&self, name: &str, preferred_source: Option<PackageSource>) -> Result<PackageInfo> {
+    async fn find_package(
+        &self,
+        name: &str,
+        preferred_source: Option<PackageSource>,
+    ) -> Result<PackageInfo> {
         self.repo_manager.find_package(name, preferred_source).await
     }
 
@@ -354,13 +375,13 @@ impl SynPkgManager {
         // This would integrate with actual package installation
         // For now, simulate the installation
         println!("  Installing {}...", package_name);
-        
+
         // In a real implementation, this would:
         // 1. Download the package
         // 2. Verify signatures
         // 3. Extract and install files
         // 4. Update system databases
-        
+
         Ok(())
     }
 

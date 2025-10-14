@@ -1,0 +1,23 @@
+#!/bin/bash
+set -e
+
+echo "════════════════════════════════════════════════════════════"
+echo "  Fixing Certificates and GPG Keys"
+echo "════════════════════════════════════════════════════════════"
+
+# Install ca-certificates to fix SSL/TLS verification
+export DEBIAN_FRONTEND=noninteractive
+apt-get update -oAcquire::AllowInsecureRepositories=true || true
+apt-get install -y --allow-unauthenticated ca-certificates debian-archive-keyring || true
+
+# Update CA certificates
+update-ca-certificates
+
+# Import Debian archive keys
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 0E98404D386FA1D9 || true
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6ED0E7B82643E131 || true
+
+# Try to import ParrotOS key if available
+wget -qO - https://deb.parrot.sh/parrot/misc/parrotsec.gpg 2>/dev/null | apt-key add - || true
+
+echo "✓ Certificates and GPG keys configured"

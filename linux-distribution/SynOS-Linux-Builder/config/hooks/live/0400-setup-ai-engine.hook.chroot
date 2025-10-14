@@ -1,0 +1,20 @@
+#!/bin/bash
+set -e
+
+echo "Setting up AI engine..."
+
+# Install Python AI dependencies
+pip3 install --no-cache-dir \
+    torch torchvision torchaudio \
+    transformers \
+    numpy pandas scikit-learn \
+    onnxruntime \
+    2>&1 || echo "Some AI packages may need manual installation"
+
+# Create AI model directory
+mkdir -p /opt/synos/models
+chown -R synos:synos /opt/synos/models
+
+echo "✓ AI engine configured"
+
+exit 0

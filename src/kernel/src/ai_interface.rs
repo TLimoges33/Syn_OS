@@ -3,11 +3,11 @@
 //! Implements AI-integrated system management for enhanced
 //! performance, security, and optimization with machine learning
 
-use core::sync::atomic::{AtomicUsize, Ordering};
-use spin::Mutex;
-use lazy_static::lazy_static;
-use alloc::vec::Vec;
 use alloc::collections::BTreeMap;
+use alloc::vec::Vec;
+use core::sync::atomic::{AtomicUsize, Ordering};
+use lazy_static::lazy_static;
+use spin::Mutex;
 // use crate::security::verification;  // Currently not available
 
 /// Unified AI Interface for syscall and memory integration
@@ -59,7 +59,12 @@ impl AIInterface {
         self.page_frequencies.insert(page_addr, frequency + 1);
 
         // Log consciousness event
-        crate::println!("🧠 Consciousness: {} at 0x{:x} with data 0x{:x}", event_type, address, data);
+        crate::println!(
+            "🧠 Consciousness: {} at 0x{:x} with data 0x{:x}",
+            event_type,
+            address,
+            data
+        );
 
         // Adjust awareness level based on memory activity
         if self.memory_patterns.len() > 100 {
@@ -333,7 +338,9 @@ pub fn allocate(size: usize, align: usize) -> Result<*mut u8, &'static str> {
 
     // Register allocation in consciousness map
     if !ptr.is_null() {
-        CONSCIOUSNESS_MEMORY_MAP.lock().insert(ptr as usize, (size, use_quantum));
+        CONSCIOUSNESS_MEMORY_MAP
+            .lock()
+            .insert(ptr as usize, (size, use_quantum));
 
         // Update managed memory counter
         CONSCIOUSNESS_MANAGED_MEMORY.fetch_add(size, Ordering::SeqCst);
@@ -354,7 +361,9 @@ pub fn deallocate(ptr: *mut u8, size: usize, align: usize) {
     state.metrics.deallocations += 1;
 
     // Check if this was a quantum allocation
-    let was_quantum = if let Some((actual_size, quantum)) = CONSCIOUSNESS_MEMORY_MAP.lock().remove(&(ptr as usize)) {
+    let was_quantum = if let Some((actual_size, quantum)) =
+        CONSCIOUSNESS_MEMORY_MAP.lock().remove(&(ptr as usize))
+    {
         // Update managed memory counter
         CONSCIOUSNESS_MANAGED_MEMORY.fetch_sub(actual_size, Ordering::SeqCst);
 
@@ -452,8 +461,8 @@ fn analyze_memory_patterns() {
 
     for pattern in &mut state.patterns {
         // Update predictability based on frequency and recency
-        pattern.predictability = (pattern.frequency as f32 * 0.8) /
-            (1.0 + (get_current_timestamp() - pattern.last_access) as f32 * 0.001);
+        pattern.predictability = (pattern.frequency as f32 * 0.8)
+            / (1.0 + (get_current_timestamp() - pattern.last_access) as f32 * 0.001);
     }
 }
 
@@ -494,7 +503,7 @@ pub fn get_metrics() -> MemoryMetrics {
     let _state = CONSCIOUSNESS_STATE.lock();
 
     MemoryMetrics {
-        total_memory: 1024 * 1024,  // Stub: 1MB
+        total_memory: 1024 * 1024, // Stub: 1MB
         used_memory: 512 * 1024,   // Stub: 512KB
         reserved_memory: CONSCIOUSNESS_MANAGED_MEMORY.load(Ordering::SeqCst),
         quantum_memory: QUANTUM_MANAGED_MEMORY.load(Ordering::SeqCst),
@@ -531,8 +540,8 @@ pub fn create_entanglement(addr1: usize, addr2: usize, size: usize) -> bool {
     // Verify security of entanglement operation
     // verification::verify_memory_access(addr1, size) &&  // Function not available
     // verification::verify_memory_access(addr2, size)   // Function not available
-    let _ = (addr1, addr2, size);  // Suppress unused warnings
-    true  // Simplified: always allow entanglement
+    let _ = (addr1, addr2, size); // Suppress unused warnings
+    true // Simplified: always allow entanglement
 }
 
 /// Check if memory region is in superposition
@@ -584,7 +593,8 @@ pub fn register_access_pattern(start_addr: usize, end_addr: usize, access_type: 
 
 /// Find the index of the least predictable memory pattern
 fn find_least_predictable_pattern(patterns: &[MemoryPattern]) -> Option<usize> {
-    patterns.iter()
+    patterns
+        .iter()
         .enumerate()
         .min_by(|(_, a), (_, b)| a.predictability.partial_cmp(&b.predictability).unwrap())
         .map(|(i, _)| i)

@@ -1,0 +1,24 @@
+# MATE Desktop Environment
+mate-desktop-environment
+mate-desktop-environment-extras
+lightdm
+lightdm-gtk-greeter
+
+# Additional Desktop Tools
+firefox-esr
+thunderbird
+libreoffice
+gimp
+vlc
+gedit
+file-roller
+
+# Terminal
+mate-terminal
+terminator
+
+# System tools
+gparted
+synaptic
+gnome-disk-utility
+network-manager-gnome

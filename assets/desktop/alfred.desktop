@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=ALFRED Voice Assistant
+GenericName=AI Digital Butler
+Comment=Your loyal digital butler for voice commands and transcription
+Icon=audio-input-microphone
+Exec=xfce4-terminal -e "python3 /usr/share/synos/alfred/alfred-daemon.py" --title="ALFRED - Your Digital Butler" --geometry=100x30
+Terminal=false
+Categories=System;Utility;Audio;
+Keywords=voice;assistant;alfred;ai;transcription;speech;
+StartupNotify=true
