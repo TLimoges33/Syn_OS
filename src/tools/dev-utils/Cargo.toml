@@ -9,6 +9,7 @@ authors.workspace = true
 clap = { workspace = true }
 anyhow = { workspace = true }
 serde = { workspace = true }
+tokio = { workspace = true }
 
 [[bin]]
 name = "syn-dev"

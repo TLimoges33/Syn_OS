@@ -6,7 +6,7 @@ members = [
     "core/common",
     "core/services",
     "core/infrastructure/package",
-    "src/kernel",
+    # "src/kernel",  # Excluded: no_std kernel must be built separately with x86_64-unknown-none target
     "src/userspace/shell",
     "src/userspace/synpkg",
     "src/userspace/libtsynos",
