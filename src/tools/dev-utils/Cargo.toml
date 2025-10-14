@@ -9,7 +9,7 @@ authors.workspace = true
 clap = { workspace = true }
 anyhow = { workspace = true }
 serde = { workspace = true }
-tokio = { workspace = true }
+tokio = { version = "1.35", features = ["rt-multi-thread", "macros", "process", "fs"] }
 
 [[bin]]
 name = "syn-dev"
