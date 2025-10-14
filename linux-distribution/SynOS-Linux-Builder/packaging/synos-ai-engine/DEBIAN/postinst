@@ -3,10 +3,10 @@ set -e
 
 echo "Configuring SynOS AI Engine..."
 
-# Enable and start SynOS AI services
-systemctl enable synos-ai-engine.service
-systemctl enable synos-consciousness.service
-systemctl enable synos-security-orchestrator.service
+# Create synos user if it doesn't exist (MUST BE FIRST)
+if ! getent passwd synos > /dev/null; then
+    useradd -r -s /bin/false -d /var/lib/synos -c "SynOS AI Engine" synos
+fi
 
 # Create AI data directories
 mkdir -p /var/lib/synos/ai
@@ -14,14 +14,14 @@ mkdir -p /var/lib/synos/models
 mkdir -p /var/lib/synos/consciousness
 mkdir -p /var/log/synos
 
-# Set proper permissions
-chown -R synos:synos /var/lib/synos
-chown -R synos:synos /var/log/synos
+# Set proper permissions (now that user exists)
+chown -R synos:synos /var/lib/synos 2>/dev/null || true
+chown -R synos:synos /var/log/synos 2>/dev/null || true
 
-# Create synos user if it doesn't exist
-if ! getent passwd synos > /dev/null; then
-    useradd -r -s /bin/false -d /var/lib/synos -c "SynOS AI Engine" synos
-fi
+# Enable SynOS AI services (systemctl may fail in chroot, so don't fail on error)
+systemctl enable synos-ai-engine.service 2>/dev/null || true
+systemctl enable synos-consciousness.service 2>/dev/null || true
+systemctl enable synos-security-orchestrator.service 2>/dev/null || true
 
 echo "SynOS AI Engine configuration complete."
 
