@@ -13,21 +13,16 @@ htop
 neofetch
 tree
 
-# Security Tools Base (ParrotOS compatibility)
+# Security Tools Base - ONLY DEBIAN-AVAILABLE PACKAGES
+# Other security tools installed via hooks (see 0400-install-security-tools.hook.chroot)
 nmap
-metasploit-framework
 aircrack-ng
 wireshark
-burpsuite
 sqlmap
 hydra
 john
-hashcat
 gobuster
-nikto
 dirb
-wpscan
-maltego
 
 # Development Tools
 build-essential
