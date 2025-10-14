@@ -100,8 +100,8 @@ impl SynPkgManager {
     pub async fn install_package(
         &mut self,
         package_name: &str,
-        context: &str,
-        preferred_source: Option<&String>
+        _context: &str,
+        _preferred_source: Option<&String>
     ) -> Result<()> {
         println!("🧠 Installing package with consciousness: {}", package_name);
 

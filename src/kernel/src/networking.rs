@@ -546,6 +546,7 @@ pub enum TcpState {
 
 /// TCP packet structure
 #[derive(Debug)]
+#[allow(dead_code)]
 pub struct TcpPacket {
     pub source_port: u16,
     pub dest_port: u16,
@@ -895,6 +896,7 @@ pub struct ConnectionLearningData {
 
 /// Connection analysis result
 #[derive(Debug)]
+#[allow(dead_code)]
 pub struct ConnectionAnalysis {
     pub total_connections: usize,
     pub average_consciousness_level: f64,
@@ -1052,6 +1054,7 @@ pub fn get_networking_statistics() -> NetworkingStatistics {
 
 /// Networking statistics
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 pub struct NetworkingStatistics {
     pub packets_processed: u64,
     pub connections_established: u64,

@@ -9,11 +9,6 @@ authors.workspace = true
 clap = { workspace = true }
 anyhow = { workspace = true }
 serde = { workspace = true }
-<<<<<<< HEAD
-tokio = { workspace = true, features = ["full"] }
-=======
-tokio = { workspace = true }
->>>>>>> production/develop
 
 [[bin]]
 name = "syn-dev"

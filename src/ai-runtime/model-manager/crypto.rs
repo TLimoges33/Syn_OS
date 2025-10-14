@@ -7,6 +7,12 @@
 extern crate alloc;
 use alloc::vec::Vec;
 
+use aes_gcm::{
+    aead::{Aead, KeyInit, Payload},
+    Aes256Gcm, Nonce, Key
+};
+use sha2::{Sha256, Digest};
+
 /// AES-256-GCM encryption key size
 pub const KEY_SIZE: usize = 32; // 256 bits
 
@@ -33,29 +39,29 @@ pub fn encrypt_model_aes_256_gcm(
     key: &[u8; KEY_SIZE],
     nonce: &[u8; NONCE_SIZE],
 ) -> Result<EncryptedModel, &'static str> {
-    // Implementation using AES-256-GCM
-    // In production, would use a crypto library like RustCrypto's aes-gcm
+    // Create cipher instance
+    let cipher = Aes256Gcm::new(Key::<Aes256Gcm>::from_slice(key));
+    let nonce_obj = Nonce::from_slice(nonce);
 
-    // For now, provide a reference implementation structure
-    let mut ciphertext = Vec::with_capacity(plaintext.len());
+    // Encrypt with authentication
+    let ciphertext = cipher
+        .encrypt(nonce_obj, plaintext)
+        .map_err(|_| "Encryption failed")?;
+
+    // AES-GCM returns ciphertext || tag combined
+    if ciphertext.len() < TAG_SIZE {
+        return Err("Invalid ciphertext length");
+    }
+
+    let tag_start = ciphertext.len() - TAG_SIZE;
     let mut tag = [0u8; TAG_SIZE];
+    tag.copy_from_slice(&ciphertext[tag_start..]);
 
-    // Simplified XOR encryption for stub (NOT secure!)
-    // Real implementation would use proper AES-256-GCM
-    for (i, &byte) in plaintext.iter().enumerate() {
-        let key_byte = key[i % KEY_SIZE];
-        let nonce_byte = nonce[i % NONCE_SIZE];
-        ciphertext.push(byte ^ key_byte ^ nonce_byte);
-    }
-
-    // Generate authentication tag (stub - would use GMAC in real implementation)
-    for i in 0..TAG_SIZE {
-        tag[i] = key[i] ^ nonce[i % NONCE_SIZE];
-    }
+    let ciphertext_only = ciphertext[..tag_start].to_vec();
 
     Ok(EncryptedModel {
         nonce: *nonce,
-        ciphertext,
+        ciphertext: ciphertext_only,
         tag,
     })
 }
@@ -65,35 +71,37 @@ pub fn decrypt_model_aes_256_gcm(
     encrypted: &EncryptedModel,
     key: &[u8; KEY_SIZE],
 ) -> Result<Vec<u8>, &'static str> {
-    // Verify authentication tag first
-    if !verify_tag(&encrypted.tag, key, &encrypted.nonce) {
-        return Err("Authentication tag verification failed");
-    }
+    // Create cipher instance
+    let cipher = Aes256Gcm::new(Key::<Aes256Gcm>::from_slice(key));
+    let nonce_obj = Nonce::from_slice(&encrypted.nonce);
 
-    // Decrypt ciphertext
-    let mut plaintext = Vec::with_capacity(encrypted.ciphertext.len());
+    // Reconstruct ciphertext || tag for aes-gcm crate
+    let mut combined = encrypted.ciphertext.clone();
+    combined.extend_from_slice(&encrypted.tag);
 
-    // Simplified XOR decryption for stub (NOT secure!)
-    // Real implementation would use proper AES-256-GCM
-    for (i, &byte) in encrypted.ciphertext.iter().enumerate() {
-        let key_byte = key[i % KEY_SIZE];
-        let nonce_byte = encrypted.nonce[i % NONCE_SIZE];
-        plaintext.push(byte ^ key_byte ^ nonce_byte);
-    }
+    // Decrypt and verify authentication tag
+    let plaintext = cipher
+        .decrypt(nonce_obj, combined.as_ref())
+        .map_err(|_| "Decryption failed or authentication tag mismatch")?;
 
     Ok(plaintext)
 }
 
-/// Verify GMAC authentication tag
-fn verify_tag(tag: &[u8; TAG_SIZE], key: &[u8; KEY_SIZE], nonce: &[u8; NONCE_SIZE]) -> bool {
-    // Generate expected tag
-    let mut expected_tag = [0u8; TAG_SIZE];
-    for i in 0..TAG_SIZE {
-        expected_tag[i] = key[i] ^ nonce[i % NONCE_SIZE];
-    }
+/// Calculate SHA-256 hash
+pub fn calculate_sha256(data: &[u8]) -> [u8; HASH_SIZE] {
+    let mut hasher = Sha256::new();
+    hasher.update(data);
+    let result = hasher.finalize();
 
-    // Constant-time comparison
-    constant_time_compare(tag, &expected_tag)
+    let mut hash = [0u8; HASH_SIZE];
+    hash.copy_from_slice(&result);
+    hash
+}
+
+/// Verify SHA-256 checksum
+pub fn verify_sha256_checksum(data: &[u8], expected_hash: &[u8; HASH_SIZE]) -> bool {
+    let computed_hash = calculate_sha256(data);
+    constant_time_compare(&computed_hash, expected_hash)
 }
 
 /// Constant-time comparison to prevent timing attacks
@@ -110,51 +118,33 @@ fn constant_time_compare(a: &[u8], b: &[u8]) -> bool {
     result == 0
 }
 
-/// Calculate SHA-256 hash
-pub fn calculate_sha256(data: &[u8]) -> [u8; HASH_SIZE] {
-    // Implementation using SHA-256
-    // In production, would use a crypto library like RustCrypto's sha2
-
-    let mut hash = [0u8; HASH_SIZE];
-
-    // Simplified hash for stub (NOT secure!)
-    // Real implementation would use proper SHA-256
-    for (i, &byte) in data.iter().enumerate() {
-        hash[i % HASH_SIZE] ^= byte.rotate_left((i % 8) as u32);
-    }
-
-    // Add length-dependent mixing
-    let len_bytes = (data.len() as u64).to_le_bytes();
-    for (i, &byte) in len_bytes.iter().enumerate() {
-        hash[i] ^= byte;
-        hash[HASH_SIZE - 1 - i] ^= byte.rotate_right(4);
-    }
-
-    hash
-}
-
-/// Verify SHA-256 checksum
-pub fn verify_sha256_checksum(data: &[u8], expected_hash: &[u8; HASH_SIZE]) -> bool {
-    let computed_hash = calculate_sha256(data);
-    constant_time_compare(&computed_hash, expected_hash)
-}
-
 /// Generate cryptographically secure random nonce
 pub fn generate_nonce() -> [u8; NONCE_SIZE] {
     let mut nonce = [0u8; NONCE_SIZE];
 
-    // In production, would use a CSPRNG like getrandom or rdrand
-    // For stub, use a simple PRNG (NOT secure!)
-    static mut COUNTER: u64 = 0;
-    unsafe {
-        COUNTER = COUNTER.wrapping_add(1);
-        let bytes = COUNTER.to_le_bytes();
-        for i in 0..NONCE_SIZE.min(8) {
-            nonce[i] = bytes[i];
-        }
-        if NONCE_SIZE > 8 {
-            for i in 8..NONCE_SIZE {
-                nonce[i] = (COUNTER.wrapping_mul(31).wrapping_add(i as u64)) as u8;
+    #[cfg(feature = "std")]
+    {
+        use getrandom::getrandom;
+        getrandom(&mut nonce).expect("Failed to generate random nonce");
+    }
+
+    #[cfg(not(feature = "std"))]
+    {
+        // For no_std, use a deterministic but unique nonce
+        // In production, this should be replaced with a hardware RNG
+        static mut COUNTER: u64 = 0;
+        unsafe {
+            COUNTER = COUNTER.wrapping_add(1);
+            let bytes = COUNTER.to_le_bytes();
+            for i in 0..NONCE_SIZE.min(8) {
+                nonce[i] = bytes[i];
+            }
+            if NONCE_SIZE > 8 {
+                let timestamp = COUNTER.wrapping_mul(0x9e3779b97f4a7c15); // Golden ratio
+                let ts_bytes = timestamp.to_le_bytes();
+                for i in 8..NONCE_SIZE {
+                    nonce[i] = ts_bytes[i - 8];
+                }
             }
         }
     }
@@ -162,27 +152,32 @@ pub fn generate_nonce() -> [u8; NONCE_SIZE] {
     nonce
 }
 
-/// Derive key from password using PBKDF2-HMAC-SHA256
+/// Derive key from password using simple PBKDF2-like function
+/// Note: This is a simplified implementation. For production, use a proper KDF
 pub fn derive_key_pbkdf2(
     password: &[u8],
     salt: &[u8],
     iterations: u32,
 ) -> [u8; KEY_SIZE] {
-    // Implementation using PBKDF2-HMAC-SHA256
-    // In production, would use a proper KDF library
-
     let mut key = [0u8; KEY_SIZE];
 
-    // Simplified key derivation for stub (NOT secure!)
-    // Real implementation would use proper PBKDF2
-    for i in 0..KEY_SIZE {
-        let mut acc = 0u8;
-        for j in 0..iterations.min(256) {
-            let pw_byte = password.get(i % password.len()).copied().unwrap_or(0);
-            let salt_byte = salt.get(i % salt.len()).copied().unwrap_or(0);
-            acc = acc.wrapping_add(pw_byte).wrapping_add(salt_byte).wrapping_add(j as u8);
+    // Simple iterative hashing for key derivation
+    for iter in 0..iterations {
+        let mut hasher = Sha256::new();
+        hasher.update(password);
+        hasher.update(salt);
+        hasher.update(&iter.to_le_bytes());
+        if iter > 0 {
+            hasher.update(&key);
         }
-        key[i] = acc;
+        let result = hasher.finalize();
+
+        // XOR result into key
+        for (i, &byte) in result.iter().enumerate() {
+            if i < KEY_SIZE {
+                key[i] ^= byte;
+            }
+        }
     }
 
     key
@@ -208,10 +203,20 @@ impl SecureKey {
     pub fn generate() -> Self {
         let mut key = [0u8; KEY_SIZE];
 
-        // In production, use CSPRNG
-        // For stub, use simple PRNG (NOT secure!)
-        for i in 0..KEY_SIZE {
-            key[i] = generate_nonce()[i % NONCE_SIZE];
+        #[cfg(feature = "std")]
+        {
+            use getrandom::getrandom;
+            getrandom(&mut key).expect("Failed to generate random key");
+        }
+
+        #[cfg(not(feature = "std"))]
+        {
+            // For no_std, generate from multiple nonces
+            // In production, use hardware RNG
+            for chunk in key.chunks_mut(NONCE_SIZE) {
+                let nonce = generate_nonce();
+                chunk.copy_from_slice(&nonce[..chunk.len()]);
+            }
         }
 
         Self { key }
@@ -242,7 +247,7 @@ mod tests {
 
     #[test]
     fn test_encryption_decryption() {
-        let plaintext = b"Secret AI model data";
+        let plaintext = b"Secret AI model data for testing";
         let key = [0x42u8; KEY_SIZE];
         let nonce = [0x13u8; NONCE_SIZE];
 
@@ -253,17 +258,7 @@ mod tests {
     }
 
     #[test]
-    fn test_sha256() {
-        let data = b"Test data for hashing";
-        let hash1 = calculate_sha256(data);
-        let hash2 = calculate_sha256(data);
-
-        assert_eq!(hash1, hash2);
-        assert!(verify_sha256_checksum(data, &hash1));
-    }
-
-    #[test]
-    fn test_tag_verification_fails_on_wrong_key() {
+    fn test_decryption_wrong_key_fails() {
         let plaintext = b"Secret data";
         let key1 = [0x42u8; KEY_SIZE];
         let key2 = [0x43u8; KEY_SIZE];
@@ -273,6 +268,26 @@ mod tests {
         let result = decrypt_model_aes_256_gcm(&encrypted, &key2);
 
         assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_sha256_deterministic() {
+        let data = b"Test data for hashing";
+        let hash1 = calculate_sha256(data);
+        let hash2 = calculate_sha256(data);
+
+        assert_eq!(hash1, hash2);
+        assert!(verify_sha256_checksum(data, &hash1));
+    }
+
+    #[test]
+    fn test_sha256_different_data() {
+        let data1 = b"First data";
+        let data2 = b"Second data";
+        let hash1 = calculate_sha256(data1);
+        let hash2 = calculate_sha256(data2);
+
+        assert_ne!(hash1, hash2);
     }
 
     #[test]
@@ -289,7 +304,29 @@ mod tests {
     fn test_secure_key_zeroing() {
         let key_data = [0x42u8; KEY_SIZE];
         let key = SecureKey::new(key_data);
+        assert_eq!(key.as_bytes(), &key_data);
         drop(key);
-        // Key should be zeroed after drop (can't test directly due to drop)
+        // Key should be zeroed after drop (can't test directly)
+    }
+
+    #[test]
+    fn test_derive_key_deterministic() {
+        let password = b"my_secure_password";
+        let salt = b"random_salt_value";
+        let key1 = derive_key_pbkdf2(password, salt, 1000);
+        let key2 = derive_key_pbkdf2(password, salt, 1000);
+
+        assert_eq!(key1, key2);
+    }
+
+    #[test]
+    fn test_derive_key_different_passwords() {
+        let password1 = b"password1";
+        let password2 = b"password2";
+        let salt = b"salt";
+        let key1 = derive_key_pbkdf2(password1, salt, 1000);
+        let key2 = derive_key_pbkdf2(password2, salt, 1000);
+
+        assert_ne!(key1, key2);
     }
 }

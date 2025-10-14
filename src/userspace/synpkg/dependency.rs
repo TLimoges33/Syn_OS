@@ -204,6 +204,7 @@ impl DependencyResolver {
 
 /// Dependency tree structure for visualization
 #[derive(Debug)]
+#[allow(dead_code)]
 pub struct DependencyTree {
     pub package: String,
     pub dependencies: Vec<DependencyTree>,

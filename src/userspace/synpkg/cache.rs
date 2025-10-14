@@ -24,6 +24,7 @@ pub struct InstalledPackageRecord {
 
 /// Package cache statistics
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 pub struct CacheStats {
     pub total_packages: usize,
     pub total_size: u64,
@@ -33,6 +34,7 @@ pub struct CacheStats {
 
 /// Results from cache cleanup operation
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 pub struct CleanupResults {
     pub files_removed: u32,
     pub space_freed_bytes: u64,

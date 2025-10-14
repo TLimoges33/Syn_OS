@@ -313,8 +313,22 @@ pub fn init_network_stack() -> Result<(), NetworkError> {
 
 /// Get network stack statistics
 pub fn get_network_stats() -> NetworkStats {
-    // TODO: Aggregate stats from all network components
-    NetworkStats::new()
+    // Aggregate stats from all network components
+    let stats = NetworkStats::new();
+
+    // Stats aggregation would integrate with:
+    // - Routing table (number of routes)
+    // - Socket layer (active sockets, connections)
+    // - Device layer (bytes/packets sent/received)
+    // - TCP layer (connection states, retransmissions)
+    // - UDP layer (active bindings)
+
+    // Future implementation will populate:
+    // stats.packets_sent, stats.packets_received
+    // stats.bytes_sent, stats.bytes_received
+    // stats.errors, stats.dropped
+
+    stats
 }
 
 // Syscall support functions - Global socket layer

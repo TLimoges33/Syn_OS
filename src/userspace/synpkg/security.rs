@@ -397,6 +397,7 @@ impl SecurityValidator {
 
 /// Complete security report
 #[derive(Debug)]
+#[allow(dead_code)]
 pub struct SecurityReport {
     pub package_name: String,
     pub package_version: String,

@@ -12,6 +12,7 @@ use alloc::collections::BTreeMap;
 
 /// Unified AI Interface for syscall and memory integration
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 pub struct AIInterface {
     /// System-wide optimization level
     optimization_level: u8,
@@ -649,6 +650,7 @@ pub fn get_optimization_stats() -> OptimizationStats {
 }
 
 /// Memory optimization statistics
+#[allow(dead_code)]
 pub struct OptimizationStats {
     /// Current optimization level (0.0-1.0)
     pub optimization_level: f64,
@@ -662,6 +664,7 @@ pub struct OptimizationStats {
 
 /// Memory recommendation from consciousness
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 pub struct MemoryRecommendation {
     /// Memory address
     pub address: u64,

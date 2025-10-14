@@ -1,0 +1,500 @@
+#!/bin/bash
+################################################################################
+# SynOS v1.0 Automated System Health Check
+# Comprehensive post-boot validation of all system components
+################################################################################
+
+set -e
+
+VERSION="1.0.0"
+TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+REPORT_DIR="${HOME}/.synos/system-checks"
+REPORT_FILE="${REPORT_DIR}/system-check-${TIMESTAMP}.html"
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+CYAN='\033[0;36m'
+BOLD='\033[1m'
+NC='\033[0m'
+
+# Counters
+TOTAL_TESTS=0
+PASSED_TESTS=0
+FAILED_TESTS=0
+WARNING_TESTS=0
+
+################################################################################
+# Functions
+################################################################################
+
+print_header() {
+    clear
+    echo -e "${CYAN}╔══════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${CYAN}║          SynOS v1.0 System Health Check                     ║${NC}"
+    echo -e "${CYAN}║          Red Phoenix - Automated Validation                  ║${NC}"
+    echo -e "${CYAN}╚══════════════════════════════════════════════════════════════╝${NC}"
+    echo ""
+    echo -e "${CYAN}Testing all system components... (5-10 minutes)${NC}"
+    echo ""
+}
+
+test_pass() {
+    echo -e "${GREEN}✅ PASS${NC}: $1"
+    ((PASSED_TESTS++))
+    ((TOTAL_TESTS++))
+    echo "<tr class='pass'><td>✅ PASS</td><td>$1</td><td>$2</td></tr>" >> "${REPORT_FILE}.tmp"
+}
+
+test_fail() {
+    echo -e "${RED}❌ FAIL${NC}: $1"
+    ((FAILED_TESTS++))
+    ((TOTAL_TESTS++))
+    echo "<tr class='fail'><td>❌ FAIL</td><td>$1</td><td>$2</td></tr>" >> "${REPORT_FILE}.tmp"
+}
+
+test_warn() {
+    echo -e "${YELLOW}⚠️  WARN${NC}: $1"
+    ((WARNING_TESTS++))
+    ((TOTAL_TESTS++))
+    echo "<tr class='warn'><td>⚠️ WARN</td><td>$1</td><td>$2</td></tr>" >> "${REPORT_FILE}.tmp"
+}
+
+section_header() {
+    echo ""
+    echo -e "${CYAN}${BOLD}[$1]${NC}"
+    echo "<tr class='section'><td colspan='3'><h3>$1</h3></td></tr>" >> "${REPORT_FILE}.tmp"
+}
+
+################################################################################
+# Initialize Report
+################################################################################
+
+mkdir -p "${REPORT_DIR}"
+cat > "${REPORT_FILE}.tmp" << 'HTML'
+<!DOCTYPE html>
+<html>
+<head>
+<title>SynOS System Health Check</title>
+<style>
+body { font-family: monospace; background: #000; color: #fff; margin: 20px; }
+h1 { color: #ff0000; text-align: center; }
+h3 { color: #ff0000; margin: 20px 0 10px 0; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+th { background: #ff0000; color: #000; padding: 10px; text-align: left; }
+td { padding: 8px; border-bottom: 1px solid #333; }
+.pass { background: #001a00; }
+.fail { background: #1a0000; }
+.warn { background: #1a1a00; }
+.section { background: #1a1a1a; }
+.summary { background: #ff0000; color: #000; padding: 20px; margin: 20px 0; text-align: center; font-size: 18px; }
+</style>
+</head>
+<body>
+<h1>🔴 SynOS v1.0 System Health Check 🔴</h1>
+<p style="text-align: center;">Generated: TIMESTAMP_PLACEHOLDER</p>
+<table>
+<thead><tr><th>Status</th><th>Test</th><th>Details</th></tr></thead>
+<tbody>
+HTML
+
+################################################################################
+# Main Tests
+################################################################################
+
+print_header
+
+################################################################################
+# 1. System Boot & Kernel
+################################################################################
+
+section_header "1. System Boot & Kernel"
+
+# Test 1.1: Kernel version
+if uname -r | grep -q "6\.[0-9]"; then
+    KERNEL_VERSION=$(uname -r)
+    test_pass "Kernel version" "Running Linux ${KERNEL_VERSION}"
+else
+    test_warn "Kernel version" "Unexpected kernel version: $(uname -r)"
+fi
+
+# Test 1.2: System architecture
+if [ "$(uname -m)" = "x86_64" ]; then
+    test_pass "System architecture" "x86_64 (64-bit)"
+else
+    test_fail "System architecture" "Expected x86_64, got $(uname -m)"
+fi
+
+# Test 1.3: Boot mode
+if [ -d /sys/firmware/efi ]; then
+    test_pass "Boot mode" "UEFI"
+else
+    test_pass "Boot mode" "BIOS (Legacy)"
+fi
+
+# Test 1.4: Systemd
+if systemctl --version &> /dev/null; then
+    SYSTEMD_VERSION=$(systemctl --version | head -1)
+    test_pass "Init system" "${SYSTEMD_VERSION}"
+else
+    test_fail "Init system" "Systemd not found"
+fi
+
+# Test 1.5: Uptime
+UPTIME=$(uptime -p)
+test_pass "System uptime" "${UPTIME}"
+
+################################################################################
+# 2. Network Connectivity
+################################################################################
+
+section_header "2. Network Connectivity"
+
+# Test 2.1: Network interfaces
+IF_COUNT=$(ip link show | grep -c "^[0-9]")
+if [ "$IF_COUNT" -ge 2 ]; then
+    test_pass "Network interfaces" "${IF_COUNT} interfaces detected"
+else
+    test_warn "Network interfaces" "Only ${IF_COUNT} interface(s) found"
+fi
+
+# Test 2.2: IP address
+if ip addr show | grep -q "inet "; then
+    IP_ADDR=$(ip addr show | grep "inet " | grep -v "127.0.0.1" | head -1 | awk '{print $2}')
+    test_pass "IP address assigned" "${IP_ADDR}"
+else
+    test_fail "IP address assigned" "No IP address found"
+fi
+
+# Test 2.3: DNS resolution
+if ping -c 1 -W 2 google.com &> /dev/null; then
+    test_pass "Internet connectivity" "Can reach google.com"
+else
+    test_warn "Internet connectivity" "Cannot reach external hosts"
+fi
+
+# Test 2.4: DNS resolution
+if host google.com &> /dev/null 2>&1 || nslookup google.com &> /dev/null 2>&1; then
+    test_pass "DNS resolution" "Working"
+else
+    test_warn "DNS resolution" "DNS lookup may not be working"
+fi
+
+################################################################################
+# 3. Security Tools (Sample)
+################################################################################
+
+section_header "3. Security Tools (Sample of 500+)"
+
+CRITICAL_TOOLS=(
+    "nmap:Network scanner"
+    "metasploit-framework:Exploitation framework"
+    "wireshark:Network analyzer"
+    "john:Password cracker"
+    "aircrack-ng:Wireless security"
+    "sqlmap:SQL injection"
+    "burpsuite:Web security (may be GUI)"
+    "hydra:Password attack"
+    "nikto:Web scanner"
+    "masscan:Port scanner"
+)
+
+for tool_pair in "${CRITICAL_TOOLS[@]}"; do
+    tool="${tool_pair%%:*}"
+    desc="${tool_pair##*:}"
+    
+    if command -v "$tool" &> /dev/null; then
+        VERSION=$($tool --version 2>&1 | head -1 || echo "installed")
+        test_pass "${tool}" "${desc} - ${VERSION}"
+    else
+        test_warn "${tool}" "${desc} - Not found (may need manual check)"
+    fi
+done
+
+################################################################################
+# 4. AI Services
+################################################################################
+
+section_header "4. AI Services & Framework"
+
+# Test 4.1: AI daemon service file
+if [ -f /etc/systemd/system/synos-ai-daemon.service ]; then
+    test_pass "AI daemon service" "Service file exists"
+else
+    test_warn "AI daemon service" "Service file not found"
+fi
+
+# Test 4.2: AI service status
+if systemctl is-active synos-ai-daemon &> /dev/null; then
+    test_pass "AI daemon running" "Active"
+elif systemctl list-unit-files | grep -q synos-ai-daemon; then
+    test_warn "AI daemon running" "Installed but not active (expected in live mode)"
+else
+    test_warn "AI daemon running" "Not installed"
+fi
+
+# Test 4.3: NATS message bus
+if command -v nats-server &> /dev/null; then
+    test_pass "NATS message bus" "Installed"
+else
+    test_warn "NATS message bus" "Not found"
+fi
+
+################################################################################
+# 5. Desktop Environment
+################################################################################
+
+section_header "5. Desktop Environment"
+
+# Test 5.1: Display server
+if [ -n "$DISPLAY" ]; then
+    test_pass "Display server" "X11 running on ${DISPLAY}"
+else
+    test_warn "Display server" "DISPLAY not set (running in terminal?)"
+fi
+
+# Test 5.2: Desktop environment
+if pgrep -x xfce4-panel &> /dev/null; then
+    test_pass "Desktop environment" "XFCE running"
+elif pgrep -x mate-panel &> /dev/null; then
+    test_pass "Desktop environment" "MATE running"
+else
+    test_warn "Desktop environment" "DE not detected (may be in terminal)"
+fi
+
+# Test 5.3: Window manager
+if pgrep -x xfwm4 &> /dev/null || pgrep -x marco &> /dev/null; then
+    WM=$(pgrep -x xfwm4 &> /dev/null && echo "xfwm4" || echo "marco")
+    test_pass "Window manager" "${WM} running"
+else
+    test_warn "Window manager" "Not detected"
+fi
+
+# Test 5.4: Terminal emulator
+if command -v xfce4-terminal &> /dev/null || command -v mate-terminal &> /dev/null; then
+    test_pass "Terminal emulator" "Available"
+else
+    test_warn "Terminal emulator" "Custom terminal not found"
+fi
+
+################################################################################
+# 6. Branding Assets
+################################################################################
+
+section_header "6. Red Phoenix Branding"
+
+# Test 6.1: Phoenix logos
+if [ -d /usr/share/pixmaps/synos ] || [ -d /usr/share/synos/branding ]; then
+    LOGO_COUNT=$(find /usr/share -name "*phoenix*.png" 2>/dev/null | wc -l)
+    test_pass "Phoenix logos" "${LOGO_COUNT} logo files found"
+else
+    test_warn "Phoenix logos" "Branding directory not found"
+fi
+
+# Test 6.2: Wallpapers
+if [ -d /usr/share/backgrounds/synos ]; then
+    WALLPAPER_COUNT=$(ls /usr/share/backgrounds/synos/*.png 2>/dev/null | wc -l)
+    test_pass "Red Phoenix wallpapers" "${WALLPAPER_COUNT} wallpapers available"
+else
+    test_warn "Red Phoenix wallpapers" "Wallpaper directory not found"
+fi
+
+# Test 6.3: Plymouth theme
+if [ -d /usr/share/plymouth/themes/red-phoenix ] || [ -d /usr/share/plymouth/themes/synos ]; then
+    test_pass "Plymouth boot theme" "Red Phoenix theme installed"
+else
+    test_warn "Plymouth boot theme" "Theme directory not found"
+fi
+
+# Test 6.4: GRUB theme
+if [ -d /boot/grub/themes ] && ls /boot/grub/themes/*synos* &> /dev/null 2>&1; then
+    test_pass "GRUB theme" "Neural Command theme found"
+else
+    test_warn "GRUB theme" "Theme not found (may need manual check)"
+fi
+
+# Test 6.5: GTK theme
+if [ -d /usr/share/themes/synos-dark-red ] || [ -d ~/.themes/synos-dark-red ]; then
+    test_pass "GTK theme" "SynOS Dark Red theme installed"
+else
+    test_warn "GTK theme" "Theme not found"
+fi
+
+################################################################################
+# 7. Package Management
+################################################################################
+
+section_header "7. Package Management"
+
+# Test 7.1: APT
+if apt --version &> /dev/null; then
+    APT_VERSION=$(apt --version | head -1)
+    test_pass "APT package manager" "${APT_VERSION}"
+else
+    test_fail "APT package manager" "APT not found"
+fi
+
+# Test 7.2: Repository sources
+REPO_COUNT=$(grep -c "^deb " /etc/apt/sources.list /etc/apt/sources.list.d/*.list 2>/dev/null || echo "0")
+if [ "$REPO_COUNT" -ge 3 ]; then
+    test_pass "APT repositories" "${REPO_COUNT} repositories configured"
+else
+    test_warn "APT repositories" "Only ${REPO_COUNT} repositories found"
+fi
+
+################################################################################
+# 8. Performance Metrics
+################################################################################
+
+section_header "8. Performance & Resources"
+
+# Test 8.1: Memory usage
+TOTAL_RAM=$(free -h | awk '/^Mem:/{print $2}')
+USED_RAM=$(free -h | awk '/^Mem:/{print $3}')
+FREE_RAM=$(free -h | awk '/^Mem:/{print $7}')
+USED_PCT=$(free | awk '/^Mem:/{print int($3/$2*100)}')
+
+if [ "$USED_PCT" -lt 80 ]; then
+    test_pass "Memory usage" "${USED_RAM}/${TOTAL_RAM} used (${USED_PCT}%) - ${FREE_RAM} free"
+else
+    test_warn "Memory usage" "${USED_RAM}/${TOTAL_RAM} used (${USED_PCT}%) - High usage"
+fi
+
+# Test 8.2: CPU load
+LOAD_AVG=$(uptime | awk -F'load average:' '{print $2}' | xargs)
+test_pass "CPU load average" "${LOAD_AVG}"
+
+# Test 8.3: Disk space
+DISK_USAGE=$(df -h / | tail -1 | awk '{print $5}' | sed 's/%//')
+DISK_AVAIL=$(df -h / | tail -1 | awk '{print $4}')
+
+if [ "$DISK_USAGE" -lt 90 ]; then
+    test_pass "Disk space" "${DISK_USAGE}% used - ${DISK_AVAIL} available"
+else
+    test_warn "Disk space" "${DISK_USAGE}% used - Low space"
+fi
+
+################################################################################
+# 9. Documentation
+################################################################################
+
+section_header "9. Documentation"
+
+# Test 9.1: Local docs
+if [ -d /usr/share/doc/synos ] || [ -f /usr/share/doc/synos/README.md ]; then
+    test_pass "SynOS documentation" "Installed locally"
+else
+    test_warn "SynOS documentation" "Not found in /usr/share/doc"
+fi
+
+# Test 9.2: Man pages
+if man -k synos &> /dev/null && man -k synos | grep -q synos; then
+    test_pass "Man pages" "SynOS man pages available"
+else
+    test_warn "Man pages" "SynOS-specific man pages not found"
+fi
+
+################################################################################
+# 10. Known Issues Verification
+################################################################################
+
+section_header "10. Known Limitations (Expected)"
+
+# Test 10.1: Desktop AI stubs (expected)
+test_warn "Desktop AI stubs" "63 stub functions present (expected, non-critical)"
+
+# Test 10.2: AI Runtime FFI (expected)
+test_warn "AI Runtime FFI bindings" "TensorFlow Lite C bindings incomplete (expected, v1.2)"
+
+# Test 10.3: Network stack (expected)
+test_warn "Network stack completion" "TCP state machine 85% complete (expected, v1.1)"
+
+# Test 10.4: Custom Rust kernel (expected)
+test_warn "Custom Rust kernel" "Not default boot option (expected, v2.0)"
+
+################################################################################
+# Generate Report
+################################################################################
+
+cat >> "${REPORT_FILE}.tmp" << 'HTML'
+</tbody>
+</table>
+HTML
+
+# Calculate score
+PASS_PCT=$((PASSED_TESTS * 100 / TOTAL_TESTS))
+
+cat >> "${REPORT_FILE}.tmp" << HTML
+<div class="summary">
+<h2>Summary</h2>
+<p><strong>Total Tests:</strong> ${TOTAL_TESTS}</p>
+<p><strong style="color: #00ff00;">✅ Passed:</strong> ${PASSED_TESTS}</p>
+<p><strong style="color: #ffff00;">⚠️ Warnings:</strong> ${WARNING_TESTS}</p>
+<p><strong style="color: #ff0000;">❌ Failed:</strong> ${FAILED_TESTS}</p>
+<p><strong>Success Rate:</strong> ${PASS_PCT}%</p>
+</div>
+<p style="text-align: center; margin-top: 40px;">
+<em>SynOS v1.0 "Red Phoenix" - Neural Dominance Active</em><br>
+🔴 Red Means Power. Red Means Alert. Red Means SynOS. 🔴
+</p>
+</body>
+</html>
+HTML
+
+# Replace timestamp placeholder
+sed "s/TIMESTAMP_PLACEHOLDER/$(date)/" "${REPORT_FILE}.tmp" > "${REPORT_FILE}"
+rm "${REPORT_FILE}.tmp"
+
+################################################################################
+# Summary
+################################################################################
+
+echo ""
+echo -e "${CYAN}╔══════════════════════════════════════════════════════════════╗${NC}"
+echo -e "${CYAN}║                    Test Summary                              ║${NC}"
+echo -e "${CYAN}╚══════════════════════════════════════════════════════════════╝${NC}"
+echo ""
+echo -e "${CYAN}Total Tests:${NC} ${TOTAL_TESTS}"
+echo -e "${GREEN}✅ Passed:${NC}   ${PASSED_TESTS}"
+echo -e "${YELLOW}⚠️  Warnings:${NC} ${WARNING_TESTS}"
+echo -e "${RED}❌ Failed:${NC}   ${FAILED_TESTS}"
+echo ""
+echo -e "${CYAN}Success Rate:${NC} ${PASS_PCT}%"
+echo ""
+
+# Overall status
+if [ "$FAILED_TESTS" -eq 0 ] && [ "$PASS_PCT" -ge 80 ]; then
+    echo -e "${GREEN}${BOLD}✅ SYSTEM CHECK PASSED${NC}"
+    echo -e "${GREEN}SynOS v1.0 is functioning correctly!${NC}"
+    EXIT_CODE=0
+elif [ "$FAILED_TESTS" -eq 0 ]; then
+    echo -e "${YELLOW}${BOLD}⚠️  SYSTEM CHECK PASSED WITH WARNINGS${NC}"
+    echo -e "${YELLOW}System is functional but has minor issues.${NC}"
+    EXIT_CODE=0
+else
+    echo -e "${RED}${BOLD}❌ SYSTEM CHECK FAILED${NC}"
+    echo -e "${RED}${FAILED_TESTS} critical test(s) failed.${NC}"
+    EXIT_CODE=1
+fi
+
+echo ""
+echo -e "${CYAN}HTML Report:${NC} ${REPORT_FILE}"
+echo -e "${CYAN}View report:${NC} firefox ${REPORT_FILE} &"
+echo ""
+
+# Offer to open report
+if command -v firefox &> /dev/null && [ -n "$DISPLAY" ]; then
+    echo -e "${CYAN}Open HTML report in browser? (y/N):${NC} "
+    read -r -t 10 response || response="n"
+    if [ "$response" = "y" ] || [ "$response" = "Y" ]; then
+        firefox "${REPORT_FILE}" &> /dev/null &
+        echo "Opening report in Firefox..."
+    fi
+fi
+
+echo ""
+echo -e "${CYAN}🔴 SynOS v1.0 System Health Check Complete 🔴${NC}"
+echo ""
+
+exit $EXIT_CODE

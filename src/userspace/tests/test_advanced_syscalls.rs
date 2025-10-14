@@ -2,13 +2,11 @@
 //! Tests: memory_map, memory_unmap, memory_protect, signal_register, signal_send,
 //!        time_get, time_set, process_priority, thread_create, thread_join
 
-#![no_std]
-#![no_main]
 
 use libtsynos::*;
 
 #[no_mangle]
-pub extern "C" fn _start() -> ! {
+fn main() {
     write_str("=== SynOS Advanced Syscalls Test ===\n\n");
 
     // Test 1: memory operations
@@ -30,7 +28,7 @@ pub extern "C" fn _start() -> ! {
     test_threads();
 
     write_str("\n✅ All advanced syscall tests passed!\n");
-    exit(0);
+    std::process::exit(0);
 }
 
 fn test_memory_map() {

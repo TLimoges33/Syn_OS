@@ -1,6 +1,6 @@
 [package]
 name = "synaptic-ai-engine"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
 description = "SynapticOS AI Engine - Core AI Runtime Infrastructure for Linux Distribution"
 authors = ["SynOS Team"]

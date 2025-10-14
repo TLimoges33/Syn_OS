@@ -4,6 +4,7 @@
 pub use syn_ai::consciousness::*;
 
 /// Package installation consciousness context
+#[allow(dead_code)]
 pub struct PackageConsciousness {
     state: ConsciousnessState,
 }

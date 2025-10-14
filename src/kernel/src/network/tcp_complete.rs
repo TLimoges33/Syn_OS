@@ -562,3 +562,120 @@ impl TcpLayer {
         Err(NetworkError::AddressInUse)
     }
 }
+
+/// Calculate TCP checksum including pseudo-header
+pub fn calculate_tcp_checksum(
+    source_ip: &Ipv4Address,
+    dest_ip: &Ipv4Address,
+    tcp_header: &[u8],
+    tcp_data: &[u8],
+) -> u16 {
+    let mut sum: u32 = 0;
+
+    // Pseudo-header: source IP (4 bytes)
+    sum += u16::from_be_bytes([source_ip.octets()[0], source_ip.octets()[1]]) as u32;
+    sum += u16::from_be_bytes([source_ip.octets()[2], source_ip.octets()[3]]) as u32;
+
+    // Pseudo-header: destination IP (4 bytes)
+    sum += u16::from_be_bytes([dest_ip.octets()[0], dest_ip.octets()[1]]) as u32;
+    sum += u16::from_be_bytes([dest_ip.octets()[2], dest_ip.octets()[3]]) as u32;
+
+    // Pseudo-header: protocol (TCP = 6) and TCP length
+    sum += 6u32; // TCP protocol number
+    let tcp_length = (tcp_header.len() + tcp_data.len()) as u16;
+    sum += tcp_length as u32;
+
+    // TCP header (with checksum field zeroed)
+    for chunk in tcp_header.chunks(2) {
+        let word = if chunk.len() == 2 {
+            u16::from_be_bytes([chunk[0], chunk[1]]) as u32
+        } else {
+            (chunk[0] as u32) << 8
+        };
+        // Skip checksum field (bytes 16-17)
+        let offset = chunk.as_ptr() as usize - tcp_header.as_ptr() as usize;
+        if offset != 16 {
+            sum += word;
+        }
+    }
+
+    // TCP data
+    for chunk in tcp_data.chunks(2) {
+        let word = if chunk.len() == 2 {
+            u16::from_be_bytes([chunk[0], chunk[1]]) as u32
+        } else {
+            (chunk[0] as u32) << 8
+        };
+        sum += word;
+    }
+
+    // Fold 32-bit sum to 16 bits
+    while (sum >> 16) != 0 {
+        sum = (sum & 0xFFFF) + (sum >> 16);
+    }
+
+    // Return one's complement
+    !sum as u16
+}
+
+/// Verify TCP checksum
+pub fn verify_tcp_checksum(
+    source_ip: &Ipv4Address,
+    dest_ip: &Ipv4Address,
+    tcp_packet: &[u8],
+) -> bool {
+    if tcp_packet.len() < TcpHeader::MIN_SIZE {
+        return false;
+    }
+
+    let stored_checksum = u16::from_be_bytes([tcp_packet[16], tcp_packet[17]]);
+    let header_len = ((tcp_packet[12] >> 4) * 4) as usize;
+
+    if tcp_packet.len() < header_len {
+        return false;
+    }
+
+    let tcp_data = if tcp_packet.len() > header_len {
+        &tcp_packet[header_len..]
+    } else {
+        &[]
+    };
+
+    let calculated = calculate_tcp_checksum(
+        source_ip,
+        dest_ip,
+        &tcp_packet[..header_len],
+        tcp_data
+    );
+
+    stored_checksum == calculated
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_tcp_checksum_calculation() {
+        let src_ip = Ipv4Address::new(192, 168, 1, 1);
+        let dst_ip = Ipv4Address::new(192, 168, 1, 2);
+
+        // Create minimal TCP header
+        let mut header = vec![0u8; 20];
+        header[0..2].copy_from_slice(&1234u16.to_be_bytes()); // source port
+        header[2..4].copy_from_slice(&80u16.to_be_bytes());   // dest port
+
+        let checksum = calculate_tcp_checksum(&src_ip, &dst_ip, &header, &[]);
+        assert_ne!(checksum, 0);
+
+        // Verify checksum
+        header[16..18].copy_from_slice(&checksum.to_be_bytes());
+        assert!(verify_tcp_checksum(&src_ip, &dst_ip, &header));
+    }
+
+    #[test]
+    fn test_tcp_state_machine() {
+        let tcp = TcpStack::new();
+        // More comprehensive state machine tests would go here
+    }
+}

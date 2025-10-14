@@ -1,6 +1,6 @@
 [package]
 name = "synos-ai-runtime"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
 description = "SynOS Native AI Runtime - Lightweight inference engine for no_std environments"
 authors = ["SynOS Team"]
@@ -13,6 +13,11 @@ path = "lib.rs"
 # Core no_std support
 spin = "0.9"
 lazy_static = { version = "1.4", features = ["spin_no_std"] }
+
+# Cryptography for model encryption
+aes-gcm = { workspace = true }
+sha2 = { workspace = true }
+getrandom = { workspace = true, features = ["custom"] }
 
 [features]
 default = []
