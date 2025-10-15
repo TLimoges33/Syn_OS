@@ -6,9 +6,9 @@ echo "  Setting Up AI Engine & Deploying Models"
 echo "════════════════════════════════════════════════════════════"
 
 # Install Python AI dependencies
-echo "Installing AI/ML Python packages..."
 # Debian 12 uses PEP 668 externally-managed-environment
 # We'll create a virtual environment for AI packages instead
+echo "Installing AI/ML Python packages..."
 echo "⚠️  AI packages will be installed in virtual environment on first boot"
 echo "✓ Python AI packages deferred to first boot"
 

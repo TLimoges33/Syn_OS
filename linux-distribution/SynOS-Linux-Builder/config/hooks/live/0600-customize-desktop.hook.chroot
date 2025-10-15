@@ -72,7 +72,7 @@ gtk-theme='synos-dark-red'
 icon-theme='Adwaita-dark'
 EOFDCONF
 
-# Update dconf if available
+# Update dconf if available (not available in chroot)
 if command -v dconf >/dev/null 2>&1; then
     dconf update || true
 else
