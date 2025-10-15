@@ -11,6 +11,9 @@ if ! command -v plymouth &> /dev/null; then
     apt-get install -y plymouth plymouth-themes
 fi
 
+# Create SynOS theme directory
+mkdir -p /usr/share/plymouth/themes/synos
+
 # Create simple progress bar images using ImageMagick
 if command -v convert &> /dev/null; then
     cd /usr/share/plymouth/themes/synos
@@ -35,13 +38,17 @@ else
     touch /usr/share/plymouth/themes/synos/progress_bar.png
 fi
 
-# Set SynOS as default Plymouth theme
-update-alternatives --install \
-    /usr/share/plymouth/themes/default.plymouth default.plymouth \
-    /usr/share/plymouth/themes/synos/synos.plymouth 100
+# Set SynOS as default Plymouth theme (only if theme file exists)
+if [ -f /usr/share/plymouth/themes/synos/synos.plymouth ]; then
+    update-alternatives --install \
+        /usr/share/plymouth/themes/default.plymouth default.plymouth \
+        /usr/share/plymouth/themes/synos/synos.plymouth 100
 
-update-alternatives --set default.plymouth \
-    /usr/share/plymouth/themes/synos/synos.plymouth
+    update-alternatives --set default.plymouth \
+        /usr/share/plymouth/themes/synos/synos.plymouth
+else
+    echo "W: SynOS Plymouth theme file not found, skipping theme configuration"
+fi
 
 # Update initramfs
 update-initramfs -u
