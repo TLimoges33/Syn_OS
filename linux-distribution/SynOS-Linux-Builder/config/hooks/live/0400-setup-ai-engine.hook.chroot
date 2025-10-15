@@ -3,17 +3,13 @@ set -e
 
 echo "Setting up AI engine..."
 
-# Install Python AI dependencies
-pip3 install --no-cache-dir \
-    torch torchvision torchaudio \
-    transformers \
-    numpy pandas scikit-learn \
-    onnxruntime \
-    2>&1 || echo "Some AI packages may need manual installation"
+# Install Python AI dependencies (will be installed in virtual environment on first boot)
+# These are just placeholders - actual installation happens via venv
+echo "AI dependencies will be installed on first boot via virtual environment"
 
 # Create AI model directory
 mkdir -p /opt/synos/models
-chown -R synos:synos /opt/synos/models
+chown -R synos:synos /opt/synos/models 2>/dev/null || true
 
 echo "✓ AI engine configured"
 

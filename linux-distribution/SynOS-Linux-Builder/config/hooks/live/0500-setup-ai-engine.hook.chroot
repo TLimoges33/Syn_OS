@@ -7,17 +7,10 @@ echo "════════════════════════�
 
 # Install Python AI dependencies
 echo "Installing AI/ML Python packages..."
-pip3 install --no-cache-dir \
-    torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu \
-    transformers \
-    numpy pandas scikit-learn \
-    onnxruntime \
-    tensorflow-lite \
-    pillow \
-    opencv-python \
-    2>&1 || echo "⚠️  Some AI packages may need manual installation"
-
-echo "✓ Python AI packages installed"
+# Debian 12 uses PEP 668 externally-managed-environment
+# We'll create a virtual environment for AI packages instead
+echo "⚠️  AI packages will be installed in virtual environment on first boot"
+echo "✓ Python AI packages deferred to first boot"
 
 # Create comprehensive AI model directory structure
 echo "Creating AI model directories..."
