@@ -22,7 +22,12 @@ default-layout='synos'
 default-profile='synos-default'
 EOFDCONF
 
-dconf update
+# Update dconf if available
+if command -v dconf >/dev/null 2>&1; then
+    dconf update || true
+else
+    echo "W: dconf not available, settings will be applied on first boot"
+fi
 
 echo "✓ Desktop customized"
 
