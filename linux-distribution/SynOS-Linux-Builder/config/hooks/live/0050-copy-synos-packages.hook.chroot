@@ -1,0 +1,16 @@
+#!/bin/bash
+# Copy SynOS AI packages into chroot
+set -e
+
+echo "Copying SynOS AI packages..."
+
+# This directory will be bind-mounted by the parent build script
+if [ -d /tmp/synos-repo-external ]; then
+    mkdir -p /tmp/synos-repo
+    cp -av /tmp/synos-repo-external/* /tmp/synos-repo/ || true
+    echo "✓ SynOS packages copied"
+else
+    echo "⚠ SynOS package source not available yet"
+fi
+
+exit 0

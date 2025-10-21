@@ -1,0 +1,5 @@
+
+# Added by lb_chroot_apt install 
+Package: *
+Pin: release o=config/packages.chroot
+Pin-Priority: 1001

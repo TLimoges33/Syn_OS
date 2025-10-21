@@ -1,5 +1,6 @@
 #!/bin/bash
-set -e
+# Don't use set -e here - we want to continue even if some commands fail
+set +e
 
 echo "Customizing MATE desktop..."
 
@@ -36,30 +37,34 @@ title-font: "DejaVu Sans Bold 24"
 EOFGRUB
 fi
 
-# Install Plymouth boot splash if available
-if [ -d /usr/src/synos/assets/branding/plymouth/synos-neural ]; then
-    cp -r /usr/src/synos/assets/branding/plymouth/synos-neural/ /usr/share/plymouth/themes/ || true
+# Install Plymouth boot splash (already in /usr/share/plymouth/themes via includes.chroot)
+if [ -d /usr/share/plymouth/themes/synos-neural-cyber ]; then
     if command -v plymouth-set-default-theme >/dev/null 2>&1; then
-        plymouth-set-default-theme -R synos-neural || true
+        plymouth-set-default-theme -R synos-neural-cyber || true
+        echo "✓ Plymouth theme set to synos-neural-cyber"
     fi
 fi
 
-# Install GTK theme if available
-if [ -d /usr/src/synos/assets/themes/synos-dark-red ]; then
-    cp -r /usr/src/synos/assets/themes/synos-dark-red/ /usr/share/themes/ || true
+# Install GRUB theme (already in /boot/grub/themes/synos via includes.chroot)
+if [ -f /boot/grub/themes/synos/theme.txt ]; then
+    # Update GRUB config to use our theme
+    if [ -f /etc/default/grub ]; then
+        grep -q "GRUB_THEME=" /etc/default/grub || echo 'GRUB_THEME="/boot/grub/themes/synos/theme.txt"' >> /etc/default/grub
+        echo "✓ GRUB theme configured"
+    fi
 fi
 
 echo "✓ SynOS branding installed"
 
-# Configure MATE settings
+# Configure MATE settings - Black/Scarlet/White theme
 mkdir -p /etc/dconf/db/local.d
 
 cat > /etc/dconf/db/local.d/00-synos-settings << 'EOFDCONF'
 [org/mate/desktop/background]
 picture-filename='/usr/share/backgrounds/synos/synos-wallpaper.jpg'
 picture-options='zoom'
-primary-color='#1a1a2e'
-secondary-color='#8b0000'
+primary-color='#000000'
+secondary-color='#DC143C'
 
 [org/mate/panel]
 default-layout='synos'
@@ -67,16 +72,29 @@ default-layout='synos'
 [org/mate/terminal]
 default-profile='synos-default'
 
+[org/mate/terminal/profiles/default]
+background-color='#000000'
+foreground-color='#FFFFFF'
+palette='#000000:#DC143C:#00FF00:#FFFF00:#0000FF:#FF00FF:#00FFFF:#FFFFFF:#666666:#FF2400:#00FF00:#FFFF00:#5555FF:#FF00FF:#00FFFF:#FFFFFF'
+use-theme-colors=false
+
 [org/mate/interface]
-gtk-theme='synos-dark-red'
+gtk-theme='SynOS-Dark'
 icon-theme='Adwaita-dark'
+document-font-name='Sans 10'
+monospace-font-name='Monospace 10'
+
+[org/mate/Marco/general]
+theme='SynOS-Dark'
+titlebar-font='Sans Bold 10'
 EOFDCONF
 
-# Update dconf if available (not available in chroot)
+# Update dconf if available (same smart pattern as hook 0500)
 if command -v dconf >/dev/null 2>&1; then
     dconf update || true
+    echo "✓ dconf settings updated"
 else
-    echo "W: dconf not available, settings will be applied on first boot"
+    echo "⚠ dconf not available, settings will be applied on first boot"
 fi
 
 echo "Installing SynOS desktop launchers..."

@@ -1,0 +1,84 @@
+#!/bin/bash
+################################################################################
+# SynOS Python Security Tools Installation Hook
+#
+# Installs security tools that aren't available in Debian/ParrotOS repos
+# but have Python implementations or alternatives
+################################################################################
+
+set -e
+
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "  HOOK: Installing Python Security Tools"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+# Ensure pip is up to date
+echo "→ Upgrading pip..."
+python3 -m pip install --upgrade pip
+
+# ─────────────────────────────────────────────────────────────────────────
+# Mimikatz Alternative: pypykatz
+# ─────────────────────────────────────────────────────────────────────────
+echo "→ Installing pypykatz (Mimikatz Python implementation)..."
+pip3 install pypykatz
+
+# ─────────────────────────────────────────────────────────────────────────
+# OSINT Tools
+# ─────────────────────────────────────────────────────────────────────────
+echo "→ Installing SpiderFoot (OSINT automation)..."
+pip3 install spiderfoot
+
+echo "→ Installing shodan (IoT search engine client)..."
+pip3 install shodan
+
+# ─────────────────────────────────────────────────────────────────────────
+# Additional Forensics Tools
+# ─────────────────────────────────────────────────────────────────────────
+echo "→ Installing volatility3 (memory forensics)..."
+pip3 install volatility3
+
+# ─────────────────────────────────────────────────────────────────────────
+# Web Application Security
+# ─────────────────────────────────────────────────────────────────────────
+echo "→ Installing wafw00f (WAF fingerprinting)..."
+pip3 install wafw00f
+
+echo "→ Installing jwt_tool (JWT security testing)..."
+pip3 install pyjwt
+
+# ─────────────────────────────────────────────────────────────────────────
+# Network Security
+# ─────────────────────────────────────────────────────────────────────────
+echo "→ Installing scapy (packet manipulation)..."
+pip3 install scapy
+
+echo "→ Installing impacket (network protocols)..."
+pip3 install impacket
+
+# ─────────────────────────────────────────────────────────────────────────
+# Exploit Development
+# ─────────────────────────────────────────────────────────────────────────
+echo "→ Installing ropper (ROP gadget finder)..."
+pip3 install ropper
+
+echo "→ Installing pwntools (CTF/exploit development)..."
+pip3 install pwntools
+
+# ─────────────────────────────────────────────────────────────────────────
+# Create symlinks for common usage
+# ─────────────────────────────────────────────────────────────────────────
+echo "→ Creating command symlinks..."
+
+# pypykatz might be in /usr/local/bin
+if [ -f "/usr/local/bin/pypykatz" ]; then
+    ln -sf /usr/local/bin/pypykatz /usr/bin/mimikatz-py
+fi
+
+# SpiderFoot command
+if [ -f "/usr/local/bin/spiderfoot" ]; then
+    ln -sf /usr/local/bin/spiderfoot /usr/bin/spiderfoot
+fi
+
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "  ✓ Python security tools installed successfully"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

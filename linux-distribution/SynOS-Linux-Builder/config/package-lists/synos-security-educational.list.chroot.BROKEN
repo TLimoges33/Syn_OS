@@ -1,0 +1,174 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# SynOS Educational Security Tools - Curated for Learning
+# ═══════════════════════════════════════════════════════════════════════════
+#
+# This list contains ONLY packages that:
+# 1. Exist in Debian/Kali/ParrotOS repositories
+# 2. Are required for the 4-Phase Cybersecurity Curriculum
+# 3. Are mentioned in Educational-Features.md and Educational-Curriculum-Master.md
+#
+# All other tools will be added incrementally via wrappers (see TODO.md)
+#
+# ═══════════════════════════════════════════════════════════════════════════
+
+# ─────────────────────────────────────────────────────────────────────────
+# PHASE 1: FOUNDATIONS - IT & Networking Basics
+# ─────────────────────────────────────────────────────────────────────────
+# Linux fundamentals
+vim
+nano
+tmux
+screen
+tree
+
+# Networking tools
+net-tools
+iproute2
+iputils-ping
+traceroute
+dnsutils
+tcpdump
+netcat-traditional
+
+# ─────────────────────────────────────────────────────────────────────────
+# PHASE 2: CORE TOOLS & SKILLS
+# ─────────────────────────────────────────────────────────────────────────
+
+## Network Analysis (CRITICAL for curriculum)
+wireshark
+tshark
+nmap
+zenmap
+
+## Vulnerability Scanning
+nikto
+openvas
+lynis
+
+## Web Application Testing (OWASP Top 10)
+sqlmap
+dirb
+gobuster
+wfuzz
+
+## Scripting Support
+python3
+python3-pip
+python3-dev
+ipython3
+
+# ─────────────────────────────────────────────────────────────────────────
+# PHASE 3: PENETRATION TESTING SPECIALIZATION
+# ─────────────────────────────────────────────────────────────────────────
+
+## Exploitation Frameworks
+metasploit-framework
+set
+
+## Password Cracking (mentioned in curriculum)
+john
+hashcat
+hydra
+medusa
+crunch
+cewl
+
+## Wireless Security (curriculum requirement)
+aircrack-ng
+kismet
+reaver
+
+## Post-Exploitation
+mimikatz
+powersploit
+
+## OSINT & Reconnaissance
+theharvester
+recon-ng
+maltego
+spiderfoot
+
+# ─────────────────────────────────────────────────────────────────────────
+# PHASE 4: ADVANCED TOPICS
+# ─────────────────────────────────────────────────────────────────────────
+
+## Digital Forensics (curriculum requirement)
+autopsy
+volatility
+binwalk
+foremost
+sleuthkit
+
+## Reverse Engineering
+radare2
+ghidra
+gdb
+ltrace
+strace
+
+## Malware Analysis
+remnux
+cuckoo
+yara
+
+# ─────────────────────────────────────────────────────────────────────────
+# SUPPORTING TOOLS (Used across all phases)
+# ─────────────────────────────────────────────────────────────────────────
+
+## Text Processing & Analysis
+grep
+sed
+awk
+jq
+
+## Version Control
+git
+git-lfs
+
+## Compression & Archives
+zip
+unzip
+rar
+unrar
+p7zip-full
+
+## Web Tools
+curl
+wget
+lynx
+
+## Network Services
+openssh-server
+openssh-client
+telnet
+ftp
+
+## System Monitoring
+htop
+iotop
+nethogs
+
+## Documentation
+man-db
+manpages-dev
+
+# ─────────────────────────────────────────────────────────────────────────
+# EDUCATIONAL PLATFORM DEPENDENCIES
+# ─────────────────────────────────────────────────────────────────────────
+
+## Python Libraries (for AI tutor integration)
+python3-numpy
+python3-pandas
+python3-matplotlib
+python3-scipy
+python3-sklearn
+python3-requests
+
+## Development Tools
+build-essential
+cmake
+pkg-config
+
+## Database (for progress tracking)
+sqlite3
+libsqlite3-dev

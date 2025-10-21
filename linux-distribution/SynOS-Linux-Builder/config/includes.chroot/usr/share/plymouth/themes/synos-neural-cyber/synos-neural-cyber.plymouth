@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=SynOS Neural-Cyber
+Description=Organic neural network transitioning to cyberpunk hacker aesthetic with live boot logs
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/synos-neural-cyber
+ScriptFile=/usr/share/plymouth/themes/synos-neural-cyber/synos-neural-cyber.script

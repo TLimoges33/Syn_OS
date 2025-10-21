@@ -1,228 +1,172 @@
-# ═══════════════════════════════════════════════════════════════
-# SynOS Ultimate Security Tools Collection
-# Combining best tools from Kali, ParrotOS, and BlackArch
-# ═══════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════════════════════
+# SynOS Educational Security Tools - FIXED for ParrotOS Base
+# ═══════════════════════════════════════════════════════════════════════════
+#
+# HYBRID SOLUTION:
+# - Uses ParrotOS debootstrap (provides most security tools)
+# - Verified package names for Debian/ParrotOS compatibility
+# - Python alternatives for non-packaged tools (installed via hook)
+#
+# ═══════════════════════════════════════════════════════════════════════════
 
-# ─────────────────────────────────────────────────────────────
-# RECONNAISSANCE & INFORMATION GATHERING
-# ─────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────
+# PHASE 1: FOUNDATIONS - IT & Networking Basics
+# ─────────────────────────────────────────────────────────────────────────
+# Linux fundamentals
+vim
+nano
+tmux
+screen
+tree
+
+# Networking tools
+net-tools
+iproute2
+iputils-ping
+traceroute
+dnsutils
+tcpdump
+netcat-traditional
+
+# ─────────────────────────────────────────────────────────────────────────
+# PHASE 2: CORE TOOLS & SKILLS
+# ─────────────────────────────────────────────────────────────────────────
+
+## Network Analysis (CRITICAL for curriculum)
+wireshark
+tshark
 nmap
-masscan
-zmap
-dnsenum
-dnsrecon
-fierce
-sublist3r
-amass
-theharvester
-recon-ng
-maltego
-spiderfoot
-whatweb
-wafw00f
-wapiti
+# zenmap REMOVED - deprecated in Debian, use nmap CLI
+
+## Vulnerability Scanning
 nikto
+# openvas - Available in ParrotOS repos
+lynis
+
+## Web Application Testing (OWASP Top 10)
+sqlmap
 dirb
 gobuster
-dirbuster
 wfuzz
-ffuf
-feroxbuster
 
-# ─────────────────────────────────────────────────────────────
-# VULNERABILITY SCANNING & ANALYSIS
-# ─────────────────────────────────────────────────────────────
-openvas
-nexpose
-nessus
-nuclei
-nikto
-skipfish
-wpscan
-joomscan
-droopescan
-sqlmap
-commix
-xsser
+## Scripting Support
+python3
+python3-pip
+python3-dev
+ipython3
 
-# ─────────────────────────────────────────────────────────────
-# EXPLOITATION FRAMEWORKS
-# ─────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────
+# PHASE 3: PENETRATION TESTING SPECIALIZATION
+# ─────────────────────────────────────────────────────────────────────────
+
+## Exploitation Frameworks (ParrotOS provides these)
 metasploit-framework
-armitage
-beef-xss
-exploitdb
-searchsploit
-social-engineer-toolkit
-routersploit
+# set - Social Engineering Toolkit (ParrotOS)
 
-# ─────────────────────────────────────────────────────────────
-# PASSWORD ATTACKS
-# ─────────────────────────────────────────────────────────────
+## Password Cracking (mentioned in curriculum)
 john
 hashcat
 hydra
 medusa
-ncrack
-patator
 crunch
 cewl
-rsmangler
-hashid
-hash-identifier
 
-# ─────────────────────────────────────────────────────────────
-# WIRELESS ATTACKS
-# ─────────────────────────────────────────────────────────────
+## Wireless Security (curriculum requirement)
 aircrack-ng
-reaver
-bully
-wifite
 kismet
-fern-wifi-cracker
-fluxion
-wifiphisher
-mdk4
+reaver
 
-# ─────────────────────────────────────────────────────────────
-# WEB APPLICATION TESTING
-# ─────────────────────────────────────────────────────────────
-burpsuite
-zap
-sqlmap
-commix
-xsser
-wpscan
-joomscan
-whatweb
-nikto
-skipfish
-arachni
-w3af
+## Post-Exploitation
+# mimikatz REMOVED - Windows tool, use pypykatz (Python alternative, installed via pip)
+# powersploit REMOVED - Windows PowerShell, use Empire framework instead
 
-# ─────────────────────────────────────────────────────────────
-# NETWORK SNIFFING & SPOOFING
-# ─────────────────────────────────────────────────────────────
-wireshark
-tshark
-tcpdump
-ettercap-text-only
-ettercap-graphical
-bettercap
-mitmproxy
-sslstrip
-arpspoof
-dsniff
+## OSINT & Reconnaissance
+theharvester
+recon-ng
+maltego
+# spiderfoot REMOVED - not in repos, will install via pip in hook
 
-# ─────────────────────────────────────────────────────────────
-# POST EXPLOITATION
-# ─────────────────────────────────────────────────────────────
-empire
-powersploit
-mimikatz
-bloodhound
-crackmapexec
-evil-winrm
-impacket-scripts
-responder
-weevely
-webacoo
+# ─────────────────────────────────────────────────────────────────────────
+# PHASE 4: ADVANCED TOPICS
+# ─────────────────────────────────────────────────────────────────────────
 
-# ─────────────────────────────────────────────────────────────
-# FORENSICS & REVERSE ENGINEERING
-# ─────────────────────────────────────────────────────────────
+## Digital Forensics (curriculum requirement)
 autopsy
 volatility3
-bulk-extractor
-foremost
 binwalk
-steghide
-stegcracker
-exiftool
+foremost
+sleuthkit
+
+## Reverse Engineering
 radare2
 ghidra
-ida-free
 gdb
-edb-debugger
-ollydbg
+ltrace
+strace
 
-# ─────────────────────────────────────────────────────────────
-# CRYPTOGRAPHY & STEGANOGRAPHY
-# ─────────────────────────────────────────────────────────────
-hashcat
-john
-steghide
-stegcracker
-stegsnow
-openstego
-covertool
-stegotools
-
-# ─────────────────────────────────────────────────────────────
-# SOCIAL ENGINEERING
-# ─────────────────────────────────────────────────────────────
-social-engineer-toolkit
-phishing-frenzy
-gophish
-evilginx2
-modlishka
-
-# ─────────────────────────────────────────────────────────────
-# REPORTING & DOCUMENTATION
-# ─────────────────────────────────────────────────────────────
-faraday
-dradis
-metagoofil
-pipal
-cutycapt
-eyewitness
-
-# ─────────────────────────────────────────────────────────────
-# NETWORKING UTILITIES
-# ─────────────────────────────────────────────────────────────
-netcat-openbsd
-netcat-traditional
-socat
-proxychains4
-tor
-torsocks
-openvpn
-stunnel4
-sshuttle
-ncat
-
-# ─────────────────────────────────────────────────────────────
-# ANONYMITY & PRIVACY
-# ─────────────────────────────────────────────────────────────
-tor
-torbrowser-launcher
-proxychains4
-macchanger
-mat2
-bleachbit
-
-# ─────────────────────────────────────────────────────────────
-# SYSTEM UTILITIES
-# ─────────────────────────────────────────────────────────────
-dnsutils
-whois
-traceroute
-netdiscover
-arp-scan
-nbtscan
-enum4linux
-smbclient
-ldapsearch
-rdesktop
-xfreerdp
-
-# ─────────────────────────────────────────────────────────────
-# MALWARE ANALYSIS & DETECTION
-# ─────────────────────────────────────────────────────────────
-clamav
-clamtk
+## Malware Analysis
+# remnux REMOVED - It's a Linux distribution, not a package
+# cuckoo REMOVED - Complex manual install, will handle via Docker
 yara
-chkrootkit
-rkhunter
-lynis
-unhide
+
+# ─────────────────────────────────────────────────────────────────────────
+# SUPPORTING TOOLS (Used across all phases)
+# ─────────────────────────────────────────────────────────────────────────
+
+## Text Processing & Analysis
+grep
+sed
+# awk REMOVED - gawk/mawk already in base system
+jq
+
+## Version Control
+git
+git-lfs
+
+## Compression & Archives
+zip
+unzip
+unrar-free
+# rar REMOVED - proprietary, use p7zip-full instead
+p7zip-full
+
+## Web Tools
+curl
+wget
+lynx
+
+## Network Services
+openssh-server
+openssh-client
+telnet
+ftp
+
+## System Monitoring
+htop
+iotop
+nethogs
+
+## Documentation
+man-db
+manpages-dev
+
+# ─────────────────────────────────────────────────────────────────────────
+# EDUCATIONAL PLATFORM DEPENDENCIES
+# ─────────────────────────────────────────────────────────────────────────
+
+## Python Libraries (for AI tutor integration)
+python3-numpy
+python3-pandas
+python3-matplotlib
+python3-scipy
+python3-sklearn
+python3-requests
+
+## Development Tools
+build-essential
+cmake
+pkg-config
+
+## Database (for progress tracking)
+sqlite3
+libsqlite3-dev

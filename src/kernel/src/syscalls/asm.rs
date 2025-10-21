@@ -1,6 +1,8 @@
 /// System call assembly support for SynOS kernel
 /// Provides low-level system call entry and exit mechanisms
 use core::arch::{asm, naked_asm};
+use super::interrupt_handler::syscall_handler;
+use crate::syscalls::SyscallError;
 
 /// System call interrupt number (0x80 for compatibility)
 pub const SYSCALL_INTERRUPT: u8 = 0x80;
@@ -26,18 +28,9 @@ pub unsafe extern "C" fn syscall_entry() {
         "push r14",
         "push r15",
 
-        // Save segment registers
-        "push ds",
-        "push es",
-        "push fs",
-        "push gs",
-
-        // Set up kernel data segments
-        "mov ax, 0x10",    // Kernel data segment
-        "mov ds, ax",
-        "mov es, ax",
-        "mov fs, ax",
-        "mov gs, ax",
+        // NOTE: In 64-bit mode, segment registers (ds, es, fs, gs) cannot be pushed/popped directly
+        // They are mostly ignored except for FS and GS which are used for thread-local storage
+        // We'll use the swapgs instruction for kernel/user mode transitions instead
 
         // System call number is in rax
         // Arguments are in rdi, rsi, rdx, r10, r8, r9 (Linux x86_64 convention)
@@ -45,12 +38,6 @@ pub unsafe extern "C" fn syscall_entry() {
 
         // Call the system call handler
         "call {syscall_handler}",
-
-        // Restore segment registers
-        "pop gs",
-        "pop fs",
-        "pop es",
-        "pop ds",
 
         // Restore general purpose registers
         "pop r15",
@@ -72,7 +59,7 @@ pub unsafe extern "C" fn syscall_entry() {
         // Return to user space
         "iretq",
 
-        syscall_handler = sym crate::syscalls::syscall_handler
+        syscall_handler = sym syscall_handler
     );
 }
 
@@ -131,7 +118,7 @@ pub unsafe extern "C" fn syscall_fast_entry() {
         // Return to user space with SYSRET
         "sysretq",
 
-        syscall_handler = sym crate::syscalls::syscall_handler
+        syscall_handler = sym syscall_handler
     );
 }
 
@@ -153,11 +140,10 @@ pub fn init_syscall_asm() {
 /// Make a system call with no arguments
 #[inline]
 pub unsafe fn syscall0(number: u64) -> i64 {
-    let result: i64;
+    let mut result = number as i64;
     asm!(
         "int 0x80",
-        in("rax") number,
-        out("rax") result,
+        inlateout("rax") result,
         options(nostack, preserves_flags)
     );
     result
@@ -166,12 +152,11 @@ pub unsafe fn syscall0(number: u64) -> i64 {
 /// Make a system call with 1 argument
 #[inline]
 pub unsafe fn syscall1(number: u64, arg0: u64) -> i64 {
-    let result: i64;
+    let mut result = number as i64;
     asm!(
         "int 0x80",
-        in("rax") number,
+        inlateout("rax") result,
         in("rdi") arg0,
-        out("rax") result,
         options(nostack, preserves_flags)
     );
     result
@@ -180,13 +165,12 @@ pub unsafe fn syscall1(number: u64, arg0: u64) -> i64 {
 /// Make a system call with 2 arguments
 #[inline]
 pub unsafe fn syscall2(number: u64, arg0: u64, arg1: u64) -> i64 {
-    let result: i64;
+    let mut result = number as i64;
     asm!(
         "int 0x80",
-        in("rax") number,
+        inlateout("rax") result,
         in("rdi") arg0,
         in("rsi") arg1,
-        out("rax") result,
         options(nostack, preserves_flags)
     );
     result
@@ -195,14 +179,13 @@ pub unsafe fn syscall2(number: u64, arg0: u64, arg1: u64) -> i64 {
 /// Make a system call with 3 arguments
 #[inline]
 pub unsafe fn syscall3(number: u64, arg0: u64, arg1: u64, arg2: u64) -> i64 {
-    let result: i64;
+    let mut result = number as i64;
     asm!(
         "int 0x80",
-        in("rax") number,
+        inlateout("rax") result,
         in("rdi") arg0,
         in("rsi") arg1,
         in("rdx") arg2,
-        out("rax") result,
         options(nostack, preserves_flags)
     );
     result
@@ -211,15 +194,14 @@ pub unsafe fn syscall3(number: u64, arg0: u64, arg1: u64, arg2: u64) -> i64 {
 /// Make a system call with 4 arguments
 #[inline]
 pub unsafe fn syscall4(number: u64, arg0: u64, arg1: u64, arg2: u64, arg3: u64) -> i64 {
-    let result: i64;
+    let mut result = number as i64;
     asm!(
         "int 0x80",
-        in("rax") number,
+        inlateout("rax") result,
         in("rdi") arg0,
         in("rsi") arg1,
         in("rdx") arg2,
         in("r10") arg3,
-        out("rax") result,
         options(nostack, preserves_flags)
     );
     result
@@ -228,16 +210,15 @@ pub unsafe fn syscall4(number: u64, arg0: u64, arg1: u64, arg2: u64, arg3: u64) 
 /// Make a system call with 5 arguments
 #[inline]
 pub unsafe fn syscall5(number: u64, arg0: u64, arg1: u64, arg2: u64, arg3: u64, arg4: u64) -> i64 {
-    let result: i64;
+    let mut result = number as i64;
     asm!(
         "int 0x80",
-        in("rax") number,
+        inlateout("rax") result,
         in("rdi") arg0,
         in("rsi") arg1,
         in("rdx") arg2,
         in("r10") arg3,
         in("r8") arg4,
-        out("rax") result,
         options(nostack, preserves_flags)
     );
     result
@@ -254,138 +235,21 @@ pub unsafe fn syscall6(
     arg4: u64,
     arg5: u64,
 ) -> i64 {
-    let result: i64;
+    let mut result = number as i64;
     asm!(
         "int 0x80",
-        in("rax") number,
+        inlateout("rax") result,
         in("rdi") arg0,
         in("rsi") arg1,
         in("rdx") arg2,
         in("r10") arg3,
         in("r8") arg4,
         in("r9") arg5,
-        out("rax") result,
         options(nostack, preserves_flags)
     );
     result
 }
 
-/// High-level system call wrappers for kernel use
-pub mod kernel_syscalls {
-    use super::*;
-    use crate::syscalls::{SyscallError, SystemCall};
-
-    /// Write to a file descriptor
-    pub fn write(fd: u32, buffer: &[u8]) -> Result<usize, SyscallError> {
-        let result = unsafe {
-            syscall3(
-                SystemCall::Write as u64,
-                fd as u64,
-                buffer.as_ptr() as u64,
-                buffer.len() as u64,
-            )
-        };
-
-        if result < 0 {
-            Err(SyscallError::try_from(result).unwrap_or(SyscallError::InvalidArgument))
-        } else {
-            Ok(result as usize)
-        }
-    }
-
-    /// Read from a file descriptor
-    pub fn read(fd: u32, buffer: &mut [u8]) -> Result<usize, SyscallError> {
-        let result = unsafe {
-            syscall3(
-                SystemCall::Read as u64,
-                fd as u64,
-                buffer.as_mut_ptr() as u64,
-                buffer.len() as u64,
-            )
-        };
-
-        if result < 0 {
-            Err(SyscallError::try_from(result).unwrap_or(SyscallError::InvalidArgument))
-        } else {
-            Ok(result as usize)
-        }
-    }
-
-    /// Get process ID
-    pub fn getpid() -> u32 {
-        let result = unsafe { syscall0(SystemCall::Getpid as u64) };
-        result as u32
-    }
-
-    /// Exit the current process
-    pub fn exit(status: i32) -> ! {
-        unsafe {
-            syscall1(SystemCall::Exit as u64, status as u64);
-        }
-        // This should never return
-        loop {
-            unsafe { asm!("hlt") };
-        }
-    }
-
-    /// Yield CPU to other processes
-    pub fn sched_yield() -> Result<(), SyscallError> {
-        let result = unsafe { syscall0(SystemCall::Sched_yield as u64) };
-        if result < 0 {
-            Err(SyscallError::try_from(result).unwrap_or(SyscallError::InvalidArgument))
-        } else {
-            Ok(())
-        }
-    }
-
-    /// Get SynOS system information
-    pub fn syn_info() -> Result<(), SyscallError> {
-        let result = unsafe { syscall0(SystemCall::SynInfo as u64) };
-        if result < 0 {
-            Err(SyscallError::try_from(result).unwrap_or(SyscallError::InvalidArgument))
-        } else {
-            Ok(())
-        }
-    }
-
-    /// Get SynOS security information
-    pub fn syn_security_info() -> Result<(), SyscallError> {
-        let result = unsafe { syscall0(SystemCall::SynSecInfo as u64) };
-        if result < 0 {
-            Err(SyscallError::try_from(result).unwrap_or(SyscallError::InvalidArgument))
-        } else {
-            Ok(())
-        }
-    }
-
-    /// Get SynOS device information
-    pub fn syn_device_info() -> Result<(), SyscallError> {
-        let result = unsafe { syscall0(SystemCall::SynDeviceInfo as u64) };
-        if result < 0 {
-            Err(SyscallError::try_from(result).unwrap_or(SyscallError::InvalidArgument))
-        } else {
-            Ok(())
-        }
-    }
-}
-
-impl TryFrom<i64> for SyscallError {
-    type Error = ();
-
-    fn try_from(value: i64) -> Result<Self, Self::Error> {
-        match value {
-            0 => Ok(SyscallError::Success),
-            -1 => Ok(SyscallError::PermissionDenied),
-            -2 => Ok(SyscallError::NoSuchFile),
-            -3 => Ok(SyscallError::NoSuchProcess),
-            -4 => Ok(SyscallError::Interrupted),
-            -5 => Ok(SyscallError::IoError),
-            -12 => Ok(SyscallError::OutOfMemory),
-            -13 => Ok(SyscallError::AccessDenied),
-            -16 => Ok(SyscallError::ResourceBusy),
-            -22 => Ok(SyscallError::InvalidArgument),
-            -38 => Ok(SyscallError::NotImplemented),
-            _ => Err(()),
-        }
-    }
-}
+// High-level syscall wrappers removed to avoid duplication with existing syscall infrastructure
+// These helper functions exist but are currently disabled to focus on core INT 0x80 integration
+// The real syscall implementations are in mod.rs syscall_entry() function

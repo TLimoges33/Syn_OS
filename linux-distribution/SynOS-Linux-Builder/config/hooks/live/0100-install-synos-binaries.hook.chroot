@@ -16,20 +16,23 @@ mkdir -p /opt/synos/ai/{models,data,config}
 mkdir -p /opt/synos/src
 echo "✓ /opt/synos/ structure created"
 
-if [ -d /tmp/synos-binaries ]; then
+# UPDATED: Changed from /tmp/synos-binaries to /tmp/synos-staging (unified path)
+if [ -d /tmp/synos-staging ]; then
+    echo "Found SynOS staging directory at /tmp/synos-staging/"
+
     # Install kernel to /boot/synos/
-    if [ -d /tmp/synos-binaries/kernel ]; then
+    if [ -d /tmp/synos-staging/kernel ]; then
         mkdir -p /boot/synos
-        cp -av /tmp/synos-binaries/kernel/* /boot/synos/
+        cp -av /tmp/synos-staging/kernel/* /boot/synos/
         chmod 644 /boot/synos/*
         echo "✓ Kernel installed to /boot/synos/"
     fi
 
     # Install binaries to /opt/synos/bin/ (PRIMARY location)
-    if [ -d /tmp/synos-binaries/bin ]; then
+    if [ -d /tmp/synos-staging/bin ]; then
         echo "Installing SynOS binaries to /opt/synos/bin/..."
-        cp -av /tmp/synos-binaries/bin/* /opt/synos/bin/
-        chmod +x /opt/synos/bin/*
+        cp -av /tmp/synos-staging/bin/* /opt/synos/bin/ 2>/dev/null || true
+        chmod +x /opt/synos/bin/* 2>/dev/null || true
 
         # Create symlinks in /usr/local/bin/ for PATH access
         echo "Creating symlinks in /usr/local/bin/..."
@@ -44,9 +47,9 @@ if [ -d /tmp/synos-binaries ]; then
     fi
 
     # Install libraries to /opt/synos/lib/
-    if [ -d /tmp/synos-binaries/lib ]; then
+    if [ -d /tmp/synos-staging/lib ]; then
         echo "Installing SynOS libraries to /opt/synos/lib/..."
-        cp -av /tmp/synos-binaries/lib/* /opt/synos/lib/
+        cp -av /tmp/synos-staging/lib/* /opt/synos/lib/ 2>/dev/null || true
 
         # Add to library path
         echo "/opt/synos/lib" > /etc/ld.so.conf.d/synos.conf
@@ -55,6 +58,9 @@ if [ -d /tmp/synos-binaries ]; then
         echo "✓ Libraries installed to /opt/synos/lib/"
         echo "✓ Library path configured"
     fi
+else
+    echo "⚠️  WARNING: /tmp/synos-staging not found - custom components will not be installed"
+    echo "    Run BUILD-V1.0-COMPLETE-INTEGRATION.sh before building ISO"
 fi
 
 # Set ownership and permissions

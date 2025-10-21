@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=SynOS Red Phoenix
+Comment=Revolutionary red and black theme for SynOS v1.1
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=SynOS-Red-Phoenix
+MetacityTheme=SynOS-Red-Phoenix
+IconTheme=SynOS-Red-Phoenix
+CursorTheme=Adwaita
+ButtonLayout=menu:minimize,maximize,close

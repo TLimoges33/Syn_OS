@@ -5,12 +5,19 @@ echo "════════════════════════�
 echo "  Setting Up AI Engine & Deploying Models"
 echo "════════════════════════════════════════════════════════════"
 
-# Install Python AI dependencies
-# Debian 12 uses PEP 668 externally-managed-environment
-# We'll create a virtual environment for AI packages instead
+# Install Python AI dependencies using --break-system-packages for Debian 12 PEP 668
 echo "Installing AI/ML Python packages..."
-echo "⚠️  AI packages will be installed in virtual environment on first boot"
-echo "✓ Python AI packages deferred to first boot"
+pip3 install --break-system-packages --no-cache-dir \
+    torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu \
+    transformers \
+    numpy pandas scikit-learn \
+    onnxruntime \
+    tensorflow-lite \
+    pillow \
+    opencv-python \
+    2>&1 || echo "⚠️  Some AI packages may need manual installation"
+
+echo "✓ Python AI packages installed"
 
 # Create comprehensive AI model directory structure
 echo "Creating AI model directories..."

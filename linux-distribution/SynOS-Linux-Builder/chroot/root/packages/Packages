@@ -1,0 +1,27 @@
+Package: synos-ai-engine
+Architecture: amd64
+Version: 1.0.0
+Priority: optional
+Essential: no
+Section: science
+Maintainer: SynOS Development Team <dev@synos.ai>
+Depends: libc6 (>= 2.34), libssl3 (>= 3.0.0), python3 (>= 3.9), python3-numpy, python3-scipy, systemd
+Filename: ./synos-ai-engine_1.0.0_amd64.deb
+Size: 3048
+MD5sum: b4dc0fcb57540e3ebe4de24180bd45cc
+SHA1: 214086b8a1ead92820c322481196f1910411b148
+SHA256: c17eed87908f951556b46ada9629def71989101310598f3552e989e24073d3fe
+SHA512: 15a82a28cbf8c4dcd0f75e3dacbd1af0b47192b8ca7477c408a593ce4229597dcbc8963dc1d310416affc7607ae28a902fc6037240d801257fc075e3a049925b
+Homepage: https://github.com/synos-ai/synos
+Description: SynOS AI Consciousness Engine
+ The core AI consciousness engine for SynOS, providing neural darwinism
+ capabilities, personal context processing, and AI-augmented system operations.
+ .
+ This package includes:
+ - Neural Darwinism consciousness framework
+ - Personal Context Engine with RAG capabilities
+ - Vector database integration (ChromaDB/FAISS)
+ - AI Runtime management (TensorFlow Lite, ONNX)
+ - Natural language OS control interfaces
+ - Security tool orchestration system
+

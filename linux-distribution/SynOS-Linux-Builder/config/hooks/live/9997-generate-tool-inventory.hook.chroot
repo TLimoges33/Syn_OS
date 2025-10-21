@@ -1,0 +1,193 @@
+#!/bin/bash
+# 9997-generate-tool-inventory.hook.chroot
+# Generate comprehensive inventory of installed security tools
+# This runs at the END to document what's actually in the ISO
+
+set -e
+
+echo "==================================================================="
+echo "  Generating Security Tools Inventory"
+echo "==================================================================="
+
+INVENTORY_FILE="/root/SYNOS_SECURITY_TOOLS_INVENTORY.txt"
+
+cat > "$INVENTORY_FILE" << 'HEADER'
+╔══════════════════════════════════════════════════════════════════════╗
+║                                                                      ║
+║              SynOS v1.0 - Security Tools Inventory                  ║
+║              Generated during ISO build                              ║
+║                                                                      ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+This file contains a complete inventory of security tools installed
+in this SynOS ISO image.
+
+HEADER
+
+echo "" >> "$INVENTORY_FILE"
+echo "Build Date: $(date)" >> "$INVENTORY_FILE"
+echo "" >> "$INVENTORY_FILE"
+
+# Function to check if command exists and get version
+check_tool() {
+    local tool="$1"
+    local category="$2"
+
+    if command -v "$tool" &> /dev/null; then
+        version=$(command -v "$tool" | xargs file 2>/dev/null | cut -d: -f2 || echo "installed")
+        echo "  ✓ $tool - $version" >> "$INVENTORY_FILE"
+        return 0
+    else
+        echo "  ✗ $tool - NOT INSTALLED" >> "$INVENTORY_FILE"
+        return 1
+    fi
+}
+
+# ═══════════════════════════════════════════════════════════════
+echo "→ Scanning RECONNAISSANCE tools..."
+echo "" >> "$INVENTORY_FILE"
+echo "═══════════════════════════════════════════════════════════════" >> "$INVENTORY_FILE"
+echo "RECONNAISSANCE & INFORMATION GATHERING" >> "$INVENTORY_FILE"
+echo "═══════════════════════════════════════════════════════════════" >> "$INVENTORY_FILE"
+
+RECON_INSTALLED=0
+for tool in nmap masscan zmap dnsenum dnsrecon fierce sublist3r amass theharvester recon-ng maltego spiderfoot whatweb wafw00f nikto dirb gobuster dirbuster wfuzz ffuf feroxbuster; do
+    check_tool "$tool" "recon" && ((RECON_INSTALLED++)) || true
+done
+
+# ═══════════════════════════════════════════════════════════════
+echo "→ Scanning EXPLOITATION tools..."
+echo "" >> "$INVENTORY_FILE"
+echo "═══════════════════════════════════════════════════════════════" >> "$INVENTORY_FILE"
+echo "EXPLOITATION FRAMEWORKS & TOOLS" >> "$INVENTORY_FILE"
+echo "═══════════════════════════════════════════════════════════════" >> "$INVENTORY_FILE"
+
+EXPLOIT_INSTALLED=0
+for tool in msfconsole msfvenom armitage beef-xss searchsploit setoolkit routersploit; do
+    check_tool "$tool" "exploit" && ((EXPLOIT_INSTALLED++)) || true
+done
+
+# ═══════════════════════════════════════════════════════════════
+echo "→ Scanning WEB APPLICATION tools..."
+echo "" >> "$INVENTORY_FILE"
+echo "═══════════════════════════════════════════════════════════════" >> "$INVENTORY_FILE"
+echo "WEB APPLICATION TESTING" >> "$INVENTORY_FILE"
+echo "═══════════════════════════════════════════════════════════════" >> "$INVENTORY_FILE"
+
+WEB_INSTALLED=0
+for tool in burpsuite zaproxy sqlmap commix xsser wpscan joomscan nikto skipfish arachni; do
+    check_tool "$tool" "web" && ((WEB_INSTALLED++)) || true
+done
+
+# ═══════════════════════════════════════════════════════════════
+echo "→ Scanning PASSWORD tools..."
+echo "" >> "$INVENTORY_FILE"
+echo "═══════════════════════════════════════════════════════════════" >> "$INVENTORY_FILE"
+echo "PASSWORD ATTACKS & CRACKING" >> "$INVENTORY_FILE"
+echo "═══════════════════════════════════════════════════════════════" >> "$INVENTORY_FILE"
+
+PASS_INSTALLED=0
+for tool in john hashcat hydra medusa ncrack patator crunch cewl rsmangler hashid; do
+    check_tool "$tool" "password" && ((PASS_INSTALLED++)) || true
+done
+
+# ═══════════════════════════════════════════════════════════════
+echo "→ Scanning WIRELESS tools..."
+echo "" >> "$INVENTORY_FILE"
+echo "═══════════════════════════════════════════════════════════════" >> "$INVENTORY_FILE"
+echo "WIRELESS SECURITY & ATTACKS" >> "$INVENTORY_FILE"
+echo "═══════════════════════════════════════════════════════════════" >> "$INVENTORY_FILE"
+
+WIRELESS_INSTALLED=0
+for tool in aircrack-ng aireplay-ng airodump-ng reaver bully wifite kismet fern-wifi-cracker wifiphisher mdk4; do
+    check_tool "$tool" "wireless" && ((WIRELESS_INSTALLED++)) || true
+done
+
+# ═══════════════════════════════════════════════════════════════
+echo "→ Scanning FORENSICS tools..."
+echo "" >> "$INVENTORY_FILE"
+echo "═══════════════════════════════════════════════════════════════" >> "$INVENTORY_FILE"
+echo "FORENSICS & INCIDENT RESPONSE" >> "$INVENTORY_FILE"
+echo "═══════════════════════════════════════════════════════════════" >> "$INVENTORY_FILE"
+
+FORENSICS_INSTALLED=0
+for tool in autopsy sleuthkit volatility vol binwalk foremost steghide exiftool testdisk photorec; do
+    check_tool "$tool" "forensics" && ((FORENSICS_INSTALLED++)) || true
+done
+
+# ═══════════════════════════════════════════════════════════════
+echo "→ Scanning REVERSE ENGINEERING tools..."
+echo "" >> "$INVENTORY_FILE"
+echo "═══════════════════════════════════════════════════════════════" >> "$INVENTORY_FILE"
+echo "REVERSE ENGINEERING & BINARY ANALYSIS" >> "$INVENTORY_FILE"
+echo "═══════════════════════════════════════════════════════════════" >> "$INVENTORY_FILE"
+
+RE_INSTALLED=0
+for tool in radare2 r2 ghidra gdb objdump strings ltrace strace; do
+    check_tool "$tool" "re" && ((RE_INSTALLED++)) || true
+done
+
+# ═══════════════════════════════════════════════════════════════
+echo "→ Scanning NETWORK ANALYSIS tools..."
+echo "" >> "$INVENTORY_FILE"
+echo "═══════════════════════════════════════════════════════════════" >> "$INVENTORY_FILE"
+echo "NETWORK SNIFFING & ANALYSIS" >> "$INVENTORY_FILE"
+echo "═══════════════════════════════════════════════════════════════" >> "$INVENTORY_FILE"
+
+NETWORK_INSTALLED=0
+for tool in wireshark tshark tcpdump ettercap dsniff mitmproxy sslstrip netcat nc socat; do
+    check_tool "$tool" "network" && ((NETWORK_INSTALLED++)) || true
+done
+
+# ═══════════════════════════════════════════════════════════════
+echo "" >> "$INVENTORY_FILE"
+echo "═══════════════════════════════════════════════════════════════" >> "$INVENTORY_FILE"
+echo "INSTALLATION SUMMARY" >> "$INVENTORY_FILE"
+echo "═══════════════════════════════════════════════════════════════" >> "$INVENTORY_FILE"
+echo "" >> "$INVENTORY_FILE"
+echo "Reconnaissance Tools: $RECON_INSTALLED installed" >> "$INVENTORY_FILE"
+echo "Exploitation Tools: $EXPLOIT_INSTALLED installed" >> "$INVENTORY_FILE"
+echo "Web Application Tools: $WEB_INSTALLED installed" >> "$INVENTORY_FILE"
+echo "Password Tools: $PASS_INSTALLED installed" >> "$INVENTORY_FILE"
+echo "Wireless Tools: $WIRELESS_INSTALLED installed" >> "$INVENTORY_FILE"
+echo "Forensics Tools: $FORENSICS_INSTALLED installed" >> "$INVENTORY_FILE"
+echo "Reverse Engineering Tools: $RE_INSTALLED installed" >> "$INVENTORY_FILE"
+echo "Network Analysis Tools: $NETWORK_INSTALLED installed" >> "$INVENTORY_FILE"
+echo "" >> "$INVENTORY_FILE"
+
+TOTAL_INSTALLED=$((RECON_INSTALLED + EXPLOIT_INSTALLED + WEB_INSTALLED + PASS_INSTALLED + WIRELESS_INSTALLED + FORENSICS_INSTALLED + RE_INSTALLED + NETWORK_INSTALLED))
+echo "TOTAL SECURITY TOOLS: $TOTAL_INSTALLED" >> "$INVENTORY_FILE"
+echo "" >> "$INVENTORY_FILE"
+
+# Copy to home directory for easy access
+cp "$INVENTORY_FILE" /home/synos/SYNOS_SECURITY_TOOLS_INVENTORY.txt 2>/dev/null || true
+cp "$INVENTORY_FILE" /etc/skel/SYNOS_SECURITY_TOOLS_INVENTORY.txt 2>/dev/null || true
+
+# Also create a shorter version for desktop
+cat > "/home/synos/Desktop/Security_Tools.txt" << DESKTOP
+SynOS Security Tools - Quick Reference
+======================================
+
+Total Tools Installed: $TOTAL_INSTALLED
+
+Categories:
+  • Reconnaissance: $RECON_INSTALLED tools
+  • Exploitation: $EXPLOIT_INSTALLED tools
+  • Web Testing: $WEB_INSTALLED tools
+  • Password Cracking: $PASS_INSTALLED tools
+  • Wireless Hacking: $WIRELESS_INSTALLED tools
+  • Forensics: $FORENSICS_INSTALLED tools
+  • Reverse Engineering: $RE_INSTALLED tools
+  • Network Analysis: $NETWORK_INSTALLED tools
+
+For complete list, see: ~/SYNOS_SECURITY_TOOLS_INVENTORY.txt
+
+DESKTOP
+
+chmod 644 /home/synos/Desktop/Security_Tools.txt 2>/dev/null || true
+
+echo "==================================================================="
+echo "✓ Security Tools Inventory Generated"
+echo "   Location: $INVENTORY_FILE"
+echo "   Total tools found: $TOTAL_INSTALLED"
+echo "==================================================================="

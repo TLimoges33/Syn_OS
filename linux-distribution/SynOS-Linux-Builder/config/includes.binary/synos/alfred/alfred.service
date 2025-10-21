@@ -1,0 +1,17 @@
+[Unit]
+Description=SynOS ALFRED - AI Voice Assistant
+Documentation=man:alfred(8)
+After=sound.target pulseaudio.service network.target
+Wants=sound.target
+
+[Service]
+Type=simple
+ExecStart=/usr/share/synos/alfred/alfred-daemon.py
+Restart=on-failure
+RestartSec=5
+User=synos
+Environment="DISPLAY=:0"
+Environment="PULSE_SERVER=unix:/run/user/1000/pulse/native"
+
+[Install]
+WantedBy=multi-user.target

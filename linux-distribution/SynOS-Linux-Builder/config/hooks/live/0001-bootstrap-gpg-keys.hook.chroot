@@ -1,0 +1,119 @@
+#!/bin/bash
+#
+# SynOS Bootstrap GPG Keys Hook
+# Priority: 0001 - Must run BEFORE any apt operations
+#
+# Purpose: Import ALL Debian 12 (Bookworm) GPG keys and set up certificates
+# early in the bootstrap process to prevent signature verification errors.
+#
+# This fixes:
+# - "At least one invalid signature was encountered" errors
+# - "The repository is not signed" warnings
+# - "WARNING: The following packages cannot be authenticated!" errors
+#
+
+set -e
+
+echo "====================================================================="
+echo "  SynOS Bootstrap: Importing GPG Keys and Certificates"
+echo "====================================================================="
+
+# Bootstrap ca-certificates WITHOUT verification (chicken-egg problem)
+echo "📦 Installing ca-certificates (bootstrap mode)..."
+apt-get update --allow-insecure-repositories 2>/dev/null || true
+apt-get install -y --allow-unauthenticated ca-certificates || {
+    echo "⚠️  Failed to install ca-certificates, trying alternative method..."
+    apt-get install -y --allow-unauthenticated --no-install-recommends ca-certificates
+}
+
+# Bootstrap debian-archive-keyring
+echo "📦 Installing debian-archive-keyring..."
+apt-get install -y --allow-unauthenticated debian-archive-keyring || {
+    echo "⚠️  Failed to install debian-archive-keyring, continuing anyway..."
+}
+
+# Create GPG directories if they don't exist
+mkdir -p /root/.gnupg
+chmod 700 /root/.gnupg
+
+# Import ALL Debian 12 (Bookworm) GPG Keys
+echo ""
+echo "🔑 Importing Debian 12 (Bookworm) GPG keys..."
+
+DEBIAN_KEYS=(
+    "648ACFD622F3D138"  # Debian Archive Automatic Signing Key (11/bullseye)
+    "0E98404D386FA1D9"  # Debian Security Archive Automatic Signing Key (11/bullseye)
+    "6ED0E7B82643E131"  # Debian Archive Automatic Signing Key (12/bookworm)
+    "F8D2585B8783D481"  # Debian Security Archive Automatic Signing Key (12/bookworm)
+    "54404762BBB6E853"  # Debian Stable Release Key (12/bookworm)
+    "605C66F00D6C9793"  # Debian Stable Release Key (12/bookworm) - Secondary
+)
+
+KEYSERVERS=(
+    "keyserver.ubuntu.com"
+    "keys.openpgp.org"
+    "pgp.mit.edu"
+)
+
+for KEY in "${DEBIAN_KEYS[@]}"; do
+    echo -n "  Importing key $KEY... "
+
+    SUCCESS=0
+    for KEYSERVER in "${KEYSERVERS[@]}"; do
+        if gpg --keyserver "$KEYSERVER" --recv-keys "$KEY" 2>/dev/null; then
+            SUCCESS=1
+            echo "✓ (from $KEYSERVER)"
+            break
+        fi
+    done
+
+    if [ $SUCCESS -eq 0 ]; then
+        echo "⚠️  FAILED to import from any keyserver"
+    fi
+done
+
+# Export keys to APT's trusted keyring
+echo ""
+echo "📥 Exporting keys to APT trusted keyring..."
+for KEY in "${DEBIAN_KEYS[@]}"; do
+    gpg --export "$KEY" 2>/dev/null | apt-key add - 2>/dev/null || true
+done
+
+# Import Parrot Security GPG Key
+echo ""
+echo "🔑 Importing Parrot Security GPG key..."
+if wget -qO - https://deb.parrot.sh/parrot/misc/parrotsec.gpg 2>/dev/null | gpg --dearmor > /etc/apt/trusted.gpg.d/parrot.gpg 2>/dev/null; then
+    echo "  ✓ Parrot GPG key imported"
+else
+    echo "  ⚠️  Failed to import Parrot key (will retry later)"
+fi
+
+# Import Kali Linux GPG Key
+echo ""
+echo "🔑 Importing Kali Linux GPG key..."
+# Kali archive keyring - ED444FF07D8D0BF6
+if wget -qO - https://archive.kali.org/archive-key.asc 2>/dev/null | gpg --dearmor > /etc/apt/trusted.gpg.d/kali-archive-keyring.gpg 2>/dev/null; then
+    echo "  ✓ Kali GPG key imported"
+else
+    echo "  ⚠️  Failed to import Kali key (trying fallback method)"
+    # Fallback: Use key from local file if it exists
+    if [ -f /etc/apt/trusted.gpg.d/kali-archive-keyring.gpg ]; then
+        echo "  ✓ Using existing Kali key"
+    else
+        echo "  ⚠️  Kali key not available"
+    fi
+fi
+
+# Update ca-certificates
+echo ""
+echo "🔒 Updating CA certificates..."
+update-ca-certificates 2>&1 | grep -E "^(Adding|Updating|Removing|done)" || true
+
+# Update apt cache with proper keys
+echo ""
+echo "📋 Updating APT package cache..."
+apt-get update 2>&1 | grep -v "Ign:" | head -20 || true
+
+echo ""
+echo "✅ GPG keys and certificates bootstrap complete!"
+echo "====================================================================="

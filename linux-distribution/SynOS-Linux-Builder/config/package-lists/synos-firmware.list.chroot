@@ -1,0 +1,16 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# SynOS Firmware - Debian 12 Bookworm Compatible
+# ═══════════════════════════════════════════════════════════════════════════
+# NOTE: Debian 12 reorganized firmware packages. Many old names don't exist.
+# Using firmware-linux-free + ParrotOS will handle most firmware needs.
+
+# Free firmware (safe, always available in Debian)
+firmware-linux-free
+
+# Non-free firmware will be pulled from ParrotOS repos automatically
+# ParrotOS Security Edition includes comprehensive firmware support for:
+# - Intel WiFi/GPU (i915, iwlwifi)
+# - Realtek network cards
+# - Atheros WiFi
+# - Broadcom wireless
+# - And 50+ other hardware vendors

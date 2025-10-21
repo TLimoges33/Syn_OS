@@ -12,6 +12,7 @@ pub mod bridge;
 pub mod interface;
 pub mod consciousness;
 pub mod consciousness_kernel;
+pub mod consciousness_integration; // Day 5: Complete AI ↔ Kernel Integration
 pub mod services;
 pub mod bias_detection;
 pub mod continuous_monitoring;
@@ -32,6 +33,24 @@ pub use interface::{AIInterface, AIRequest, AIResponse, AIOperation};
 pub use consciousness::{ConsciousnessSystem, ConsciousnessState};
 pub use services::{AIServices, AIServiceType};
 pub use bridge::{AIBridge, AIBridgeMessage};
+
+// Day 5: Export consciousness integration API
+pub use consciousness_integration::{
+    init_consciousness_integration,
+    is_consciousness_integration_active,
+    register_process_with_consciousness,
+    unregister_process_from_consciousness,
+    consciousness_scheduling_decision,
+    consciousness_track_allocation,
+    consciousness_track_deallocation,
+    consciousness_analyze_threat,
+    get_consciousness_metrics,
+    should_extend_process_time_slice,
+    update_process_consciousness_score,
+    provide_consciousness_feedback,
+    ConsciousnessMetrics,
+    ThreatAnalysisResult,
+};
 
 /// AI system configuration
 #[derive(Debug, Clone)]

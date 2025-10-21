@@ -29,6 +29,12 @@ members = [
     "src/vm-wargames",
     "src/userspace/libc",
     "src/tools/dev-utils",
+    "src/gamification",  # V1.5: WoW/KOTOR/Cyberpunk-inspired skill tree system
+    "src/cloud-security",  # V1.6: Multi-cloud security monitoring (AWS/Azure/GCP)
+    "src/ai-tutor",  # V1.7: Adaptive AI tutoring with learning style detection
+    "src/mobile-bridge",  # V1.8: WebSocket bridge for mobile app
+    "src/universal-command",  # V1.9: Universal command orchestrator with AI tool selection
+    "src/ctf-platform",  # V1.9: CTF training platform with challenges and leaderboards
 ]
 
 # Exclude archived, backup, and build directories
@@ -42,7 +48,7 @@ exclude = [
 ]
 
 [workspace.package]
-version = "4.4.0"
+version = "4.5.0"
 edition = "2021"
 authors = ["Syn_OS Team"]
 repository = "https://github.com/TLimoges33/Syn_OS"

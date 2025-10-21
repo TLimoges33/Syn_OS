@@ -1,0 +1,327 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+ * SynOS GTK3 Theme - True Black + Scarlet + White
+ * For MATE Desktop Environment
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * Color Definitions
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+@define-color bg_color #000000;              /* True Black */
+@define-color fg_color #FFFFFF;              /* White */
+@define-color base_color #0a0a0a;            /* Slightly lighter black for inputs */
+@define-color text_color #FFFFFF;            /* White text */
+@define-color selected_bg_color #DC143C;     /* Scarlet */
+@define-color selected_fg_color #FFFFFF;     /* White on scarlet */
+@define-color tooltip_bg_color #1a1a1a;      /* Dark gray */
+@define-color tooltip_fg_color #FFFFFF;      /* White */
+@define-color border_color #333333;          /* Dark gray borders */
+@define-color link_color #FF2400;            /* Bright scarlet */
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * Window Manager (Marco)
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+.background {
+    background-color: @bg_color;
+    color: @fg_color;
+}
+
+window {
+    background-color: @bg_color;
+    color: @fg_color;
+}
+
+/* Title bars */
+headerbar,
+.titlebar {
+    background-color: #000000;
+    background-image: none;
+    border-bottom: 2px solid @selected_bg_color;
+    color: @fg_color;
+}
+
+headerbar:backdrop,
+.titlebar:backdrop {
+    background-color: #0a0a0a;
+    border-bottom: 1px solid #333333;
+}
+
+/* Window buttons */
+button.titlebutton {
+    background-color: transparent;
+    border: none;
+    color: @fg_color;
+}
+
+button.titlebutton:hover {
+    background-color: @selected_bg_color;
+    color: @selected_fg_color;
+}
+
+button.titlebutton:active {
+    background-color: #B01030;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * Panels (MATE Panel)
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+.mate-panel-menu-bar,
+PanelApplet,
+PanelToplevel,
+PanelWidget,
+PanelFrame {
+    background-color: #000000;
+    background-image: none;
+    color: @fg_color;
+    border: none;
+}
+
+.mate-panel-menu-bar menubar,
+.mate-panel-menu-bar menuitem {
+    background-color: transparent;
+    color: @fg_color;
+}
+
+.mate-panel-menu-bar menuitem:hover {
+    background-color: @selected_bg_color;
+    color: @selected_fg_color;
+}
+
+/* Panel buttons */
+PanelApplet button {
+    background-color: transparent;
+    border: none;
+    color: @fg_color;
+}
+
+PanelApplet button:hover {
+    background-color: @selected_bg_color;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * Buttons
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+button {
+    background-color: #1a1a1a;
+    background-image: none;
+    border: 1px solid @border_color;
+    color: @fg_color;
+    padding: 6px 12px;
+}
+
+button:hover {
+    background-color: @selected_bg_color;
+    border-color: @selected_bg_color;
+    color: @selected_fg_color;
+}
+
+button:active,
+button:checked {
+    background-color: #B01030;
+    border-color: #B01030;
+}
+
+button:disabled {
+    background-color: #0a0a0a;
+    color: #666666;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * Entries (Text Inputs)
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+entry {
+    background-color: @base_color;
+    border: 1px solid @border_color;
+    color: @text_color;
+    padding: 6px;
+}
+
+entry:focus {
+    border-color: @selected_bg_color;
+    box-shadow: 0 0 0 1px @selected_bg_color;
+}
+
+entry:disabled {
+    background-color: #050505;
+    color: #666666;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * Menus
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+menu,
+.menu {
+    background-color: #0a0a0a;
+    border: 1px solid @border_color;
+    color: @fg_color;
+}
+
+menuitem {
+    background-color: transparent;
+    color: @fg_color;
+    padding: 4px 8px;
+}
+
+menuitem:hover {
+    background-color: @selected_bg_color;
+    color: @selected_fg_color;
+}
+
+menuitem:disabled {
+    color: #666666;
+}
+
+/* Menu separators */
+separator {
+    background-color: @border_color;
+    min-height: 1px;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * Scrollbars
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+scrollbar {
+    background-color: #0a0a0a;
+}
+
+scrollbar slider {
+    background-color: #333333;
+    border: 1px solid #1a1a1a;
+    min-width: 12px;
+    min-height: 12px;
+}
+
+scrollbar slider:hover {
+    background-color: @selected_bg_color;
+}
+
+scrollbar slider:active {
+    background-color: #B01030;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * Notebooks (Tabs)
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+notebook {
+    background-color: @bg_color;
+}
+
+notebook header {
+    background-color: #0a0a0a;
+    border-bottom: 2px solid @border_color;
+}
+
+notebook tab {
+    background-color: #0a0a0a;
+    border: 1px solid @border_color;
+    color: @fg_color;
+    padding: 6px 12px;
+}
+
+notebook tab:checked {
+    background-color: @bg_color;
+    border-bottom: 2px solid @selected_bg_color;
+    color: @selected_bg_color;
+}
+
+notebook tab:hover {
+    background-color: #1a1a1a;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * Selections
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+selection,
+*:selected {
+    background-color: @selected_bg_color;
+    color: @selected_fg_color;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * Links
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+link,
+*:link {
+    color: @link_color;
+}
+
+link:visited {
+    color: #CC1238;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * Tooltips
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+tooltip {
+    background-color: @tooltip_bg_color;
+    border: 1px solid @selected_bg_color;
+    color: @tooltip_fg_color;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * Progress Bars
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+progressbar {
+    background-color: #1a1a1a;
+    border: 1px solid @border_color;
+}
+
+progressbar progress {
+    background-color: @selected_bg_color;
+    background-image: linear-gradient(to right, @selected_bg_color, #FF2400);
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * Checkboxes and Radio Buttons
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+check,
+radio {
+    background-color: @base_color;
+    border: 1px solid @border_color;
+}
+
+check:checked,
+radio:checked {
+    background-color: @selected_bg_color;
+    border-color: @selected_bg_color;
+    color: @selected_fg_color;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * Caja File Manager
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+.caja-navigation-window,
+.caja-side-pane {
+    background-color: @bg_color;
+    color: @fg_color;
+}
+
+.caja-side-pane *:selected {
+    background-color: @selected_bg_color;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+ * Terminal (MATE Terminal)
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+terminal-window {
+    background-color: @bg_color;
+}
+
+vte-terminal {
+    background-color: @bg_color;
+    color: @fg_color;
+}

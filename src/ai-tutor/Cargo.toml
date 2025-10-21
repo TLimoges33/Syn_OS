@@ -1,0 +1,24 @@
+[package]
+name = "synos-ai-tutor"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[lib]
+name = "synos_ai_tutor"
+path = "mod.rs"
+
+[dependencies]
+# Use workspace dependencies
+serde = { workspace = true }
+serde_json = { workspace = true }
+chrono = { version = "0.4", features = ["serde", "clock"] }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["full"] }
+
+[features]
+default = ["std"]
+std = []
