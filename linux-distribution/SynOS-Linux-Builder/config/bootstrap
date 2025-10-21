@@ -7,7 +7,7 @@ LB_ARCHITECTURE="amd64"
 LB_DISTRIBUTION="bookworm"
 
 # Select parent distribution to use
-LB_PARENT_DISTRIBUTION="parrot"
+LB_PARENT_DISTRIBUTION=""
 
 # Select distribution to use in the chroot
 LB_DISTRIBUTION_CHROOT="bookworm"
@@ -52,13 +52,13 @@ LB_PARENT_MIRROR_DEBIAN_INSTALLER="http://deb.debian.org/debian/"
 LB_MIRROR_BOOTSTRAP="http://deb.debian.org/debian/"
 
 # Set mirror to fetch packages from
-LB_MIRROR_CHROOT="http://deb.parrot.sh/parrot/"
+LB_MIRROR_CHROOT="http://deb.debian.org/debian/"
 
 # Set security mirror to fetch packages from
 LB_MIRROR_CHROOT_SECURITY="http://security.debian.org/"
 
 # Set mirror which ends up in the image
-LB_MIRROR_BINARY="http://deb.parrot.sh/parrot/"
+LB_MIRROR_BINARY="http://deb.debian.org/debian/"
 
 # Set security mirror which ends up in the image
 LB_MIRROR_BINARY_SECURITY="http://security.debian.org/"

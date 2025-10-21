@@ -1,0 +1,82 @@
+# Network Scanning & Recon (Debian/Parrot compatible)
+nmap
+masscan
+netcat-openbsd
+socat
+wireshark
+tshark
+tcpdump
+
+# Web Application Testing
+nikto
+dirb
+gobuster
+wfuzz
+sqlmap
+wapiti
+
+# Wireless Security
+aircrack-ng
+reaver
+wifite
+
+# Password Attacks
+john
+hashcat
+hydra
+medusa
+cewl
+
+# Exploitation
+metasploit-framework
+
+# Network Attacks
+ettercap-common
+responder
+
+# AD/Windows Testing
+smbclient
+enum4linux
+
+# Forensics & Analysis
+autopsy
+foremost
+binwalk
+steghide
+exiftool
+testdisk
+
+# Reverse Engineering
+gdb
+radare2
+
+# OSINT
+maltego
+recon-ng
+theharvester
+
+# Vulnerability Scanning
+lynis
+chkrootkit
+rkhunter
+
+# Standard System Tools
+net-tools
+iproute2
+binutils
+dnsutils
+ldap-utils
+freerdp2-x11
+remmina
+
+# Python Security
+python3-pip
+python3-scapy
+python3-requests
+python3-bs4
+
+# Misc Tools
+tor
+proxychains4
+macchanger
+dsniff

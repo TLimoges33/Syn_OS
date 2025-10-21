@@ -1,49 +1,46 @@
 [build]
 # Conservative parallel builds to prevent system freeze
-jobs = 2 # Two jobs for reasonable build speed without freezing
+jobs = 2  # Two jobs for reasonable build speed without freezing
 # Force all workspace members to use workspace target directory
 target-dir = "target"
 rustflags = [
-    "-C",
-    "target-cpu=haswell", # Specifically target Haswell CPU (detected)
-    "-C",
-    "prefer-dynamic=no",  # Prefer static linking for performance
-    "-W",
-    "unsafe-code",        # Warn on unsafe code
+    "-C", "target-cpu=haswell",    # Specifically target Haswell CPU (detected)
+    "-C", "prefer-dynamic=no",     # Prefer static linking for performance
+    "-W", "unsafe-code",           # Warn on unsafe code
 ]
 
 # Workspace-wide features
 [env]
-CARGO_INCREMENTAL = "1" # Enable incremental compilation
-RUST_BACKTRACE = "1"    # Always enable backtraces for debugging
+CARGO_INCREMENTAL = "1"         # Enable incremental compilation
+RUST_BACKTRACE = "1"           # Always enable backtraces for debugging
 
 [profile.dev]
 # Fast debug builds for development
 debug = 1
 overflow-checks = false
 incremental = true
-split-debuginfo = "unpacked" # Faster linking on Linux
-debug-assertions = false     # Disable debug assertions in dev for speed
+split-debuginfo = "unpacked"  # Faster linking on Linux
+debug-assertions = false      # Disable debug assertions in dev for speed
 panic = "abort"
 
 [profile.release]
 # Optimized release builds
 opt-level = 3
-lto = "fat"       # More aggressive LTO
+lto = "fat"  # More aggressive LTO
 codegen-units = 1
 panic = "abort"
-strip = true      # Strip symbols for smaller binaries
+strip = true  # Strip symbols for smaller binaries
 
 # Kernel-specific profile (security-hardened)
 [profile.kernel]
 inherits = "release"
-opt-level = "s"          # Optimize for size in kernel
+opt-level = "s"  # Optimize for size in kernel
 panic = "abort"
 lto = "fat"
 codegen-units = 1
 debug = false
 debug-assertions = false
-overflow-checks = true   # Keep safety checks in kernel
+overflow-checks = true  # Keep safety checks in kernel
 
 # High-performance profile for critical components
 [profile.performance]
@@ -90,36 +87,27 @@ color = "always"
 # Kernel target configuration
 [target.x86_64-unknown-none]
 rustflags = [
-    "-C",
-    "target-cpu=haswell",       # Target specific CPU (Haswell supports AVX2, SSE4.2 includes CRC32)
-    "-C",
-    "target-feature=+popcnt",   # Enable POPCNT instruction
-    "-C",
-    "link-arg=--gc-sections",   # Remove unused sections
-    "-C",
-    "force-frame-pointers=yes", # Better debugging/profiling
+    "-C", "target-cpu=haswell",      # Target specific CPU (Haswell supports AVX2)
+    "-C", "target-feature=+crc32",   # Enable CRC32 instructions
+    "-C", "target-feature=+popcnt",  # Enable POPCNT instruction
+    "-C", "link-arg=--gc-sections",  # Remove unused sections
+    "-C", "force-frame-pointers=yes", # Better debugging/profiling
 ]
 
 # Security-hardened userspace target
 [target.x86_64-unknown-linux-gnu]
 rustflags = [
-    "-C",
-    "control-flow-guard",   # Control flow integrity
-    "-C",
-    "relocation-model=pic", # Position independent code
+    "-C", "control-flow-guard",      # Control flow integrity
+    "-C", "relocation-model=pic",    # Position independent code
 ]
 
 # SynOS custom target
 [target.x86_64-syn_os]
 rustflags = [
-    "-C",
-    "target-cpu=haswell",
-    "-C",
-    "opt-level=s",
-    "-C",
-    "panic=abort",
-    "-C",
-    "link-arg=--gc-sections",
+    "-C", "target-cpu=haswell",
+    "-C", "opt-level=s",
+    "-C", "panic=abort",
+    "-C", "link-arg=--gc-sections",
 ]
 
 # Build std only for kernel targets

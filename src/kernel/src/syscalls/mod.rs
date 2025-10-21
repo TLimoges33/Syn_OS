@@ -1,12 +1,6 @@
 /// SynOS-specific syscall interface (syscall numbers 0-42)
 pub mod synos_syscalls;
 
-/// Assembly syscall entry point and low-level handlers
-pub mod asm;
-
-/// Interrupt handler bridge between assembly and Rust dispatcher
-pub mod interrupt_handler;
-
 use alloc::format;
 use alloc::string::{String, ToString};
 /// Phase 2 Priority 2: Complete POSIX System Call Interface for SynOS
@@ -240,7 +234,6 @@ pub enum SyscallError {
     ERANGE = 34,        // Math result not representable
     ENOSYS = 38,        // Function not implemented
     ENOMSG = 42,        // No message of desired type
-    EADDRINUSE = 98,    // Address already in use
     ECONNREFUSED = 111, // Connection refused
     ENETUNREACH = 101,  // Network is unreachable
 }
@@ -300,8 +293,6 @@ pub struct SyscallHandler {
     next_pid: u32,
     current_working_dir: String,
     consciousness_level: u8,
-    // Network stack integration
-    socket_layer: Option<crate::network::socket::SocketLayer>,
 }
 
 impl SyscallHandler {
@@ -317,7 +308,6 @@ impl SyscallHandler {
             next_pid: 2,
             current_working_dir: "/".to_string(),
             consciousness_level: 75, // Default consciousness level
-            socket_layer: Some(crate::network::socket::SocketLayer::new()),
         };
 
         // Initialize standard file descriptors
@@ -471,13 +461,6 @@ impl SyscallHandler {
 
             // Network Operations
             41 => self.sys_socket(args.arg0 as u32, args.arg1 as u32, args.arg2 as u32),
-            42 => self.sys_connect(args.arg0 as u32, args.arg1 as *const u8, args.arg2 as u32),
-            43 => self.sys_accept(args.arg0 as u32, args.arg1 as *mut u8, args.arg2 as *mut u32),
-            44 => self.sys_send(args.arg0 as u32, args.arg1 as *const u8, args.arg2 as usize, args.arg3 as u32),
-            45 => self.sys_recv(args.arg0 as u32, args.arg1 as *mut u8, args.arg2 as usize, args.arg3 as u32),
-            49 => self.sys_bind(args.arg0 as u32, args.arg1 as *const u8, args.arg2 as u32),
-            50 => self.sys_listen(args.arg0 as u32, args.arg1 as u32),
-            118 => self.sys_shutdown(args.arg0 as u32, args.arg1 as u32),
 
             // SynOS-Specific System Calls (500-599)
 
@@ -1071,246 +1054,21 @@ impl SyscallHandler {
         }
     }
 
-    // ============================================================================
-    // Network Operations - Integrated with Network Stack
-    // ============================================================================
-
+    // Network Operations
     fn sys_socket(&mut self, domain: u32, socket_type: u32, protocol: u32) -> SyscallResult {
-        if let Some(ref mut socket_layer) = self.socket_layer {
-            // Map constants to socket types
-            let socket_domain = match domain {
-                2 => crate::network::socket::SocketDomain::Inet, // AF_INET
-                _ => return Err(SyscallError::EINVAL),
-            };
+        // Simulate socket creation
+        let new_fd = self.open_files.len() as u32;
 
-            let sock_type = match socket_type {
-                1 => crate::network::socket::SocketType::Stream, // SOCK_STREAM
-                2 => crate::network::socket::SocketType::Dgram,  // SOCK_DGRAM
-                _ => return Err(SyscallError::EINVAL),
-            };
-
-            let sock_protocol = match protocol {
-                0 => {
-                    // Auto-select protocol based on type
-                    if sock_type == crate::network::socket::SocketType::Stream {
-                        crate::network::socket::SocketProtocol::Tcp
-                    } else {
-                        crate::network::socket::SocketProtocol::Udp
-                    }
-                }
-                6 => crate::network::socket::SocketProtocol::Tcp,  // IPPROTO_TCP
-                17 => crate::network::socket::SocketProtocol::Udp, // IPPROTO_UDP
-                _ => return Err(SyscallError::EINVAL),
-            };
-
-            // Create socket in socket layer
-            match socket_layer.socket(socket_domain, sock_type, sock_protocol) {
-                Ok(socket_id) => {
-                    // Create file descriptor for this socket
-                    let new_fd = self.open_files.len() as u32;
-                    let socket_desc = FileDescriptor {
-                        fd: new_fd,
-                        file_type: FileType::Socket,
-                        flags: 0,
-                        offset: socket_id as u64, // Store socket_id in offset field
-                        path: Some(format!("/socket/{}", socket_id)),
-                    };
-                    self.open_files.push(socket_desc);
-                    Ok(new_fd as i64)
-                }
-                Err(_) => Err(SyscallError::ENOMEM),
-            }
-        } else {
-            Err(SyscallError::ENOSYS)
-        }
-    }
-
-    fn sys_bind(&mut self, sockfd: u32, addr: *const u8, addrlen: u32) -> SyscallResult {
-        if addr.is_null() || addrlen < 16 {
-            return Err(SyscallError::EFAULT);
-        }
-
-        // Get socket_id from file descriptor
-        let socket_id = match self.open_files.iter().find(|fd| fd.fd == sockfd) {
-            Some(fd) if fd.file_type == FileType::Socket => fd.offset as usize,
-            _ => return Err(SyscallError::EBADF),
+        let socket_desc = FileDescriptor {
+            fd: new_fd,
+            file_type: FileType::Socket,
+            flags: 0,
+            offset: 0,
+            path: Some(format!("/socket/{}", new_fd)),
         };
 
-        if let Some(ref mut socket_layer) = self.socket_layer {
-            // Parse sockaddr_in structure (16 bytes for IPv4)
-            let sockaddr = unsafe { core::slice::from_raw_parts(addr, 16) };
-
-            // sockaddr_in format: family(2) + port(2) + addr(4) + zero(8)
-            let port = u16::from_be_bytes([sockaddr[2], sockaddr[3]]);
-            let ip_addr = crate::network::Ipv4Address::new(
-                sockaddr[4], sockaddr[5], sockaddr[6], sockaddr[7]
-            );
-
-            let socket_addr = crate::network::socket::SocketAddr::new(ip_addr, port);
-
-            match socket_layer.bind(socket_id, socket_addr) {
-                Ok(()) => Ok(0),
-                Err(crate::network::NetworkError::AddressInUse) => Err(SyscallError::EADDRINUSE),
-                Err(_) => Err(SyscallError::EINVAL),
-            }
-        } else {
-            Err(SyscallError::ENOSYS)
-        }
-    }
-
-    fn sys_listen(&mut self, sockfd: u32, backlog: u32) -> SyscallResult {
-        let socket_id = match self.open_files.iter().find(|fd| fd.fd == sockfd) {
-            Some(fd) if fd.file_type == FileType::Socket => fd.offset as usize,
-            _ => return Err(SyscallError::EBADF),
-        };
-
-        if let Some(ref mut socket_layer) = self.socket_layer {
-            match socket_layer.listen(socket_id, backlog as usize) {
-                Ok(()) => Ok(0),
-                Err(_) => Err(SyscallError::EINVAL),
-            }
-        } else {
-            Err(SyscallError::ENOSYS)
-        }
-    }
-
-    fn sys_connect(&mut self, sockfd: u32, addr: *const u8, addrlen: u32) -> SyscallResult {
-        if addr.is_null() || addrlen < 16 {
-            return Err(SyscallError::EFAULT);
-        }
-
-        let socket_id = match self.open_files.iter().find(|fd| fd.fd == sockfd) {
-            Some(fd) if fd.file_type == FileType::Socket => fd.offset as usize,
-            _ => return Err(SyscallError::EBADF),
-        };
-
-        if let Some(ref mut socket_layer) = self.socket_layer {
-            // Parse sockaddr_in
-            let sockaddr = unsafe { core::slice::from_raw_parts(addr, 16) };
-            let port = u16::from_be_bytes([sockaddr[2], sockaddr[3]]);
-            let ip_addr = crate::network::Ipv4Address::new(
-                sockaddr[4], sockaddr[5], sockaddr[6], sockaddr[7]
-            );
-
-            let socket_addr = crate::network::socket::SocketAddr::new(ip_addr, port);
-
-            match socket_layer.connect(socket_id, socket_addr) {
-                Ok(()) => Ok(0),
-                Err(crate::network::NetworkError::ConnectionRefused) => Err(SyscallError::ECONNREFUSED),
-                Err(crate::network::NetworkError::NetworkUnreachable) => Err(SyscallError::ENETUNREACH),
-                Err(_) => Err(SyscallError::EINVAL),
-            }
-        } else {
-            Err(SyscallError::ENOSYS)
-        }
-    }
-
-    fn sys_accept(&mut self, sockfd: u32, addr: *mut u8, addrlen: *mut u32) -> SyscallResult {
-        let socket_id = match self.open_files.iter().find(|fd| fd.fd == sockfd) {
-            Some(fd) if fd.file_type == FileType::Socket => fd.offset as usize,
-            _ => return Err(SyscallError::EBADF),
-        };
-
-        if let Some(ref mut socket_layer) = self.socket_layer {
-            match socket_layer.accept(socket_id) {
-                Ok((new_socket_id, remote_addr)) => {
-                    // Create new file descriptor for accepted connection
-                    let new_fd = self.open_files.len() as u32;
-                    let socket_desc = FileDescriptor {
-                        fd: new_fd,
-                        file_type: FileType::Socket,
-                        flags: 0,
-                        offset: new_socket_id as u64,
-                        path: Some(format!("/socket/{}", new_socket_id)),
-                    };
-                    self.open_files.push(socket_desc);
-
-                    // Fill in remote address if provided
-                    if !addr.is_null() && !addrlen.is_null() {
-                        unsafe {
-                            let len = *addrlen;
-                            if len >= 16 {
-                                // Write sockaddr_in structure
-                                let sockaddr = core::slice::from_raw_parts_mut(addr, 16);
-                                sockaddr[0..2].copy_from_slice(&2u16.to_ne_bytes()); // AF_INET
-                                sockaddr[2..4].copy_from_slice(&remote_addr.port.to_be_bytes());
-                                sockaddr[4..8].copy_from_slice(remote_addr.ip.bytes());
-                                sockaddr[8..16].fill(0);
-                                *addrlen = 16;
-                            }
-                        }
-                    }
-
-                    Ok(new_fd as i64)
-                }
-                Err(crate::network::NetworkError::WouldBlock) => Err(SyscallError::EAGAIN),
-                Err(_) => Err(SyscallError::EINVAL),
-            }
-        } else {
-            Err(SyscallError::ENOSYS)
-        }
-    }
-
-    fn sys_send(&mut self, sockfd: u32, buf: *const u8, len: usize, flags: u32) -> SyscallResult {
-        if buf.is_null() {
-            return Err(SyscallError::EFAULT);
-        }
-
-        let socket_id = match self.open_files.iter().find(|fd| fd.fd == sockfd) {
-            Some(fd) if fd.file_type == FileType::Socket => fd.offset as usize,
-            _ => return Err(SyscallError::EBADF),
-        };
-
-        if let Some(ref mut socket_layer) = self.socket_layer {
-            let data = unsafe { core::slice::from_raw_parts(buf, len) }.to_vec();
-
-            match socket_layer.send(socket_id, data) {
-                Ok(bytes_sent) => Ok(bytes_sent as i64),
-                Err(crate::network::NetworkError::WouldBlock) => Err(SyscallError::EAGAIN),
-                Err(_) => Err(SyscallError::EPIPE),
-            }
-        } else {
-            Err(SyscallError::ENOSYS)
-        }
-    }
-
-    fn sys_recv(&mut self, sockfd: u32, buf: *mut u8, len: usize, flags: u32) -> SyscallResult {
-        if buf.is_null() {
-            return Err(SyscallError::EFAULT);
-        }
-
-        let socket_id = match self.open_files.iter().find(|fd| fd.fd == sockfd) {
-            Some(fd) if fd.file_type == FileType::Socket => fd.offset as usize,
-            _ => return Err(SyscallError::EBADF),
-        };
-
-        if let Some(ref mut socket_layer) = self.socket_layer {
-            let buffer = unsafe { core::slice::from_raw_parts_mut(buf, len) };
-
-            match socket_layer.recv(socket_id, buffer) {
-                Ok(bytes_received) => Ok(bytes_received as i64),
-                Err(_) => Ok(0), // No data available
-            }
-        } else {
-            Err(SyscallError::ENOSYS)
-        }
-    }
-
-    fn sys_shutdown(&mut self, sockfd: u32, how: u32) -> SyscallResult {
-        let socket_id = match self.open_files.iter().find(|fd| fd.fd == sockfd) {
-            Some(fd) if fd.file_type == FileType::Socket => fd.offset as usize,
-            _ => return Err(SyscallError::EBADF),
-        };
-
-        if let Some(ref mut socket_layer) = self.socket_layer {
-            // For now, shutdown is equivalent to close
-            match socket_layer.close(socket_id) {
-                Ok(()) => Ok(0),
-                Err(_) => Err(SyscallError::EINVAL),
-            }
-        } else {
-            Err(SyscallError::ENOSYS)
-        }
+        self.open_files.push(socket_desc);
+        Ok(new_fd as i64)
     }
 
     // ============================================================================

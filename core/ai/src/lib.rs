@@ -1,5 +1,5 @@
 //! SynOS AI Engine
-//!
+//! 
 //! This module provides the artificial intelligence engine for SynOS,
 //! implementing decision making, pattern recognition, neural networks,
 //! and intelligent system optimization.
@@ -32,7 +32,7 @@ pub use decision::{Decision};
 pub use pattern_recognition::{Pattern, PatternMatcher};
 
 /// AI engine version
-pub const VERSION: &str = "4.5.0";
+pub const VERSION: &str = "4.3.0";
 
 /// AI system state
 #[derive(Debug, Clone)]
@@ -48,12 +48,12 @@ impl AIState {
     pub fn neural_activation(&self) -> f64 {
         self.neural.activation_level
     }
-
+    
     /// Get number of active patterns
     pub fn pattern_count(&self) -> usize {
         self.active_patterns
     }
-
+    
     /// Get security level
     pub fn security_level(&self) -> &security::SecurityLevel {
         &self.security_level
@@ -64,14 +64,14 @@ impl AIState {
 pub fn init() {
     // Uncomment when println! is available or use alternative logging
     // println!("Initializing SynOS AI Engine v{}", VERSION);
-
+    
     // Initialize components
     neural::init();
     pattern_recognition::init();
     security::init();
     decision::init();
     inference::init();
-
+    
     // println!("AI Engine initialization complete.");
 }
 

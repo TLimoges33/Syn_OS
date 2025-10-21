@@ -1,17 +1,6 @@
 #!/bin/bash
 ################################################################################
-#
-#   ███████╗██╗   ██╗███╗   ██╗ ██████╗ ███████╗
-#   ██╔════╝╚██╗ ██╔╝████╗  ██║██╔═══██╗██╔════╝
-#   ███████╗ ╚████╔╝ ██╔██╗ ██║██║   ██║███████╗
-#   ╚════██║  ╚██╔╝  ██║╚██╗██║██║   ██║╚════██║
-#   ███████║   ██║   ██║ ╚████║╚██████╔╝███████║
-#   ╚══════╝   ╚═╝   ╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
-#
-#             v1.0.0 RED PHOENIX EDITION
-#          COMPLETE DISTRIBUTION BUILDER
-#
-################################################################################
+# SynOS COMPLETE DISTRIBUTION BUILDER v1.0
 #
 # This script builds a comprehensive SynOS Linux distribution ISO that includes:
 #   ✓ Complete Rust kernel (50,000+ lines)
@@ -21,8 +10,7 @@
 #   ✓ Desktop environment (MATE + AI integration)
 #   ✓ SynPkg package manager
 #   ✓ SIEM connectors (Splunk, Sentinel, QRadar)
-#   ✓ 500+ security tools (multi-source installation)
-#   ✓ ALFRED voice assistant foundation
+#   ✓ 450+ security tools from ParrotOS
 #   ✓ Full source code embedded in ISO
 #   ✓ All compiled binaries
 #
@@ -67,27 +55,6 @@ CPU_CORES=$(nproc)
 PARALLEL_JOBS=$((CPU_CORES > 1 ? CPU_CORES - 1 : 1))  # Leave 1 core for system
 export MAKEFLAGS="-j${PARALLEL_JOBS}"
 export CARGO_BUILD_JOBS="${PARALLEL_JOBS}"
-
-cat << 'BANNER'
-
-╔══════════════════════════════════════════════════════════════════════════════╗
-║                                                                              ║
-║       ███████╗██╗   ██╗███╗   ██╗ ██████╗ ███████╗                         ║
-║       ██╔════╝╚██╗ ██╔╝████╗  ██║██╔═══██╗██╔════╝                         ║
-║       ███████╗ ╚████╔╝ ██╔██╗ ██║██║   ██║███████╗                         ║
-║       ╚════██║  ╚██╔╝  ██║╚██╗██║██║   ██║╚════██║                         ║
-║       ███████║   ██║   ██║ ╚████║╚██████╔╝███████║                         ║
-║       ╚══════╝   ╚═╝   ╚═╝  ╚═══╝ ╚═════╝ ╚══════╝                         ║
-║                                                                              ║
-║                    🔥 v1.0 RED PHOENIX ULTIMATE EDITION 🔥                   ║
-║                                                                              ║
-║                  Building the Future of Cybersecurity...                    ║
-║                     With AI-Powered Consciousness                           ║
-║                      210+ Security Tools Included                           ║
-║                                                                              ║
-╚══════════════════════════════════════════════════════════════════════════════╝
-
-BANNER
 
 echo "Build Configuration:"
 echo "  - CPU Cores: $CPU_CORES"
@@ -373,10 +340,6 @@ find "$PROJECT_ROOT" -name "*.deb" -exec cp -v {} "$BUILD_BASE/packages/" \; 2>&
 cd "$BUILD_BASE/packages"
 dpkg-scanpackages . /dev/null 2>/dev/null > Packages
 gzip -9c < Packages > Packages.gz
-
-# Fix permissions for chroot access
-chmod -R 755 "$BUILD_BASE/packages"
-chown -R root:root "$BUILD_BASE/packages"
 
 PACKAGE_COUNT=$(ls -1 *.deb 2>/dev/null | wc -l)
 success "Package repository created with $PACKAGE_COUNT packages"

@@ -3,12 +3,6 @@ ca-certificates
 debian-archive-keyring
 gnupg
 apt-transport-https
-
-# Desktop Configuration Tools
-dconf-cli
-dconf-gsettings-backend
-
-# Network and Security Tools
 nmap
 tcpdump
 netcat-openbsd

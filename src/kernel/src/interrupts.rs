@@ -48,30 +48,22 @@ impl InterruptManager {
 lazy_static! {
     static ref IDT: InterruptDescriptorTable = {
         let mut idt = InterruptDescriptorTable::new();
-
+        
         // Set up breakpoint handler
         idt.breakpoint.set_handler_fn(breakpoint_handler);
-
+        
         // Set up page fault handler
         unsafe {
             idt.page_fault.set_handler_fn(page_fault_handler)
                 .set_stack_index(gdt::DOUBLE_FAULT_IST_INDEX);
         }
-
+        
         // Set up double fault handler
         unsafe {
             idt.double_fault.set_handler_fn(double_fault_handler)
                 .set_stack_index(gdt::DOUBLE_FAULT_IST_INDEX);
         }
-
-        // Set up system call handler (INT 0x80)
-        // SAFETY: syscall_entry is a valid interrupt handler function
-        unsafe {
-            idt[0x80].set_handler_addr(
-                x86_64::VirtAddr::new(crate::syscalls::asm::syscall_entry as u64)
-            ).set_privilege_level(x86_64::PrivilegeLevel::Ring3);
-        }
-
+        
         idt
     };
 }
@@ -139,20 +131,10 @@ extern "x86-interrupt" fn double_fault_handler(
     panic!("EXCEPTION: DOUBLE FAULT\n{:#?}", stack_frame);
 }
 
-/// Register system call handler in the IDT
-/// This allows userspace to make system calls via INT 0x80
-pub fn register_syscall_handler() -> Result<(), &'static str> {
-    // The syscall handler is already registered in the IDT static initialization
-    // This function exists for explicit initialization ordering
-    Ok(())
-}
-
 /// Initialize interrupt system
 pub fn init_interrupts() -> Result<(), &'static str> {
     // Initialize IDT and interrupt handling
     IDT.load();
     crate::println!("🔧 Interrupt system initialized");
-    crate::println!("   - INT 0x80: System call handler");
-    crate::println!("   - Breakpoint, Page Fault, Double Fault handlers active");
     Ok(())
 }

@@ -34,27 +34,6 @@ fn init(_boot_info: &'static mut BootInfo) {
     syn_kernel::memory::init::init_memory_system(syn_kernel::memory::init::MemoryConfig::default())
         .expect("memory system init failed");
 
-    // ========== DAY 2 & DAY 3 INTEGRATION ==========
-    // Initialize interrupt system with syscall handler (INT 0x80)
-    println!("🔧 Initializing interrupt system with syscall support...");
-    syn_kernel::interrupts::init_interrupts().expect("interrupt initialization failed");
-
-    // Initialize syscall assembly support
-    syn_kernel::syscalls::asm::init_syscall_asm();
-
-    println!("✅ Syscall interface active: INT 0x80 ready for userspace");
-    // ================================================
-
-    // ========== DAY 5: AI CONSCIOUSNESS INTEGRATION ==========
-    // Initialize AI consciousness integration
-    println!("🧠 Initializing AI Consciousness Integration...");
-    if let Err(e) = syn_kernel::ai::init_consciousness_integration() {
-        println!("⚠️  Consciousness integration failed: {}", e);
-    } else {
-        println!("✅ AI Consciousness Integration active - Neural Darwinism enabled");
-    }
-    // =========================================================
-
     // Initialize AI bridge system
     syn_kernel::ai_bridge::init();
 

@@ -71,7 +71,7 @@ LB_HDD_SIZE="auto"
 LB_HDD_PARTITION_START=""
 
 # Set iso author
-LB_ISO_APPLICATION="SynOS v1.0 - AI-Enhanced Security Platform"
+LB_ISO_APPLICATION="SynOS Complete Security Distribution"
 
 # Set iso preparer
 LB_ISO_PREPARER="live-build @LB_VERSION@; https://salsa.debian.org/live-team/live-build"
@@ -80,7 +80,7 @@ LB_ISO_PREPARER="live-build @LB_VERSION@; https://salsa.debian.org/live-team/liv
 LB_ISO_PUBLISHER="SynOS Development Team"
 
 # Set iso volume (max 32 chars)
-LB_ISO_VOLUME="SynOS-v1.0-20251019"
+LB_ISO_VOLUME="SynOS-Complete-1.0"
 
 # Set jffs2 eraseblock size
 LB_JFFS2_ERASEBLOCK=""

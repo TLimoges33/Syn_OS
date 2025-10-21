@@ -1,3 +1,0 @@
-# ParrotOS Security Repository (HTTP to avoid cert issues during build)
-deb http://deb.parrot.sh/parrot/ parrot main contrib non-free
-deb http://deb.parrot.sh/parrot/ parrot-security main contrib non-free

@@ -1,0 +1,111 @@
+# ═══════════════════════════════════════════════════════════════
+# SynOS COMPLETE Security Tools Suite
+# ═══════════════════════════════════════════════════════════════
+
+# Network Analysis
+nmap
+wireshark
+tshark
+tcpdump
+netcat-openbsd
+netcat-traditional
+socat
+hping3
+masscan
+zmap
+ncat
+
+# Web Application Security
+burpsuite
+nikto
+sqlmap
+wpscan
+dirb
+dirbuster
+gobuster
+wfuzz
+ffuf
+hydra
+medusa
+john
+hashcat
+
+# Exploitation
+metasploit-framework
+armitage
+beef-xss
+social-engineer-toolkit
+exploitdb
+
+# Forensics
+autopsy
+sleuthkit
+foremost
+scalpel
+volatility
+binwalk
+
+# Reverse Engineering
+radare2
+ghidra
+gdb
+ltrace
+strace
+
+# Wireless
+aircrack-ng
+reaver
+wifite
+kismet
+bluetooth
+bluez-tools
+
+# Password Cracking
+john
+hashcat
+ophcrack
+crunch
+cewl
+
+# OSINT
+maltego
+theharvester
+recon-ng
+shodan
+spiderfoot
+
+# Container Security
+docker.io
+docker-compose
+kubectl
+helm
+
+# Monitoring & SIEM Tools
+prometheus
+grafana
+elasticsearch
+kibana
+logstash
+filebeat
+
+# Development Tools
+git
+build-essential
+python3
+python3-pip
+python3-venv
+nodejs
+npm
+rustc
+cargo
+
+# System Tools
+vim
+tmux
+screen
+htop
+ncdu
+tree
+curl
+wget
+jq

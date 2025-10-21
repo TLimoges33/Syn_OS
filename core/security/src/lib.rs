@@ -1,5 +1,5 @@
 //! Syn_OS Security Framework
-//!
+//! 
 //! This module provides the security framework for Syn_OS,
 //! implementing authentication, cryptography, audit logging,
 //! and input validation.
@@ -27,7 +27,7 @@ pub use crypto::CryptoError;
 pub use validation::ValidationError;
 
 /// Security framework version
-pub const VERSION: &str = "4.5.0";
+pub const VERSION: &str = "4.3.0";
 
 /// Get current timestamp (simplified for development)
 pub fn get_kernel_timestamp() -> u64 {
@@ -41,13 +41,13 @@ pub fn get_kernel_timestamp() -> u64 {
 /// Initialize the security framework
 pub fn init() {
     println!("Initializing Syn_OS Security Framework v{}", VERSION);
-
+    
     // Initialize components
     auth::init();
     crypto::init();
     audit::init();
     validation::init();
     consciousness_bridge::init();
-
+    
     println!("Security Framework initialization complete.");
 }

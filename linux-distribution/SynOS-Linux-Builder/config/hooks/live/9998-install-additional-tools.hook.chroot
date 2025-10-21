@@ -1,0 +1,34 @@
+#!/bin/bash
+# Install tools not in standard repos
+
+set -e
+
+echo "Installing additional security tools..."
+
+# Install via pip (Python tools)
+pip3 install --break-system-packages volatility3 || pip3 install volatility3
+
+# Install via cargo (Rust tools)
+if command -v cargo >/dev/null; then
+    cargo install rustscan --quiet || echo "rustscan install failed, skipping"
+fi
+
+# Install SET (Social Engineer Toolkit) from GitHub
+cd /opt
+git clone https://github.com/trustedsec/social-engineer-toolkit.git set 2>/dev/null || true
+if [ -d set ]; then
+    cd set
+    pip3 install --break-system-packages -r requirements.txt || pip3 install -r requirements.txt
+    ln -sf /opt/set/setoolkit /usr/local/bin/setoolkit
+fi
+
+# Install King Phisher from GitHub
+cd /opt
+git clone https://github.com/rsmusllp/king-phisher.git 2>/dev/null || true
+if [ -d king-phisher ]; then
+    cd king-phisher
+    pip3 install --break-system-packages -r requirements.txt || pip3 install -r requirements.txt
+    ln -sf /opt/king-phisher/king-phisher /usr/local/bin/king-phisher
+fi
+
+echo "Additional tools installed successfully"
