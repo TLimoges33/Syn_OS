@@ -15,7 +15,7 @@
 [![Security Tools](https://img.shields.io/badge/Security%20Tools-500%2B-red.svg)](docs/reference/security-tools.md)
 [![AI Powered](https://img.shields.io/badge/AI-Neural%20Darwinism-ff0000.svg)](src/ai-engine/)
 
-[ Quick Start](#-quick-start) • [Download](#-download) • [Documentation](docs/README.md) • [Contributing](#-contributing) • [Community](#-community)
+[Quick Start](#quick-start) • [Download](#download) • [Documentation](docs/README.md) • [Contributing](#contributing) • [Community](#community)
 
 </div>
 
@@ -46,12 +46,12 @@
 
 **SynOS Red Phoenix:**
 
--   🧠 AI-enhanced tool selection
--   🤖 Automated threat correlation
--   📈 Learns from your patterns
--   🔴 Aggressive cyberpunk UI
--   🎵 Audio feedback system
--   📊 Real-time consciousness monitoring
+-   AI-enhanced tool selection
+-   Automated threat correlation
+-   Learns from your patterns
+-   Aggressive cyberpunk UI
+-   Audio feedback system
+-   Real-time consciousness monitoring
 
 </details>
 
@@ -162,7 +162,7 @@ qemu-system-x86_64 -bios /usr/share/ovmf/OVMF.fd \
 
 4. **Install to Disk** - Run installer (if available) or use manually
 
-📖 **Full Installation Guide:** [docs/01-getting-started/INSTALLATION.md](docs/01-getting-started/INSTALLATION.md)
+**Full Installation Guide:** [docs/01-getting-started/INSTALLATION.md](docs/01-getting-started/INSTALLATION.md)
 
 ---
 
@@ -181,13 +181,13 @@ qemu-system-x86_64 -bios /usr/share/ovmf/OVMF.fd \
 -   [ ] SHA256SUMS
 -   [ ] GPG Signature
 
-🔗 **[Download from Releases](https://github.com/yourusername/synos/releases)**
+**[Download from Releases](https://github.com/yourusername/synos/releases)**
 
-> ⚠️ **Note:** Pre-built ISOs coming soon. For now, build from source (see above).
+> **Note:** Pre-built ISOs coming soon. For now, build from source (see above).
 
 ---
 
-## 📖 Documentation
+## Documentation
 
 ### Getting Started
 
@@ -212,15 +212,15 @@ qemu-system-x86_64 -bios /usr/share/ovmf/OVMF.fd \
 
 ### Project Status
 
--   📊 [Current Status](docs/06-project-status/PROJECT_STATUS.md)
--   ✅ [TODO Roadmap](docs/06-project-status/TODO.md)
--   🔴 [Revolutionary Branding](docs/06-project-status/recent/2025-10-12-revolutionary-branding-complete.md)
+-   [Current Status](docs/06-project-status/PROJECT_STATUS.md)
+-   [TODO Roadmap](docs/06-project-status/TODO.md)
+-   [Revolutionary Branding](docs/06-project-status/recent/2025-10-12-revolutionary-branding-complete.md)
 
 ---
 
 ##  Screenshots
 
-> 📸 Coming soon! Screenshots of desktop, terminal, and boot sequence.
+> Coming soon! Screenshots of desktop, terminal, and boot sequence.
 
 <!--
 ![Desktop](docs/screenshots/desktop.png)
@@ -230,7 +230,7 @@ qemu-system-x86_64 -bios /usr/share/ovmf/OVMF.fd \
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 SynOS v1.0 Architecture
@@ -263,19 +263,19 @@ SynOS v1.0 Architecture
 -   **Desktop:** XFCE with red/black cyberpunk theme
 -   **Build System:** Debian live-build with custom packages
 
-📖 **Detailed Architecture:** [docs/04-development/ARCHITECTURE.md](docs/04-development/ARCHITECTURE.md)
+**Detailed Architecture:** [docs/04-development/ARCHITECTURE.md](docs/04-development/ARCHITECTURE.md)
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions from the community! Whether it's:
 
--   🐛 Bug reports
--   ✨ Feature requests
--   📖 Documentation improvements
--   🎨 Design enhancements
--   🔧 Code contributions
+-   Bug reports
+-   Feature requests
+-   Documentation improvements
+-   Design enhancements
+-   Code contributions
 
 **Please see:** [CONTRIBUTING.md](CONTRIBUTING.md)
 
@@ -306,14 +306,14 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 **Key Points:**
 
--   ✅ Free to use, modify, and distribute
--   ✅ Commercial use allowed
--   ✅ Attribution required
--   ❌ No warranty provided
+-   Free to use, modify, and distribute
+-   Commercial use allowed
+-   Attribution required
+-   No warranty provided
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 SynOS wouldn't be possible without:
 
@@ -331,18 +331,18 @@ Special thanks to:
 
 ---
 
-## 💬 Community
+## Community
 
--   📧 **Email:** mogeem33@gmail.com
--   💬 **Discord:** [Join Server](https://discord.gg/syn_os) (Coming soon)
--   🐦 **Twitter:** [@SynOS_Official](https://twitter.com/syn_os) (Coming soon)
--   📝 **Blog:** [blog.synos.com](https://blog.syn_os.com) (Coming soon)
+-   **Email:** mogeem33@gmail.com
+-   **Discord:** [Join Server](https://discord.gg/syn_os) (Coming soon)
+-   **Twitter:** [@SynOS_Official](https://twitter.com/syn_os) (Coming soon)
+-   **Blog:** [blog.synos.com](https://blog.syn_os.com) (Coming soon)
 
 ---
 
-## 🗺️ Roadmap
+## Roadmap
 
-### v1.0 "Red Phoenix" ✅ (Current)
+### v1.0 "Red Phoenix" (Current)
 
 -   [x] Revolutionary red/black branding
 -   [x] 500+ security tools integration
@@ -367,23 +367,23 @@ Special thanks to:
 -   [ ] Mobile companion app
 -   [ ] Enterprise features
 
-📖 **Full Roadmap:** [docs/05-planning/ROADMAP.md](docs/05-planning/ROADMAP.md)
+**Full Roadmap:** [docs/05-planning/ROADMAP.md](docs/05-planning/ROADMAP.md)
 
 ---
 
-## ⚠️ Security & Legal
+## Security & Legal
 
 **Educational & Professional Use Only**
 
 SynOS is designed for:
 
--   ✅ Cybersecurity education and training
--   ✅ Authorized security assessments
--   ✅ Penetration testing with permission
--   ✅ Security research
--   ✅ Professional MSSP operations
+-   Cybersecurity education and training
+-   Authorized security assessments
+-   Penetration testing with permission
+-   Security research
+-   Professional MSSP operations
 
-❌ **Do NOT use for:**
+**Do NOT use for:**
 
 -   Unauthorized access to systems
 -   Illegal hacking activities
@@ -391,11 +391,11 @@ SynOS is designed for:
 
 **You are responsible for ensuring you have proper authorization before using any security tools included in SynOS.**
 
-🔒 **Security Policy:** [docs/08-security/SECURITY.md](docs/08-security/SECURITY.md)
+**Security Policy:** [docs/08-security/SECURITY.md](docs/08-security/SECURITY.md)
 
 ---
 
-## 📊 Project Stats
+## Project Stats
 
 -   **Lines of Code:** 452,100+ (Rust, Shell, Python)
 -   **Security Tools:** 500+
