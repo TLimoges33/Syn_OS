@@ -50,7 +50,7 @@ exclude = [
 ]
 
 [workspace.package]
-version = "4.4.0"
+version = "1.0.0"
 edition = "2021"
 authors = ["Syn_OS Team"]
 repository = "https://github.com/TLimoges33/Syn_OS"

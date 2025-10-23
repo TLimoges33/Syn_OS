@@ -8,24 +8,26 @@ SynOS is an ambitious project combining AI, cybersecurity, and Linux distributio
 
 ### Reporting Bugs
 
-Before creating bug reports, please check the [existing issues](https://github.com/yourusername/synos/issues) to avoid duplicates.
+Before creating bug reports, please check the [existing issues](https://github.com/TLimoges33/Syn_OS/issues) to avoid duplicates.
 
 **When filing a bug report, include:**
-- SynOS version
-- Steps to reproduce
-- Expected vs actual behavior
-- Error messages/logs
-- System specs (if relevant)
+
+-   SynOS version
+-   Steps to reproduce
+-   Expected vs actual behavior
+-   Error messages/logs
+-   System specs (if relevant)
 
 ### Suggesting Enhancements
 
 Enhancement suggestions are tracked as GitHub issues.
 
 **Include in your suggestion:**
-- Clear description of the feature
-- Why this would be useful
-- Possible implementation approach
-- Screenshots/mockups (if UI related)
+
+-   Clear description of the feature
+-   Why this would be useful
+-   Possible implementation approach
+-   Screenshots/mockups (if UI related)
 
 ### Pull Requests
 
@@ -40,6 +42,7 @@ Enhancement suggestions are tracked as GitHub issues.
 ### Code Style
 
 **Rust Code:**
+
 ```rust
 // Use rustfmt
 cargo fmt
@@ -54,6 +57,7 @@ cargo clippy -- -D warnings
 ```
 
 **Shell Scripts:**
+
 ```bash
 #!/bin/bash
 # Use shellcheck
@@ -66,6 +70,7 @@ shellcheck script.sh
 ```
 
 **Python Code:**
+
 ```python
 # Follow PEP 8
 # Use black formatter
@@ -91,6 +96,7 @@ chore: Update dependencies
 ```
 
 **Format:**
+
 ```
 <type>(<scope>): <subject>
 
@@ -100,16 +106,17 @@ chore: Update dependencies
 ```
 
 **Examples:**
-- `feat(ai-engine): Implement pattern recognition cache`
-- `fix(boot): Correct Plymouth theme path`
-- `docs(readme): Add screenshot section`
+
+-   `feat(ai-engine): Implement pattern recognition cache`
+-   `fix(boot): Correct Plymouth theme path`
+-   `docs(readme): Add screenshot section`
 
 ### Branch Naming
 
-- `feature/short-description` - New features
-- `fix/issue-number-description` - Bug fixes
-- `docs/what-changed` - Documentation
-- `refactor/component-name` - Code refactoring
+-   `feature/short-description` - New features
+-   `fix/issue-number-description` - Bug fixes
+-   `docs/what-changed` - Documentation
+-   `refactor/component-name` - Code refactoring
 
 ### Testing
 
@@ -143,41 +150,45 @@ Syn_OS/
 ```
 
 **Key areas for contribution:**
-- `src/ai-engine/` - AI consciousness system
-- `src/kernel/` - Custom Rust kernel
-- `src/security/` - Security framework
-- `assets/themes/` - UI/UX themes
-- `docs/` - Documentation
+
+-   `src/ai-engine/` - AI consciousness system
+-   `src/kernel/` - Custom Rust kernel
+-   `src/security/` - Security framework
+-   `assets/themes/` - UI/UX themes
+-   `docs/` - Documentation
 
 ## 📚 Documentation Standards
 
 **All user-facing features need documentation:**
 
-- README.md updates (if public-facing)
-- docs/02-user-guide/ for user features
-- docs/04-development/ for developer features
-- Inline code comments for complex logic
-- CLAUDE.md updates for AI agent context
+-   README.md updates (if public-facing)
+-   docs/02-user-guide/ for user features
+-   docs/04-development/ for developer features
+-   Inline code comments for complex logic
+-   CLAUDE.md updates for AI agent context
 
 **Documentation format:**
-- Use Markdown
-- Include code examples
-- Add screenshots (for UI)
-- Link related docs
+
+-   Use Markdown
+-   Include code examples
+-   Add screenshots (for UI)
+-   Link related docs
 
 ## 🎨 Design Contributions
 
 **Brand Guidelines:**
-- Follow red/black color scheme
-- Use phoenix logo variants appropriately
-- Maintain cyberpunk aesthetic
-- See [REVOLUTION_2025_BRAND_GUIDE.md](assets/branding/REVOLUTION_2025_BRAND_GUIDE.md)
+
+-   Follow red/black color scheme
+-   Use phoenix logo variants appropriately
+-   Maintain cyberpunk aesthetic
+-   See [REVOLUTION_2025_BRAND_GUIDE.md](assets/branding/REVOLUTION_2025_BRAND_GUIDE.md)
 
 **Asset Guidelines:**
-- PNG for raster images
-- SVG for vectors
-- High resolution (512px+ for logos)
-- Proper naming (phoenix-512.png)
+
+-   PNG for raster images
+-   SVG for vectors
+-   High resolution (512px+ for logos)
+-   Proper naming (phoenix-512.png)
 
 ## 🔒 Security Contributions
 
@@ -186,7 +197,8 @@ Syn_OS/
 ⚠️ **DO NOT** create public issues for security vulnerabilities.
 
 Instead:
-1. Email: security@synos.example.com
+
+1. Email: mogeem33@gmail.com (Subject: SECURITY - SynOS Vulnerability)
 2. Provide detailed report
 3. Wait for response (48-72 hours)
 4. Work with maintainers on fix
@@ -195,24 +207,26 @@ See [SECURITY.md](docs/08-security/SECURITY.md) for details.
 
 **Security Tool Additions:**
 
-- Ensure tool is legal & ethical
-- Document usage
-- Add to appropriate category
-- Include educational notes
+-   Ensure tool is legal & ethical
+-   Document usage
+-   Add to appropriate category
+-   Include educational notes
 
 ## 🤖 AI/ML Contributions
 
 **Neural Network Enhancements:**
-- Document model architecture
-- Include training data requirements
-- Provide performance benchmarks
-- Ensure privacy compliance
+
+-   Document model architecture
+-   Include training data requirements
+-   Provide performance benchmarks
+-   Ensure privacy compliance
 
 **AI Features:**
-- Must have educational value
-- Should enhance security workflows
-- Needs clear user documentation
-- Requires testing with sample data
+
+-   Must have educational value
+-   Should enhance security workflows
+-   Needs clear user documentation
+-   Requires testing with sample data
 
 ## 📦 Adding Security Tools
 
@@ -225,6 +239,7 @@ See [SECURITY.md](docs/08-security/SECURITY.md) for details.
 5. **Testing** - Verify functionality
 
 **Example:**
+
 ```bash
 # In scripts/02-build/core/build-synos-ultimate-iso.sh
 # Add to install_security_tools() function
@@ -235,9 +250,9 @@ echo "✓ New tool installed"
 
 ## 👥 Community
 
-- **Discord:** (Coming soon)
-- **Matrix:** (Coming soon)
-- **Mailing List:** (Coming soon)
+-   **Discord:** (Coming soon)
+-   **Matrix:** (Coming soon)
+-   **Mailing List:** (Coming soon)
 
 ## 📜 Code of Conduct
 
@@ -248,37 +263,40 @@ We are committed to providing a welcoming and inclusive environment.
 ### Our Standards
 
 **✅ Do:**
-- Be respectful and inclusive
-- Accept constructive criticism
-- Focus on what's best for the community
-- Show empathy towards others
+
+-   Be respectful and inclusive
+-   Accept constructive criticism
+-   Focus on what's best for the community
+-   Show empathy towards others
 
 **❌ Don't:**
-- Use inappropriate language
-- Harass or insult
-- Troll or make political attacks
-- Publish others' private information
+
+-   Use inappropriate language
+-   Harass or insult
+-   Troll or make political attacks
+-   Publish others' private information
 
 ### Enforcement
 
-Violations can be reported to: conduct@synos.example.com
+Violations can be reported to: mogeem33@gmail.com (Subject: Code of Conduct Violation)
 
 Maintainers will review and take appropriate action.
 
 ## ❓ Questions?
 
-- Check [documentation](docs/README.md)
-- Search [existing issues](https://github.com/yourusername/synos/issues)
-- Ask on community channels
-- Email: hello@synos.example.com
+-   Check [documentation](docs/README.md)
+-   Search [existing issues](https://github.com/TLimoges33/Syn_OS/issues)
+-   Ask on community channels
+-   Email: mogeem33@gmail.com
 
 ## 🎯 Good First Issues
 
 Look for issues tagged:
-- `good first issue` - Easy for newcomers
-- `help wanted` - Community input needed
-- `documentation` - Docs improvements
-- `enhancement` - New features
+
+-   `good first issue` - Easy for newcomers
+-   `help wanted` - Community input needed
+-   `documentation` - Docs improvements
+-   `enhancement` - New features
 
 ## 📈 Development Roadmap
 
@@ -294,5 +312,5 @@ Every contribution makes SynOS better. Whether it's code, docs, design, or ideas
 
 ---
 
-*Last Updated: October 12, 2025*
-*Maintained by the SynOS Core Team*
+_Last Updated: October 12, 2025_
+_Maintained by the SynOS Core Team_

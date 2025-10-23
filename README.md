@@ -8,7 +8,7 @@
 
 **Neural Dominance | Offensive Security | Professional MSSP Platform**
 
-[![Version](https://img.shields.io/badge/Version-1.0.0-red.svg)](https://github.com/yourusername/synos/releases)
+[![Version](https://img.shields.io/badge/Version-1.0.0-red.svg)](https://github.com/TLimoges33/Syn_OS/releases)
 [![Build Status](https://img.shields.io/badge/Build-Passing-success.svg)](BUILD_V1.0_NOW.md)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Linux](https://img.shields.io/badge/Linux-Debian%2012-orange.svg)](linux-distribution/)
@@ -120,8 +120,8 @@
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/synos.git
-cd synos
+git clone https://github.com/TLimoges33/Syn_OS.git
+cd Syn_OS
 
 # Install dependencies
 sudo apt update
@@ -162,7 +162,7 @@ qemu-system-x86_64 -bios /usr/share/ovmf/OVMF.fd \
 
 4. **Install to Disk** - Run installer (if available) or use manually
 
-**Full Installation Guide:** [docs/01-getting-started/INSTALLATION.md](docs/01-getting-started/INSTALLATION.md)
+**Full Installation Guide:** [docs/01-getting-started/Installation.md](docs/01-getting-started/Installation.md)
 
 ---
 
@@ -181,7 +181,7 @@ qemu-system-x86_64 -bios /usr/share/ovmf/OVMF.fd \
 -   [ ] SHA256SUMS
 -   [ ] GPG Signature
 
-**[Download from Releases](https://github.com/yourusername/synos/releases)**
+**[Download from Releases](https://github.com/TLimoges33/Syn_OS/releases)**
 
 > **Note:** Pre-built ISOs coming soon. For now, build from source (see above).
 
@@ -192,29 +192,36 @@ qemu-system-x86_64 -bios /usr/share/ovmf/OVMF.fd \
 ### Getting Started
 
 -   [Quick Start Guide](docs/01-getting-started/QUICK_START.md)
--   [Installation Guide](docs/01-getting-started/INSTALLATION.md)
--   [VM Testing Guide](docs/02-user-guide/vm-testing.md)
--   [First Steps After Installation](docs/01-getting-started/FIRST_STEPS.md)
+-   [Installation Guide](docs/01-getting-started/Installation.md)
+-   [VM Testing Guide](docs/02-user-guide/VM_TESTING_GUIDE.md)
+-   [First Steps After Installation](docs/01-getting-started/First-Steps.md)
 
 ### User Guides
 
--   [Your First Security Scan](docs/02-user-guide/tutorials/first-security-scan.md)
--   [Using AI Features](docs/02-user-guide/tutorials/using-ai-features.md)
--   [Customizing Desktop](docs/02-user-guide/tutorials/customizing-desktop.md)
--   [Security Tools Reference](docs/02-user-guide/reference/security-tools.md)
+-   [SynOS User Guide](docs/02-user-guide/SYNOS_USER_GUIDE_V2.0.md)
+-   [Build Guide](docs/02-user-guide/BUILD_GUIDE.md)
+-   [Keyboard Shortcuts](docs/02-user-guide/KEYBOARD_SHORTCUTS.md)
+-   [System Health Check](docs/02-user-guide/SYSTEM_HEALTH_CHECK.md)
+
+### Tutorials
+
+-   [Your First Security Scan](docs/02-user-guide/tutorials/first-security-scan.md) *(Coming Soon)*
+-   [Using AI Features](docs/02-user-guide/tutorials/using-ai-features.md) *(Coming Soon)*
+-   [Customizing Desktop](docs/02-user-guide/tutorials/customizing-desktop.md) *(Coming Soon)*
 
 ### Developer Documentation
 
--   [Architecture Overview](docs/04-development/ARCHITECTURE.md)
--   [Building from Source](docs/03-build/ultimate-build-guide.md)
+-   [Architecture Overview](docs/04-development/Architecture-Overview.md)
+-   [Development Guide](docs/04-development/Development-Guide.md)
 -   [Contributing Guide](CONTRIBUTING.md)
--   [AI Agent Reference](CLAUDE.md) (789 lines)
+-   [AI Agent Reference](CLAUDE.md) (952 lines)
 
 ### Project Status
 
--   [Current Status](docs/06-project-status/PROJECT_STATUS.md)
+-   [Project Status Overview](docs/06-project-status/PROJECT_STATUS.md)
 -   [TODO Roadmap](docs/06-project-status/TODO.md)
--   [Revolutionary Branding](docs/06-project-status/recent/2025-10-12-revolutionary-branding-complete.md)
+-   [Recent Updates](docs/06-project-status/recent/)
+-   [Build Reports](docs/06-project-status/build-reports/)
 
 ---
 
@@ -263,7 +270,7 @@ SynOS v1.0 Architecture
 -   **Desktop:** XFCE with red/black cyberpunk theme
 -   **Build System:** Debian live-build with custom packages
 
-**Detailed Architecture:** [docs/04-development/ARCHITECTURE.md](docs/04-development/ARCHITECTURE.md)
+**Detailed Architecture:** [docs/04-development/Architecture-Overview.md](docs/04-development/Architecture-Overview.md)
 
 ---
 
@@ -283,8 +290,8 @@ We welcome contributions from the community! Whether it's:
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/synos.git
-cd synos
+git clone https://github.com/TLimoges33/Syn_OS.git
+cd Syn_OS
 
 # Install Rust toolchain
 rustup default nightly
@@ -334,9 +341,9 @@ Special thanks to:
 ## Community
 
 -   **Email:** <mogeem33@gmail.com>
--   **Discord:** [Join Server](https://discord.gg/syn_os) (Coming soon)
--   **Twitter:** [@SynOS_Official](https://twitter.com/syn_os) (Coming soon)
--   **Blog:** [blog.synos.com](https://blog.syn_os.com) (Coming soon)
+-   **GitHub:** [TLimoges33/Syn_OS](https://github.com/TLimoges33/Syn_OS)
+-   **Discord:** [Join Server](https://discord.gg/synos) (Coming soon)
+-   **Twitter:** [@SynOS_Official](https://twitter.com/synos_official) (Coming soon)
 
 ---
 
@@ -367,7 +374,7 @@ Special thanks to:
 -   [ ] Mobile companion app
 -   [ ] Enterprise features
 
-**Full Roadmap:** [docs/05-planning/ROADMAP.md](docs/05-planning/ROADMAP.md)
+**Full Roadmap:** [docs/05-planning/roadmaps/](docs/05-planning/roadmaps/)
 
 ---
 
