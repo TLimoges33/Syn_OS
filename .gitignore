@@ -217,9 +217,14 @@ Cargo.lock
 src/kernel/target/
 src/userspace/*/target/
 
-# Fuzz artifacts
+# Fuzz artifacts (all fuzzing directories)
 fuzz/corpus/
 fuzz/artifacts/
+fuzz/coverage/
+**/fuzzing/corpus/
+**/fuzzing/artifacts/
+**/fuzzing/coverage/
+**/fuzzing/target/
 
 # Large audit reports
 workspace-audit-report.json

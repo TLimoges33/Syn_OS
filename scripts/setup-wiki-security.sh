@@ -55,21 +55,21 @@ echo
 # ==================================================
 if [[ "$SKIP_PERMISSIONS" != "true" ]]; then
     echo "👥 Step 2: Creating Unix groups..."
-    
+
     if getent group synos-internal > /dev/null 2>&1; then
         echo "   ✅ synos-internal group already exists"
     else
         echo "   ➕ Creating synos-internal group..."
         groupadd synos-internal
     fi
-    
+
     if getent group synos-licensed > /dev/null 2>&1; then
         echo "   ✅ synos-licensed group already exists"
     else
         echo "   ➕ Creating synos-licensed group..."
         groupadd synos-licensed
     fi
-    
+
     echo
 fi
 
@@ -78,7 +78,7 @@ fi
 # ==================================================
 if [[ "$SKIP_PERMISSIONS" != "true" ]]; then
     echo "🔒 Step 3: Setting Unix permissions..."
-    
+
     # Internal directory
     if [ -d "$WIKI_DIR/internal" ]; then
         echo "   📁 Securing internal/ directory..."
@@ -87,7 +87,7 @@ if [[ "$SKIP_PERMISSIONS" != "true" ]]; then
         chmod 640 "$WIKI_DIR/internal"/*.md 2>/dev/null || true
         echo "      ✅ Owner: root:synos-internal, Mode: 750 (dir), 640 (files)"
     fi
-    
+
     # Restricted directory
     if [ -d "$WIKI_DIR/restricted" ]; then
         echo "   📁 Securing restricted/ directory..."
@@ -96,7 +96,7 @@ if [[ "$SKIP_PERMISSIONS" != "true" ]]; then
         chmod 640 "$WIKI_DIR/restricted"/*.md 2>/dev/null || true
         echo "      ✅ Owner: root:synos-licensed, Mode: 750 (dir), 640 (files)"
     fi
-    
+
     echo
 fi
 

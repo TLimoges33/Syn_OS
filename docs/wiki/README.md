@@ -73,10 +73,10 @@ Documentation for **internal employees** and **contractors** (NDA required):
 7. **[Lab Exercises](education/Lab-Exercises.md)** - 50+ hands-on labs
 8. **[Certification & CTF Integration](education/Certification-CTF-Integration-Master.md)** - Complete certification roadmap
 9. **[Learning Paths](education/learning-paths/)** - 4 structured specialization tracks
-   - [Network Security](education/learning-paths/Network-Security.md)
-   - [Web Security](education/learning-paths/Web-Security.md)
-   - [AI Security](education/learning-paths/AI-Security.md)
-   - [Malware Analysis](education/learning-paths/Malware-Analysis.md)
+    - [Network Security](education/learning-paths/Network-Security.md)
+    - [Web Security](education/learning-paths/Web-Security.md)
+    - [AI Security](education/learning-paths/AI-Security.md)
+    - [Malware Analysis](education/learning-paths/Malware-Analysis.md)
 
 ### 👨‍💻 Developer Documentation (3 pages)
 

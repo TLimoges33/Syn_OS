@@ -26,11 +26,11 @@ mkdir -p "$BACKUP_DIR"
 if [ -d "$WIKI_DIR/internal" ]; then
     echo "📦 Backing up internal/ documentation..."
     BACKUP_FILE="$BACKUP_DIR/synos-wiki-internal-$DATE.tar.gz.gpg"
-    
+
     tar czf - -C "$WIKI_DIR" internal/ | \
         gpg --symmetric --cipher-algo AES256 \
         --output "$BACKUP_FILE"
-    
+
     echo "   ✅ Encrypted backup: $BACKUP_FILE"
     echo "   📊 Size: $(du -h "$BACKUP_FILE" | cut -f1)"
 fi
@@ -43,11 +43,11 @@ echo
 if [ -d "$WIKI_DIR/restricted" ]; then
     echo "📦 Backing up restricted/ documentation..."
     BACKUP_FILE="$BACKUP_DIR/synos-wiki-restricted-$DATE.tar.gz.gpg"
-    
+
     tar czf - -C "$WIKI_DIR" restricted/ | \
         gpg --symmetric --cipher-algo AES256 \
         --output "$BACKUP_FILE"
-    
+
     echo "   ✅ Encrypted backup: $BACKUP_FILE"
     echo "   📊 Size: $(du -h "$BACKUP_FILE" | cut -f1)"
 fi
@@ -60,11 +60,11 @@ echo
 if [ -d "$WIKI_DIR/internal" ] && [ -d "$WIKI_DIR/restricted" ]; then
     echo "📦 Creating combined backup..."
     BACKUP_FILE="$BACKUP_DIR/synos-wiki-all-$DATE.tar.gz.gpg"
-    
+
     tar czf - -C "$WIKI_DIR" internal/ restricted/ | \
         gpg --symmetric --cipher-algo AES256 \
         --output "$BACKUP_FILE"
-    
+
     echo "   ✅ Encrypted backup: $BACKUP_FILE"
     echo "   📊 Size: $(du -h "$BACKUP_FILE" | cut -f1)"
 fi

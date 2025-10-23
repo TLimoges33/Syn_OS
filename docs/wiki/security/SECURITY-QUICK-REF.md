@@ -8,11 +8,12 @@ sudo ./scripts/setup-wiki-security.sh
 ```
 
 This will:
-- ✅ Install git-crypt and GPG
-- ✅ Create Unix groups (synos-internal, synos-licensed)
-- ✅ Set proper file permissions
-- ✅ Initialize git-crypt encryption
-- ✅ Add your GPG key
+
+-   ✅ Install git-crypt and GPG
+-   ✅ Create Unix groups (synos-internal, synos-licensed)
+-   ✅ Set proper file permissions
+-   ✅ Initialize git-crypt encryption
+-   ✅ Add your GPG key
 
 ## 👥 Adding Team Members
 
@@ -82,29 +83,34 @@ git-crypt lock
 
 ## 📊 Current Access Levels
 
-| Directory | Unix Group | Encryption | Access Level |
-|-----------|-----------|------------|--------------|
-| `docs/wiki/internal/` | `synos-internal` | git-crypt | 🔴 HIGHLY RESTRICTED |
-| `docs/wiki/restricted/` | `synos-licensed` | git-crypt | 🟡 LICENSED |
-| `docs/wiki/public/` | world-readable | none | 🟢 PUBLIC |
+| Directory               | Unix Group       | Encryption | Access Level         |
+| ----------------------- | ---------------- | ---------- | -------------------- |
+| `docs/wiki/internal/`   | `synos-internal` | git-crypt  | 🔴 HIGHLY RESTRICTED |
+| `docs/wiki/restricted/` | `synos-licensed` | git-crypt  | 🟡 LICENSED          |
+| `docs/wiki/public/`     | world-readable   | none       | 🟢 PUBLIC            |
 
 ## 🛠️ Troubleshooting
 
 ### "binary data" when viewing files
+
 **Problem:** Files show as binary instead of text  
 **Solution:** Run `git-crypt unlock` to decrypt files
 
 ### Permission denied
+
 **Problem:** Cannot access internal/ or restricted/  
 **Solution:** Add user to appropriate Unix group:
+
 ```bash
 sudo usermod -aG synos-internal $USER
 # Log out and log back in for group to take effect
 ```
 
 ### git-crypt not working
+
 **Problem:** Files not encrypting  
 **Solution:** Check .gitattributes exists in directory:
+
 ```bash
 ls -la docs/wiki/internal/.gitattributes
 ls -la docs/wiki/restricted/.gitattributes
@@ -116,7 +122,7 @@ For complete details, see: [docs/wiki/SECURITY.md](SECURITY.md)
 
 ## 🔗 Quick Links
 
-- [Setup Script](../../scripts/setup-wiki-security.sh)
-- [Backup Script](../../scripts/wiki-backup.sh)
-- [Git-Crypt Documentation](https://github.com/AGWA/git-crypt)
-- [GPG Quick Start](https://www.gnupg.org/gph/en/manual/c14.html)
+-   [Setup Script](../../scripts/setup-wiki-security.sh)
+-   [Backup Script](../../scripts/wiki-backup.sh)
+-   [Git-Crypt Documentation](https://github.com/AGWA/git-crypt)
+-   [GPG Quick Start](https://www.gnupg.org/gph/en/manual/c14.html)
