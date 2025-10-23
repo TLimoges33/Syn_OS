@@ -26,26 +26,28 @@ Welcome to the comprehensive SynOS Project Wiki - your central hub for understan
 
 ### For Security Professionals
 
--   [Security Tools](Security-Tools.md)
--   [MSSP Guide](MSSP-Guide.md)
--   [Red Team Operations](Red-Team-Operations.md)
--   [Penetration Testing](Penetration-Testing.md)
+-   [Security Tools](restricted/Security-Tools.md)
+-   [MSSP Guide](internal/MSSP-Guide.md)
+-   [Red Team Operations](internal/Red-Team-Operations.md)
+-   [Penetration Testing](restricted/Penetration-Testing.md)
 
 ## 📚 Core Documentation
 
 ### System Components
 
--   [AI Consciousness Engine](AI-Consciousness-Engine.md) - Neural Darwinism implementation
--   [Custom Kernel](Custom-Kernel.md) - Rust-based kernel with AI integration
--   [Security Framework](Security-Framework.md) - 500+ tools and custom implementations
+-   [AI Consciousness Engine](internal/AI-Consciousness-Engine.md) - Neural Darwinism implementation
+-   [Custom Kernel](internal/Custom-Kernel.md) - Rust-based kernel with AI integration
+-   [Security Framework](internal/Security-Framework.md) - 500+ tools and custom implementations
 -   [Linux Distribution](Linux-Distribution.md) - Debian-based custom distro
+-   [AI Architecture](https://github.com/TLimoges33/Syn_OS/tree/master/src/ai) - Unified AI subsystem (`src/ai/`)
 
 ### Technical References
 
--   [Syscall Reference](Syscall-Reference.md) - All 43 syscalls documented
--   [Error Codes](Error-Codes.md) - Complete error handling guide
--   [Build System](Build-System.md) - Cargo, Make, and build automation
--   [Testing Guide](Testing-Guide.md) - Comprehensive testing procedures
+-   [Syscall Reference](restricted/Syscall-Reference.md) - All 43 syscalls documented
+-   [Error Codes](restricted/Error-Codes.md) - Complete error handling guide
+-   [Build System](restricted/Build-System.md) - Cargo, Make, and build automation
+-   [Testing Guide](restricted/Testing-Guide.md) - Comprehensive testing procedures
+-   [Security Documentation](SECURITY.md) - Wiki encryption and access control
 
 ### Project Management
 

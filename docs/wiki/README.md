@@ -32,9 +32,11 @@ Documentation for **paying customers** and **enterprise clients**:
 -   **Professional Guides**: Penetration testing, advanced tutorials
 -   **Technical References**: Build system, syscalls, error codes
 
-**Total**: 8 restricted pages • Requires Professional or Enterprise license
+**Total**: 9 restricted pages (~30KB) • Requires Professional or Enterprise license
 
-📂 **Location**: `wiki/restricted/` (Login required at https://portal.synos.com)
+📂 **Location**: `wiki/restricted/` (Git-crypt encryption + Unix permissions)  
+🔐 **Security**: 4-layer protection (Unix permissions, Git-crypt, GPG keys, .gitattributes)  
+📖 **Access Guide**: See [SECURITY.md](SECURITY.md) for setup and access instructions
 
 ---
 
@@ -47,9 +49,11 @@ Documentation for **internal employees** and **contractors** (NDA required):
 -   **Advanced Techniques**: Exploitation, kernel development, red team ops
 -   **Infrastructure**: Production deployment, cloud architecture
 
-**Total**: 11 internal pages • Contains competitive advantages and trade secrets
+**Total**: 13 internal pages (~187KB) • Contains competitive advantages and trade secrets
 
-🔒 **Location**: `wiki/internal/` (VPN + employee authentication required)
+🔒 **Location**: `wiki/internal/` (Git-crypt encryption + Unix permissions)  
+🔐 **Security**: 4-layer protection (Unix permissions, Git-crypt, GPG keys, .gitattributes)  
+📖 **Access Guide**: See [SECURITY.md](SECURITY.md) for setup and access instructions
 
 ---
 
@@ -130,7 +134,21 @@ Documentation for **internal employees** and **contractors** (NDA required):
 
 ---
 
-## 📊 Documentation Statistics
+## � Recent Updates
+
+**October 22, 2025** - Major architecture and security improvements:
+
+-   ✅ AI subsystem reorganized into unified `src/ai/` structure
+-   ✅ Root configuration files optimized (.editorconfig, .gitattributes, .gitignore)
+-   ✅ Wiki security implemented (4-layer protection with Git-crypt + GPG)
+-   ✅ Comprehensive security documentation added (SECURITY.md, SECURITY-QUICK-REF.md)
+-   ✅ Automated setup and backup scripts created
+
+**[See Full Update Details →](RECENT_UPDATES.md)**
+
+---
+
+## �📊 Documentation Statistics
 
 ### Public (Free)
 
@@ -333,10 +351,16 @@ A: SynOS is an independent project with unique features like AI-powered security
 
 ---
 
-**Last Updated**: October 4, 2025
+**Last Updated**: October 22, 2025
 **Version**: WaterLands Public Beta v1.0
 **Classification**: 🟢 PUBLIC
-**Total Pages**: 38 (19 public, 8 restricted, 11 internal)
+**Total Pages**: 44 (19 public, 9 restricted, 13 internal, 3 security docs)
+
+---
+
+## 📰 What's New?
+
+See [RECENT_UPDATES.md](RECENT_UPDATES.md) for the latest improvements to SynOS wiki and documentation.
 
 ---
 
