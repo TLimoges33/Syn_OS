@@ -9,6 +9,7 @@ use alloc::collections::BTreeMap;
 use alloc::format;
 use alloc::string::String;
 use alloc::vec::Vec;
+use alloc::vec;
 use core::sync::atomic::{AtomicBool, Ordering};
 use spin::Mutex;
 
@@ -970,7 +971,7 @@ macro_rules! impl_desktop_component {
             }
             pub fn initialize(&mut self) -> Result<(), DesktopError> {
                 // Initialize component with consciousness awareness
-                crate::println!("🖥️  Initializing {}", stringify!($name));
+                // TODO: Add logging system - Initializing $name
                 Ok(())
             }
             pub fn update(&mut self) -> Result<(), DesktopError> {
@@ -991,15 +992,10 @@ macro_rules! impl_desktop_component {
                 Ok(false)
             }
         }
-
-        impl Default for $name {
-            fn default() -> Self {
-                // Safe default implementation
-                Self {}
-            }
-        }
     };
 }
+
+// Comprehensive implementations for all desktop components
 
 impl_desktop_component!(Taskbar);
 impl_desktop_component!(DesktopIcons);
@@ -1015,6 +1011,213 @@ impl_desktop_component!(ContextMenuSystem);
 impl_desktop_component!(HotkeyManager);
 impl_desktop_component!(AccessibilityManager);
 impl_desktop_component!(PerformanceMonitor);
+
+// Default implementations for component structs
+impl Default for Taskbar {
+    fn default() -> Self {
+        Self {
+            position: TaskbarPosition::Bottom,
+            height: 48,
+            running_applications: vec![],
+            system_tray_area: SystemTrayArea::default(),
+            start_menu: StartMenu::default(),
+            search_bar: SmartSearchBar::default(),
+            ai_recommendations: vec![],
+            educational_tips: vec![],
+            quick_launch: QuickLaunchArea::default(),
+            clock_widget: ClockWidget::default(),
+            resource_monitor: ResourceWidget::default(),
+        }
+    }
+}
+
+impl Default for DesktopIcons {
+    fn default() -> Self {
+        Self {
+            icons: vec![],
+            auto_organize: true,
+            ai_grouping: true,
+            educational_categories: true,
+            grid_snap: true,
+            icon_size: IconSize::Medium,
+            spacing: 16,
+            selection_mode: SelectionMode::Single,
+        }
+    }
+}
+
+impl Default for SystemTray {
+    fn default() -> Self {
+        Self {
+            tray_icons: vec![],
+            notification_area: NotificationArea::default(),
+            status_indicators: vec![],
+            ai_priority_sorting: true,
+            educational_mode_indicator: true,
+            consciousness_level_display: true,
+            quick_settings: QuickSettingsPanel::default(),
+        }
+    }
+}
+
+impl Default for NotificationCenter {
+    fn default() -> Self {
+        Self {
+            notifications: vec![],
+            ai_filtering: true,
+            priority_classification: true,
+            educational_notifications: true,
+            do_not_disturb: false,
+            notification_history: vec![],
+            smart_grouping: true,
+            action_suggestions: vec![],
+        }
+    }
+}
+
+impl Default for WallpaperEngine {
+    fn default() -> Self {
+        Self {
+            current_wallpaper: Wallpaper::default(),
+            slideshow_mode: false,
+            dynamic_wallpapers: true,
+            ai_wallpaper_selection: true,
+            educational_wallpapers: vec![],
+            weather_integration: false,
+            time_based_changes: true,
+            performance_optimization: true,
+        }
+    }
+}
+
+impl Default for ApplicationLauncher {
+    fn default() -> Self {
+        Self {
+            installed_apps: vec![],
+            recent_apps: vec![],
+            ai_predictions: vec![],
+            search_engine: AppSearchEngine::default(),
+            category_browser: CategoryBrowser::default(),
+            educational_apps: vec![],
+            launch_statistics: LaunchStatistics::default(),
+            quick_actions: vec![],
+        }
+    }
+}
+
+impl Default for DesktopAI {
+    fn default() -> Self {
+        Self {
+            consciousness_level: 0.0,
+            learning_enabled: true,
+            user_behavior_model: UserBehaviorModel::default(),
+            optimization_engine: OptimizationEngine::default(),
+            educational_tutor: EducationalTutor::default(),
+            context_awareness: ContextAwareness::default(),
+            predictive_actions: vec![],
+            suggestions: vec![],
+        }
+    }
+}
+
+impl Default for EducationalOverlay {
+    fn default() -> Self {
+        Self {
+            active_tutorials: vec![],
+            skill_assessment: SkillAssessment::default(),
+            progress_tracking: ProgressTracker::default(),
+            interactive_guides: vec![],
+            learning_objectives: vec![],
+            gamification: GamificationSystem::default(),
+            achievement_system: AchievementSystem::default(),
+            peer_learning: PeerLearningSystem::default(),
+        }
+    }
+}
+
+impl Default for ThemeManager {
+    fn default() -> Self {
+        Self {
+            current_theme: Theme::default(),
+            available_themes: vec![],
+            ai_theme_adaptation: true,
+            educational_themes: vec![],
+            accessibility_themes: vec![],
+            performance_themes: vec![],
+            custom_themes: vec![],
+            theme_transitions: TransitionSystem::default(),
+        }
+    }
+}
+
+impl Default for WorkspaceManager {
+    fn default() -> Self {
+        Self {
+            workspaces: vec![],
+            current_workspace: 0,
+            ai_workspace_organization: true,
+            educational_workspaces: true,
+            workspace_switching: WorkspaceSwitching::default(),
+            workspace_previews: WorkspacePreviews::default(),
+            cross_workspace_operations: CrossWorkspaceOps::default(),
+        }
+    }
+}
+
+impl Default for ContextMenuSystem {
+    fn default() -> Self {
+        Self {
+            menus: BTreeMap::new(),
+            ai_menu_generation: true,
+            educational_menu_items: true,
+            context_awareness: true,
+            dynamic_menus: true,
+            accessibility_support: true,
+        }
+    }
+}
+
+impl Default for HotkeyManager {
+    fn default() -> Self {
+        Self {
+            hotkeys: vec![],
+            ai_hotkey_suggestions: true,
+            educational_shortcuts: true,
+            conflict_resolution: true,
+            customizable_shortcuts: true,
+            accessibility_shortcuts: true,
+        }
+    }
+}
+
+impl Default for AccessibilityManager {
+    fn default() -> Self {
+        Self {
+            screen_reader_support: false,
+            high_contrast_mode: false,
+            large_text_mode: false,
+            color_blind_support: false,
+            motor_impairment_support: false,
+            ai_accessibility_optimization: true,
+            voice_control: false,
+            eye_tracking: false,
+        }
+    }
+}
+
+impl Default for PerformanceMonitor {
+    fn default() -> Self {
+        Self {
+            cpu_usage: 0.0,
+            memory_usage: 0.0,
+            gpu_usage: 0.0,
+            frame_rate: 60.0,
+            optimization_suggestions: vec![],
+            ai_performance_tuning: true,
+            educational_performance_insights: true,
+        }
+    }
+}
 
 // Desktop component implementations with proper structure
 pub struct LayoutEngine {

@@ -3,6 +3,7 @@
 
 extern crate alloc;
 
+use alloc::format;
 use core::ptr;
 use crate::{Resolution, Color, Point, Rect, ColorFormat, GraphicsError, GraphicsMetrics};
 

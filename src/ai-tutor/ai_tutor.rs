@@ -8,11 +8,10 @@
 //! - Neural audio feedback (from V1.4)
 
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 
 use super::learning_style_detector::{LearningStyle, LearningProfile, LearningStyleDetector, UserBehaviorMetrics};
 use super::adaptive_difficulty::{AdaptiveDifficulty, Challenge, ChallengeResult, DifficultyStats};
-use super::hint_system::{HintSystem, Hint, HintLevel, ChallengeContext};
+use super::hint_system::{HintSystem, Hint, ChallengeContext};
 
 // ============================================================================
 // AI TUTOR CORE

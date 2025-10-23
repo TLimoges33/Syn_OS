@@ -7,7 +7,7 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-use super::adaptive_difficulty::{Challenge, ChallengeCategory};
+use super::adaptive_difficulty::ChallengeCategory;
 use super::learning_style_detector::LearningStyle;
 
 // ============================================================================

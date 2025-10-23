@@ -2,10 +2,9 @@
 //!
 //! Categories: Combat, Exploration, Mastery, Collection, Reputation, Legendary, Seasonal
 
-#![no_std]
-
 extern crate alloc;
 
+use alloc::vec;
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
 use super::legendary_skill_tree::*;

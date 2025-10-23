@@ -3,10 +3,9 @@
 //! KOTOR-inspired Prestige Classes (unlock at level 60)
 //! Cyberpunk 2077-inspired Iconic Builds (legendary synergies)
 
-#![no_std]
-
 extern crate alloc;
 
+use alloc::vec;
 use alloc::vec::Vec;
 use alloc::string::{String, ToString};
 use super::legendary_skill_tree::*;

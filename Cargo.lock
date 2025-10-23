@@ -4224,8 +4224,10 @@ dependencies = [
  "log",
  "ring 0.17.14",
  "serde",
+ "serde_json",
  "spin 0.9.8",
  "thiserror 1.0.69",
+ "tokio",
 ]
 
 [[package]]

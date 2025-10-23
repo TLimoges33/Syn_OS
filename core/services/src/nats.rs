@@ -12,9 +12,8 @@ use tokio::sync::RwLock;
 use tokio::task::JoinHandle;
 use tracing::{info, warn, debug};
 
-// Add once_cell for lazy static initialization
-#[cfg(feature = "std")]
-use once_cell::sync::Lazy;
+// Modern lazy static initialization
+use std::sync::LazyLock;
 
 /// Connection pool for NATS clients
 pub struct NatsConnectionPool {
@@ -81,9 +80,8 @@ impl NatsConnectionPool {
 }
 
 /// Global NATS connection pool
-#[cfg(feature = "std")]
-pub static NATS_POOL: Lazy<NatsConnectionPool> =
-    Lazy::new(|| NatsConnectionPool::new(10));
+pub static NATS_POOL: LazyLock<NatsConnectionPool> =
+    LazyLock::new(|| NatsConnectionPool::new(10));
 
 /// NATS client wrapper for SynOS services with pooling support
 #[derive(Clone)]
@@ -107,11 +105,12 @@ impl NatsClient {
             });
 
         // Add authentication if provided
-        if let Some(creds) = &config.nats_credentials {
-            connect_options = connect_options.user_and_password(
-                creds.username.clone(),
-                creds.password.clone(),
-            );
+        if let Some(creds_file) = &config.nats_credentials {
+            // For now, treat creds as a credentials file path
+            // In production, this should be loaded properly
+            connect_options = connect_options.credentials_file(creds_file)
+                .await
+                .map_err(|e| ServiceError::NatsError(format!("Failed to load credentials: {}", e)))?;
         }
 
         let client = connect_options

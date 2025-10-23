@@ -406,7 +406,7 @@ impl GraphicsPrimitives {
 
     /// Merge two compatible operations
     fn merge_two_operations(op1: DrawingOperation, op2: DrawingOperation) -> DrawingOperation {
-        match (op1, op2) {
+        match (&op1, op2) {
             (DrawingOperation::Rectangle { rect: r1, color },
              DrawingOperation::Rectangle { rect: r2, .. }) => {
                 // Create bounding rectangle
@@ -417,7 +417,7 @@ impl GraphicsPrimitives {
 
                 DrawingOperation::Rectangle {
                     rect: Rect::new(min_x, min_y, (max_x - min_x) as u32, (max_y - min_y) as u32),
-                    color,
+                    color: *color,
                 }
             }
             _ => op1, // Fallback to first operation

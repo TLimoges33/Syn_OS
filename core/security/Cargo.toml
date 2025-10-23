@@ -12,16 +12,18 @@ name = "syn_security"
 # Core dependencies
 spin = { workspace = true }
 serde = { workspace = true }
+serde_json = { workspace = true }
 thiserror = { workspace = true }
 log = { workspace = true }
 chrono = { workspace = true }
+tokio = { version = "1.35", features = ["sync"] }
 
 # eBPF integration dependencies (optional for runtime)
 libbpf-rs = { version = "0.21", optional = true }
 
 # Cryptography (when std is available)
 ring = { workspace = true, optional = true }
-chacha20poly1305 = { workspace = true, optional = true } 
+chacha20poly1305 = { workspace = true, optional = true }
 ed25519-dalek = { workspace = true, optional = true }
 
 [features]
@@ -31,8 +33,23 @@ audit-logging = []
 threat-detection = []
 quantum-security = []
 ebpf-integration = ["libbpf-rs"]
-security-enhanced = ["std", "quantum-security", "ebpf-integration", "threat-detection"]
-cybersec-tools = ["std", "ebpf-integration", "audit-logging", "threat-detection"]
+security-enhanced = [
+    "std",
+    "quantum-security",
+    "ebpf-integration",
+    "threat-detection",
+]
+cybersec-tools = [
+    "std",
+    "ebpf-integration",
+    "audit-logging",
+    "threat-detection",
+]
 mssp-platform = ["std", "audit-logging", "threat-detection"]
 red-team-tools = ["std", "threat-detection", "ebpf-integration"]
-blue-team-defense = ["std", "audit-logging", "threat-detection", "quantum-security"]
+blue-team-defense = [
+    "std",
+    "audit-logging",
+    "threat-detection",
+    "quantum-security",
+]

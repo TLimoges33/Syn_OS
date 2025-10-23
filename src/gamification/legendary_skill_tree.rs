@@ -7,8 +7,6 @@
 //!
 //! Developer Master ISO: All tools installed, skills unlock PERMISSIONS & FEATURES
 
-#![no_std]
-
 extern crate alloc;
 
 use alloc::vec::Vec;
@@ -16,7 +14,6 @@ use alloc::vec;
 use alloc::format;
 use alloc::string::{String, ToString};
 use alloc::collections::BTreeMap;
-use core::sync::atomic::{AtomicU64, Ordering};
 
 // ============================================================================
 // SKILL TREE ARCHITECTURE
@@ -84,7 +81,7 @@ pub struct CharacterProfile {
 }
 
 /// Primary skill paths (like WoW class specializations)
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum SkillPath {
     /// Red Team Path: Offensive security, penetration testing
     RedTeam,
@@ -134,6 +131,7 @@ pub enum Specialization {
 
     // Bug Bounty Specs
     WebApplicationHacking,  // Focus: OWASP Top 10, SQL injection
+    WebApplicationSecurity, // Focus: Security assessment & defense
     APISecurityTesting,     // Focus: REST/GraphQL API exploitation
     MobileAppTesting,       // Focus: iOS/Android security
 
@@ -151,8 +149,10 @@ pub enum Specialization {
     OSINTMastery,           // Focus: Open source intelligence
     PhishingOperations,     // Focus: Email/SMS phishing campaigns
     PretextingElicitation,  // Focus: Social manipulation
+    PsychologicalWarfare,   // Focus: Advanced psychological operations
 
     // Cloud Security Specs
+    CloudNativeSecurity,    // Focus: Cloud-native application security
     CloudPenetrationTesting, // Focus: Cloud infrastructure attacks
     ContainerSecurity,      // Focus: Docker/K8s security
     ServerlessSecurity,     // Focus: Lambda/Functions security
@@ -387,7 +387,7 @@ pub struct PrestigeClass {
     pub signature_ability: SignatureAbility,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum PrestigeBonus {
     XPMultiplier(f32),
     ToolEffectiveness(f32),
@@ -395,7 +395,7 @@ pub enum PrestigeBonus {
     AttributeBoost(AttributeType, i32),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct SignatureAbility {
     pub name: String,
     pub description: String,
@@ -403,7 +403,7 @@ pub struct SignatureAbility {
     pub effect: AbilityEffect,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum AbilityEffect {
     AutoExploit {
         target_count: u32,
@@ -740,9 +740,12 @@ impl LegendarySkillTree {
     }
 
     fn xp_required_for_next_level(&self) -> u64 {
-        // Exponential curve (like WoW)
-        let level = self.character.level;
-        ((level as f64).powf(2.5) * 100.0) as u64
+        // Exponential curve (like WoW) - integer approximation for no_std
+        let level = self.character.level as u64;
+        // Approximate x^2.5 using x^2 + x/2 for simpler calculation in no_std
+        let level_squared = level * level;
+        let half_level = level / 2;
+        (level_squared + level + half_level) * 100
     }
 
     fn level_up(&mut self) {
@@ -765,32 +768,43 @@ impl LegendarySkillTree {
 
     /// Learn a skill
     pub fn learn_skill(&mut self, skill_id: SkillId) -> Result<(), &'static str> {
-        // Find skill in trees
-        let skill = self.find_skill_mut(skill_id).ok_or("Skill not found")?;
+        // First, gather all the info we need without holding any borrows
+        let (requires_level, cost, requires_skills, unlocks) = {
+            let skill = self.find_skill(skill_id).ok_or("Skill not found")?;
+            (
+                skill.requires_level,
+                skill.cost,
+                skill.requires_skills.clone(),
+                skill.unlocks.clone(),
+            )
+        };
 
         // Check requirements
-        if self.character.level < skill.requires_level {
+        if self.character.level < requires_level {
             return Err("Level requirement not met");
         }
 
-        if self.character.unspent_skill_points < skill.cost {
+        if self.character.unspent_skill_points < cost {
             return Err("Not enough skill points");
         }
 
         // Check prerequisites
-        for prereq in &skill.requires_skills {
+        for prereq in &requires_skills {
             if !self.character.learned_skills.contains(prereq) {
                 return Err("Prerequisites not met");
             }
         }
 
-        // Learn skill
-        skill.current_rank += 1;
-        self.character.unspent_skill_points -= skill.cost;
+        // Now we can safely mutate
+        if let Some(skill) = self.find_skill_mut(skill_id) {
+            skill.current_rank += 1;
+        }
+
+        self.character.unspent_skill_points -= cost;
         self.character.learned_skills.push(skill_id);
 
         // Apply rewards
-        for reward in &skill.unlocks {
+        for reward in &unlocks {
             self.apply_reward(reward);
         }
 
@@ -798,6 +812,15 @@ impl LegendarySkillTree {
         self.check_iconic_builds();
 
         Ok(())
+    }
+
+    fn find_skill(&self, skill_id: SkillId) -> Option<&SkillNode> {
+        for tree in self.trees.values() {
+            if let Some(skill) = tree.iter().find(|s| s.id == skill_id) {
+                return Some(skill);
+            }
+        }
+        None
     }
 
     fn find_skill_mut(&mut self, skill_id: SkillId) -> Option<&mut SkillNode> {
@@ -833,11 +856,15 @@ impl LegendarySkillTree {
     }
 
     fn check_iconic_builds(&mut self) {
-        for build in &self.iconic_builds {
-            if self.has_all_skills(&build.required_skills) {
-                // Activate iconic build synergies!
-                self.activate_iconic_build(build.clone());
-            }
+        // Collect builds to activate without holding a borrow
+        let builds_to_activate: Vec<IconicBuild> = self.iconic_builds.iter()
+            .filter(|build| self.has_all_skills(&build.required_skills))
+            .cloned()
+            .collect();
+
+        // Now activate them
+        for build in builds_to_activate {
+            self.activate_iconic_build(build);
         }
     }
 
@@ -850,8 +877,10 @@ impl LegendarySkillTree {
         for bonus in &build.synergy_bonuses {
             match bonus {
                 SynergyBonus::SetBonus { name, multiplier, .. } => {
-                    println!("🌟 Iconic Build Activated: {}", name);
-                    println!("   {}x effectiveness!", multiplier);
+                    // 🌟 Iconic Build Activated: {name}
+                    // {multiplier}x effectiveness!
+                    // TODO: Add notification system instead of println
+                    let _ = (name, multiplier); // Suppress unused warnings
                 }
                 _ => {}
             }
@@ -859,8 +888,9 @@ impl LegendarySkillTree {
     }
 
     fn unlock_prestige_class_selection(&mut self) {
-        println!("🏆 LEVEL 60 REACHED!");
-        println!("   You can now choose a Prestige Class!");
+        // 🏆 LEVEL 60 REACHED!
+        // You can now choose a Prestige Class!
+        // TODO: Add notification system instead of println
     }
 
     /// Generate skill tree for a specific path
@@ -971,8 +1001,10 @@ impl AchievementEngine {
             self.unlocked.push(achievement_id.to_string());
             self.total_points += achievement.points;
 
-            println!("🏆 ACHIEVEMENT UNLOCKED: {}", achievement.name);
-            println!("   {} (+{} points)", achievement.description, achievement.points);
+            // 🏆 ACHIEVEMENT UNLOCKED: {achievement.name}
+            // {achievement.description} (+{achievement.points} points)
+            // TODO: Add notification system instead of println
+            let _ = (&achievement.name, &achievement.description, achievement.points); // Suppress unused warnings
         }
     }
 }

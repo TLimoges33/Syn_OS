@@ -3,7 +3,7 @@
 //! This module provides a compatibility layer for CTF challenge integration
 //! into the MATE desktop environment.
 
-use alloc::{string::{String, ToString}, vec::Vec, format, boxed::Box};
+use alloc::{string::{String, ToString}, vec::Vec, format};
 
 /// CTF Challenge difficulty levels
 #[derive(Debug, Clone, Copy, PartialEq)]

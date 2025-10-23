@@ -14,14 +14,26 @@ pub mod enhanced_monitoring_minimal;
 pub mod quantum_auth;
 pub mod validation;
 pub mod zero_trust;
-pub mod security_enhancements;
 
 /// Security enhancements framework for advanced protection
 pub mod security_enhancements {
     use std::collections::HashMap;
     use std::sync::Arc;
+    use std::sync::LazyLock;
+    use std::time::{SystemTime, UNIX_EPOCH};
     use tokio::sync::RwLock;
     use chrono::{DateTime, Utc};
+
+    /// Helper function to get current timestamp
+    fn current_timestamp() -> DateTime<Utc> {
+        let now = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_secs() as i64;
+        DateTime::from_timestamp(now, 0).unwrap_or_else(|| {
+            DateTime::from_timestamp(0, 0).unwrap()
+        })
+    }
 
     /// Security event types
     #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -138,7 +150,7 @@ pub mod security_enhancements {
             Self {
                 user_id,
                 normal_patterns: HashMap::new(),
-                last_activity: Utc::now(),
+                last_activity: current_timestamp(),
                 risk_score: 0.0,
                 trust_level: TrustLevel::Medium,
             }
@@ -160,7 +172,7 @@ pub mod security_enhancements {
                     mean: value,
                     std_dev: 1.0,
                     sample_count: 0,
-                    last_updated: Utc::now(),
+                    last_updated: current_timestamp(),
                 });
 
             // Simple online mean/variance calculation
@@ -169,7 +181,7 @@ pub mod security_enhancements {
             pattern.mean += delta / pattern.sample_count as f64;
             pattern.std_dev = ((pattern.std_dev * pattern.std_dev * (pattern.sample_count - 1) as f64
                               + delta * (value - pattern.mean)) / pattern.sample_count as f64).sqrt();
-            pattern.last_updated = Utc::now();
+            pattern.last_updated = current_timestamp();
         }
     }
 
@@ -298,11 +310,11 @@ pub mod security_enhancements {
     }
 
     /// Global security enhancements instances
-    pub static BEHAVIORAL_ANALYTICS: once_cell::sync::Lazy<BehavioralAnalytics> =
-        once_cell::sync::Lazy::new(|| BehavioralAnalytics::new(2.5));
+    pub static BEHAVIORAL_ANALYTICS: LazyLock<BehavioralAnalytics> =
+        LazyLock::new(|| BehavioralAnalytics::new(2.5));
 
-    pub static ZERO_TRUST_ENGINE: once_cell::sync::Lazy<ZeroTrustEngine> =
-        once_cell::sync::Lazy::new(|| ZeroTrustEngine::new());
+    pub static ZERO_TRUST_ENGINE: LazyLock<ZeroTrustEngine> =
+        LazyLock::new(|| ZeroTrustEngine::new());
 }
 
 // Re-export commonly used items

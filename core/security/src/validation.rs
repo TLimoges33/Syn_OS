@@ -109,7 +109,7 @@ impl InputValidator {
     pub fn validate_username(&self, username: &str) -> Result<String, ValidationError> {
         // Check rate limiting
         if let Some(ref limiter) = self.rate_limiter {
-            let mut limiter = limiter; // This would need proper mutex handling in real impl
+            let limiter = limiter; // This would need proper mutex handling in real impl
             // limiter.check_rate_limit(&format!("username:{}", username))?;
         }
 
@@ -327,7 +327,7 @@ pub fn sanitize_input(input: &str) -> String {
     } else {
         // Fallback: basic sanitization
         input.chars()
-            .filter(|c| c.is_alphanumeric() || c.is_whitespace() || c == '_' || c == '-' || c == '.')
+            .filter(|c| c.is_alphanumeric() || c.is_whitespace() || *c == '_' || *c == '-' || *c == '.')
             .collect()
     }
 }

@@ -38,14 +38,14 @@ pub use legendary_skill_tree::{
 
 pub use skill_tree_database::generate_all_skill_trees;
 
-pub use prestige_and_iconic::{
+pub use legendary_skill_tree::{
     PrestigeClass,
     IconicBuild,
     SignatureAbility,
     SynergyBonus,
 };
 
-pub use achievements_database::{
+pub use legendary_skill_tree::{
     Achievement,
     AchievementCategory,
     AchievementRarity,
@@ -53,16 +53,18 @@ pub use achievements_database::{
     AchievementReward,
 };
 
+use alloc::string::ToString;
+
 /// Initialize the gamification system for a new user
 pub fn initialize_new_character(username: &str) -> LegendarySkillTree {
-    LegendarySkillTree::new(username)
+    LegendarySkillTree::new(username.to_string())
 }
 
 /// Load character progress from persistent storage
 pub fn load_character(username: &str) -> Result<LegendarySkillTree, &'static str> {
     // TODO: Implement persistence layer
     // For now, return new character
-    Ok(LegendarySkillTree::new(username))
+    Ok(LegendarySkillTree::new(username.to_string()))
 }
 
 /// Save character progress to persistent storage

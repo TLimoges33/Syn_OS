@@ -4,8 +4,6 @@
 //! Each path has 50+ skills across 7 tiers
 //! Developer Master ISO: All 500+ tools already installed
 
-#![no_std]
-
 extern crate alloc;
 
 use alloc::vec::Vec;

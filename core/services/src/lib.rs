@@ -4,21 +4,209 @@
 //! including NATS messaging, service discovery, health monitoring, and authentication.
 
 use std::fmt;
+use uuid::Uuid;
+
+/// Service configuration
+#[derive(Debug, Clone)]
+pub struct ServiceConfig {
+    pub name: String,
+    pub port: u16,
+    pub host: String,
+    pub service_id: String,
+    pub service_name: String,
+    pub version: String,
+    pub nats_url: String,
+    pub nats_credentials: Option<String>,
+    pub health_check_interval: std::time::Duration,
+    pub service_timeout: std::time::Duration,
+}
+
+impl Default for ServiceConfig {
+    fn default() -> Self {
+        Self {
+            name: "synos-service".to_string(),
+            port: 8080,
+            host: "localhost".to_string(),
+            service_id: Uuid::new_v4().to_string(),
+            service_name: "synos-service".to_string(),
+            version: "1.0.0".to_string(),
+            nats_url: "nats://localhost:4222".to_string(),
+            nats_credentials: None,
+            health_check_interval: std::time::Duration::from_secs(30),
+            service_timeout: std::time::Duration::from_secs(60),
+        }
+    }
+}
+
+/// Service status
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+pub enum ServiceStatus {
+    Healthy,
+    Unhealthy,
+    Degraded,
+    Unknown,
+    Starting,
+    Running,
+    Stopped,
+    Failed,
+}
+
+impl fmt::Display for ServiceStatus {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            ServiceStatus::Healthy => write!(f, "Healthy"),
+            ServiceStatus::Unhealthy => write!(f, "Unhealthy"),
+            ServiceStatus::Degraded => write!(f, "Degraded"),
+            ServiceStatus::Unknown => write!(f, "Unknown"),
+            ServiceStatus::Starting => write!(f, "Starting"),
+            ServiceStatus::Running => write!(f, "Running"),
+            ServiceStatus::Stopped => write!(f, "Stopped"),
+            ServiceStatus::Failed => write!(f, "Failed"),
+        }
+    }
+}
+
+/// Service error type
+#[derive(Debug)]
+pub enum ServiceError {
+    ConnectionFailed(String),
+    Timeout(String),
+    InvalidConfig(String),
+    OperationFailed(String),
+    NatsError(String),
+    AuthError(String),
+    TimeoutError(String),
+}
+
+impl std::error::Error for ServiceError {}
+
+impl fmt::Display for ServiceError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            ServiceError::ConnectionFailed(msg) => write!(f, "Connection failed: {}", msg),
+            ServiceError::Timeout(msg) => write!(f, "Timeout: {}", msg),
+            ServiceError::InvalidConfig(msg) => write!(f, "Invalid config: {}", msg),
+            ServiceError::OperationFailed(msg) => write!(f, "Operation failed: {}", msg),
+            ServiceError::NatsError(msg) => write!(f, "NATS error: {}", msg),
+            ServiceError::AuthError(msg) => write!(f, "Authentication error: {}", msg),
+            ServiceError::TimeoutError(msg) => write!(f, "Timeout error: {}", msg),
+        }
+    }
+}
+
+// From implementations for automatic error conversion
+impl From<serde_json::Error> for ServiceError {
+    fn from(err: serde_json::Error) -> Self {
+        ServiceError::OperationFailed(format!("JSON error: {}", err))
+    }
+}
+
+impl From<tokio::time::error::Elapsed> for ServiceError {
+    fn from(err: tokio::time::error::Elapsed) -> Self {
+        ServiceError::TimeoutError(format!("Operation timed out: {}", err))
+    }
+}
+
+impl From<async_nats::ConnectError> for ServiceError {
+    fn from(err: async_nats::ConnectError) -> Self {
+        ServiceError::NatsError(format!("NATS connection error: {}", err))
+    }
+}
+
+impl From<async_nats::PublishError> for ServiceError {
+    fn from(err: async_nats::PublishError) -> Self {
+        ServiceError::NatsError(format!("NATS publish error: {}", err))
+    }
+}
+
+impl From<async_nats::SubscribeError> for ServiceError {
+    fn from(err: async_nats::SubscribeError) -> Self {
+        ServiceError::NatsError(format!("NATS subscribe error: {}", err))
+    }
+}
+
+/// Service result type
+pub type ServiceResult<T> = Result<T, ServiceError>;
 
 pub mod nats;
 pub mod discovery;
 pub mod health;
 pub mod auth;
 pub mod events;
-pub mod performance_monitoring;
-pub mod scalability;
+
+/// Performance monitoring (inline implementation)
+pub mod performance_monitoring {
+    //! Service performance monitoring and metrics collection
+
+    use std::collections::HashMap;
+    use std::sync::Arc;
+    use tokio::sync::RwLock;
+    use std::sync::LazyLock;
+
+    /// Performance metrics for a service
+    #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+    pub struct PerformanceMetrics {
+        pub cpu_usage: f64,
+        pub memory_usage: f64,
+        pub request_count: u64,
+        pub error_count: u64,
+        pub average_response_time: f64,
+        pub timestamp: chrono::DateTime<chrono::Utc>,
+    }
+
+    impl Default for PerformanceMetrics {
+        fn default() -> Self {
+            Self {
+                cpu_usage: 0.0,
+                memory_usage: 0.0,
+                request_count: 0,
+                error_count: 0,
+                average_response_time: 0.0,
+                timestamp: chrono::Utc::now(),
+            }
+        }
+    }
+
+    /// Performance monitoring system
+    pub struct PerformanceMonitor {
+        metrics: Arc<RwLock<HashMap<String, PerformanceMetrics>>>,
+    }
+
+    impl PerformanceMonitor {
+        pub fn new() -> Self {
+            Self {
+                metrics: Arc::new(RwLock::new(HashMap::new())),
+            }
+        }
+
+        pub async fn record_metric(&self, service_id: String, metrics: PerformanceMetrics) {
+            let mut m = self.metrics.write().await;
+            m.insert(service_id, metrics);
+        }
+
+        pub async fn get_metrics(&self, service_id: &str) -> Option<PerformanceMetrics> {
+            let m = self.metrics.read().await;
+            m.get(service_id).cloned()
+        }
+    }
+
+    impl Default for PerformanceMonitor {
+        fn default() -> Self {
+            Self::new()
+        }
+    }
+
+    /// Global performance monitor instance
+    pub static PERFORMANCE_MONITOR: LazyLock<PerformanceMonitor> =
+        LazyLock::new(|| PerformanceMonitor::new());
+}
 
 /// Scalability framework for horizontal service scaling
 pub mod scalability {
     use std::collections::HashMap;
     use std::sync::Arc;
     use tokio::sync::RwLock;
-    use std::time::{Duration, Instant};
+    use std::time::Duration;
 
     /// Service instance for load balancing
     #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -310,12 +498,14 @@ pub mod scalability {
         NoChange,
     }
 
-    /// Global scalability components
-    pub static LOAD_BALANCER: once_cell::sync::Lazy<LoadBalancer> =
-        once_cell::sync::Lazy::new(|| LoadBalancer::new(LoadBalancingStrategy::HealthBased));
+    /// Global scalability components (using LazyLock from std)
+    use std::sync::LazyLock;
 
-    pub static AUTO_SCALER: once_cell::sync::Lazy<AutoScaler> =
-        once_cell::sync::Lazy::new(|| AutoScaler::new());
+    pub static LOAD_BALANCER: LazyLock<LoadBalancer> =
+        LazyLock::new(|| LoadBalancer::new(LoadBalancingStrategy::HealthBased));
+
+    pub static AUTO_SCALER: LazyLock<AutoScaler> =
+        LazyLock::new(|| AutoScaler::new());
 }
 
 pub use nats::NatsClient;
