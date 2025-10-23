@@ -28,6 +28,7 @@ pub mod gdt;
 pub mod interrupts;
 pub mod serial; // Serial communication for debugging
 pub mod time; // Time management and timing functions
+pub mod time_utils; // Centralized timestamp utilities
 pub mod cpu; // CPU management and identification
 pub mod debug; // Debug utilities and core dumps
 pub mod system; // System control and power management
@@ -64,7 +65,7 @@ pub mod education_platform_minimal;
 pub mod advanced_applications_minimal;
 pub mod ai_bridge; // Legacy AI bridge
 
-// Phase 5 modules - Graphics framework integration  
+// Phase 5 modules - Graphics framework integration
 // TODO: Integrate graphics module once workspace configuration is updated
 // #[path = "../../graphics/mod.rs"]
 // pub mod graphics;
@@ -129,9 +130,9 @@ fn map_region(
             .ok_or(MapToError::FrameAllocationFailed)?;
 
         // Use flags for a standard heap region (read/write, but not executable)
-        let flags = x86_64::structures::paging::PageTableFlags::PRESENT | 
+        let flags = x86_64::structures::paging::PageTableFlags::PRESENT |
                     x86_64::structures::paging::PageTableFlags::WRITABLE;
-        
+
         // Map the page to the frame
         unsafe {
             mapper.map_to(page, frame, flags, frame_allocator)?.flush();

@@ -1,5 +1,5 @@
 //! Inter-Process Communication (IPC) Framework
-//! 
+//!
 //! Provides consciousness-integrated IPC mechanisms including:
 //! - Pipes (anonymous and named)
 //! - Shared memory segments
@@ -91,7 +91,7 @@ impl IPCMessage {
             receiver_pid,
             message_type: MessageType::Data,
             data,
-            timestamp: 0, // TODO: Get actual timestamp
+            timestamp: crate::time_utils::get_current_timestamp(),
             priority: MessagePriority::Normal,
         }
     }
@@ -172,11 +172,11 @@ pub struct IPCManager {
     shared_memory_manager: SharedMemoryManager,
     semaphore_manager: SemaphoreManager,
     message_queue_manager: MessageQueueManager,
-    
+
     resources: BTreeMap<IPCId, IPCResource>,
     next_id: AtomicU64,
     stats: IPCStats,
-    
+
     // Consciousness integration
     consciousness_enabled: bool,
     optimization_threshold: u64,
@@ -190,11 +190,11 @@ impl IPCManager {
             shared_memory_manager: SharedMemoryManager::new(),
             semaphore_manager: SemaphoreManager::new(),
             message_queue_manager: MessageQueueManager::new(),
-            
+
             resources: BTreeMap::new(),
             next_id: AtomicU64::new(1),
             stats: IPCStats::default(),
-            
+
             consciousness_enabled: true,
             optimization_threshold: 100,
         }
@@ -241,9 +241,9 @@ impl IPCManager {
     pub fn create_shared_memory(&mut self, owner_pid: u64, size: usize, key: Option<String>) -> Result<IPCId, IPCError> {
         let id = self.next_id();
         let segment = SharedMemorySegment::new(size, key)?;
-        
+
         self.shared_memory_manager.add_segment(id, segment)?;
-        
+
         let resource = IPCResource {
             id,
             resource_type: IPCResourceType::SharedMemory,
@@ -254,11 +254,11 @@ impl IPCManager {
             access_count: 0,
             consciousness_priority: self.calculate_consciousness_priority(owner_pid),
         };
-        
+
         self.resources.insert(id, resource);
         self.stats.active_shared_memory += 1;
         self.stats.total_resources += 1;
-        
+
         Ok(id)
     }
 
@@ -271,9 +271,9 @@ impl IPCManager {
             persistence: false,
             timeout_ms: 5000,
         };
-        
+
         let id = self.message_queue_manager.create_queue(owner_pid, config)?;
-        
+
         let resource = IPCResource {
             id,
             resource_type: IPCResourceType::MessageQueue,
@@ -284,7 +284,7 @@ impl IPCManager {
             access_count: 0,
             consciousness_priority: self.calculate_consciousness_priority(owner_pid),
         };
-        
+
         self.resources.insert(id, resource);
         self.stats.active_message_queues += 1;
         self.stats.total_resources += 1;
@@ -294,9 +294,9 @@ impl IPCManager {
     pub fn create_semaphore(&mut self, owner_pid: u64, initial_value: i32, max_value: i32) -> Result<IPCId, IPCError> {
         let id = self.next_id();
         let semaphore = Semaphore::new(initial_value, max_value)?;
-        
+
         self.semaphore_manager.add_semaphore(id, semaphore)?;
-        
+
         let resource = IPCResource {
             id,
             resource_type: IPCResourceType::Semaphore,
@@ -307,23 +307,23 @@ impl IPCManager {
             access_count: 0,
             consciousness_priority: self.calculate_consciousness_priority(owner_pid),
         };
-        
+
         self.resources.insert(id, resource);
         self.stats.active_semaphores += 1;
         self.stats.total_resources += 1;
-        
+
         Ok(id)
     }
 
     /// Remove IPC resource
     pub fn remove_resource(&mut self, id: IPCId, requesting_pid: u64) -> Result<(), IPCError> {
         let resource = self.resources.get(&id).ok_or(IPCError::ResourceNotFound)?;
-        
+
         // Check permissions
         if resource.owner_pid != requesting_pid && !self.has_admin_privileges(requesting_pid) {
             return Err(IPCError::PermissionDenied);
         }
-        
+
         match resource.resource_type {
             IPCResourceType::Pipe => {
                 self.pipe_manager.remove_pipe(id)?;
@@ -342,10 +342,10 @@ impl IPCManager {
                 self.stats.active_semaphores -= 1;
             }
         }
-        
+
         self.resources.remove(&id);
         self.stats.total_resources -= 1;
-        
+
         Ok(())
     }
 
@@ -587,7 +587,7 @@ impl IPCManager {
         if self.stats.total_resources > self.optimization_threshold {
             // Implement consciousness-driven optimization
             self.stats.consciousness_optimizations += 1;
-            
+
             // Example optimizations:
             // - Merge underutilized resources
             // - Prioritize high-consciousness processes
@@ -633,7 +633,7 @@ mod tests {
         let mut manager = IPCManager::new();
         let pipe_id = manager.create_pipe(1, 1024).unwrap();
         assert_eq!(manager.stats.active_pipes, 1);
-        
+
         manager.remove_resource(pipe_id, 1).unwrap();
         assert_eq!(manager.stats.active_pipes, 0);
         assert_eq!(manager.stats.total_resources, 0);

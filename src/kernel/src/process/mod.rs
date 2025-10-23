@@ -237,7 +237,7 @@ impl Process {
             children: Vec::new(),
             exit_code: None,
             cpu_time_used: 0,
-            creation_time: 0, // TODO: Use real timestamp
+            creation_time: crate::time_utils::get_current_timestamp(),
         }
     }
 
@@ -540,24 +540,25 @@ pub use cpu::{CpuId, Cpu};
 
 /// Initialize the process scheduler
 pub fn init_scheduler() {
-    // Initialize global scheduler
-    // TODO: Implement scheduler initialization
+    phase5_scheduler::init_scheduler();
 }
 
 /// Spawn a new process
 pub fn spawn_process(program: &[u8]) -> Result<ProcessId, ProcessError> {
-    // TODO: Implement process spawning from program binary
-    Ok(1)
+    phase5_mod::spawn_process(program)
 }
 
 /// Get the current process ID
 pub fn current_process_id() -> ProcessId {
-    // TODO: Implement current process ID tracking
-    0
+    context_switch::CONTEXT_SWITCHER.lock()
+        .current_pid()
+        .unwrap_or(0)
 }
 
 /// Isolate a process in a sandbox
 pub fn isolate_process(pid: ProcessId) -> Result<(), ProcessError> {
-    // TODO: Implement process isolation
-    Ok(())
+    // Use educational sandbox for process isolation
+    real_process_manager::PROCESS_MANAGER.lock()
+        .create_educational_sandbox(pid, &crate::education::SandboxConfig::default())
+        .map(|_| ())
 }

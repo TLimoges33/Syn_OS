@@ -1,0 +1,53 @@
+[package]
+name = "synos-ctf-platform"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+description = "SynOS CTF Training Platform - Capture The Flag challenges with leaderboards"
+
+[lib]
+name = "synos_ctf_platform"
+path = "mod.rs"
+
+[[bin]]
+name = "synos-ctf"
+path = "main.rs"
+
+[package.metadata.deb]
+maintainer = "SynOS Team <team@synos.dev>"
+copyright = "2025, SynOS Team <team@synos.dev>"
+license-file = ["../../LICENSE", "4"]
+extended-description = """\
+CTF training platform for SynOS with challenge management and leaderboards.
+Provides educational cybersecurity challenges with progressive difficulty."""
+depends = "$auto"
+section = "education"
+priority = "optional"
+assets = [
+  [
+    "target/release/synos-ctf",
+    "usr/bin/",
+    "755",
+  ],
+  [
+    "README.md",
+    "usr/share/doc/synos-ctf-platform/",
+    "644",
+  ],
+]
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { version = "1", features = ["sync", "macros"] }
+chrono = { version = "0.4", features = ["serde", "clock"] }
+uuid = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["full", "test-util"] }
+
+[features]
+default = ["std"]
+std = []

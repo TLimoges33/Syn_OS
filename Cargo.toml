@@ -29,6 +29,14 @@ members = [
     "src/vm-wargames",
     "src/userspace/libc",
     "src/tools/dev-utils",
+    # V1.5-V1.8 modules were created in previous session but files not persisted
+    # "src/gamification",      # V1.5: WoW/KOTOR/Cyberpunk-inspired skill tree system
+    # "src/cloud-security",    # V1.6: Multi-cloud security monitoring (AWS/Azure/GCP)
+    # "src/ai-tutor",          # V1.7: Adaptive AI tutoring with learning style detection
+    # "src/mobile-bridge",     # V1.8: WebSocket bridge for mobile app
+    "src/universal-command",       # V1.9: Universal command orchestrator with AI tool selection
+    "src/ctf-platform",            # V1.9: CTF training platform with challenges and leaderboards
+    "src/quantum-consciousness",   # V2.0: Quantum AI consciousness - GRAND FINALE
 ]
 
 # Exclude archived, backup, and build directories
@@ -135,6 +143,11 @@ hyper = { version = "1.0", features = ["client", "http1", "http2"] }
 http = "1.0"
 
 # ===================
+# QUANTUM & RANDOM NUMBER GENERATION (V2.0)
+# ===================
+rand = { version = "0.8", default-features = false }
+
+# ===================
 # DEVELOPMENT TOOLS
 # ===================
 clap = { version = "4.4", features = ["derive"] }
@@ -191,6 +204,7 @@ opt-level = 0
 debug = true
 panic = "abort"  # Changed to abort for kernel compatibility
 overflow-checks = true
+incremental = true  # Enable incremental compilation for faster rebuilds
 
 [profile.dev-fast]
 # Development with some optimizations

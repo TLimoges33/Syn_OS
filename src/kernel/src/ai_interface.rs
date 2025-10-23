@@ -387,16 +387,59 @@ pub fn deallocate(ptr: *mut u8, size: usize, align: usize) {
 }
 
 /// Standard memory allocation without quantum enhancement
-fn standard_allocate(_size: usize, _align: usize) -> Result<*mut u8, &'static str> {
-    // Delegate to regular heap allocation
-    // crate::memory::heap::allocate(size, align)  // Function not available
-    Err("Memory allocation not available")
+fn standard_allocate(size: usize, align: usize) -> Result<*mut u8, &'static str> {
+    // Use the global memory manager for allocation
+    if let Some(manager) = crate::memory::get_global_memory_manager() {
+        match manager.lock().allocate_aligned(size, align) {
+            Ok(ptr) => Ok(ptr),
+            Err(_) => Err("Memory allocation failed")
+        }
+    } else {
+        // Fallback to simple allocation using linked list allocator
+        use linked_list_allocator::LockedHeap;
+        use core::alloc::{GlobalAlloc, Layout};
+
+        // Create layout with proper alignment
+        let layout = Layout::from_size_align(size, align)
+            .map_err(|_| "Invalid layout")?;
+
+        // Use the global allocator (defined in kernel)
+        extern "C" {
+            static ALLOCATOR: LockedHeap;
+        }
+
+        let ptr = unsafe { ALLOCATOR.alloc(layout) };
+        if ptr.is_null() {
+            Err("Memory allocation failed")
+        } else {
+            Ok(ptr)
+        }
+    }
 }
 
 /// Standard memory deallocation without quantum enhancement
-fn standard_deallocate(_ptr: *mut u8, _size: usize, _align: usize) {
-    // Delegate to regular heap deallocation
-    // crate::memory::heap::deallocate(ptr, size, align);  // Function not available
+fn standard_deallocate(ptr: *mut u8, size: usize, align: usize) {
+    if ptr.is_null() {
+        return;
+    }
+
+    // Use the global memory manager for deallocation
+    if let Some(manager) = crate::memory::get_global_memory_manager() {
+        manager.lock().deallocate_aligned(ptr, size, align);
+    } else {
+        // Fallback to simple deallocation using linked list allocator
+        use linked_list_allocator::LockedHeap;
+        use core::alloc::{GlobalAlloc, Layout};
+
+        // Create layout with proper alignment
+        if let Ok(layout) = Layout::from_size_align(size, align) {
+            extern "C" {
+                static ALLOCATOR: LockedHeap;
+            }
+
+            unsafe { ALLOCATOR.dealloc(ptr, layout) };
+        }
+    }
 }
 
 /// Quantum-enhanced memory allocation

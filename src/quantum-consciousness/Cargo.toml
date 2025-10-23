@@ -1,0 +1,50 @@
+[package]
+name = "synos-quantum-consciousness"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+description = "SynOS Quantum Consciousness AI - Quantum-enhanced security operations"
+
+[lib]
+name = "synos_quantum_consciousness"
+path = "mod.rs"
+
+[[bin]]
+name = "synos-quantum"
+path = "main.rs"
+
+[package.metadata.deb]
+maintainer = "SynOS Team <team@synos.dev>"
+copyright = "2025, SynOS Team <team@synos.dev>"
+license-file = ["../../LICENSE", "4"]
+extended-description = """\
+Quantum consciousness AI engine for SynOS with exponential security capabilities.
+Provides quantum-enhanced pattern recognition and threat analysis."""
+depends = "$auto"
+section = "science"
+priority = "optional"
+assets = [
+    ["target/release/synos-quantum", "usr/bin/", "755"],
+    ["README.md", "usr/share/doc/synos-quantum-consciousness/", "644"],
+]
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { version = "1", features = ["sync", "macros"] }
+chrono = { version = "0.4", features = ["serde", "clock"] }
+uuid = { workspace = true }
+rand = "0.8"  # For quantum measurement simulation
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["full", "test-util"] }
+
+[features]
+default = ["std"]
+std = []
+
+# Quantum computing features (future hardware acceleration)
+quantum-hardware = []
+error-correction = []

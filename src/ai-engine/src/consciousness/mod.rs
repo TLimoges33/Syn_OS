@@ -1,5 +1,5 @@
 //! Consciousness Engine Module
-//! 
+//!
 //! Implements the Neural Darwinism-based consciousness system for SynapticOS.
 //! This is the core differentiator that makes SynapticOS a consciousness-aware OS.
 
@@ -9,6 +9,24 @@ pub mod decision;    // Decision making processes
 pub mod memory;      // Consciousness memory systems
 
 pub use core::ConsciousnessEngine;
+
+// V2.0: Quantum Consciousness Integration
+pub use synos_quantum_consciousness::{QuantumConsciousness, QuantumDecisionTree, Qubit};
+
+/// Enhanced consciousness with quantum capabilities
+pub struct EnhancedConsciousness {
+    pub classical: ConsciousnessEngine,
+    pub quantum: QuantumConsciousness,
+    pub integration_mode: QuantumIntegrationMode,
+}
+
+/// Modes for quantum-classical integration
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum QuantumIntegrationMode {
+    Classical,      // Pure classical consciousness
+    Hybrid,         // Both classical and quantum
+    QuantumEnhanced,// Quantum-enhanced classical
+}
 
 /// Consciousness state representation
 #[derive(Debug, Clone, PartialEq)]

@@ -94,20 +94,20 @@ impl AssessmentManager {
             initialized: false,
         }
     }
-    
+
     /// Initialize assessment manager
     pub async fn initialize(&mut self) -> Result<(), &'static str> {
         if self.initialized {
             return Err("Assessment manager already initialized");
         }
-        
+
         // Load default assessments
         self.load_default_assessments().await?;
-        
+
         self.initialized = true;
         Ok(())
     }
-    
+
     /// Shutdown assessment manager
     pub async fn shutdown(&mut self) -> Result<(), &'static str> {
         self.assessments.clear();
@@ -115,43 +115,43 @@ impl AssessmentManager {
         self.initialized = false;
         Ok(())
     }
-    
+
     /// Start assessment
     pub async fn start_assessment(&self, assessment_id: u32, _user_id: u32) -> Result<Assessment, &'static str> {
         if !self.initialized {
             return Err("Assessment manager not initialized");
         }
-        
+
         if let Some(assessment) = self.assessments.get(&assessment_id) {
             Ok(assessment.clone())
         } else {
             Err("Assessment not found")
         }
     }
-    
+
     /// Submit assessment
-    pub async fn submit_assessment(&mut self, 
-        assessment_id: u32, 
-        user_id: u32, 
+    pub async fn submit_assessment(&mut self,
+        assessment_id: u32,
+        user_id: u32,
         answers: Vec<Answer>,
         time_taken: u32) -> Result<AssessmentResult, &'static str> {
-        
+
         let assessment = self.assessments.get(&assessment_id)
             .ok_or("Assessment not found")?;
-        
+
         // Calculate score
         let mut total_score = 0.0;
         let mut max_score = 0.0;
         let mut scored_answers = Vec::new();
-        
+
         for question in &assessment.questions {
             max_score += question.points as f32;
-            
+
             if let Some(answer) = answers.iter().find(|a| a.question_id == question.question_id) {
                 let correct = self.check_answer(question, &answer.user_answer);
                 let points_earned = if correct { question.points } else { 0 };
                 total_score += points_earned as f32;
-                
+
                 let scored_answer = Answer {
                     question_id: question.question_id,
                     user_answer: answer.user_answer.clone(),
@@ -163,14 +163,14 @@ impl AssessmentManager {
                         format!("Incorrect. {}", question.explanation)
                     },
                 };
-                
+
                 scored_answers.push(scored_answer);
             }
         }
-        
+
         let percentage = (total_score / max_score) * 100.0;
         let passed = percentage >= assessment.passing_score;
-        
+
         let result = AssessmentResult {
             result_id: self.results.len() as u32,
             assessment_id,
@@ -180,41 +180,41 @@ impl AssessmentManager {
             percentage,
             passed,
             time_taken,
-            completed_at: 0, // TODO: Get actual timestamp
+            completed_at: crate::time_utils::get_current_timestamp(),
             answers: scored_answers,
         };
-        
+
         self.results.insert(result.result_id, result.clone());
         Ok(result)
     }
-    
+
     /// Get assessment result
     pub fn get_result(&self, result_id: u32) -> Option<&AssessmentResult> {
         self.results.get(&result_id)
     }
-    
+
     /// Get user results
     pub fn get_user_results(&self, user_id: u32) -> Vec<&AssessmentResult> {
         self.results.values()
             .filter(|result| result.user_id == user_id)
             .collect()
     }
-    
+
     /// List available assessments
     pub fn list_assessments(&self) -> Vec<(u32, String, AssessmentType)> {
         self.assessments.iter()
             .map(|(id, assessment)| (*id, assessment.title.clone(), assessment.assessment_type.clone()))
             .collect()
     }
-    
+
     /// Generate achievement based on results
     pub fn generate_achievement(&self, result: &AssessmentResult) -> Option<Achievement> {
         if result.passed {
             Some(Achievement {
                 achievement_id: 0, // TODO: Generate proper ID
-                name: format!("Completed: {}", 
+                name: format!("Completed: {}",
                     self.assessments.get(&result.assessment_id)?.title),
-                description: format!("Successfully completed assessment with {:.1}% score", 
+                description: format!("Successfully completed assessment with {:.1}% score",
                     result.percentage),
                 earned_at: result.completed_at,
                 points: (result.percentage as u32) / 10, // 1 point per 10%
@@ -223,9 +223,9 @@ impl AssessmentManager {
             None
         }
     }
-    
+
     // Private helper methods
-    
+
     async fn load_default_assessments(&mut self) -> Result<(), &'static str> {
         // Create a basic SynOS knowledge assessment
         let basic_assessment = Assessment {
@@ -262,11 +262,11 @@ impl AssessmentManager {
                 },
             ],
         };
-        
+
         self.assessments.insert(basic_assessment.assessment_id, basic_assessment);
         Ok(())
     }
-    
+
     fn check_answer(&self, question: &Question, user_answer: &str) -> bool {
         match question.question_type {
             QuestionType::MultipleChoice | QuestionType::TrueFalse => {

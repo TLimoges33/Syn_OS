@@ -725,12 +725,80 @@ stage_synos_components() {
         return 0
     fi
 
-    log_info "Copying SynOS components to chroot..."
+    log_info "Installing SynOS V1.9-V2.0 components..."
 
     # Create SynOS directory structure
     mkdir -p "$CHROOT_DIR/opt/synos"
     mkdir -p "$CHROOT_DIR/opt/synos/ai"
     mkdir -p "$CHROOT_DIR/opt/synos/security"
+    mkdir -p "$CHROOT_DIR/etc/synos"
+
+    # Install V1.9-V2.0 .deb packages
+    log_info "Installing V1.9-V2.0 packages..."
+
+    # Copy .deb packages to chroot
+    cp "$PROJECT_ROOT/target/debian/synos-universal-command_"*.deb "$CHROOT_DIR/tmp/" || {
+        log_error "Universal command package not found"
+        return 1
+    }
+    cp "$PROJECT_ROOT/target/debian/synos-ctf-platform_"*.deb "$CHROOT_DIR/tmp/" || {
+        log_error "CTF platform package not found"
+        return 1
+    }
+    cp "$PROJECT_ROOT/target/debian/synos-quantum-consciousness_"*.deb "$CHROOT_DIR/tmp/" || {
+        log_error "Quantum consciousness package not found"
+        return 1
+    }
+
+    # Install packages in chroot with parallel processing
+    log_info "Installing V1.9-V2.0 packages with parallel processing..."
+
+    # Start parallel package installations
+    local install_jobs=()
+
+    # Install universal command package
+    chroot "$CHROOT_DIR" dpkg -i /tmp/synos-universal-command_*.deb &
+    install_jobs+=($!)
+
+    # Install CTF platform package
+    chroot "$CHROOT_DIR" dpkg -i /tmp/synos-ctf-platform_*.deb &
+    install_jobs+=($!)
+
+    # Install quantum consciousness package
+    chroot "$CHROOT_DIR" dpkg -i /tmp/synos-quantum-consciousness_*.deb &
+    install_jobs+=($!)
+
+    # Wait for all installations to complete
+    local install_failed=false
+    for job_pid in "${install_jobs[@]}"; do
+        if ! wait "$job_pid" 2>/dev/null; then
+            install_failed=true
+        fi
+    done
+
+    if [[ "$install_failed" == false ]]; then
+        # Resolve dependencies in parallel
+        chroot "$CHROOT_DIR" apt-get install -f -y &
+        wait $!
+        log_success "V1.9-V2.0 packages installed successfully with parallel processing"
+    else
+        log_error "Failed to install V1.9-V2.0 packages"
+        return 1
+    fi
+
+    # Create universal command symlink
+    chroot "$CHROOT_DIR" ln -sf /usr/bin/synos-universal /usr/bin/synos || true
+    log_success "Universal command symlink created: /usr/bin/synos"
+
+    # Install AI runtime libraries in parallel with other operations
+    log_info "Installing AI runtime libraries in background..."
+    if [[ -x "$PROJECT_ROOT/scripts/02-build/core/install-ai-runtime-libraries.sh" ]]; then
+        "$PROJECT_ROOT/scripts/02-build/core/install-ai-runtime-libraries.sh" "$CHROOT_DIR" "$LOG_FILE" &
+        local ai_install_pid=$!
+        log_debug "AI runtime installation started (PID: $ai_install_pid)"
+    else
+        log_warning "AI runtime installer not found, skipping AI libraries"
+    fi
 
     # Copy ALFRED AI daemon
     if [[ -f "$PROJECT_ROOT/src/ai/alfred/alfred-daemon.py" ]]; then
@@ -762,10 +830,66 @@ RestartSec=10
 WantedBy=multi-user.target
 EOF
 
+    # Create CTF platform service
+    cat > "$CHROOT_DIR/etc/systemd/system/synos-ctf.service" << 'EOF'
+[Unit]
+Description=SynOS CTF Training Platform
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/synos-ctf demo
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    # Create desktop launchers
+    mkdir -p "$CHROOT_DIR/usr/share/applications"
+
+    cat > "$CHROOT_DIR/usr/share/applications/synos-universal.desktop" << 'EOF'
+[Desktop Entry]
+Name=SynOS Universal Command
+Comment=AI-powered security tool orchestrator
+Exec=gnome-terminal -- synos-universal help
+Icon=synos-security
+Terminal=false
+Type=Application
+Categories=Security;System;
+EOF
+
+    cat > "$CHROOT_DIR/usr/share/applications/synos-ctf.desktop" << 'EOF'
+[Desktop Entry]
+Name=SynOS CTF Platform
+Comment=Capture The Flag training platform
+Exec=gnome-terminal -- synos-ctf list
+Icon=synos-education
+Terminal=false
+Type=Application
+Categories=Education;Security;
+EOF
+
+    cat > "$CHROOT_DIR/usr/share/applications/synos-quantum.desktop" << 'EOF'
+[Desktop Entry]
+Name=SynOS Quantum Consciousness
+Comment=Quantum-enhanced AI security operations
+Exec=gnome-terminal -- synos-quantum status
+Icon=synos-quantum
+Terminal=false
+Type=Application
+Categories=Science;Security;
+EOF
+
     # Enable services in chroot
     chroot "$CHROOT_DIR" systemctl enable synos-consciousness.service 2>/dev/null || true
+    chroot "$CHROOT_DIR" systemctl enable synos-ctf.service 2>/dev/null || true
 
-    log_success "SynOS components installed"
+    # Clean up temporary files
+    rm -f "$CHROOT_DIR/tmp/synos-"*.deb
+
+    log_success "SynOS V1.9-V2.0 components installed successfully"
 
     save_checkpoint "synos_components"
     STAGE_TIMES["synos_components"]=$(($(date +%s) - stage_start))
@@ -828,10 +952,43 @@ stage_security_tools() {
         [[ "$skip" == false ]] && filtered_tools+=("$tool")
     done
 
-    log_info "Installing ${#filtered_tools[@]} security tools..."
+    log_info "Installing ${#filtered_tools[@]} security tools with parallel processing..."
 
-    if chroot "$CHROOT_DIR" apt install -y --no-install-recommends "${filtered_tools[@]}" 2>&1 | tee -a "$LOG_FILE"; then
-        log_success "Security tools installed"
+    # Split tools into batches for parallel installation
+    local batch_size=5
+    local tool_batches=()
+    local current_batch=()
+
+    for tool in "${filtered_tools[@]}"; do
+        current_batch+=("$tool")
+        if [[ ${#current_batch[@]} -ge $batch_size ]]; then
+            tool_batches+=("${current_batch[*]}")
+            current_batch=()
+        fi
+    done
+
+    # Add remaining tools
+    if [[ ${#current_batch[@]} -gt 0 ]]; then
+        tool_batches+=("${current_batch[*]}")
+    fi
+
+    # Install in parallel batches
+    local batch_jobs=()
+    for batch in "${tool_batches[@]}"; do
+        eval "chroot \"$CHROOT_DIR\" apt install -y --no-install-recommends $batch" &
+        batch_jobs+=($!)
+    done
+
+    # Wait for all batches to complete
+    local batch_failed=false
+    for job_pid in "${batch_jobs[@]}"; do
+        if ! wait "$job_pid" 2>/dev/null; then
+            batch_failed=true
+        fi
+    done
+
+    if [[ "$batch_failed" == false ]]; then
+        log_success "Security tools installed with parallel processing"
     else
         log_warning "Some security tools may have failed, continuing..."
     fi

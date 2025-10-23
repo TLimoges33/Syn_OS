@@ -1,0 +1,53 @@
+[package]
+name = "synos-universal-command"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+description = "SynOS Universal Command Orchestrator - AI-powered tool selection and automation"
+
+[lib]
+name = "synos_universal_command"
+path = "mod.rs"
+
+[[bin]]
+name = "synos-universal"
+path = "main.rs"
+
+[package.metadata.deb]
+maintainer = "SynOS Team <team@synos.dev>"
+copyright = "2025, SynOS Team <team@synos.dev>"
+license-file = ["../../LICENSE", "4"]
+extended-description = """\
+Universal command orchestrator for SynOS with AI-powered tool selection.
+Provides unified interface for security tools with intelligent automation."""
+depends = "$auto"
+section = "utils"
+priority = "optional"
+assets = [
+  [
+    "target/release/synos-universal",
+    "usr/bin/",
+    "755",
+  ],
+  [
+    "README.md",
+    "usr/share/doc/synos-universal-command/",
+    "644",
+  ],
+]
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { version = "1", features = ["sync", "macros", "process", "time"] }
+chrono = { version = "0.4", features = ["serde", "clock"] }
+uuid = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["full", "test-util"] }
+
+[features]
+default = ["std"]
+std = []

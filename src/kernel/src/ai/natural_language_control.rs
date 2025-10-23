@@ -180,6 +180,12 @@ pub struct VoiceConfig {
     pub noise_reduction: bool,
     pub speaker_identification: bool,
     pub audio_feedback: bool,
+    pub wake_word_detection: bool,
+    pub continuous_listening: bool,
+    pub voice_speed: f32,
+    pub voice_pitch: f32,
+    pub audio_sample_rate: u32,
+    pub audio_channels: u16,
 }
 
 /// Text processing configuration
@@ -190,6 +196,11 @@ pub struct TextConfig {
     pub context_aware_parsing: bool,
     pub command_history_size: u32,
     pub suggestion_count: u32,
+    pub spell_check: bool,
+    pub grammar_correction: bool,
+    pub multi_language_support: bool,
+    pub predictive_text: bool,
+    pub keyboard_shortcuts: bool,
 }
 
 /// Natural Language Processing pipeline
@@ -288,11 +299,26 @@ impl NLProcessor {
                     "list files in {directory}".to_string(),
                     "show me files in {directory}".to_string(),
                     "what files are in {directory}".to_string(),
+                    "ls {directory}".to_string(),
+                    "directory listing for {directory}".to_string(),
                 ],
                 required_entities: vec![EntityType::Directory],
                 optional_entities: Vec::new(),
                 safety_level: SafetyLevel::Safe,
-                system_command: "ls {directory}".to_string(),
+                system_command: "ls -la {directory}".to_string(),
+            },
+            CommandTemplate {
+                template_id: "create_file".to_string(),
+                intent_type: CommandType::FileManagement,
+                patterns: vec![
+                    "create file {filename}".to_string(),
+                    "make a new file called {filename}".to_string(),
+                    "touch {filename}".to_string(),
+                ],
+                required_entities: vec![EntityType::FileName],
+                optional_entities: Vec::new(),
+                safety_level: SafetyLevel::Low,
+                system_command: "touch {filename}".to_string(),
             },
             CommandTemplate {
                 template_id: "kill_process".to_string(),
@@ -301,11 +327,13 @@ impl NLProcessor {
                     "kill process {process}".to_string(),
                     "stop {process}".to_string(),
                     "terminate {process}".to_string(),
+                    "kill {process}".to_string(),
+                    "end process {process}".to_string(),
                 ],
                 required_entities: vec![EntityType::ProcessName],
                 optional_entities: Vec::new(),
                 safety_level: SafetyLevel::High,
-                system_command: "pkill {process}".to_string(),
+                system_command: "pkill -f {process}".to_string(),
             },
             CommandTemplate {
                 template_id: "start_service".to_string(),
@@ -314,11 +342,27 @@ impl NLProcessor {
                     "start {service} service".to_string(),
                     "enable {service}".to_string(),
                     "turn on {service}".to_string(),
+                    "activate {service}".to_string(),
+                    "launch {service} service".to_string(),
                 ],
                 required_entities: vec![EntityType::ServiceName],
                 optional_entities: Vec::new(),
                 safety_level: SafetyLevel::Medium,
                 system_command: "systemctl start {service}".to_string(),
+            },
+            CommandTemplate {
+                template_id: "stop_service".to_string(),
+                intent_type: CommandType::SystemControl,
+                patterns: vec![
+                    "stop {service} service".to_string(),
+                    "disable {service}".to_string(),
+                    "turn off {service}".to_string(),
+                    "deactivate {service}".to_string(),
+                ],
+                required_entities: vec![EntityType::ServiceName],
+                optional_entities: Vec::new(),
+                safety_level: SafetyLevel::Medium,
+                system_command: "systemctl stop {service}".to_string(),
             },
             CommandTemplate {
                 template_id: "system_status".to_string(),
@@ -327,11 +371,27 @@ impl NLProcessor {
                     "show system status".to_string(),
                     "what's the system status".to_string(),
                     "check system health".to_string(),
+                    "system status".to_string(),
+                    "how is the system doing".to_string(),
                 ],
                 required_entities: Vec::new(),
                 optional_entities: Vec::new(),
                 safety_level: SafetyLevel::Safe,
-                system_command: "systemctl status".to_string(),
+                system_command: "systemctl status && uptime && df -h".to_string(),
+            },
+            CommandTemplate {
+                template_id: "network_status".to_string(),
+                intent_type: CommandType::SystemQuery,
+                patterns: vec![
+                    "show network status".to_string(),
+                    "network information".to_string(),
+                    "what's my IP address".to_string(),
+                    "network config".to_string(),
+                ],
+                required_entities: Vec::new(),
+                optional_entities: Vec::new(),
+                safety_level: SafetyLevel::Safe,
+                system_command: "ip addr show && ping -c 1 8.8.8.8".to_string(),
             },
             CommandTemplate {
                 template_id: "reboot_system".to_string(),
@@ -340,11 +400,40 @@ impl NLProcessor {
                     "reboot system".to_string(),
                     "restart computer".to_string(),
                     "reboot now".to_string(),
+                    "restart the system".to_string(),
                 ],
                 required_entities: Vec::new(),
                 optional_entities: Vec::new(),
                 safety_level: SafetyLevel::Critical,
                 system_command: "reboot".to_string(),
+            },
+            CommandTemplate {
+                template_id: "shutdown_system".to_string(),
+                intent_type: CommandType::SystemControl,
+                patterns: vec![
+                    "shutdown system".to_string(),
+                    "power off".to_string(),
+                    "turn off computer".to_string(),
+                    "shutdown now".to_string(),
+                ],
+                required_entities: Vec::new(),
+                optional_entities: Vec::new(),
+                safety_level: SafetyLevel::Critical,
+                system_command: "shutdown -h now".to_string(),
+            },
+            CommandTemplate {
+                template_id: "launch_application".to_string(),
+                intent_type: CommandType::ApplicationLaunch,
+                patterns: vec![
+                    "launch {app}".to_string(),
+                    "open {app}".to_string(),
+                    "start {app}".to_string(),
+                    "run {app}".to_string(),
+                ],
+                required_entities: vec![EntityType::Command],
+                optional_entities: Vec::new(),
+                safety_level: SafetyLevel::Low,
+                system_command: "{app}".to_string(),
             },
         ];
 
@@ -373,9 +462,43 @@ impl NLProcessor {
                 action: SafetyAction::Block,
             },
             SafetyRule {
+                rule_id: "block_system_files_root".to_string(),
+                description: "Block operations on root system directories".to_string(),
+                conditions: vec![
+                    SafetyCondition::CommandType(CommandType::FileManagement),
+                    SafetyCondition::EntityValue(EntityType::Directory, "/".to_string()),
+                ],
+                action: SafetyAction::Block,
+            },
+            SafetyRule {
                 rule_id: "require_elevation_for_services".to_string(),
                 description: "Require elevation for service management".to_string(),
                 conditions: vec![SafetyCondition::CommandType(CommandType::SystemControl)],
+                action: SafetyAction::RequireElevation,
+            },
+            SafetyRule {
+                rule_id: "block_dangerous_commands".to_string(),
+                description: "Block known dangerous command patterns".to_string(),
+                conditions: vec![
+                    SafetyCondition::EntityValue(EntityType::Command, "rm -rf /".to_string()),
+                    SafetyCondition::EntityValue(EntityType::Command, "dd if=/dev/zero".to_string()),
+                    SafetyCondition::EntityValue(EntityType::Command, "mkfs".to_string()),
+                ],
+                action: SafetyAction::Block,
+            },
+            SafetyRule {
+                rule_id: "warn_on_high_risk".to_string(),
+                description: "Warn on high-risk operations".to_string(),
+                conditions: vec![SafetyCondition::SafetyLevel(SafetyLevel::High)],
+                action: SafetyAction::RequireConfirmation,
+            },
+            SafetyRule {
+                rule_id: "limit_file_operations".to_string(),
+                description: "Limit file operations to user directories".to_string(),
+                conditions: vec![
+                    SafetyCondition::CommandType(CommandType::FileManagement),
+                    SafetyCondition::SafetyLevel(SafetyLevel::Medium),
+                ],
                 action: SafetyAction::RequireElevation,
             },
         ];
@@ -837,6 +960,12 @@ impl NaturalLanguageControlSystem {
             noise_reduction: true,
             speaker_identification: false,
             audio_feedback: true,
+            wake_word_detection: true,
+            continuous_listening: false,
+            voice_speed: 1.0,
+            voice_pitch: 1.0,
+            audio_sample_rate: 16000,
+            audio_channels: 1,
         };
 
         let text_config = TextConfig {
@@ -845,6 +974,11 @@ impl NaturalLanguageControlSystem {
             context_aware_parsing: true,
             command_history_size: 100,
             suggestion_count: 5,
+            spell_check: true,
+            grammar_correction: true,
+            multi_language_support: true,
+            predictive_text: true,
+            keyboard_shortcuts: true,
         };
 
         Self {

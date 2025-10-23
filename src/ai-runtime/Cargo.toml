@@ -22,3 +22,6 @@ getrandom = { workspace = true, features = ["custom"] }
 [features]
 default = []
 std = []
+tensorflow-lite = ["std"]  # TensorFlow Lite FFI requires std
+onnx-runtime = ["std"]     # ONNX Runtime FFI requires std
+pytorch = ["std"]          # PyTorch LibTorch FFI requires std

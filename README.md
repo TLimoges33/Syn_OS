@@ -25,12 +25,12 @@
 
 **SynOS** is the world's first **AI-consciousness enhanced cybersecurity Linux distribution** that combines:
 
--    **Neural Darwinism AI** - Adaptive learning consciousness at the OS level
+-   **Neural Darwinism AI** - Adaptive learning consciousness at the OS level
 -   **500+ Security Tools** - ParrotOS + Kali + BlackArch + custom tools
--    **Offensive Security** - Professional red team & penetration testing platform
--    **MSSP Ready** - Enterprise-grade security consulting operations
--    **Educational** - Perfect for SNHU cybersecurity studies & training
--    **Custom Rust Kernel** - Bare-metal x86_64 with security focus
+-   **Offensive Security** - Professional red team & penetration testing platform
+-   **MSSP Ready** - Enterprise-grade security consulting operations
+-   **Educational** - Perfect for SNHU cybersecurity studies & training
+-   **Custom Rust Kernel** - Bare-metal x86_64 with security focus
 
 <details>
 <summary><b> What Makes SynOS Different?</b></summary>
@@ -57,9 +57,9 @@
 
 ---
 
-##  Key Features
+## Key Features
 
-###  Revolutionary Red Phoenix Branding
+### Revolutionary Red Phoenix Branding
 
 -   Professional cyberpunk red/black aesthetic
 -   Custom Plymouth boot theme
@@ -68,7 +68,7 @@
 -   Circuit pattern wallpapers
 -   Tactical command center feel
 
-###  AI Neural Darwinism Engine
+### AI Neural Darwinism Engine
 
 -   Consciousness-aware scheduling
 -   Pattern recognition & learning
@@ -77,7 +77,7 @@
 -   Real-time threat intelligence
 -   Automated playbook execution
 
-###  Comprehensive Security Arsenal
+### Comprehensive Security Arsenal
 
 -   **500+ Tools** from multiple distributions
 -   Metasploit Framework
@@ -87,7 +87,7 @@
 -   Nmap & reconnaissance suite
 -   Custom SynOS security tools
 
-###  Advanced Architecture
+### Advanced Architecture
 
 -   Custom Rust kernel (bare-metal x86_64)
 -   XFCE desktop with AI integration
@@ -96,7 +96,7 @@
 -   Purple team automation (MITRE ATT&CK)
 -   Container security (K8s, Docker hardening)
 
-###  Educational Framework
+### Educational Framework
 
 -   Progress tracking & analytics
 -   Safe sandboxed environments
@@ -107,7 +107,7 @@
 
 ---
 
-##  Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -166,7 +166,7 @@ qemu-system-x86_64 -bios /usr/share/ovmf/OVMF.fd \
 
 ---
 
-##  Download
+## Download
 
 ### Latest Release: v1.0.0 "Red Phoenix" (Coming Soon)
 
@@ -191,24 +191,24 @@ qemu-system-x86_64 -bios /usr/share/ovmf/OVMF.fd \
 
 ### Getting Started
 
--    [Quick Start Guide](docs/01-getting-started/QUICK_START.md)
--    [Installation Guide](docs/01-getting-started/INSTALLATION.md)
--    [VM Testing Guide](docs/02-user-guide/vm-testing.md)
--    [First Steps After Installation](docs/01-getting-started/FIRST_STEPS.md)
+-   [Quick Start Guide](docs/01-getting-started/QUICK_START.md)
+-   [Installation Guide](docs/01-getting-started/INSTALLATION.md)
+-   [VM Testing Guide](docs/02-user-guide/vm-testing.md)
+-   [First Steps After Installation](docs/01-getting-started/FIRST_STEPS.md)
 
 ### User Guides
 
--    [Your First Security Scan](docs/02-user-guide/tutorials/first-security-scan.md)
--    [Using AI Features](docs/02-user-guide/tutorials/using-ai-features.md)
--    [Customizing Desktop](docs/02-user-guide/tutorials/customizing-desktop.md)
--    [Security Tools Reference](docs/02-user-guide/reference/security-tools.md)
+-   [Your First Security Scan](docs/02-user-guide/tutorials/first-security-scan.md)
+-   [Using AI Features](docs/02-user-guide/tutorials/using-ai-features.md)
+-   [Customizing Desktop](docs/02-user-guide/tutorials/customizing-desktop.md)
+-   [Security Tools Reference](docs/02-user-guide/reference/security-tools.md)
 
 ### Developer Documentation
 
--    [Architecture Overview](docs/04-development/ARCHITECTURE.md)
--    [Building from Source](docs/03-build/ultimate-build-guide.md)
--    [Contributing Guide](CONTRIBUTING.md)
--    [AI Agent Reference](CLAUDE.md) (789 lines)
+-   [Architecture Overview](docs/04-development/ARCHITECTURE.md)
+-   [Building from Source](docs/03-build/ultimate-build-guide.md)
+-   [Contributing Guide](CONTRIBUTING.md)
+-   [AI Agent Reference](CLAUDE.md) (789 lines)
 
 ### Project Status
 
@@ -218,7 +218,7 @@ qemu-system-x86_64 -bios /usr/share/ovmf/OVMF.fd \
 
 ---
 
-##  Screenshots
+## Screenshots
 
 > Coming soon! Screenshots of desktop, terminal, and boot sequence.
 
@@ -300,7 +300,7 @@ cat docs/04-development/DEVELOPMENT_SETUP.md
 
 ---
 
-##  License
+## License
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
@@ -333,7 +333,7 @@ Special thanks to:
 
 ## Community
 
--   **Email:** mogeem33@gmail.com
+-   **Email:** <mogeem33@gmail.com>
 -   **Discord:** [Join Server](https://discord.gg/syn_os) (Coming soon)
 -   **Twitter:** [@SynOS_Official](https://twitter.com/syn_os) (Coming soon)
 -   **Blog:** [blog.synos.com](https://blog.syn_os.com) (Coming soon)

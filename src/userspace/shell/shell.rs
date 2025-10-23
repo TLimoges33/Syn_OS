@@ -141,6 +141,9 @@ pub struct SynShell {
     // Security context
     security_context: SecurityContext,
 
+    // V1.9: Universal Command Integration
+    universal_command: crate::universal_command_bridge::UniversalCommandBridge,
+
     // Configuration
     prompt: String,
     exit_requested: bool,
@@ -174,6 +177,7 @@ impl SynShell {
             environment,
             history: CommandHistory::new(),
             security_context,
+            universal_command: crate::universal_command_bridge::UniversalCommandBridge::new(),
             prompt: "synos$ ".to_string(),
             exit_requested: false,
         }
@@ -415,6 +419,27 @@ impl SynShell {
         Ok(ShellResult::Success(
             "LOG ANALYZE functionality not yet implemented".to_string(),
         ))
+    }
+
+    /// V1.9: Execute natural language command through Universal Command
+    pub fn execute_natural_language(&self, input: &str) -> Result<ShellResult, ShellError> {
+        // Parse the intent locally
+        let intent = self.universal_command.parse_intent(input)?;
+
+        // Get tool suggestions
+        let tools = self.universal_command.suggest_tools(&intent);
+
+        // Build response with suggested tools
+        let mut response = format!("Parsed Intent: {:?}\n", intent);
+        if !tools.is_empty() {
+            response.push_str("Suggested tools: ");
+            response.push_str(&tools.join(", "));
+            response.push_str("\n");
+        }
+
+        response.push_str("\nNote: Full universal command execution pending daemon integration\n");
+
+        Ok(ShellResult::Success(response))
     }
 
     /// Get current working directory

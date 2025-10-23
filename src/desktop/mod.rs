@@ -28,6 +28,8 @@ pub struct SynDesktopEnvironment {
     context_menu: ContextMenuSystem,
     hotkey_manager: HotkeyManager,
     accessibility: AccessibilityManager,
+    // V1.9: CTF Platform Integration
+    ctf_platform: ctf_platform_bridge::CTFPlatformUI,
     performance_monitor: PerformanceMonitor,
     consciousness_level: f32,
     educational_mode: bool,
@@ -396,6 +398,7 @@ impl SynDesktopEnvironment {
             context_menu: ContextMenuSystem::new(),
             hotkey_manager: HotkeyManager::new(),
             accessibility: AccessibilityManager::new(),
+            ctf_platform: ctf_platform_bridge::CTFPlatformUI::new(),
             performance_monitor: PerformanceMonitor::new(),
             consciousness_level: 0.5,
             educational_mode: true,
@@ -620,6 +623,26 @@ impl SynDesktopEnvironment {
 
         // Update usage statistics
         self.launcher.record_launch(&app)?;
+
+        Ok(())
+    }
+
+    /// V1.9: Access CTF Platform interface
+    pub fn get_ctf_platform(&mut self) -> &mut ctf_platform_bridge::CTFPlatformUI {
+        &mut self.ctf_platform
+    }
+
+    /// V1.9: Launch CTF challenge from desktop
+    pub fn launch_ctf_challenge(&mut self, challenge_id: u32) -> Result<(), DesktopError> {
+        // Select the challenge
+        self.ctf_platform.select_challenge(challenge_id);
+
+        // Launch the challenge
+        self.ctf_platform.launch_selected()
+            .map_err(|e| DesktopError::ComponentCommunicationFailed(e))?;
+
+        // Note: Notification would be shown here in full implementation
+        // self.notification_center.notify(...)
 
         Ok(())
     }
@@ -943,12 +966,15 @@ macro_rules! impl_desktop_component {
     ($name:ident) => {
         impl $name {
             pub fn new() -> Self {
-                Default::default()
+                Self::default()
             }
             pub fn initialize(&mut self) -> Result<(), DesktopError> {
+                // Initialize component with consciousness awareness
+                crate::println!("🖥️  Initializing {}", stringify!($name));
                 Ok(())
             }
             pub fn update(&mut self) -> Result<(), DesktopError> {
+                // Update component state
                 Ok(())
             }
             pub fn render(
@@ -957,17 +983,19 @@ macro_rules! impl_desktop_component {
                 _width: u32,
                 _height: u32,
             ) -> Result<(), DesktopError> {
+                // Render component to framebuffer
                 Ok(())
             }
             pub fn handle_input(&mut self, _event: &InputEvent) -> Result<bool, DesktopError> {
+                // Handle input events
                 Ok(false)
             }
         }
 
         impl Default for $name {
             fn default() -> Self {
-                // Placeholder implementation
-                unsafe { core::mem::zeroed() }
+                // Safe default implementation
+                Self {}
             }
         }
     };
@@ -988,157 +1016,1060 @@ impl_desktop_component!(HotkeyManager);
 impl_desktop_component!(AccessibilityManager);
 impl_desktop_component!(PerformanceMonitor);
 
-// Stub types for complex components
-#[derive(Default)]
-pub struct LayoutEngine;
+// Desktop component implementations with proper structure
+pub struct LayoutEngine {
+    pub layout_mode: LayoutMode,
+    pub ai_optimization: bool,
+}
+
 impl LayoutEngine {
     pub fn new() -> Self {
-        Self::default()
+        Self {
+            layout_mode: LayoutMode::Tiled,
+            ai_optimization: true,
+        }
     }
 }
 
-#[derive(Default)]
-pub struct AnimationSystem;
+impl Default for LayoutEngine {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+pub struct AnimationSystem {
+    pub enabled: bool,
+    pub animation_speed: f32,
+}
+
 impl AnimationSystem {
     pub fn new() -> Self {
-        Self::default()
+        Self {
+            enabled: true,
+            animation_speed: 1.0,
+        }
     }
 }
 
-#[derive(Default)]
-pub struct SnappingSystem;
+impl Default for AnimationSystem {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+pub struct SnappingSystem {
+    pub enabled: bool,
+    pub snap_threshold: u32,
+}
+
 impl SnappingSystem {
     pub fn new() -> Self {
-        Self::default()
+        Self {
+            enabled: true,
+            snap_threshold: 10,
+        }
     }
 }
 
-#[derive(Default)]
-pub struct TransparencyEngine;
+impl Default for SnappingSystem {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+pub struct TransparencyEngine {
+    pub enabled: bool,
+    pub opacity_level: f32,
+}
+
 impl TransparencyEngine {
     pub fn new() -> Self {
-        Self::default()
+        Self {
+            enabled: true,
+            opacity_level: 0.9,
+        }
     }
 }
 
-#[derive(Default)]
-pub struct VirtualDesktop;
-#[derive(Default)]
-pub struct TaskbarItem;
-#[derive(Default)]
-pub struct SystemTrayArea;
-#[derive(Default)]
-pub struct StartMenu;
-#[derive(Default)]
-pub struct SmartSearchBar;
-#[derive(Default)]
-pub struct AppRecommendation;
-#[derive(Default)]
-pub struct EducationalTip;
-#[derive(Default)]
-pub struct QuickLaunchArea;
-#[derive(Default)]
-pub struct ClockWidget;
-#[derive(Default)]
-pub struct ResourceWidget;
-#[derive(Default)]
-pub struct TrayIcon;
-#[derive(Default)]
-pub struct NotificationArea;
-#[derive(Default)]
-pub struct StatusIndicator;
-#[derive(Default)]
-pub struct QuickSettingsPanel;
-#[derive(Default)]
-pub struct Notification;
-#[derive(Default)]
-pub struct NotificationHistory;
-// NotificationAction defined as enum below
-#[derive(Default)]
-pub struct Wallpaper;
-#[derive(Default)]
-pub struct EducationalWallpaper;
-#[derive(Default)]
-pub struct Application;
-#[derive(Default)]
-pub struct AppPrediction;
-#[derive(Default)]
-pub struct AppSearchEngine;
-#[derive(Default)]
-pub struct CategoryBrowser;
+impl Default for TransparencyEngine {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+// Enhanced component structures
+pub struct VirtualDesktop {
+    pub id: u32,
+    pub name: String,
+    pub windows: Vec<u32>,
+}
+
+impl Default for VirtualDesktop {
+    fn default() -> Self {
+        Self {
+            id: 1,
+            name: "Desktop 1".into(),
+            windows: Vec::new(),
+        }
+    }
+}
+
+pub struct TaskbarItem {
+    pub app_id: String,
+    pub title: String,
+    pub icon: Option<Icon>,
+    pub window_count: u32,
+}
+
+impl Default for TaskbarItem {
+    fn default() -> Self {
+        Self {
+            app_id: "unknown".into(),
+            title: "Application".into(),
+            icon: None,
+            window_count: 1,
+        }
+    }
+}
+
+pub struct SystemTrayArea {
+    pub icons: Vec<TrayIcon>,
+    pub max_icons: usize,
+}
+
+impl Default for SystemTrayArea {
+    fn default() -> Self {
+        Self {
+            icons: Vec::new(),
+            max_icons: 10,
+        }
+    }
+}
+
+pub struct StartMenu {
+    pub visible: bool,
+    pub categories: Vec<String>,
+    pub recent_apps: Vec<String>,
+}
+
+impl Default for StartMenu {
+    fn default() -> Self {
+        Self {
+            visible: false,
+            categories: vec!["System".into(), "Security".into(), "Education".into()],
+            recent_apps: Vec::new(),
+        }
+    }
+}
+
+pub struct SmartSearchBar {
+    pub query: String,
+    pub suggestions: Vec<String>,
+    pub ai_enabled: bool,
+}
+
+impl Default for SmartSearchBar {
+    fn default() -> Self {
+        Self {
+            query: String::new(),
+            suggestions: Vec::new(),
+            ai_enabled: true,
+        }
+    }
+}
+
+pub struct AppRecommendation {
+    pub app_name: String,
+    pub confidence: f32,
+    pub reason: String,
+}
+
+impl Default for AppRecommendation {
+    fn default() -> Self {
+        Self {
+            app_name: "nmap".into(),
+            confidence: 0.8,
+            reason: "Frequently used for network scanning".into(),
+        }
+    }
+}
+
+pub struct EducationalTip {
+    pub title: String,
+    pub content: String,
+    pub category: String,
+}
+
+impl Default for EducationalTip {
+    fn default() -> Self {
+        Self {
+            title: "Security Tip".into(),
+            content: "Always verify SSL certificates".into(),
+            category: "Security".into(),
+        }
+    }
+}
+
+pub struct QuickLaunchArea {
+    pub apps: Vec<String>,
+    pub max_apps: usize,
+}
+
+impl Default for QuickLaunchArea {
+    fn default() -> Self {
+        Self {
+            apps: vec!["terminal".into(), "nmap".into(), "wireshark".into()],
+            max_apps: 8,
+        }
+    }
+}
+
+pub struct ClockWidget {
+    pub format_24h: bool,
+    pub show_seconds: bool,
+    pub timezone: String,
+}
+
+impl Default for ClockWidget {
+    fn default() -> Self {
+        Self {
+            format_24h: true,
+            show_seconds: true,
+            timezone: "UTC".into(),
+        }
+    }
+}
+
+pub struct ResourceWidget {
+    pub show_cpu: bool,
+    pub show_memory: bool,
+    pub show_network: bool,
+    pub update_interval_ms: u64,
+}
+
+impl Default for ResourceWidget {
+    fn default() -> Self {
+        Self {
+            show_cpu: true,
+            show_memory: true,
+            show_network: true,
+            update_interval_ms: 1000,
+        }
+    }
+}
+
+pub struct TrayIcon {
+    pub app_name: String,
+    pub icon: Icon,
+    pub tooltip: String,
+}
+
+impl Default for TrayIcon {
+    fn default() -> Self {
+        Self {
+            app_name: "system".into(),
+            icon: Icon::default(),
+            tooltip: "System tray icon".into(),
+        }
+    }
+}
+
+pub struct NotificationArea {
+    pub notifications: Vec<Notification>,
+    pub max_visible: usize,
+}
+
+impl Default for NotificationArea {
+    fn default() -> Self {
+        Self {
+            notifications: Vec::new(),
+            max_visible: 5,
+        }
+    }
+}
+
+pub struct StatusIndicator {
+    pub name: String,
+    pub status: IndicatorStatus,
+    pub color: Color,
+}
+
+impl Default for StatusIndicator {
+    fn default() -> Self {
+        Self {
+            name: "System".into(),
+            status: IndicatorStatus::Normal,
+            color: Color { r: 0, g: 255, b: 0, a: 255 },
+        }
+    }
+}
+
+pub struct QuickSettingsPanel {
+    pub visible: bool,
+    pub settings: Vec<QuickSetting>,
+}
+
+impl Default for QuickSettingsPanel {
+    fn default() -> Self {
+        Self {
+            visible: false,
+            settings: vec![
+                QuickSetting { name: "WiFi".into(), enabled: true },
+                QuickSetting { name: "Bluetooth".into(), enabled: false },
+                QuickSetting { name: "AI Assistant".into(), enabled: true },
+            ],
+        }
+    }
+}
+
+pub struct Notification {
+    pub id: u32,
+    pub title: String,
+    pub message: String,
+    pub severity: NotificationSeverity,
+    pub timestamp: u64,
+}
+
+impl Default for Notification {
+    fn default() -> Self {
+        Self {
+            id: 1,
+            title: "System Notification".into(),
+            message: "Welcome to SynOS".into(),
+            severity: NotificationSeverity::Info,
+            timestamp: 0,
+        }
+    }
+}
+
+pub struct NotificationHistory {
+    pub notifications: Vec<Notification>,
+    pub max_history: usize,
+}
+
+impl Default for NotificationHistory {
+    fn default() -> Self {
+        Self {
+            notifications: Vec::new(),
+            max_history: 100,
+        }
+    }
+}
+
+pub struct Wallpaper {
+    pub path: String,
+    pub style: WallpaperStyle,
+    pub dynamic: bool,
+}
+
+impl Default for Wallpaper {
+    fn default() -> Self {
+        Self {
+            path: "/usr/share/synos/wallpapers/default.jpg".into(),
+            style: WallpaperStyle::Stretch,
+            dynamic: false,
+        }
+    }
+}
+
+pub struct EducationalWallpaper {
+    pub topic: String,
+    pub difficulty: String,
+    pub interactive: bool,
+}
+
+impl Default for EducationalWallpaper {
+    fn default() -> Self {
+        Self {
+            topic: "Network Security".into(),
+            difficulty: "Beginner".into(),
+            interactive: true,
+        }
+    }
+}
+
+pub struct Application {
+    pub name: String,
+    pub executable: String,
+    pub category: String,
+    pub educational_value: f32,
+}
+
+impl Default for Application {
+    fn default() -> Self {
+        Self {
+            name: "Terminal".into(),
+            executable: "/usr/bin/gnome-terminal".into(),
+            category: "System".into(),
+            educational_value: 0.8,
+        }
+    }
+}
+
+pub struct AppPrediction {
+    pub app_name: String,
+    pub probability: f32,
+    pub context: String,
+}
+
+impl Default for AppPrediction {
+    fn default() -> Self {
+        Self {
+            app_name: "nmap".into(),
+            probability: 0.7,
+            context: "Network scanning context detected".into(),
+        }
+    }
+}
+
+pub struct AppSearchEngine {
+    pub indexed_apps: Vec<Application>,
+    pub search_algorithm: SearchAlgorithm,
+}
+
+impl Default for AppSearchEngine {
+    fn default() -> Self {
+        Self {
+            indexed_apps: Vec::new(),
+            search_algorithm: SearchAlgorithm::Fuzzy,
+        }
+    }
+}
+
+pub struct CategoryBrowser {
+    pub categories: Vec<AppCategory>,
+    pub current_category: String,
+}
+
+impl Default for CategoryBrowser {
+    fn default() -> Self {
+        Self {
+            categories: vec![
+                AppCategory { name: "Security".into(), apps: Vec::new() },
+                AppCategory { name: "Development".into(), apps: Vec::new() },
+                AppCategory { name: "Education".into(), apps: Vec::new() },
+            ],
+            current_category: "Security".into(),
+        }
+    }
+}
 
 #[derive(Default, Clone)]
 pub struct EducationalApp {
     pub name: String,
+    pub skill_level: String,
+    pub learning_objectives: Vec<String>,
 }
 
-#[derive(Default)]
-pub struct LaunchStatistics;
-#[derive(Default)]
-pub struct QuickAction;
-#[derive(Default)]
-pub struct UserBehaviorModel;
-#[derive(Default)]
-pub struct OptimizationEngine;
-#[derive(Default)]
-pub struct EducationalTutor;
-#[derive(Default)]
-pub struct ContextAwareness;
-#[derive(Default)]
-pub struct PredictiveAction;
+pub struct LaunchStatistics {
+    pub total_launches: u64,
+    pub app_usage: BTreeMap<String, u64>,
+    pub last_reset: u64,
+}
+
+impl Default for LaunchStatistics {
+    fn default() -> Self {
+        Self {
+            total_launches: 0,
+            app_usage: BTreeMap::new(),
+            last_reset: 0,
+        }
+    }
+}
+
+pub struct QuickAction {
+    pub name: String,
+    pub command: String,
+    pub hotkey: String,
+}
+
+impl Default for QuickAction {
+    fn default() -> Self {
+        Self {
+            name: "Quick Scan".into(),
+            command: "nmap -F localhost".into(),
+            hotkey: "Ctrl+Shift+S".into(),
+        }
+    }
+}
+
+pub struct UserBehaviorModel {
+    pub usage_patterns: BTreeMap<String, f32>,
+    pub preferences: BTreeMap<String, String>,
+    pub learning_enabled: bool,
+}
+
+impl Default for UserBehaviorModel {
+    fn default() -> Self {
+        Self {
+            usage_patterns: BTreeMap::new(),
+            preferences: BTreeMap::new(),
+            learning_enabled: true,
+        }
+    }
+}
+
+pub struct OptimizationEngine {
+    pub enabled: bool,
+    pub optimization_level: f32,
+    pub suggestions: Vec<String>,
+}
+
+impl Default for OptimizationEngine {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            optimization_level: 0.8,
+            suggestions: Vec::new(),
+        }
+    }
+}
+
+pub struct EducationalTutor {
+    pub active: bool,
+    pub current_lesson: Option<String>,
+    pub progress: f32,
+}
+
+impl Default for EducationalTutor {
+    fn default() -> Self {
+        Self {
+            active: false,
+            current_lesson: None,
+            progress: 0.0,
+        }
+    }
+}
+
+pub struct ContextAwareness {
+    pub current_context: String,
+    pub confidence: f32,
+    pub context_history: Vec<String>,
+}
+
+impl Default for ContextAwareness {
+    fn default() -> Self {
+        Self {
+            current_context: "Desktop".into(),
+            confidence: 0.9,
+            context_history: Vec::new(),
+        }
+    }
+}
+
+pub struct PredictiveAction {
+    pub action: String,
+    pub probability: f32,
+    pub trigger_condition: String,
+}
+
+impl Default for PredictiveAction {
+    fn default() -> Self {
+        Self {
+            action: "Launch Terminal".into(),
+            probability: 0.6,
+            trigger_condition: "User opens file manager".into(),
+        }
+    }
+}
 
 #[derive(Default, Clone)]
 pub struct AISuggestion {
     pub suggestion_type: OptimizationType,
+    pub description: String,
+    pub confidence: f32,
 }
 
 pub struct OptimizationSuggestion {
     pub suggestion_type: String,
+    pub impact: f32,
+    pub implementation_cost: u32,
 }
-#[derive(Default)]
-pub struct Tutorial;
-#[derive(Default)]
-pub struct SkillAssessment;
-#[derive(Default)]
-pub struct ProgressTracker;
-#[derive(Default)]
-pub struct InteractiveGuide;
-#[derive(Default)]
-pub struct LearningObjective;
-#[derive(Default)]
-pub struct GamificationSystem;
-#[derive(Default)]
-pub struct AchievementSystem;
-#[derive(Default)]
-pub struct PeerLearningSystem;
-#[derive(Default)]
-pub struct Theme;
-#[derive(Default)]
-pub struct EducationalTheme;
-#[derive(Default)]
-pub struct AccessibilityTheme;
-#[derive(Default)]
-pub struct PerformanceTheme;
-#[derive(Default)]
-pub struct CustomTheme;
-#[derive(Default)]
-pub struct TransitionSystem;
-#[derive(Default)]
-pub struct Workspace;
-#[derive(Default)]
-pub struct WorkspaceSwitching;
-#[derive(Default)]
-pub struct WorkspacePreviews;
-#[derive(Default)]
-pub struct CrossWorkspaceOps;
-#[derive(Default)]
-pub struct ContextMenu;
-#[derive(Default)]
-pub struct Hotkey;
-#[derive(Default)]
-pub struct Icon;
-#[derive(Default)]
-pub struct EducationalContext;
+
+impl Default for OptimizationSuggestion {
+    fn default() -> Self {
+        Self {
+            suggestion_type: "Window Layout".into(),
+            impact: 0.7,
+            implementation_cost: 10,
+        }
+    }
+}
+
+// Educational components
+pub struct Tutorial {
+    pub id: String,
+    pub title: String,
+    pub steps: Vec<TutorialStep>,
+    pub completed: bool,
+}
+
+impl Default for Tutorial {
+    fn default() -> Self {
+        Self {
+            id: "intro_nmap".into(),
+            title: "Introduction to Nmap".into(),
+            steps: Vec::new(),
+            completed: false,
+        }
+    }
+}
+
+pub struct SkillAssessment {
+    pub skill_areas: Vec<SkillArea>,
+    pub overall_score: f32,
+    pub last_assessment: u64,
+}
+
+impl Default for SkillAssessment {
+    fn default() -> Self {
+        Self {
+            skill_areas: Vec::new(),
+            overall_score: 0.0,
+            last_assessment: 0,
+        }
+    }
+}
+
+pub struct ProgressTracker {
+    pub completed_challenges: Vec<String>,
+    pub current_streak: u32,
+    pub total_points: u32,
+}
+
+impl Default for ProgressTracker {
+    fn default() -> Self {
+        Self {
+            completed_challenges: Vec::new(),
+            current_streak: 0,
+            total_points: 0,
+        }
+    }
+}
+
+pub struct InteractiveGuide {
+    pub active: bool,
+    pub current_step: usize,
+    pub total_steps: usize,
+}
+
+impl Default for InteractiveGuide {
+    fn default() -> Self {
+        Self {
+            active: false,
+            current_step: 0,
+            total_steps: 0,
+        }
+    }
+}
+
+pub struct LearningObjective {
+    pub objective: String,
+    pub progress: f32,
+    pub target_date: u64,
+}
+
+impl Default for LearningObjective {
+    fn default() -> Self {
+        Self {
+            objective: "Master network scanning".into(),
+            progress: 0.0,
+            target_date: 0,
+        }
+    }
+}
+
+pub struct GamificationSystem {
+    pub enabled: bool,
+    pub current_level: u32,
+    pub experience_points: u64,
+}
+
+impl Default for GamificationSystem {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            current_level: 1,
+            experience_points: 0,
+        }
+    }
+}
+
+pub struct AchievementSystem {
+    pub unlocked_achievements: Vec<Achievement>,
+    pub total_achievements: u32,
+}
+
+impl Default for AchievementSystem {
+    fn default() -> Self {
+        Self {
+            unlocked_achievements: Vec::new(),
+            total_achievements: 50,
+        }
+    }
+}
+
+pub struct PeerLearningSystem {
+    pub enabled: bool,
+    pub connected_peers: u32,
+    pub shared_challenges: Vec<String>,
+}
+
+impl Default for PeerLearningSystem {
+    fn default() -> Self {
+        Self {
+            enabled: false,
+            connected_peers: 0,
+            shared_challenges: Vec::new(),
+        }
+    }
+}
+
+// Theme system components
+pub struct Theme {
+    pub name: String,
+    pub colors: ThemeColors,
+    pub fonts: ThemeFonts,
+}
+
+impl Default for Theme {
+    fn default() -> Self {
+        Self {
+            name: "SynOS Dark".into(),
+            colors: ThemeColors::default(),
+            fonts: ThemeFonts::default(),
+        }
+    }
+}
+
+pub struct EducationalTheme {
+    pub base_theme: Theme,
+    pub educational_highlights: bool,
+    pub progress_indicators: bool,
+}
+
+impl Default for EducationalTheme {
+    fn default() -> Self {
+        Self {
+            base_theme: Theme::default(),
+            educational_highlights: true,
+            progress_indicators: true,
+        }
+    }
+}
+
+pub struct AccessibilityTheme {
+    pub high_contrast: bool,
+    pub large_text: bool,
+    pub screen_reader_friendly: bool,
+}
+
+impl Default for AccessibilityTheme {
+    fn default() -> Self {
+        Self {
+            high_contrast: false,
+            large_text: false,
+            screen_reader_friendly: true,
+        }
+    }
+}
+
+pub struct PerformanceTheme {
+    pub reduced_animations: bool,
+    pub simplified_effects: bool,
+    pub low_resource_mode: bool,
+}
+
+impl Default for PerformanceTheme {
+    fn default() -> Self {
+        Self {
+            reduced_animations: false,
+            simplified_effects: false,
+            low_resource_mode: false,
+        }
+    }
+}
+
+pub struct CustomTheme {
+    pub base_theme: Theme,
+    pub custom_colors: BTreeMap<String, Color>,
+    pub custom_fonts: BTreeMap<String, String>,
+}
+
+impl Default for CustomTheme {
+    fn default() -> Self {
+        Self {
+            base_theme: Theme::default(),
+            custom_colors: BTreeMap::new(),
+            custom_fonts: BTreeMap::new(),
+        }
+    }
+}
+
+pub struct TransitionSystem {
+    pub enabled: bool,
+    pub transition_speed: f32,
+    pub transition_type: TransitionType,
+}
+
+impl Default for TransitionSystem {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            transition_speed: 1.0,
+            transition_type: TransitionType::Fade,
+        }
+    }
+}
+
+// Workspace components
+pub struct Workspace {
+    pub id: u32,
+    pub name: String,
+    pub windows: Vec<u32>,
+    pub wallpaper: Option<String>,
+}
+
+impl Default for Workspace {
+    fn default() -> Self {
+        Self {
+            id: 1,
+            name: "Main".into(),
+            windows: Vec::new(),
+            wallpaper: None,
+        }
+    }
+}
+
+pub struct WorkspaceSwitching {
+    pub animation_enabled: bool,
+    pub switch_delay_ms: u64,
+    pub preview_enabled: bool,
+}
+
+impl Default for WorkspaceSwitching {
+    fn default() -> Self {
+        Self {
+            animation_enabled: true,
+            switch_delay_ms: 200,
+            preview_enabled: true,
+        }
+    }
+}
+
+pub struct WorkspacePreviews {
+    pub enabled: bool,
+    pub thumbnail_size: Size,
+    pub update_frequency: u64,
+}
+
+impl Default for WorkspacePreviews {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            thumbnail_size: Size { width: 200, height: 150 },
+            update_frequency: 500,
+        }
+    }
+}
+
+pub struct CrossWorkspaceOps {
+    pub drag_drop_enabled: bool,
+    pub window_sharing: bool,
+    pub clipboard_sync: bool,
+}
+
+impl Default for CrossWorkspaceOps {
+    fn default() -> Self {
+        Self {
+            drag_drop_enabled: true,
+            window_sharing: true,
+            clipboard_sync: true,
+        }
+    }
+}
+
+pub struct ContextMenu {
+    pub items: Vec<ContextMenuItem>,
+    pub visible: bool,
+    pub position: Position,
+}
+
+impl Default for ContextMenu {
+    fn default() -> Self {
+        Self {
+            items: Vec::new(),
+            visible: false,
+            position: Position { x: 0, y: 0 },
+        }
+    }
+}
+
+pub struct Hotkey {
+    pub key_combination: String,
+    pub action: String,
+    pub enabled: bool,
+}
+
+impl Default for Hotkey {
+    fn default() -> Self {
+        Self {
+            key_combination: "Ctrl+Alt+T".into(),
+            action: "Open Terminal".into(),
+            enabled: true,
+        }
+    }
+}
+
+pub struct Icon {
+    pub path: String,
+    pub size: IconSize,
+    pub cached: bool,
+}
+
+impl Default for Icon {
+    fn default() -> Self {
+        Self {
+            path: "/usr/share/icons/synos/default.png".into(),
+            size: IconSize::Medium,
+            cached: false,
+        }
+    }
+}
+
+pub struct EducationalContext {
+    pub current_lesson: Option<String>,
+    pub skill_level: String,
+    pub learning_mode: bool,
+}
+
+impl Default for EducationalContext {
+    fn default() -> Self {
+        Self {
+            current_lesson: None,
+            skill_level: "Beginner".into(),
+            learning_mode: true,
+        }
+    }
+}
+
+// Supporting enums and types
+#[derive(Debug, Clone, Copy)]
+pub enum LayoutMode {
+    Floating,
+    Tiled,
+    Stacked,
+    Tabbed,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum IndicatorStatus {
+    Normal,
+    Warning,
+    Error,
+    Disabled,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum NotificationSeverity {
+    Info,
+    Warning,
+    Error,
+    Critical,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum WallpaperStyle {
+    Stretch,
+    Fit,
+    Fill,
+    Center,
+    Tile,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum TransitionType {
+    Fade,
+    Slide,
+    Zoom,
+    Flip,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum SearchAlgorithm {
+    Exact,
+    Fuzzy,
+    Semantic,
+}
+
+pub struct QuickSetting {
+    pub name: String,
+    pub enabled: bool,
+}
+
+pub struct ContextMenuItem {
+    pub label: String,
+    pub action: String,
+    pub enabled: bool,
+}
+
+pub struct TutorialStep {
+    pub title: String,
+    pub description: String,
+    pub completed: bool,
+}
+
+pub struct SkillArea {
+    pub name: String,
+    pub level: f32,
+    pub experience: u64,
+}
+
+pub struct Achievement {
+    pub id: String,
+    pub name: String,
+    pub description: String,
+    pub unlocked_at: u64,
+}
+
+pub struct AppCategory {
+    pub name: String,
+    pub apps: Vec<Application>,
+}
+
+pub struct ThemeColors {
+    pub background: Color,
+    pub foreground: Color,
+    pub accent: Color,
+    pub highlight: Color,
+}
+
+impl Default for ThemeColors {
+    fn default() -> Self {
+        Self {
+            background: Color { r: 20, g: 20, b: 20, a: 255 },
+            foreground: Color { r: 255, g: 255, b: 255, a: 255 },
+            accent: Color { r: 255, g: 0, b: 0, a: 255 },
+            highlight: Color { r: 255, g: 100, b: 100, a: 255 },
+        }
+    }
+}
+
+pub struct ThemeFonts {
+    pub system_font: String,
+    pub monospace_font: String,
+    pub ui_font_size: u32,
+}
+
+impl Default for ThemeFonts {
+    fn default() -> Self {
+        Self {
+            system_font: "Ubuntu".into(),
+            monospace_font: "Ubuntu Mono".into(),
+            ui_font_size: 12,
+        }
+    }
+}
 impl Default for OptimizationType {
     fn default() -> Self {
         OptimizationType::WindowLayout
@@ -1907,6 +2838,10 @@ pub fn disable_desktop_education() -> Result<(), DesktopError> {
     }
 }
 
+// V1.9: CTF Platform Integration
+pub mod ctf_platform_bridge;
+pub use ctf_platform_bridge::{CTFPlatformUI, ChallengeInfo, ChallengeDifficulty, ChallengeCategory};
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1959,9 +2894,9 @@ mod tests {
     fn test_theme_application() {
         let mut desktop = DesktopEnvironment::new();
         let mut theme = DesktopTheme::default();
-        theme.primary_color = 0xFF0000; // Red
+        theme.accent_color = 0xFF0000; // Red
 
         assert!(desktop.apply_theme(theme.clone()).is_ok());
-        assert_eq!(desktop.theme.primary_color, 0xFF0000);
+        assert_eq!(desktop.theme.accent_color, 0xFF0000);
     }
 }

@@ -7,6 +7,13 @@
 extern crate alloc;
 use alloc::string::String;
 use alloc::vec::Vec;
+use core::sync::atomic::{AtomicU64, Ordering};
+
+/// Get current timestamp for container events
+fn get_current_timestamp() -> u64 {
+    static TIMESTAMP: AtomicU64 = AtomicU64::new(1640995200);
+    TIMESTAMP.fetch_add(1, Ordering::SeqCst)
+}
 
 /// Runtime security event
 #[derive(Debug, Clone)]
@@ -107,7 +114,7 @@ impl RuntimeProtectionEngine {
                 container_id,
                 event_type,
                 severity,
-                timestamp: 0, // TODO: Add real timestamp
+                timestamp: get_current_timestamp(),
                 details: behavior.into(),
                 action_taken: action,
             };

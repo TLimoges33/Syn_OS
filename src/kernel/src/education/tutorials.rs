@@ -73,20 +73,20 @@ impl TutorialManager {
             initialized: false,
         }
     }
-    
+
     /// Initialize tutorial manager
     pub async fn initialize(&mut self) -> Result<(), &'static str> {
         if self.initialized {
             return Err("Tutorial manager already initialized");
         }
-        
+
         // Load default tutorials
         self.load_default_tutorials().await?;
-        
+
         self.initialized = true;
         Ok(())
     }
-    
+
     /// Shutdown tutorial manager
     pub async fn shutdown(&mut self) -> Result<(), &'static str> {
         // End all active tutorials
@@ -94,68 +94,68 @@ impl TutorialManager {
         for key in tutorial_keys {
             self.active_tutorials.remove(&key);
         }
-        
+
         self.initialized = false;
         Ok(())
     }
-    
+
     /// Start a tutorial
     pub async fn start_tutorial(&mut self, content_type: ContentType) -> Result<u32, &'static str> {
         if !self.initialized {
             return Err("Tutorial manager not initialized");
         }
-        
+
         // Find tutorial for content type
         let tutorial_id = self.find_tutorial_for_content(&content_type)?;
         let session_id = TUTORIAL_ID_COUNTER.fetch_add(1, Ordering::AcqRel);
-        
+
         let session = TutorialSession {
             session_id,
             tutorial_id,
             current_step: 0,
             completed_steps: Vec::new(),
-            started_at: 0, // TODO: Get actual timestamp
+            started_at: crate::time_utils::get_current_timestamp(),
             progress: 0.0,
         };
-        
+
         self.active_tutorials.insert(session_id, session);
         Ok(session_id)
     }
-    
+
     /// Get tutorial step
     pub fn get_current_step(&self, session_id: u32) -> Result<TutorialStep, &'static str> {
         let session = self.active_tutorials.get(&session_id)
             .ok_or("Tutorial session not found")?;
-        
+
         let tutorial = self.tutorials.get(&session.tutorial_id)
             .ok_or("Tutorial not found")?;
-        
+
         if let Some(step) = tutorial.steps.get(session.current_step as usize) {
             Ok(step.clone())
         } else {
             Err("Tutorial step not found")
         }
     }
-    
+
     /// Advance to next step
     pub async fn next_step(&mut self, session_id: u32) -> Result<bool, &'static str> {
         let session = self.active_tutorials.get_mut(&session_id)
             .ok_or("Tutorial session not found")?;
-        
+
         let tutorial = self.tutorials.get(&session.tutorial_id)
             .ok_or("Tutorial not found")?;
-        
+
         // Mark current step as completed
         session.completed_steps.push(session.current_step);
         session.current_step += 1;
-        
+
         // Update progress
         session.progress = session.completed_steps.len() as f32 / tutorial.steps.len() as f32;
-        
+
         // Check if tutorial is complete
         Ok(session.current_step < tutorial.steps.len() as u32)
     }
-    
+
     /// Complete tutorial
     pub async fn complete_tutorial(&mut self, session_id: u32) -> Result<(), &'static str> {
         if let Some(_session) = self.active_tutorials.remove(&session_id) {
@@ -166,26 +166,26 @@ impl TutorialManager {
             Err("Tutorial session not found")
         }
     }
-    
+
     /// List available tutorials
     pub fn list_tutorials(&self) -> Vec<(u32, String, ContentType)> {
         self.tutorials.iter()
             .map(|(id, tutorial)| (*id, tutorial.title.clone(), tutorial.content_type.clone()))
             .collect()
     }
-    
+
     /// Get tutorial count
     pub fn get_tutorial_count(&self) -> usize {
         self.tutorials.len()
     }
-    
+
     /// Get active session count
     pub fn get_active_session_count(&self) -> usize {
         self.active_tutorials.len()
     }
-    
+
     // Private helper methods
-    
+
     async fn load_default_tutorials(&mut self) -> Result<(), &'static str> {
         // Load system overview tutorial
         let system_tutorial = Tutorial {
@@ -214,7 +214,7 @@ impl TutorialManager {
             ],
             estimated_time: 15,
         };
-        
+
         // Load kernel basics tutorial
         let kernel_tutorial = Tutorial {
             id: TUTORIAL_ID_COUNTER.fetch_add(1, Ordering::AcqRel),
@@ -234,14 +234,14 @@ impl TutorialManager {
             ],
             estimated_time: 30,
         };
-        
+
         // Add tutorials to collection
         self.tutorials.insert(system_tutorial.id, system_tutorial);
         self.tutorials.insert(kernel_tutorial.id, kernel_tutorial);
-        
+
         Ok(())
     }
-    
+
     fn find_tutorial_for_content(&self, content_type: &ContentType) -> Result<u32, &'static str> {
         for (id, tutorial) in &self.tutorials {
             if tutorial.content_type == *content_type {

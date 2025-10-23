@@ -19,6 +19,10 @@ pub mod external_stub;
 pub mod history_stub;
 pub mod parser_stub;
 
+// V1.9 Universal Command Integration (no_std bridge)
+pub mod universal_command_bridge;
+pub use universal_command_bridge::*;
+
 pub use builtins_stub::*;
 pub use environment_stub::*;
 pub use external_stub::*;

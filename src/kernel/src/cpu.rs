@@ -62,7 +62,28 @@ impl Default for CpuFeatures {
 
 /// Get CPU features
 pub fn get_cpu_features() -> CpuFeatures {
-    // TODO: Implement CPUID-based feature detection
+    #[cfg(target_arch = "x86_64")]
+    unsafe {
+        // CPUID leaf 1: Feature flags
+        let cpuid = core::arch::x86_64::__cpuid(1);
+        let ecx = cpuid.ecx;
+        let edx = cpuid.edx;
+
+        // CPUID leaf 7: Extended features
+        let cpuid7 = core::arch::x86_64::__cpuid(7);
+        let ebx7 = cpuid7.ebx;
+
+        CpuFeatures {
+            has_sse: (edx & (1 << 25)) != 0,
+            has_sse2: (edx & (1 << 26)) != 0,
+            has_avx: (ecx & (1 << 28)) != 0,
+            has_avx2: (ebx7 & (1 << 5)) != 0,
+            has_rdrand: (ecx & (1 << 30)) != 0,
+            has_rdseed: (ebx7 & (1 << 18)) != 0,
+        }
+    }
+
+    #[cfg(not(target_arch = "x86_64"))]
     CpuFeatures::default()
 }
 

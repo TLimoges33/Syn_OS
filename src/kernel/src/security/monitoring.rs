@@ -64,61 +64,61 @@ impl SecurityMonitor {
             monitoring_enabled: false,
         }
     }
-    
+
     /// Start monitoring
     pub async fn start(&mut self) -> Result<(), &'static str> {
         if self.monitoring_enabled {
             return Err("Security monitoring already enabled");
         }
-        
+
         self.monitoring_enabled = true;
         Ok(())
     }
-    
+
     /// Stop monitoring
     pub async fn stop(&mut self) -> Result<(), &'static str> {
         self.monitoring_enabled = false;
         Ok(())
     }
-    
+
     /// Log security event
     pub async fn log_event(&mut self, event: SecurityEvent) -> Result<(), &'static str> {
         if !self.monitoring_enabled {
             return Err("Security monitoring not enabled");
         }
-        
+
         // Remove oldest event if at capacity
         if self.events.len() >= self.max_events {
             self.events.pop_front();
         }
-        
+
         // Add new event
         self.events.push_back(event);
-        
+
         Ok(())
     }
-    
+
     /// Create and log event
-    pub async fn report_event(&mut self, 
+    pub async fn report_event(&mut self,
         event_type: SecurityEventType,
         severity: SecuritySeverity,
         source: String,
         description: String,
         data: Vec<u8>) -> Result<(), &'static str> {
-        
+
         let event = SecurityEvent {
             event_id: EVENT_COUNTER.fetch_add(1, Ordering::AcqRel),
             event_type,
             severity,
             source,
-            timestamp: 0, // TODO: Get actual timestamp
+            timestamp: crate::time_utils::get_current_timestamp(),
             description,
             data,
         };
-        
+
         self.log_event(event).await
     }
-    
+
     /// Get recent events
     pub fn get_recent_events(&self, count: usize) -> Vec<SecurityEvent> {
         self.events.iter()
@@ -127,7 +127,7 @@ impl SecurityMonitor {
             .cloned()
             .collect()
     }
-    
+
     /// Get events by type
     pub fn get_events_by_type(&self, event_type: SecurityEventType) -> Vec<SecurityEvent> {
         self.events.iter()
@@ -135,7 +135,7 @@ impl SecurityMonitor {
             .cloned()
             .collect()
     }
-    
+
     /// Get events by severity
     pub fn get_events_by_severity(&self, min_severity: SecuritySeverity) -> Vec<SecurityEvent> {
         self.events.iter()
@@ -143,17 +143,17 @@ impl SecurityMonitor {
             .cloned()
             .collect()
     }
-    
+
     /// Clear all events
     pub fn clear_events(&mut self) {
         self.events.clear();
     }
-    
+
     /// Get event count
     pub fn get_event_count(&self) -> usize {
         self.events.len()
     }
-    
+
     /// Check if monitoring is enabled
     pub fn is_monitoring(&self) -> bool {
         self.monitoring_enabled

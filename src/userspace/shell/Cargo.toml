@@ -10,6 +10,10 @@ license = "MIT"
 # Core dependencies for no_std environment
 linked_list_allocator = "0.10"
 
+# V1.9 Universal Command Integration
+# Note: Universal command is std-based, shell is no_std
+# Integration happens through the universal_command_bridge module (no external dependency needed)
+
 [features]
 default = []
 std = []

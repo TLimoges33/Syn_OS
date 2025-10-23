@@ -1,6 +1,6 @@
-//! # NATS Message Bus Integration
-//! 
-//! Provides high-level NATS messaging capabilities for SynOS services.
+//! # NATS Message Bus Integration with Connection Pooling
+//!
+//! Provides high-level NATS messaging capabilities with async connection pooling for SynOS services.
 
 use crate::{ServiceError, ServiceResult, ServiceConfig};
 use crate::events::Event;
@@ -12,7 +12,80 @@ use tokio::sync::RwLock;
 use tokio::task::JoinHandle;
 use tracing::{info, warn, debug};
 
-/// NATS client wrapper for SynOS services
+// Add once_cell for lazy static initialization
+#[cfg(feature = "std")]
+use once_cell::sync::Lazy;
+
+/// Connection pool for NATS clients
+pub struct NatsConnectionPool {
+    clients: Arc<RwLock<HashMap<String, Arc<NatsClient>>>>,
+    max_connections: usize,
+    connection_timeout: std::time::Duration,
+}
+
+impl NatsConnectionPool {
+    pub fn new(max_connections: usize) -> Self {
+        Self {
+            clients: Arc::new(RwLock::new(HashMap::new())),
+            max_connections,
+            connection_timeout: std::time::Duration::from_secs(30),
+        }
+    }
+
+    pub async fn get_or_create_client(&self, config: &ServiceConfig) -> ServiceResult<Arc<NatsClient>> {
+        let client_key = format!("{}:{}", config.service_id, config.nats_url);
+
+        // Check if client already exists
+        {
+            let clients = self.clients.read().await;
+            if let Some(client) = clients.get(&client_key) {
+                return Ok(Arc::clone(client));
+            }
+        }
+
+        // Check connection limit
+        {
+            let clients = self.clients.read().await;
+            if clients.len() >= self.max_connections {
+                return Err(ServiceError::NatsError("Connection pool limit reached".to_string()));
+            }
+        }
+
+        // Create new client
+        let client = Arc::new(NatsClient::new(config.clone()).await?);
+
+        // Store in pool
+        {
+            let mut clients = self.clients.write().await;
+            clients.insert(client_key, Arc::clone(&client));
+        }
+
+        Ok(client)
+    }
+
+    pub async fn remove_client(&self, service_id: &str, nats_url: &str) {
+        let client_key = format!("{}:{}", service_id, nats_url);
+        let mut clients = self.clients.write().await;
+        if let Some(client) = clients.remove(&client_key) {
+            let _ = client.close().await;
+        }
+    }
+
+    pub async fn get_stats(&self) -> HashMap<String, serde_json::Value> {
+        let clients = self.clients.read().await;
+        let mut stats = HashMap::new();
+        stats.insert("active_connections".to_string(), clients.len().into());
+        stats.insert("max_connections".to_string(), self.max_connections.into());
+        stats
+    }
+}
+
+/// Global NATS connection pool
+#[cfg(feature = "std")]
+pub static NATS_POOL: Lazy<NatsConnectionPool> =
+    Lazy::new(|| NatsConnectionPool::new(10));
+
+/// NATS client wrapper for SynOS services with pooling support
 #[derive(Clone)]
 pub struct NatsClient {
     client: Client,
@@ -25,7 +98,7 @@ impl NatsClient {
     /// Create a new NATS client
     pub async fn new(config: ServiceConfig) -> ServiceResult<Self> {
         info!("Connecting to NATS at {}", config.nats_url);
-        
+
         let mut connect_options = async_nats::ConnectOptions::new()
             .name(&format!("synos-{}", config.service_id))
             .retry_on_initial_connect()
@@ -83,7 +156,7 @@ impl NatsClient {
         Ok(())
     }
 
-    /// Subscribe to events matching a filter  
+    /// Subscribe to events matching a filter
     pub async fn subscribe_events<F>(
         &self,
         subject_pattern: String,
@@ -147,7 +220,7 @@ impl NatsClient {
         let handles = self.subscription_handles.clone();
         let handle = tokio::spawn(async move {
             let mut stream = subscriber;
-            
+
             while let Some(message) = stream.next().await {
                 if let Err(e) = handler(message.payload.to_vec()) {
                     warn!("Message handler error: {}", e);
@@ -171,7 +244,7 @@ impl NatsClient {
         timeout: std::time::Duration,
     ) -> ServiceResult<Vec<u8>> {
         debug!("Sending request to subject {}", subject);
-        
+
         let subject = subject.to_string();
         let payload = payload.to_vec();
 
@@ -204,7 +277,7 @@ impl NatsClient {
     /// Unsubscribe from a subscription
     pub async fn unsubscribe(&self, subscription_id: &str) -> ServiceResult<()> {
         let mut handles = self.subscription_handles.write().await;
-        
+
         if let Some(handle) = handles.remove(subscription_id) {
             handle.abort();
             info!("Unsubscribed from {}", subscription_id);
@@ -221,15 +294,20 @@ impl NatsClient {
     /// Get NATS client statistics
     pub async fn get_stats(&self) -> HashMap<String, serde_json::Value> {
         let mut stats = HashMap::new();
-        
+
         stats.insert("connected".to_string(), self.is_connected().await.into());
         stats.insert("service_id".to_string(), self.config.service_id.clone().into());
         stats.insert("nats_url".to_string(), self.config.nats_url.clone().into());
-        
+
         let subscription_count = self.subscription_handles.read().await.len();
         stats.insert("active_subscriptions".to_string(), subscription_count.into());
 
         stats
+    }
+
+    /// Get pooled client (recommended for high-throughput scenarios)
+    pub async fn pooled(config: &ServiceConfig) -> ServiceResult<Arc<Self>> {
+        NATS_POOL.get_or_create_client(config).await
     }
 
     /// Close all subscriptions and disconnect
