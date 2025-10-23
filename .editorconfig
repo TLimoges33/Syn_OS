@@ -1,6 +1,16 @@
 # 🎯 SynOS Ultimate Developer EditorConfig
 # Ensures consistent coding styles across different editors and IDEs
-# Updated: October 2, 2025 - Production Ready Configuration
+# Updated: October 22, 2025 - Post AI Subsystem Reorganization
+# Optimized for: Rust (992 files), Python (8344 files), C (170 files)
+#
+# Project Structure:
+#   - src/ai/daemons/     → Python (ALFRED, consciousness-daemon)
+#   - src/ai/engine/      → Rust std (synaptic-ai-engine)
+#   - src/ai/runtime/     → Rust no_std (synos-ai-runtime)
+#   - src/ai/advanced/    → C (quantum, neural evolution)
+#   - src/kernel/         → Rust no_std (kernel)
+#   - core/               → Rust std (services, security)
+#   - linux-distribution/ → Configuration (systemd, bash, conf)
 
 root = true
 
@@ -13,10 +23,11 @@ trim_trailing_whitespace = true
 indent_style = space
 indent_size = 4
 
-# Rust files
+# Rust files (992 files - kernel, AI runtime, core services)
 [*.rs]
 indent_size = 4
 max_line_length = 100
+# rustfmt defaults - matches src/ai/engine/, src/ai/runtime/, src/kernel/
 
 # TOML files (Cargo.toml, etc.)
 [*.toml]
@@ -44,10 +55,11 @@ indent_style = tab
 [*.{c,h,cpp,hpp,cc,cxx}]
 indent_size = 4
 
-# Python files
+# Python files (8344 files - primary language for daemons/tools)
 [*.py]
 indent_size = 4
 max_line_length = 100
+# PEP 8 compliance for SynOS Python code
 
 # Shell scripts
 [*.sh]
@@ -74,3 +86,43 @@ indent_size = 4
 # Docker files
 [{Dockerfile,*.dockerfile}]
 indent_size = 2
+
+# Docker Compose files
+[docker-compose*.yml]
+indent_size = 2
+
+# Systemd unit files (587 service files in project)
+[*.{service,timer,socket,mount,target}]
+indent_size = 2
+insert_final_newline = true
+
+# GitHub Actions workflows
+[.github/workflows/*.{yml,yaml}]
+indent_size = 2
+
+# Nix files (if used for reproducible builds)
+[*.nix]
+indent_size = 2
+
+# Security configuration files
+[*.{rules,policy}]
+indent_size = 4
+
+# Certificate configuration
+[{*.conf,*.cfg}]
+indent_size = 4
+
+# ISO build scripts
+[*.syslinux]
+indent_size = 2
+
+# Kernel config files
+[.config]
+indent_style = space
+indent_size = 4
+
+# AI model configuration (if present)
+[*.{onnx,tflite,pt}]
+# Binary files - no formatting rules needed
+insert_final_newline = unset
+trim_trailing_whitespace = unset
