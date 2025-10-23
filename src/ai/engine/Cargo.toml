@@ -30,7 +30,7 @@ chrono = { version = "0.4", features = ["serde"] }
 rand = "0.8"
 
 # V2.0: Quantum Consciousness Integration
-synos-quantum-consciousness = { path = "../quantum-consciousness" }
+synos-quantum-consciousness = { path = "../../quantum-consciousness" }
 
 # IPC and messaging
 zeromq = { workspace = true }
