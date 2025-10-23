@@ -29,11 +29,11 @@ members = [
     "src/vm-wargames",
     "src/userspace/libc",
     "src/tools/dev-utils",
-    # V1.5-V1.8 modules were created in previous session but files not persisted
-    # "src/gamification",      # V1.5: WoW/KOTOR/Cyberpunk-inspired skill tree system
-    # "src/cloud-security",    # V1.6: Multi-cloud security monitoring (AWS/Azure/GCP)
-    # "src/ai-tutor",          # V1.7: Adaptive AI tutoring with learning style detection
-    # "src/mobile-bridge",     # V1.8: WebSocket bridge for mobile app
+    # V1.5-V1.8 modules - RESTORED from commit 24483892f (October 22, 2025)
+    "src/gamification",      # V1.5: WoW/KOTOR/Cyberpunk-inspired skill tree system (5,194 lines)
+    "src/cloud-security",    # V1.6: Multi-cloud security monitoring (AWS/Azure/GCP) (1,820 lines)
+    "src/ai-tutor",          # V1.7: Adaptive AI tutoring with learning style detection (1,947 lines)
+    "src/mobile-bridge",     # V1.8: WebSocket bridge for mobile app (711 lines)
     "src/universal-command",       # V1.9: Universal command orchestrator with AI tool selection
     "src/ctf-platform",            # V1.9: CTF training platform with challenges and leaderboards
     "src/quantum-consciousness",   # V2.0: Quantum AI consciousness - GRAND FINALE

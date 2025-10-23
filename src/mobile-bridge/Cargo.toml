@@ -1,0 +1,30 @@
+[package]
+name = "synos-mobile-bridge"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[lib]
+name = "synos_mobile_bridge"
+path = "mod.rs"
+
+[dependencies]
+# Use workspace dependencies
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { version = "1", features = ["sync", "macros"] }  # Override workspace for sync features
+chrono = { version = "0.4", features = ["serde", "clock"] }
+uuid = { workspace = true }
+
+# WebSocket support (optional feature)
+tokio-tungstenite = { version = "0.21", optional = true }
+
+[features]
+default = ["std"]
+std = []
+websocket = ["tokio-tungstenite"]
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["full", "test-util"] }

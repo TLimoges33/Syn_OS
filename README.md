@@ -205,9 +205,9 @@ qemu-system-x86_64 -bios /usr/share/ovmf/OVMF.fd \
 
 ### Tutorials
 
--   [Your First Security Scan](docs/02-user-guide/tutorials/first-security-scan.md) *(Coming Soon)*
--   [Using AI Features](docs/02-user-guide/tutorials/using-ai-features.md) *(Coming Soon)*
--   [Customizing Desktop](docs/02-user-guide/tutorials/customizing-desktop.md) *(Coming Soon)*
+-   [Your First Security Scan](docs/02-user-guide/tutorials/first-security-scan.md) _(Coming Soon)_
+-   [Using AI Features](docs/02-user-guide/tutorials/using-ai-features.md) _(Coming Soon)_
+-   [Customizing Desktop](docs/02-user-guide/tutorials/customizing-desktop.md) _(Coming Soon)_
 
 ### Developer Documentation
 
