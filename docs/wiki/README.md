@@ -66,15 +66,17 @@ Documentation for **internal employees** and **contractors** (NDA required):
 3. **[First-Steps.md](First-Steps.md)** - Tutorial-style first steps
 4. **[Getting-Started.md](Getting-Started.md)** - Comprehensive getting started (coming soon)
 
-### 🎓 Educational Content (7 pages)
+### 🎓 Educational Content
 
-5. **[Educational-Features.md](Educational-Features.md)** - Educational platform overview
-6. **[Curriculum-Integration.md](Curriculum-Integration.md)** - School integration guide
-7. **[Lab-Exercises.md](Lab-Exercises.md)** - 15 beginner hands-on labs
-8. **[Learning-Path-Network-Security.md](Learning-Path-Network-Security.md)** - Network security track
-9. **[Learning-Path-Web-Security.md](Learning-Path-Web-Security.md)** - Web security track
-10. **[Learning-Path-AI-Security.md](Learning-Path-AI-Security.md)** - AI security track
-11. **[Learning-Path-Malware-Analysis.md](Learning-Path-Malware-Analysis.md)** - Malware analysis track
+5. **[Educational Features](education/Educational-Features.md)** - Educational platform overview
+6. **[Curriculum Integration](education/Curriculum-Integration.md)** - School integration guide
+7. **[Lab Exercises](education/Lab-Exercises.md)** - 50+ hands-on labs
+8. **[Certification & CTF Integration](education/Certification-CTF-Integration-Master.md)** - Complete certification roadmap
+9. **[Learning Paths](education/learning-paths/)** - 4 structured specialization tracks
+   - [Network Security](education/learning-paths/Network-Security.md)
+   - [Web Security](education/learning-paths/Web-Security.md)
+   - [AI Security](education/learning-paths/AI-Security.md)
+   - [Malware Analysis](education/learning-paths/Malware-Analysis.md)
 
 ### 👨‍💻 Developer Documentation (3 pages)
 
@@ -82,13 +84,14 @@ Documentation for **internal employees** and **contractors** (NDA required):
 13. **[Contributing.md](Contributing.md)** - How to contribute to SynOS
 14. **[API-Reference.md](API-Reference.md)** - Public API documentation
 
-### 📖 General Information (5 pages)
+### 📖 General Information & Technical
 
-15. **[Home.md](Home.md)** - Wiki homepage
-16. **[Architecture-Overview.md](Architecture-Overview.md)** - High-level system architecture
-17. **[ROADMAP.md](ROADMAP.md)** - Project roadmap and future plans
-18. **[Linux-Distribution.md](Linux-Distribution.md)** - Distribution information
-19. **[DOCUMENTATION_CLASSIFICATION.md](DOCUMENTATION_CLASSIFICATION.md)** - Classification guide
+10. **[Home.md](Home.md)** - Wiki homepage
+11. **[Recent Updates](RECENT_UPDATES.md)** - Latest changes and improvements
+12. **[Linux Distribution](technical/Linux-Distribution.md)** - Distribution information
+13. **[Technical Documentation](technical/)** - Architecture and systems
+14. **[Development Guides](guides/)** - How-to guides and tutorials
+15. **[Security Documentation](security/)** - Access control and encryption
 
 ---
 
