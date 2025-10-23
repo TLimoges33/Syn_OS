@@ -68,12 +68,33 @@ id_ed25519.pub
 *.jks
 
 # =========================================
-# SECURITY: SENSITIVE DOCUMENTATION
+# SECURITY: SENSITIVE DOCUMENTATION (Git-Crypt Protected)
 # =========================================
-docs/wiki/internal/
-docs/wiki/restricted/
+# NOTE: These directories use git-crypt for encryption
+# Files are encrypted in Git but readable when unlocked with GPG key
+# Uncomment below ONLY for public repository (to completely exclude)
+
+# For PRIVATE repository (current): Use git-crypt encryption (files tracked but encrypted)
+# docs/wiki/internal/       # Uncomment to completely exclude from Git
+# docs/wiki/restricted/     # Uncomment to completely exclude from Git
+
+# For PUBLIC repository: Uncomment above to prevent any commits
+
+# Security documentation (allow README, exclude secrets)
 docs/wiki/security/*
 !docs/wiki/security/README.md
+!docs/wiki/SECURITY.md
+
+# Backup files (encrypted backups of sensitive docs)
+*wiki-backup-*.tar.gz.gpg
+*wiki-internal-*.tar.gz.gpg
+*wiki-restricted-*.tar.gz.gpg
+synos-backups/
+
+# GPG key exports (never commit private keys!)
+*-private-key.asc
+*-secret-key.asc
+*.gpg-key
 
 # =========================================
 # DATABASES

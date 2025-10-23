@@ -54,62 +54,74 @@ src/ai/
 ## Component Roles
 
 ### 🐍 Daemons (Python)
+
 **Purpose:** User-facing AI services and assistants
-- **ALFRED:** Voice assistant with British butler persona, security tool launching
-- **Consciousness:** Real-time security monitoring and threat detection
-- **Integration:** systemd services, NATS message bus, RESTful APIs
+
+-   **ALFRED:** Voice assistant with British butler persona, security tool launching
+-   **Consciousness:** Real-time security monitoring and threat detection
+-   **Integration:** systemd services, NATS message bus, RESTful APIs
 
 ### 🔬 Advanced (C)
+
 **Purpose:** Cutting-edge AI research implementations
-- Quantum computing integration
-- Neural evolution engines
-- Predictive intelligence systems
-- Future consciousness modeling
+
+-   Quantum computing integration
+-   Neural evolution engines
+-   Predictive intelligence systems
+-   Future consciousness modeling
 
 ### 🏗️ Engine (Rust std)
+
 **Purpose:** High-level AI orchestration and management
-- **Crate:** `synaptic-ai-engine`
-- **Target:** Standard Linux distribution (std environment)
-- **Features:**
-  - Multi-runtime support (TFLite, ONNX, PyTorch)
-  - Hardware acceleration (NPU, GPU, TPU via HAL)
-  - Consciousness engine with Neural Darwinism
-  - Linux integration (systemd, D-Bus)
-  - Model lifecycle management
+
+-   **Crate:** `synaptic-ai-engine`
+-   **Target:** Standard Linux distribution (std environment)
+-   **Features:**
+    -   Multi-runtime support (TFLite, ONNX, PyTorch)
+    -   Hardware acceleration (NPU, GPU, TPU via HAL)
+    -   Consciousness engine with Neural Darwinism
+    -   Linux integration (systemd, D-Bus)
+    -   Model lifecycle management
 
 ### ⚡ Runtime (Rust no_std)
+
 **Purpose:** Low-level inference engine for kernel and embedded
-- **Crate:** `synos-ai-runtime`
-- **Target:** no_std compatible (kernel, embedded systems)
-- **Features:**
-  - Lightweight native inference (pure Rust neural networks)
-  - FFI bindings to TensorFlow Lite, ONNX Runtime, PyTorch
-  - Model encryption (AES-256-GCM)
-  - Hardware acceleration support
-  - Zero external dependencies (configurable)
+
+-   **Crate:** `synos-ai-runtime`
+-   **Target:** no_std compatible (kernel, embedded systems)
+-   **Features:**
+    -   Lightweight native inference (pure Rust neural networks)
+    -   FFI bindings to TensorFlow Lite, ONNX Runtime, PyTorch
+    -   Model encryption (AES-256-GCM)
+    -   Hardware acceleration support
+    -   Zero external dependencies (configurable)
 
 ## AI Runtime Status (October 22, 2025)
 
 ### TensorFlow Lite ✅ 75% Complete
-- **Library:** INSTALLED at `/usr/local/lib/libtensorflowlite_c.so` (4.4MB)
-- **Status:** FFI bindings complete, stubs removed
-- **Remaining:** GPU delegate integration, benchmarks, testing
+
+-   **Library:** INSTALLED at `/usr/local/lib/libtensorflowlite_c.so` (4.4MB)
+-   **Status:** FFI bindings complete, stubs removed
+-   **Remaining:** GPU delegate integration, benchmarks, testing
 
 ### ONNX Runtime ⏳ 30% Complete
-- **Library:** NOT INSTALLED (blocker)
-- **Status:** Structure exists, 4 stubs remain
-- **Stub Locations:** `runtime/onnx/mod.rs` lines 162, 169, 176, 184
-- **Required:** Install ONNX Runtime v1.16.0
+
+-   **Library:** NOT INSTALLED (blocker)
+-   **Status:** Structure exists, 4 stubs remain
+-   **Stub Locations:** `runtime/onnx/mod.rs` lines 162, 169, 176, 184
+-   **Required:** Install ONNX Runtime v1.16.0
 
 ### PyTorch LibTorch ⏳ 25% Complete
-- **Library:** NOT INSTALLED (blocker)
-- **Status:** Structure exists, 3 stubs remain
-- **Stub Locations:** `runtime/pytorch/mod.rs` lines 173, 184, 225
-- **Required:** Install LibTorch v2.1.0
+
+-   **Library:** NOT INSTALLED (blocker)
+-   **Status:** Structure exists, 3 stubs remain
+-   **Stub Locations:** `runtime/pytorch/mod.rs` lines 173, 184, 225
+-   **Required:** Install LibTorch v2.1.0
 
 ## Integration Points
 
 ### Kernel Integration
+
 ```rust
 // Kernel AI interface (src/kernel/src/ai_interface.rs)
 use synos_ai_runtime::{NeuralNetwork, ModelWeights};
@@ -122,6 +134,7 @@ pub struct AIInterface {
 ```
 
 ### Userspace Integration
+
 ```rust
 // AI Engine integration (src/ai/engine/src/lib.rs)
 use synaptic_ai_engine::{AIEngine, RuntimeConfig};
@@ -131,6 +144,7 @@ engine.start_runtime(config).await?;
 ```
 
 ### Python Integration
+
 ```python
 # ALFRED integration with consciousness daemon
 from consciousness_daemon import ConsciousnessState, PatternRecognizer
@@ -142,6 +156,7 @@ recognizer = PatternRecognizer()
 ## Development Roadmap
 
 ### Short-Term (Next Month)
+
 1. ✅ **TFLite GPU Delegate** - Complete hardware acceleration
 2. 🔄 **Install ONNX Runtime** - Unblock Week 3-4 development
 3. 🔄 **Install PyTorch LibTorch** - Unblock Week 5-6 development
@@ -149,18 +164,19 @@ recognizer = PatternRecognizer()
 5. 🔄 **ALFRED Polish** - Reach 100% completion
 
 ### Medium-Term (3-6 Months)
-- Model encryption and signing complete
-- Educational AI tutor integration
-- Cross-tool automation workflows
-- Advanced consciousness features
+
+-   Model encryption and signing complete
+-   Educational AI tutor integration
+-   Cross-tool automation workflows
+-   Advanced consciousness features
 
 ## Documentation
 
-- **Engine Details:** `engine/REORGANIZATION_GUIDE.md`
-- **Runtime API:** `runtime/README.md`
-- **ALFRED Commands:** `daemons/alfred/commands/`
-- **Consciousness System:** `daemons/consciousness/README.md`
-- **Roadmap Audit:** `../../docs/07-audits/ROADMAP_AUDIT_2025-10-22.md`
+-   **Engine Details:** `engine/REORGANIZATION_GUIDE.md`
+-   **Runtime API:** `runtime/README.md`
+-   **ALFRED Commands:** `daemons/alfred/commands/`
+-   **Consciousness System:** `daemons/consciousness/README.md`
+-   **Roadmap Audit:** `../../docs/07-audits/ROADMAP_AUDIT_2025-10-22.md`
 
 ## Building
 
@@ -184,20 +200,23 @@ sudo systemctl start synos-consciousness
 ## Previous Organization (Archive)
 
 **Old Structure (before October 22, 2025):**
-- `src/ai-engine/` → NOW: `src/ai/engine/`
-- `src/ai-runtime/` → NOW: `src/ai/runtime/`
-- `src/ai/alfred/` → NOW: `src/ai/daemons/alfred/`
-- `src/ai/consciousness/` → NOW: `src/ai/daemons/consciousness/`
+
+-   `src/ai-engine/` → NOW: `src/ai/engine/`
+-   `src/ai-runtime/` → NOW: `src/ai/runtime/`
+-   `src/ai/alfred/` → NOW: `src/ai/daemons/alfred/`
+-   `src/ai/consciousness/` → NOW: `src/ai/daemons/consciousness/`
 
 **Reason for Reorganization:**
-- Reduced redundancy and improved discoverability
-- Unified AI architecture under single parent directory
-- Clearer separation of concerns (daemons vs engine vs runtime)
-- Better alignment with project structure conventions
+
+-   Reduced redundancy and improved discoverability
+-   Unified AI architecture under single parent directory
+-   Clearer separation of concerns (daemons vs engine vs runtime)
+-   Better alignment with project structure conventions
 
 ## Contributing
 
 When adding new AI features:
+
 1. **Python services** → `daemons/` (systemd services, APIs)
 2. **Rust high-level** → `engine/src/` (orchestration, management)
 3. **Rust low-level** → `runtime/` (inference, FFI bindings)
