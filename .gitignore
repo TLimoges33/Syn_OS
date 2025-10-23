@@ -9,10 +9,25 @@
 # BUILD OUTPUTS
 # =========================================
 build/
+dist/
+out/
 target/
 *.iso
 *.img
 *.squashfs
+
+# Additional build artifacts
+*.vdi
+*.vmdk
+*.qcow2
+*.bin
+*.elf
+*.o
+*.ko
+*.so
+*.a
+*.deb
+Cargo.lock.orig
 
 # Build caches and bootstrap directories
 linux-distribution/SynOS-Linux-Builder/cache/
@@ -22,6 +37,13 @@ linux-distribution/SynOS-Linux-Builder/*/chroot/
 # Workspace directories (can be multi-GB)
 build/workspace-*/
 scripts/build/*/chroot/
+
+# Large archives and ISO content
+Final_SynOS*/
+squashfs_extracted/
+*_extracted/
+initrd.img*
+vmlinuz*
 
 # =========================================
 # LOGS
@@ -107,12 +129,27 @@ synos-backups/
 # =========================================
 # IDE & EDITORS
 # =========================================
+# VS Code
 .vscode/
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+.vscode/.ropeproject/
+.vscode/extensions.json
+.vscode/*.backup*
+.vscode/*codespace-backup*
+.vscode-test/
+
+# JetBrains IDEs
 .idea/
+*.iml
+*.ipr
+*.iws
+
+# Other editors
 *.sublime-project
 *.sublime-workspace
 .vs/
-.vscode-test/
 
 # =========================================
 # PYTHON (8344 files: AI daemons, tools, scripts)
@@ -121,11 +158,14 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+*.py[cod]
+*$py.class
 .Python
 .venv/
 venv/
 env/
 ENV/
+.env/
 *.egg
 *.egg-info/
 dist/
@@ -146,6 +186,7 @@ src/ai/daemons/**/*.pyc
 scripts/.venv/
 development/.venv/
 tools/.venv/
+**/.venv/
 
 # =========================================
 # NODE.JS / JAVASCRIPT
@@ -153,6 +194,7 @@ tools/.venv/
 node_modules/
 .npm/
 .pnpm-store/
+.cache/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -170,6 +212,18 @@ Cargo.lock
 .cargo/
 !.cargo/config.toml
 !.cargo/audit.toml
+
+# Nested target directories (use workspace target instead)
+src/kernel/target/
+src/userspace/*/target/
+
+# Fuzz artifacts
+fuzz/corpus/
+fuzz/artifacts/
+
+# Large audit reports
+workspace-audit-report.json
+*-audit-report.json
 
 # =========================================
 # DOCUMENTATION BUILDS
@@ -198,6 +252,9 @@ Thumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 *.lnk
+.fuse_hidden*
+.directory
+.Trash-*
 
 # =========================================
 # AI MODEL FILES & DATA (TensorFlow Lite, ONNX, PyTorch)
