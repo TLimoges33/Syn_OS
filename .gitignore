@@ -1,5 +1,11 @@
 
 # =========================================
+# SynOS v2.0 Git Ignore Configuration
+# Updated: October 22, 2025 - Post AI Subsystem Reorganization
+# Optimized for: src/ai/ structure, Rust (992 files), Python (8344 files)
+# =========================================
+
+# =========================================
 # BUILD OUTPUTS
 # =========================================
 build/
@@ -12,6 +18,10 @@ target/
 linux-distribution/SynOS-Linux-Builder/cache/
 linux-distribution/SynOS-Linux-Builder/*/chroot/
 *.pwd.lock
+
+# Workspace directories (can be multi-GB)
+build/workspace-*/
+scripts/build/*/chroot/
 
 # =========================================
 # LOGS
@@ -84,7 +94,7 @@ docs/wiki/security/*
 .vscode-test/
 
 # =========================================
-# PYTHON
+# PYTHON (8344 files: AI daemons, tools, scripts)
 # =========================================
 __pycache__/
 *.pyc
@@ -107,6 +117,15 @@ htmlcov/
 .dmypy.json
 dmypy.json
 
+# AI daemon specific
+src/ai/daemons/**/__pycache__/
+src/ai/daemons/**/*.pyc
+
+# Python virtual environments (project-specific)
+scripts/.venv/
+development/.venv/
+tools/.venv/
+
 # =========================================
 # NODE.JS / JAVASCRIPT
 # =========================================
@@ -119,11 +138,17 @@ yarn-error.log*
 package-lock.json
 
 # =========================================
-# RUST
+# RUST (992 files: kernel, AI engine, AI runtime, core services)
 # =========================================
 Cargo.lock
 **/*.rs.bk
 *.pdb
+# Rust target directories (massive - can be GB)
+**/target/
+# Cargo build artifacts
+.cargo/
+!.cargo/config.toml
+!.cargo/audit.toml
 
 # =========================================
 # DOCUMENTATION BUILDS
@@ -154,6 +179,65 @@ $RECYCLE.BIN/
 *.lnk
 
 # =========================================
+# AI MODEL FILES & DATA (TensorFlow Lite, ONNX, PyTorch)
+# =========================================
+# Trained model files (use Git LFS if needed)
+*.onnx
+*.tflite
+*.pb
+*.pth
+*.h5
+*.keras
+*.model
+*.weights
+*.ckpt
+
+# Training data and datasets
+*.pkl
+*.pickle
+*.npy
+*.npz
+*.hdf5
+*.tfrecord
+
+# Model checkpoints and training artifacts
+checkpoints/
+model_outputs/
+training_logs/
+tensorboard_logs/
+mlruns/
+
+# =========================================
+# AI RUNTIME LIBRARIES (Installed System-Wide)
+# =========================================
+# TensorFlow Lite library (4.4MB installed at /usr/local/lib/)
+libtensorflowlite*
+# ONNX Runtime library (to be installed)
+libonnxruntime*
+# PyTorch LibTorch library (to be installed)
+libtorch*
+# AI accelerator drivers
+*.so.ai
+*.so.npu
+
+# =========================================
+# SYSTEMD & LINUX DISTRIBUTION (587 service files)
+# =========================================
+# Systemd journal files
+*.journal
+systemd-private-*
+/var/log/journal/
+
+# Linux distribution build artifacts
+linux-distribution/SynOS-Linux-Builder/packages/*.deb
+linux-distribution/SynOS-Linux-Builder/custom-repo/*.deb
+!linux-distribution/SynOS-Linux-Builder/custom-repo/synos-*.deb
+
+# Chroot environments (can be multi-GB)
+*/chroot/
+airootfs/work/
+
+# =========================================
 # CERTIFICATES & SSH (IMPORTANT)
 # =========================================
 *.crt
@@ -162,3 +246,26 @@ $RECYCLE.BIN/
 !test.crt
 authorized_keys
 known_hosts
+
+# =========================================
+# AUDIO FILES (ALFRED Voice Assistant)
+# =========================================
+# Recorded audio samples (use Git LFS if needed)
+*.wav
+*.mp3
+*.ogg
+*.flac
+# Audio cache
+.audio_cache/
+audio_samples/temp/
+
+# =========================================
+# NATS MESSAGE BUS & SERVICES
+# =========================================
+# NATS data directory
+nats-data/
+*.dat
+*.blk
+# Service runtime data
+services/runtime/
+*.pid
