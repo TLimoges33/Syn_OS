@@ -33,6 +33,62 @@ set -e  # Exit immediately on error
 # set -o pipefail # Catch errors in pipes
 set -u  # Exit on undefined variable
 
+################################################################################
+# COMMAND LINE ARGUMENT PARSING
+################################################################################
+
+# Parse command line arguments
+CLEAN_BUILD=false
+FORCE_FRESH=false
+DEBUG_MODE=false
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --clean)
+            CLEAN_BUILD=true
+            shift
+            ;;
+        --fresh|--force-fresh)
+            FORCE_FRESH=true
+            shift
+            ;;
+        --debug)
+            DEBUG_MODE=true
+            set -x  # Enable bash debugging
+            shift
+            ;;
+        --help|-h)
+            echo "Usage: $0 [OPTIONS]"
+            echo ""
+            echo "Options:"
+            echo "  --clean        Clean build directories before starting"
+            echo "  --fresh        Ignore checkpoints, start fresh build"
+            echo "  --debug        Enable debug mode (verbose output)"
+            echo "  --help, -h     Show this help message"
+            echo ""
+            echo "Features:"
+            echo "  - Resource monitoring (auto-pause on low resources)"
+            echo "  - Checkpoint & resume (automatically resumes interrupted builds)"
+            echo "  - Enhanced logging (3 separate log files)"
+            echo "  - Stage timing (track performance)"
+            echo "  - Build summary (professional final report)"
+            echo ""
+            echo "Examples:"
+            echo "  $0                  # Normal build (resume if checkpoint exists)"
+            echo "  $0 --fresh          # Force fresh build (ignore checkpoints)"
+            echo "  $0 --clean --fresh  # Clean everything and start fresh"
+            echo "  $0 --debug          # Run with verbose debugging"
+            echo ""
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $1"
+            echo "Use --help for usage information"
+            exit 1
+            ;;
+    esac
+done
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -103,11 +159,32 @@ MIN_FREE_RAM_MB=500
 MIN_FREE_DISK_GB=5
 RESOURCE_CHECK_INTERVAL=30
 
+# Show build configuration
+echo -e "${CYAN}╔══════════════════════════════════════════════════════════════╗${NC}"
+echo -e "${CYAN}║                  BUILD CONFIGURATION                         ║${NC}"
+echo -e "${CYAN}╚══════════════════════════════════════════════════════════════╝${NC}"
+echo -e "  Build Dir:        $BUILD_DIR"
+echo -e "  ISO Name:         $ISO_NAME"
+echo -e "  Clean Build:      ${CLEAN_BUILD}"
+echo -e "  Force Fresh:      ${FORCE_FRESH}"
+echo -e "  Debug Mode:       ${DEBUG_MODE}"
+echo -e "  Resource Monitor: ${ENABLE_RESOURCE_MONITORING}"
+echo -e "  Checkpoints:      ${ENABLE_CHECKPOINTS}"
+echo ""
+
 # Create directories
 mkdir -p "$BUILD_DIR"
 mkdir -p "$BUILD_DIR/logs"
 mkdir -p "$BUILD_DIR/binaries"
 mkdir -p "$BUILD_DIR/tools"
+
+# Handle clean build
+if [ "$CLEAN_BUILD" = true ]; then
+    warning "Clean build requested - removing build directory"
+    sudo rm -rf "$BUILD_DIR"
+    mkdir -p "$BUILD_DIR"
+    success "Build directory cleaned"
+fi
 
 # Fix /dev/null if it's corrupted (common issue in some environments)
 if [ ! -c /dev/null ]; then
@@ -419,11 +496,14 @@ start_phase() {
     CURRENT_STEP_DESC="$2"
     local percentage=$((CURRENT_PHASE * 100 / TOTAL_PHASES))
 
-    # Check for checkpoint resume
+    # Check for checkpoint resume - if we should skip, set a flag
     if should_skip_stage "$CURRENT_PHASE"; then
-        success "Skipping Phase $CURRENT_PHASE (already completed)"
+        success "✓ Skipping Phase $CURRENT_PHASE (already completed)"
+        SKIP_CURRENT_PHASE=true
         return 0
     fi
+
+    SKIP_CURRENT_PHASE=false
 
     # Wait for resources if needed
     if [ "$ENABLE_RESOURCE_MONITORING" = true ]; then
@@ -448,6 +528,11 @@ start_phase() {
     log "${CYAN}Phase $CURRENT_PHASE/$TOTAL_PHASES ($percentage% complete) | Elapsed: $time_str${NC}"
     log "${CYAN}$CURRENT_STEP_DESC${NC}"
     log "${MAGENTA}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+}
+
+# Check if current phase should be skipped
+phase_should_skip() {
+    [ "${SKIP_CURRENT_PHASE:-false}" = true ]
 }
 
 # Phase completion (call at end of each phase)
@@ -511,14 +596,25 @@ log ""
 
 info "Initializing ultimate features..."
 
+# Handle forced fresh build
+if [ "$FORCE_FRESH" = true ] && [ -f "$CHECKPOINT_FILE" ]; then
+    warning "Fresh build requested - removing checkpoint"
+    rm -f "$CHECKPOINT_FILE"
+    success "Checkpoint cleared - starting fresh"
+fi
+
 # Check for resume
 if [ -f "$CHECKPOINT_FILE" ]; then
     warning "Found previous checkpoint!"
     CHECKPOINT_INFO=$(get_last_checkpoint)
     warning "$CHECKPOINT_INFO"
     warning "Build will resume from last checkpoint"
-    warning "To start fresh, delete: $CHECKPOINT_FILE"
-    sleep 3
+    echo ""
+    warning "To start fresh instead, press Ctrl+C and run:"
+    warning "  $0 --fresh"
+    echo ""
+    warning "Resuming in 5 seconds..."
+    sleep 5
 else
     success "Starting fresh build"
 fi
