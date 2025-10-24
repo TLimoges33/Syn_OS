@@ -180,10 +180,13 @@ mkdir -p "$BUILD_DIR/tools"
 
 # Handle clean build
 if [ "$CLEAN_BUILD" = true ]; then
-    warning "Clean build requested - removing build directory"
+    echo -e "${YELLOW}⚠${NC} Clean build requested - removing build directory"
     sudo rm -rf "$BUILD_DIR"
     mkdir -p "$BUILD_DIR"
-    success "Build directory cleaned"
+    mkdir -p "$BUILD_DIR/logs"
+    mkdir -p "$BUILD_DIR/binaries"
+    mkdir -p "$BUILD_DIR/tools"
+    echo -e "${GREEN}✓${NC} Build directory cleaned"
 fi
 
 # Fix /dev/null if it's corrupted (common issue in some environments)
@@ -193,6 +196,32 @@ if [ ! -c /dev/null ]; then
     sudo mknod -m 666 /dev/null c 1 3
     echo "✓ /dev/null fixed"
 fi
+
+################################################################################
+# HELPER FUNCTIONS (must be defined before use)
+################################################################################
+
+# Logging function with timestamp
+log() {
+    local msg="$1"
+    echo -e "[$(date '+%H:%M:%S')] $msg" | tee -a "$BUILD_LOG"
+}
+
+success() {
+    log "${GREEN}✓${NC} $1"
+}
+
+warning() {
+    log "${YELLOW}⚠${NC} $1"
+}
+
+error() {
+    log "${RED}✗${NC} $1"
+}
+
+info() {
+    log "${CYAN}ℹ${NC} $1"
+}
 
 # Progress tracking variables
 TOTAL_PHASES=20
@@ -484,12 +513,6 @@ cleanup_chroot() {
     success "Chroot directory cleaned"
 }
 
-# Logging function with timestamp
-log() {
-    local msg="$1"
-    echo -e "[$(date '+%H:%M:%S')] $msg" | tee -a "$BUILD_LOG"
-}
-
 # Phase management
 start_phase() {
     CURRENT_PHASE=$1
@@ -555,22 +578,6 @@ progress() {
     log "\n${BLUE}╔══════════════════════════════════════════════════════════════╗${NC}"
     log "${BLUE}║${NC} ${YELLOW}[Step $CURRENT_STEP/$TOTAL_STEPS]${NC} $1"
     log "${BLUE}╚══════════════════════════════════════════════════════════════╝${NC}"
-}
-
-success() {
-    log "${GREEN}✓${NC} $1"
-}
-
-warning() {
-    log "${YELLOW}⚠${NC} $1"
-}
-
-error() {
-    log "${RED}✗${NC} $1"
-}
-
-info() {
-    log "${CYAN}ℹ${NC} $1"
 }
 
 # Performance optimization
