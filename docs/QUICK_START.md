@@ -2,11 +2,30 @@
 
 ## Build Your ISO (The Easy Way)
 
+### Step 1: Verify Your Environment
+
 ```bash
-sudo /home/diablorain/Syn_OS/scripts/02-build/core/ultimate-final-master-developer-v1.0-build.sh
+cd /home/diablorain/Syn_OS
+./scripts/testing/verify-build.sh
 ```
 
-**That's literally it.** Wait 45-120 minutes and your ISO is ready.
+### Step 2: Choose Your Build
+
+```bash
+# Option 1: Quick kernel-only ISO (5-10 minutes) - Fast testing
+./scripts/build-kernel-only.sh
+
+# Option 2: Standard ISO (20-30 minutes) - Recommended
+./scripts/build-iso.sh
+
+# Option 3: Full distribution (60-90 minutes) - Complete system
+./scripts/build-full-linux.sh
+```
+
+**That's it!** Your ISO will be in the `build/` directory.
+
+> **💡 New Build System:** SynOS v2.0 uses consolidated scripts with better error handling,
+> progress tracking, and help documentation. Run any script with `--help` for options.
 
 ---
 
@@ -28,57 +47,120 @@ rustup target add x86_64-unknown-none
 ## Test Your ISO
 
 ```bash
-# Boot in QEMU (virtual machine):
+# Automated testing with multiple modes:
+./scripts/testing/test-iso.sh build/SynOS-*.iso
+
+# Or manually boot in QEMU:
 qemu-system-x86_64 \
-    -cdrom /home/diablorain/Syn_OS/build/SynOS-*.iso \
+    -cdrom build/SynOS-*.iso \
     -m 4G \
     -enable-kvm
 ```
 
 ---
 
-## Create Convenient Alias
+## Create Convenient Aliases
 
 ```bash
-echo 'alias synos-build="sudo /home/diablorain/Syn_OS/scripts/02-build/core/ultimate-final-master-developer-v1.0-build.sh"' >> ~/.bashrc
+# Add these to your ~/.bashrc:
+cat >> ~/.bashrc << 'EOF'
+alias synos-verify='cd /home/diablorain/Syn_OS && ./scripts/testing/verify-build.sh'
+alias synos-kernel='cd /home/diablorain/Syn_OS && ./scripts/build-kernel-only.sh'
+alias synos-build='cd /home/diablorain/Syn_OS && ./scripts/build-iso.sh'
+alias synos-full='cd /home/diablorain/Syn_OS && ./scripts/build-full-linux.sh'
+alias synos-test='cd /home/diablorain/Syn_OS && ./scripts/testing/test-iso.sh build/SynOS-*.iso'
+alias synos-clean='cd /home/diablorain/Syn_OS && ./scripts/maintenance/clean-builds.sh'
+EOF
+
 source ~/.bashrc
 
-# Now just run:
-synos-build
+# Now use convenient commands:
+synos-verify  # Check environment
+synos-build   # Build ISO
+synos-test    # Test ISO
 ```
 
 ---
 
 ## Common Issues
 
+### Environment Check Fails
+
+```bash
+# Run detailed verification:
+./scripts/testing/verify-build.sh --verbose
+
+# Install missing dependencies:
+sudo apt update && sudo apt install -y \
+    build-essential cargo rustc \
+    debootstrap xorriso squashfs-tools \
+    grub-pc-bin grub-common python3 bc
+
+# Add Rust target:
+rustup target add x86_64-unknown-none
+```
+
 ### Out of Disk Space
 
 ```bash
-df -h  # Check space
-rm -rf /home/diablorain/Syn_OS/build/workspace-*  # Clean old builds
+# Check available space:
+df -h
+
+# Clean old builds (interactive):
+./scripts/maintenance/clean-builds.sh
+
+# Or clean automatically (keep last 7 days):
+./scripts/maintenance/clean-builds.sh --old --days 7
 ```
-
-### Build Paused (High Memory)
-
-**This is normal!** The script protects your system. It will auto-resume when memory frees up.
 
 ### Build Failed
 
 ```bash
-# Check what went wrong:
-cat /home/diablorain/Syn_OS/build/logs/error-*.log
+# Check the build log for errors:
+tail -50 build/logs/iso-build/build-*.log
 
-# Just run it again - it resumes where it left off:
-sudo /home/diablorain/Syn_OS/scripts/02-build/core/ultimate-final-master-developer-v1.0-build.sh
+# Get help for any script:
+./scripts/build-iso.sh --help
+
+# Try a clean build:
+./scripts/maintenance/clean-builds.sh --all
+./scripts/build-iso.sh
 ```
 
 ---
 
+## Additional Tools
+
+### Maintenance
+
+```bash
+# Clean old builds (interactive):
+./scripts/maintenance/clean-builds.sh
+
+# Archive old ISOs:
+./scripts/maintenance/archive-old-isos.sh
+```
+
+### Advanced Options
+
+```bash
+# Sign ISO with GPG:
+./scripts/utilities/sign-iso.sh --sign build/SynOS-*.iso
+
+# Build in Docker container:
+./scripts/docker/build-docker.sh --build
+
+# All scripts support --help:
+./scripts/build-iso.sh --help
+./scripts/testing/test-iso.sh --help
+```
+
 ## Full Documentation
 
--   **User Guide:** `/home/diablorain/Syn_OS/docs/ULTIMATE_BUILD_GUIDE.md`
--   **Technical Details:** `/home/diablorain/Syn_OS/docs/BUILD_CONSOLIDATION_COMPLETE.md`
--   **What Was Fixed:** `/home/diablorain/Syn_OS/docs/BUILD_FIXES.md`
+-   **Build System v2.0:** [docs/BUILD_SCRIPTS_MIGRATION_GUIDE.md](BUILD_SCRIPTS_MIGRATION_GUIDE.md)
+-   **Legacy Scripts Catalog:** [docs/LEGACY_SCRIPTS_CATALOG.md](LEGACY_SCRIPTS_CATALOG.md)
+-   **Main README:** [../README.md](../README.md)
+-   **Contributing Guide:** [../CONTRIBUTING.md](../CONTRIBUTING.md)
 
 ---
 
