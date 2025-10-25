@@ -20,9 +20,9 @@ std = []
 
 # Profiles managed at workspace level - removed from package
 
-#[[bin]]
-#name = "synshell"
-#path = "main.rs"
+[[bin]]
+name = "synshell"
+path = "main.rs"
 
 [lib]
 name = "synshell"

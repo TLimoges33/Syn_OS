@@ -1392,6 +1392,7 @@ GITHUB_REPOS=(
 CRITICAL_SOURCE_REPOS=(
     "https://github.com/rapid7/metasploit-framework"
     "https://github.com/radareorg/radare2"
+    "https://github.com/simsong/bulk_extractor"
 )
 
 info "Cloning ${#GITHUB_REPOS[@]} essential GitHub repositories..."
@@ -1462,6 +1463,40 @@ sys/install.sh
 
 Or use system package manager if dependencies are resolved.
 EOFR2"
+                fi
+                ;;
+            "bulk_extractor")
+                info "Bulk Extractor cloned - attempting compilation..."
+                # Try to compile bulk_extractor during build
+                # Install dependencies first
+                sudo chroot "$CHROOT_DIR" bash -c "apt-get install -y --no-install-recommends \
+                    libewf-dev libafflib-dev libssl-dev libtool autoconf automake \
+                    flex libxml2-dev libtre-dev 2>&1" >> "$BUILD_LOG" 2>&1 || true
+                
+                if sudo chroot "$CHROOT_DIR" bash -c "cd /opt/security-tools/github/bulk_extractor && \
+                    ./bootstrap.sh && ./configure && make -j$(nproc) && make install 2>&1" >> "$BUILD_LOG" 2>&1; then
+                    success "Bulk Extractor compiled and installed"
+                else
+                    warning "Bulk Extractor compilation failed (can be compiled on first boot)"
+                    sudo bash -c "cat > '$CHROOT_DIR/opt/security-tools/github/bulk_extractor/INSTALL.txt' << 'EOFBE'
+# Bulk Extractor Installation
+
+Source code cloned but compilation failed during build.
+
+## To compile on first boot:
+cd /opt/security-tools/github/bulk_extractor
+
+# Install dependencies
+sudo apt-get install -y libewf-dev libafflib-dev libssl-dev libtool autoconf automake flex libxml2-dev libtre-dev
+
+# Compile and install
+./bootstrap.sh
+./configure
+make -j$(nproc)
+sudo make install
+
+Note: Package installation failed due to requiring libc6 >= 2.38 (Debian 12 has 2.36).
+EOFBE"
                 fi
                 ;;
         esac
