@@ -1,0 +1,57 @@
+# SynOS Docker Build Context Exclusions
+# Prevents 14GB+ of unnecessary files from being sent to Docker daemon
+
+# Build artifacts and archives
+build/
+archives/
+*.iso
+*.tar.gz
+*.tar.xz
+*.deb
+*.rpm
+
+# Git and version control
+.git/
+.gitignore
+.gitattributes
+
+# Deployment infrastructure (not needed for ISO builds)
+deployment/
+linux-distribution/
+
+# Testing and docs (not needed at build time)
+tests/
+docs/
+*.md
+!docker/README.md
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Rust build cache (use Docker volume instead)
+target/
+Cargo.lock
+!rust-toolchain.toml
+
+# Temporary files
+tmp/
+temp/
+*.tmp

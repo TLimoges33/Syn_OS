@@ -4,8 +4,12 @@
 //! to communicate with the std-based universal command system through
 //! message passing or system calls.
 
-use alloc::{string::{String, ToString}, vec::Vec, format};
 use crate::shell::ShellError;
+use alloc::{
+    format,
+    string::{String, ToString},
+    vec::Vec,
+};
 
 /// Universal Command execution request
 #[derive(Debug, Clone)]
@@ -68,7 +72,7 @@ impl UniversalCommandBridge {
     ) -> Result<UniversalCommandResponse, ShellError> {
         if !self.daemon_available {
             return Err(ShellError::SystemError(
-                "Universal Command daemon not available".to_string()
+                "Universal Command daemon not available".to_string(),
             ));
         }
 
@@ -144,7 +148,11 @@ impl UniversalCommandBridge {
                 ScanType::Network => alloc::vec!["nmap".to_string(), "netdiscover".to_string()],
             },
             ParsedIntent::Enumerate { .. } => {
-                alloc::vec!["enum4linux".to_string(), "gobuster".to_string(), "ffuf".to_string()]
+                alloc::vec![
+                    "enum4linux".to_string(),
+                    "gobuster".to_string(),
+                    "ffuf".to_string()
+                ]
             }
             ParsedIntent::Exploit { .. } => {
                 alloc::vec!["metasploit".to_string(), "searchsploit".to_string()]

@@ -1,0 +1,53 @@
+networks:
+  synos-production-network:
+    driver: bridge
+services:
+  consciousness-production:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.consciousness-production
+    container_name: synos-consciousness-production
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: 2000m
+          memory: 4Gi
+        reservations:
+          cpus: 500m
+          memory: 1Gi
+      restart_policy:
+        condition: unless-stopped
+    environment:
+    - CONSCIOUSNESS_MODE=production
+    - NEURAL_WORKERS=4
+    - BATCH_SIZE=50
+    - MEMORY_POOL_SIZE=512Mi
+    - PROCESSING_TIMEOUT=30
+    - LEARNING_RATE=0.1
+    healthcheck:
+      interval: 15s
+      retries: 3
+      start_period: 30s
+      test:
+      - CMD
+      - curl
+      - -f
+      - http://localhost:9090/health
+      timeout: 5s
+    networks:
+    - synos-production-network
+    ports:
+    - 9090:9090
+    volumes:
+    - consciousness-data:/app/data
+    - consciousness-models:/app/models
+    - consciousness-cache:/app/cache
+version: '3.8'
+volumes:
+  consciousness-cache:
+    driver: local
+  consciousness-data:
+    driver: local
+  consciousness-models:
+    driver: local

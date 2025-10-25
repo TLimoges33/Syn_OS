@@ -1,0 +1,291 @@
+#!/bin/bash
+################################################################################
+# Archive Cleanup Script for SynOS
+# Compresses old logs, tarballs, and removes redundant build artifacts
+# Expected savings: 3-4GB
+################################################################################
+
+set -euo pipefail
+
+# Parse arguments
+DRY_RUN=false
+if [[ "${1:-}" == "--dry-run" ]] || [[ "${1:-}" == "-n" ]]; then
+    DRY_RUN=true
+    echo "🔍 DRY RUN MODE - No changes will be made"
+    echo ""
+fi
+
+ARCHIVE_BASE="archives/2025-10"
+BUILD_DIR="build"
+
+echo "🗂️  SynOS Archive Cleanup"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+# Create archive structure
+echo "📁 Creating archive directories..."
+if [ "$DRY_RUN" = false ]; then
+    mkdir -p "$ARCHIVE_BASE"/{logs,tarballs,old-isos,experiments}
+else
+    echo "  [DRY-RUN] Would create: $ARCHIVE_BASE/{logs,tarballs,old-isos,experiments}"
+fi
+
+# Archive old build logs (specific directories only - safer)
+echo "📦 Archiving old build logs..."
+if [ -d "$BUILD_DIR/logs" ]; then
+    # Archive specific known directories
+    if [ -d "$BUILD_DIR/logs/archived" ]; then
+        echo "  Moving build/logs/archived..."
+        if [ "$DRY_RUN" = false ]; then
+            mkdir -p "$ARCHIVE_BASE/logs"
+            mv "$BUILD_DIR/logs/archived" "$ARCHIVE_BASE/logs/" 2>/dev/null || true
+        else
+            SIZE=$(du -sh "$BUILD_DIR/logs/archived" 2>/dev/null | cut -f1)
+            echo "  [DRY-RUN] Would move build/logs/archived ($SIZE)"
+        fi
+    fi
+
+    if [ -d "$BUILD_DIR/logs/iso-build" ]; then
+        echo "  Moving build/logs/iso-build..."
+        if [ "$DRY_RUN" = false ]; then
+            mkdir -p "$ARCHIVE_BASE/logs"
+            mv "$BUILD_DIR/logs/iso-build" "$ARCHIVE_BASE/logs/" 2>/dev/null || true
+        else
+            SIZE=$(du -sh "$BUILD_DIR/logs/iso-build" 2>/dev/null | cut -f1)
+            echo "  [DRY-RUN] Would move build/logs/iso-build ($SIZE)"
+        fi
+    fi
+
+    # Archive old individual log files (older than 7 days)
+    echo "  Moving old log files (>7 days)..."
+    OLD_LOGS=$(find "$BUILD_DIR/logs" -maxdepth 1 -type f -name "*.log" -mtime +7 2>/dev/null | wc -l)
+    if [ "$OLD_LOGS" -gt 0 ]; then
+        if [ "$DRY_RUN" = false ]; then
+            mkdir -p "$ARCHIVE_BASE/logs/old-logs"
+            find "$BUILD_DIR/logs" -maxdepth 1 -type f -name "*.log" -mtime +7 -exec mv {} "$ARCHIVE_BASE/logs/old-logs/" \; 2>/dev/null || true
+        else
+            echo "  [DRY-RUN] Would move $OLD_LOGS log files"
+        fi
+    else
+        echo "  No old log files found (>7 days)"
+    fi
+fi
+
+# Compress old tarballs with xz (50% compression)
+echo "🗜️  Compressing tarballs (tar.gz → tar.xz)..."
+if [ -d "$BUILD_DIR/archives" ]; then
+    COUNT=0
+    for tar in "$BUILD_DIR/archives"/*.tar.gz; do
+        if [ -f "$tar" ]; then
+            BASENAME=$(basename "$tar")
+            SIZE=$(du -h "$tar" | cut -f1)
+            if [ "$DRY_RUN" = false ]; then
+                echo "  Compressing: $BASENAME ($SIZE)"
+                xz -9 "$tar" && COUNT=$((COUNT+1)) || true
+            else
+                echo "  [DRY-RUN] Would compress: $BASENAME ($SIZE) → $BASENAME.xz (~50% smaller)"
+                COUNT=$((COUNT+1))
+            fi
+        fi
+    done
+    if [ $COUNT -eq 0 ]; then
+        echo "  No .tar.gz files found (may already be compressed as .tar.gz.xz)"
+    else
+        echo "  Processed $COUNT tarballs"
+    fi
+fi
+
+# Move kernel test ISO to experiments
+echo "🧪 Archiving kernel test ISO..."
+if [ -d "$BUILD_DIR/isoroot" ]; then
+    if [ "$DRY_RUN" = false ]; then
+        mkdir -p "$ARCHIVE_BASE/experiments"
+        mv "$BUILD_DIR/isoroot" "$ARCHIVE_BASE/experiments/kernel-test-iso" 2>/dev/null || true
+    else
+        SIZE=$(du -sh "$BUILD_DIR/isoroot" 2>/dev/null | cut -f1)
+        echo "  [DRY-RUN] Would move build/isoroot ($SIZE)"
+    fi
+else
+    echo "  No kernel test ISO found"
+fi
+
+# Remove Parrot remaster ISO (can re-download if needed)
+echo "🗑️  Removing Parrot remaster ISO..."
+if [ -f "$BUILD_DIR/parrot-remaster/Parrot-security-6.4_amd64.iso" ]; then
+    if [ "$DRY_RUN" = false ]; then
+        rm "$BUILD_DIR/parrot-remaster/Parrot-security-6.4_amd64.iso" 2>/dev/null || true
+    else
+        SIZE=$(du -sh "$BUILD_DIR/parrot-remaster/Parrot-security-6.4_amd64.iso" 2>/dev/null | cut -f1)
+        echo "  [DRY-RUN] Would remove Parrot ISO ($SIZE)"
+    fi
+else
+    echo "  No Parrot remaster ISO found"
+fi
+
+# Remove old chroot directories (keep current build only)
+echo "🧹 Cleaning old chroot artifacts..."
+if [ -d "$BUILD_DIR/full-distribution/chroot.old" ]; then
+    if [ "$DRY_RUN" = false ]; then
+        rm -rf "$BUILD_DIR/full-distribution/chroot.old" 2>/dev/null || true
+    else
+        SIZE=$(du -sh "$BUILD_DIR/full-distribution/chroot.old" 2>/dev/null | cut -f1)
+        echo "  [DRY-RUN] Would remove chroot.old ($SIZE)"
+    fi
+else
+    echo "  No old chroot artifacts found"
+fi
+
+# Clean apt cache in old builds (SKIP - too slow, not critical)
+echo "📦 Cleaning old apt caches..."
+echo "  Skipped (can be slow, run manually if needed)"
+# Uncomment below to actually clean (can take several minutes):
+# find "$BUILD_DIR" -type f -path "*/var/cache/apt/archives/*.deb" -mtime +30 -delete 2>/dev/null || true
+
+# Create archive index
+echo "📋 Creating archive index..."
+if [ "$DRY_RUN" = false ]; then
+    cat > "$ARCHIVE_BASE/README.md" << 'HEREDOC'
+# SynOS Build Archives (October 2025)
+
+**Date Archived:** REPLACE_DATE
+**Purpose:** Historical build logs, compressed artifacts, superseded ISOs
+
+---
+
+## Contents
+
+### `/logs/`
+Historical build logs (older than 7 days):
+- `archived/` - Previously archived logs (Oct 23-24)
+- `iso-build/` - 20+ ISO build attempts (Oct 22-23)
+- Other dated logs from failed/successful builds
+
+**Retention:** 6 months, then move to cold storage
+
+---
+
+### `/tarballs/`
+Compressed build artifacts:
+- Consciousness modules (tar.xz)
+- Kernel builds (tar.xz)
+- Analysis dumps (tar.xz)
+
+**Format:** xz compressed (50% smaller than gzip)
+
+---
+
+### `/old-isos/`
+Superseded ISO builds:
+- Keep only latest 3 ISOs in main build/
+- Older ISOs archived here
+
+**Retention:** 3 months for minor versions, 1 year for major versions
+
+---
+
+### `/experiments/`
+Experimental builds and prototypes:
+- `kernel-test-iso/` - Early kernel testing ISO (isoroot)
+- Other proof-of-concept builds
+
+**Retention:** 1 year unless actively referenced
+
+---
+
+## Retention Policy
+
+- **Logs:** 6 months → cold storage → delete after 2 years
+- **Tarballs:** Compress immediately, keep 1 year
+- **ISOs:** Latest 3 in production, old ones here for 3-12 months
+- **Experiments:** 1 year unless actively referenced
+
+## Disk Space
+
+Original size: ~8.0GB (build/)
+After cleanup: ~4.3GB (estimated)
+Savings: ~3.7GB (46% reduction)
+
+## Restoring
+
+To restore a log:
+```bash
+cp archives/2025-10/logs/archived/some-log.txt build/logs/
+```
+
+To extract a tarball:
+```bash
+xz -d archives/2025-10/tarballs/some-archive.tar.xz
+tar -xf archives/2025-10/tarballs/some-archive.tar
+```
+
+---
+
+**Created:** 2025-10-25
+**Automated by:** scripts/utilities/archive-cleanup.sh
+HEREDOC
+
+    # Replace date placeholder
+    sed -i "s/REPLACE_DATE/$(date +%Y-%m-%d)/" "$ARCHIVE_BASE/README.md"
+else
+    echo "  [DRY-RUN] Would create: $ARCHIVE_BASE/README.md"
+fi
+
+### $(/old-isos/)
+Superseded ISO builds:
+- Keep only latest 3 ISOs in main build/
+- Older ISOs archived here
+
+**Retention:** 3 months for minor versions, 1 year for major versions
+
+---
+
+### $(/experiments/)
+Experimental builds and prototypes:
+- $(kernel-test-iso/) - Early kernel testing ISO (isoroot)
+- Other proof-of-concept builds
+
+**Retention:** 1 year, then delete if not referenced
+
+---
+
+## Retention Policy
+
+- **Logs:** 6 months → cold storage → delete after 2 years
+- **Tarballs:** Compress immediately, keep 1 year
+- **ISOs:** Latest 3 in production, old ones here for 3-12 months
+- **Experiments:** 1 year unless actively referenced
+
+## Disk Space
+
+Original size: ~8.0GB (build/)
+After cleanup: ~4.3GB (estimated)
+Savings: ~3.7GB (46% reduction)
+
+## Restoring
+
+To restore a log:
+``$(bash
+cp archives/2025-10/logs/archived/some-log.txt build/logs/
+)``
+
+To extract a tarball:
+``$(bash
+xz -d archives/2025-10/tarballs/some-archive.tar.xz
+tar -xf archives/2025-10/tarballs/some-archive.tar
+)``
+
+---
+
+**Created:** 2025-10-25
+**Automated by:** scripts/utilities/archive-cleanup.sh
+EOF
+
+# Calculate savings
+echo ""
+echo "✅ Cleanup complete!"
+echo ""
+echo "📊 Disk Usage:"
+du -sh "$ARCHIVE_BASE" 2>/dev/null || echo "  archives/: (calculating...)"
+du -sh "$BUILD_DIR" 2>/dev/null || echo "  build/: (calculating...)"
+echo ""
+echo "💡 Archived files are in: $ARCHIVE_BASE/"
+echo "💡 See: $ARCHIVE_BASE/README.md for retention policy"

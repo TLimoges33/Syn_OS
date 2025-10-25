@@ -237,23 +237,33 @@ echo -e "  Resource Monitor: ${ENABLE_RESOURCE_MONITORING}"
 echo -e "  Checkpoints:      ${ENABLE_CHECKPOINTS}"
 echo ""
 
-# Create directories
+# Handle clean build FIRST (before creating directories)
+if [ "$CLEAN_BUILD" = true ]; then
+    echo -e "${YELLOW}⚠${NC} Clean build requested - removing build directory"
+    # Use sudo to remove root-owned files from previous builds
+    if [ -d "$BUILD_DIR" ]; then
+        # Check if there are any root-owned files that would cause permission issues
+        if [ "$(find "$BUILD_DIR" -user root 2>/dev/null | head -1)" ]; then
+            echo -e "${YELLOW}ℹ${NC} Detected root-owned files, using sudo for cleanup..."
+        fi
+        sudo rm -rf "$BUILD_DIR" || {
+            echo -e "${RED}✗ Failed to remove build directory.${NC}"
+            echo -e "${YELLOW}If permission denied errors occur, ensure you have sudo access:${NC}"
+            echo -e "  sudo rm -rf $BUILD_DIR"
+            exit 1
+        }
+    fi
+    echo -e "${GREEN}✓${NC} Build directory cleaned"
+fi
+
+# Create/recreate directories
 mkdir -p "$BUILD_DIR"
 mkdir -p "$BUILD_DIR/logs"
 mkdir -p "$BUILD_DIR/binaries"
 mkdir -p "$BUILD_DIR/tools"
 
-# Handle clean build
-if [ "$CLEAN_BUILD" = true ]; then
-    echo -e "${YELLOW}⚠${NC} Clean build requested - removing build directory"
-    sudo rm -rf "$BUILD_DIR"
-    mkdir -p "$BUILD_DIR"
-    mkdir -p "$BUILD_DIR/logs"
-    mkdir -p "$BUILD_DIR/binaries"
-    mkdir -p "$BUILD_DIR/tools"
-    echo -e "${GREEN}✓${NC} Build directory cleaned"
-else
-    # Compress old logs if not doing clean build (v2.4.1)
+# Compress old logs if not doing clean build (v2.4.1)
+if [ "$CLEAN_BUILD" = false ]; then
     if [ -d "$BUILD_DIR/logs" ]; then
         compress_old_logs "$BUILD_DIR/logs" 2>/dev/null || true
     fi

@@ -1,0 +1,145 @@
+# Syn_OS Security Services Container
+# Multi-stage build for security-hardened production optimization
+
+# Build stage
+FROM python:3.11-slim as builder
+
+# Set build arguments
+ARG DEBIAN_FRONTEND=noninteractive
+ARG BUILD_DATE
+ARG VERSION=latest
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    gcc \
+    g++ \
+    cmake \
+    pkg-config \
+    libssl-dev \
+    libffi-dev \
+    python3-dev \
+    git \
+    libgmp-dev \
+    libmpfr-dev \
+    libmpc-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create virtual environment
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Install Python dependencies
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+
+# Core security dependencies
+RUN pip install --no-cache-dir \
+    # Cryptography and security
+    cryptography==42.0.8 \
+    pycryptodome==3.20.0 \
+    bcrypt==4.2.0 \
+    passlib==1.7.4 \
+    jwt==1.3.1 \
+    pyjwt==2.8.0 \
+    # HSM and quantum crypto
+    hsm-python==1.0.0 || true \
+    pqcrypto==0.7.4 || true \
+    # Network security  
+    scapy==2.5.0 \
+    netaddr==1.3.0 \
+    # Database security
+    sqlalchemy==2.0.32 \
+    alembic==1.13.2 \
+    # Redis integration
+    redis==6.4.0 \
+    aioredis==1.3.1 \
+    # FastAPI security
+    fastapi==0.116.1 \
+    fastapi-users==13.0.0 \
+    uvicorn==0.35.0 \
+    # Authentication and authorization
+    authlib==1.3.1 \
+    python-multipart==0.0.9 \
+    # Monitoring and logging
+    structlog==24.4.0 \
+    prometheus-client==0.22.1 \
+    # NATS messaging
+    nats-py==2.8.0 \
+    # Async support
+    asyncio-mqtt==0.16.2 \
+    aiofiles==24.1.0
+
+# Production stage
+FROM python:3.11-slim as production
+
+# Set labels for metadata
+LABEL maintainer="Syn_OS Security Team" \
+    version="${VERSION}" \
+    build-date="${BUILD_DATE}" \
+    description="Syn_OS Security Services - HSM & Quantum Crypto"
+
+# Security hardening - create non-root user
+RUN groupadd -r security --gid=999 && useradd -r -g security --uid=999 --home-dir=/app --shell=/bin/false security
+
+# Install minimal runtime dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    ca-certificates \
+    openssl \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+# Copy virtual environment from builder
+COPY --from=builder /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Set working directory
+WORKDIR /app
+
+# Copy application code with proper structure
+COPY src/security/ /app/src/security/
+COPY config/security/ /app/config/security/
+COPY scripts/security/ /app/scripts/security/
+
+# Create necessary directories with secure permissions
+RUN mkdir -p /app/data /app/logs /app/tmp /app/keys && \
+    chmod 700 /app/keys /app/data && \
+    chmod 755 /app/logs /app/tmp && \
+    chown -R security:security /app
+
+# Set secure environment variables
+ENV PYTHONPATH="/app:/app/src" \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    SECURITY_MODE=production \
+    LOG_LEVEL=INFO \
+    # Security hardening settings
+    PYTHONHASHSEED=random \
+    SECURITY_KEY_PATH=/app/keys \
+    HSM_ENABLED=false \
+    QUANTUM_CRYPTO_ENABLED=false \
+    # Performance settings
+    FASTAPI_WORKERS=2 \
+    REDIS_MAX_CONNECTIONS=10 \
+    # Audit and compliance
+    AUDIT_ENABLED=true \
+    AUDIT_LOG_PATH=/app/logs/security \
+    COMPLIANCE_MODE=strict
+
+# Security: Set file permissions
+RUN find /app -type f -executable -exec chmod 755 {} \; && \
+    find /app -type f ! -executable -exec chmod 644 {} \; && \
+    chmod 600 /app/config/security/* || true
+
+# Health check with security validation
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8088/security/health || exit 1
+
+# Switch to non-root user for security
+USER security
+
+# Expose security services port
+EXPOSE 8088
+
+# Secure startup command
+CMD ["python", "-m", "src.security.main"]

@@ -1,0 +1,148 @@
+# Syn_OS Kernel Development Environment
+# Multi-stage Docker container for consciousness-aware cybersecurity education kernel development
+
+# Stage 1: Base Rust development environment
+FROM rust:1.75-bullseye as rust-base
+
+# Install system dependencies for kernel development
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    nasm \
+    grub2-common \
+    xorriso \
+    qemu-system-x86 \
+    qemu-utils \
+    gdb \
+    binutils \
+    llvm \
+    clang \
+    curl \
+    git \
+    vim \
+    tmux \
+    htop \
+    tree \
+    jq \
+    python3 \
+    python3-pip \
+    nodejs \
+    npm \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Rust components for bare metal development
+RUN rustup component add rust-src
+RUN rustup target add x86_64-unknown-none
+RUN rustup toolchain install nightly
+RUN rustup component add rust-src --toolchain nightly
+
+# Install cargo tools for kernel development
+RUN cargo install bootimage
+RUN cargo install cargo-expand
+RUN cargo install cargo-audit
+RUN cargo install cargo-deny
+
+# Install Python dependencies for consciousness integration
+COPY requirements.txt /tmp/requirements.txt
+RUN pip3 install -r /tmp/requirements.txt
+
+# Stage 2: Development workspace
+FROM rust-base as dev-workspace
+
+# Create development user
+RUN useradd -m -s /bin/bash synaptic-dev && \
+    usermod -aG sudo synaptic-dev && \
+    echo "synaptic-dev ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# Set up workspace directory
+WORKDIR /workspace/syn_os
+RUN chown -R synaptic-dev:synaptic-dev /workspace
+
+# Switch to development user
+USER synaptic-dev
+
+# Set up development environment variables
+ENV RUST_BACKTRACE=1
+ENV QEMU_DISPLAY=none
+ENV CARGO_TARGET_DIR=/workspace/syn_os/target
+ENV PATH="/home/synaptic-dev/.cargo/bin:${PATH}"
+
+# Create development directories
+RUN mkdir -p /home/synaptic-dev/.cargo \
+    /home/synaptic-dev/.rustup \
+    /workspace/syn_os/target \
+    /workspace/syn_os/iso \
+    /workspace/syn_os/logs
+
+# Copy development configuration
+COPY --chown=synaptic-dev:synaptic-dev .cargo/config.toml /home/synaptic-dev/.cargo/config.toml
+
+# Install VS Code Server for remote development
+RUN curl -fsSL https://code-server.dev/install.sh | sh
+
+# Stage 3: Educational sandbox base
+FROM dev-workspace as sandbox-base
+
+# Install additional tools for educational scenarios
+RUN sudo apt-get update && sudo apt-get install -y \
+    wireshark-common \
+    tcpdump \
+    netcat \
+    nmap \
+    strace \
+    ltrace \
+    gdb-multiarch \
+    valgrind \
+    hexdump \
+    binwalk \
+    radare2 \
+    && sudo rm -rf /var/lib/apt/lists/*
+
+# Install security analysis tools
+RUN sudo pip3 install \
+    pwntools \
+    capstone \
+    keystone-engine \
+    unicorn \
+    ropper \
+    && sudo npm install -g @microsoft/rush
+
+# Configure security tools for educational use
+RUN mkdir -p /home/synaptic-dev/.config/radare2 \
+    /home/synaptic-dev/educational-tools \
+    /home/synaptic-dev/consciousness-logs
+
+# Stage 4: Final development image
+FROM sandbox-base as final
+
+# Copy startup scripts
+COPY --chown=synaptic-dev:synaptic-dev scripts/dev-entrypoint.sh /home/synaptic-dev/dev-entrypoint.sh
+COPY --chown=synaptic-dev:synaptic-dev scripts/consciousness-monitor.py /home/synaptic-dev/consciousness-monitor.py
+COPY --chown=synaptic-dev:synaptic-dev scripts/educational-sandbox.sh /home/synaptic-dev/educational-sandbox.sh
+
+RUN chmod +x /home/synaptic-dev/dev-entrypoint.sh \
+    /home/synaptic-dev/consciousness-monitor.py \
+    /home/synaptic-dev/educational-sandbox.sh
+
+# Expose ports for development services
+EXPOSE 8080 8443 3000 9000
+
+# Set up volume mount points
+VOLUME ["/workspace/syn_os", "/home/synaptic-dev/consciousness-logs"]
+
+# Health check for container status
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost:8080/health || exit 1
+
+# Set default working directory
+WORKDIR /workspace/syn_os
+
+# Set entrypoint
+ENTRYPOINT ["/home/synaptic-dev/dev-entrypoint.sh"]
+CMD ["bash"]
+
+# Metadata
+LABEL maintainer="SynapticOS Development Team"
+LABEL description="Consciousness-aware cybersecurity education kernel development environment"
+LABEL version="2.0"
+LABEL edu.synapticos.component="development-environment"
+LABEL edu.synapticos.features="consciousness-integration,educational-sandbox,kernel-development"

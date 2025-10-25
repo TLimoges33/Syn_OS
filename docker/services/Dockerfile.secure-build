@@ -1,0 +1,31 @@
+FROM rust:1.75-slim-bookworm
+
+# Security: Create non-root user for builds
+RUN useradd -m -u 1000 -s /bin/bash builder
+RUN usermod -aG sudo builder
+
+# Install security tools
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    git \
+    gpg \
+    squashfs-tools \
+    xorriso \
+    isolinux \
+    qemu-system-x86 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Security: Install Rust security tools
+USER builder
+RUN cargo install cargo-audit cargo-deny cargo-geiger
+
+# Set up secure build environment
+WORKDIR /workspace
+COPY --chown=builder:builder . /workspace/
+
+# Security: Validate project integrity
+RUN [[ -f "Cargo.toml" ]] || exit 1
+
+# Default command runs security checks
+CMD ["./scripts/security-automation/validate-security.sh"]

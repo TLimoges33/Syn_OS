@@ -1,0 +1,206 @@
+# Multi-stage unified Dockerfile for SynOS Services
+# This replaces individual service Dockerfiles with a cohesive build system
+
+###########################################
+# Base Stage - Common Dependencies
+###########################################
+FROM python:3.11-slim as base
+
+# Install system dependencies common to all services
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    make \
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set common environment variables
+ENV PYTHONPATH=/app
+ENV RAY_DISABLE_IMPORT_WARNING=1
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+# Create common directory structure
+RUN mkdir -p /app/logs /app/data /app/static /app/templates /app/consciousness_state
+
+###########################################
+# Python Dependencies Stage
+###########################################
+FROM base as python-deps
+
+# Copy all requirements files to leverage Docker layer caching
+COPY services/*/requirements.txt ./requirements/
+
+# Install all Python dependencies in one layer
+RUN find ./requirements -name "requirements.txt" -exec cat {} \; | sort | uniq > /tmp/combined_requirements.txt && \
+    pip install --no-cache-dir -r /tmp/combined_requirements.txt
+
+###########################################
+# Go Dependencies Stage (for orchestrator)
+###########################################
+FROM golang:1.21-alpine as go-deps
+
+WORKDIR /go/src/app
+
+# Copy go modules
+COPY services/orchestrator/go.mod services/orchestrator/go.sum ./
+RUN go mod download
+
+# Build orchestrator
+COPY services/orchestrator/ ./
+RUN CGO_ENABLED=0 GOOS=linux go build -o orchestrator cmd/main.go
+
+###########################################
+# Consciousness Services (Python-based)
+###########################################
+FROM python-deps as consciousness-base
+
+# Copy common consciousness code
+COPY core/consciousness/ /app/core/consciousness/
+COPY core/common/ /app/core/common/
+
+# Health check for consciousness services
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:${SERVICE_PORT:-8000}/health || exit 1
+
+###########################################
+# AI Bridge Service
+###########################################
+FROM consciousness-base as ai-bridge
+
+COPY services/consciousness-ai-bridge/ /app/
+EXPOSE 8082
+CMD ["python", "consciousness_ai_bridge.py"]
+
+###########################################
+# Dashboard Service
+###########################################
+FROM consciousness-base as dashboard
+
+COPY services/consciousness-dashboard/ /app/
+EXPOSE 8000
+CMD ["python", "consciousness_dashboard.py"]
+
+###########################################
+# Unified Consciousness Service
+###########################################
+FROM consciousness-base as unified
+
+COPY services/consciousness-unified/ /app/
+EXPOSE 8083
+CMD ["python", "consciousness_unified.py"]
+
+###########################################
+# Context Engine Service
+###########################################
+FROM consciousness-base as context-engine
+
+COPY services/context-engine/ /app/
+EXPOSE 8085
+CMD ["python", "context_engine.py"]
+
+###########################################
+# Context Intelligence Service
+###########################################
+FROM consciousness-base as context-intelligence
+
+COPY services/context-intelligence-unified/ /app/
+EXPOSE 8086
+CMD ["python", "context_intelligence.py"]
+
+###########################################
+# Ray Distributed Consciousness
+###########################################
+FROM consciousness-base as ray-consciousness
+
+# Install Ray-specific dependencies
+RUN pip install --no-cache-dir ray[default] ray[serve]
+
+COPY services/consciousness-ray-distributed/ /app/
+
+# Ray-specific environment
+ENV RAY_ADDRESS=ray://ray-head:10001
+
+# Expose Ray ports
+EXPOSE 8265 10001 6379 8000
+
+# Ray health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
+    CMD python -c "import ray; ray.init(address='auto', ignore_reinit_error=True); print('Ray healthy')" || exit 1
+
+CMD ["python", "ray_consciousness_engine.py"]
+
+###########################################
+# Service Orchestrator (Go-based)
+###########################################
+FROM alpine:latest as orchestrator
+
+RUN apk --no-cache add ca-certificates
+WORKDIR /root/
+
+# Copy the binary from go-deps stage
+COPY --from=go-deps /go/src/app/orchestrator .
+
+EXPOSE 8080
+
+# Health check for orchestrator
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1
+
+CMD ["./orchestrator"]
+
+###########################################
+# Educational Platform (Multi-purpose)
+###########################################
+FROM consciousness-base as educational
+
+# Install additional educational platform dependencies
+RUN pip install --no-cache-dir \
+    fastapi \
+    uvicorn \
+    jinja2 \
+    python-multipart
+
+COPY services/educational-platform/ /app/
+
+# Support both main service and GUI
+EXPOSE 8084 8001
+
+# Default to main educational service
+CMD ["python", "educational_platform.py"]
+
+###########################################
+# CTF Platform Service
+###########################################
+FROM consciousness-base as ctf-platform
+
+# Install CTF-specific dependencies
+RUN pip install --no-cache-dir \
+    sqlalchemy \
+    alembic \
+    bcrypt \
+    docker
+
+COPY services/ctf-platform/ /app/
+
+EXPOSE 8087
+CMD ["python", "ctf_platform.py"]
+
+###########################################
+# News Intelligence Service
+###########################################
+FROM consciousness-base as news-intelligence
+
+# Install news processing dependencies
+RUN pip install --no-cache-dir \
+    feedparser \
+    newspaper3k \
+    nltk \
+    textblob
+
+COPY services/news-intelligence/ /app/
+
+EXPOSE 8088
+CMD ["python", "news_intelligence.py"]
