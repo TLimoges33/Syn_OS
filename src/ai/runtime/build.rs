@@ -5,7 +5,6 @@
 //! - ONNX Runtime (libonnxruntime.so)
 //! - PyTorch LibTorch (libtorch.so)
 
-use std::env;
 use std::path::PathBuf;
 
 fn main() {
@@ -106,6 +105,7 @@ fn main() {
 }
 
 /// Check if a library is available in the system
+#[allow(dead_code)]
 fn check_library_available(lib_name: &str, search_paths: &[&str]) -> bool {
     for path in search_paths {
         let full_path = PathBuf::from(path).join(lib_name);

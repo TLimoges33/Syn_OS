@@ -1,5 +1,6 @@
 /// SynOS-specific syscall interface (syscall numbers 0-42)
 pub mod synos_syscalls;
+pub mod optimization;  // Syscall optimizations
 
 use alloc::format;
 use alloc::string::{String, ToString};

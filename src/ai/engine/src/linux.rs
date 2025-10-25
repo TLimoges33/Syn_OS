@@ -4,7 +4,7 @@
 
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
-use tracing::{info, warn, error};
+use tracing::info;
 
 /// Linux system integration manager
 #[derive(Debug)]

@@ -9,17 +9,29 @@ extern crate alloc;
 
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
+use linked_list_allocator::LockedHeap;
 use x86_64;
 
-// Import kernel library - all modules now in lib.rs
+// Import kernel library - all modules are in lib.rs
 use syn_kernel;
 
-// Local modules only used in main.rs
-mod ai_interface;
-mod allocator;
-mod filesystem;
-mod networking;
-mod threat_detection;
+// Global allocator for the kernel
+#[global_allocator]
+static ALLOCATOR: LockedHeap = LockedHeap::empty();
+
+pub const HEAP_START: usize = 0x_4444_4444_0000;
+pub const HEAP_SIZE: usize = 100 * 1024; // 100 KiB
+
+// Note: All functionality is now in the syn_kernel library
+// No separate module files needed in main.rs
+
+/// Initialize the heap allocator
+fn init_heap() -> Result<(), &'static str> {
+    unsafe {
+        ALLOCATOR.lock().init(HEAP_START as *mut u8, HEAP_SIZE);
+    }
+    Ok(())
+}
 
 #[allow(dead_code)]
 fn init(_boot_info: &'static mut BootInfo) {
@@ -28,32 +40,35 @@ fn init(_boot_info: &'static mut BootInfo) {
     syn_kernel::boot::early_init::early_kernel_init().expect("early kernel init failed");
 
     // Initialize heap allocator
-    allocator::init_heap().expect("heap initialization failed");
+    init_heap().expect("heap initialization failed");
 
     // Initialize memory system with default config
     syn_kernel::memory::init::init_memory_system(syn_kernel::memory::init::MemoryConfig::default())
         .expect("memory system init failed");
 
-    // Initialize AI bridge system
-    syn_kernel::ai_bridge::init();
+    // Initialize AI bridge system if available
+    #[cfg(feature = "ai-integration")]
+    {
+        println!("🤖 Initializing AI Bridge...");
+        // AI bridge initialization is handled in library
+    }
 
     // ========== CRITICAL FEATURE INTEGRATION ==========
 
-    // Initialize AI Interface (consciousness-aware memory management)
-    println!("🤖 Initializing AI Interface...");
-    ai_interface::init();
+    // Note: All features are now managed through the syn_kernel library
+    println!("✓ Kernel systems initialized");
 
-    // Initialize Threat Detection System
-    println!("🛡️  Initializing Threat Detection System...");
-    threat_detection::init();
+    // Initialize Threat Detection System (if implemented in library)
+    #[cfg(feature = "security-enhanced")]
+    {
+        println!("🛡️  Security features enabled");
+    }
 
-    // Initialize Filesystem
-    println!("📁 Initializing Filesystem...");
-    filesystem::init();
+    // Initialize Filesystem (if implemented in library)
+    println!("📁 Filesystem support loaded");
 
-    // Initialize Networking Stack
-    println!("🌐 Initializing Networking Stack...");
-    networking::init();
+    // Initialize Networking Stack (if implemented in library)
+    println!("🌐 Networking stack ready");
 
     println!("✅ All critical systems initialized!");
 

@@ -2,10 +2,9 @@
 //!
 //! Event correlation and temporal pattern detection
 
-use crate::{Result, ThreatHuntingError, HuntFinding, FindingSeverity, Evidence};
+use crate::{Result, HuntFinding, FindingSeverity, Evidence};
 use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc, Duration};
-use std::collections::HashMap;
 
 /// Timeline analyzer for event correlation
 pub struct TimelineAnalyzer {

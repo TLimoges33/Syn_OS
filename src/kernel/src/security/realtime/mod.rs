@@ -8,8 +8,8 @@ pub mod policy_enforcer;
 
 use alloc::vec::Vec;
 use alloc::collections::BTreeMap;
-use crate::signals::{Signal, SignalManager};
-use crate::ipc_advanced::IpcManager;
+use crate::process::signals::{Signal, SignalManager};
+use crate::ipc::advanced::IpcManager;
 
 /// Threat severity levels
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]

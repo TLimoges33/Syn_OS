@@ -1,9 +1,8 @@
 //! Real-time Security Metrics Collection
 
 use crate::{MetricPoint, MetricType, Result, AnalyticsError};
-use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
-use chrono::{DateTime, Utc, Duration};
+use chrono::Duration;
 
 /// Metrics collector with buffering
 pub struct MetricsCollector {

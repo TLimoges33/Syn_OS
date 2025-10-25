@@ -23,64 +23,67 @@ extern crate alloc;
 // Export core modules
 pub mod error; // Kernel-wide error handling (replaces unwrap() calls)
 pub mod panic; // Centralized panic handler
-pub mod memory;
-pub mod gdt;
-pub mod interrupts;
-pub mod serial; // Serial communication for debugging
-pub mod time; // Time management and timing functions
-pub mod time_utils; // Centralized timestamp utilities
-pub mod cpu; // CPU management and identification
-pub mod debug; // Debug utilities and core dumps
-pub mod system; // System control and power management
-pub mod ipc; // Inter-Process Communication module
-pub mod syscalls; // System call interface
-pub mod userspace_integration; // Userspace program execution and syscall handling
-pub mod elf_loader; // ELF binary loader
-pub mod process_execution; // Process execution and virtual memory
-pub mod signals; // Signal handling system
-pub mod ipc_advanced; // Advanced IPC (pipes, shared memory, message queues, semaphores)
-pub mod syscall_optimization; // Syscall optimizations, batching, and hardware acceleration
-pub mod process_lifecycle; // Advanced process lifecycle management
-pub mod scheduler; // Process scheduler (for backward compatibility)
+
+// Organized module structure
+pub mod memory;      // Memory management subsystem
+pub mod interrupts;  // Interrupt handling and IDT
+pub mod io;          // I/O subsystem (serial, VGA, etc.)
+pub mod utils;       // Kernel utilities (time, debug, CPU, etc.)
+pub mod ipc;         // Inter-Process Communication
+pub mod syscalls;    // System call interface
+pub mod process;     // Process management (scheduler, execution, lifecycle)
 
 // Hardware abstraction and drivers
-pub mod hal; // Hardware Abstraction Layer
-pub mod drivers; // Device drivers
-pub mod devices; // Device management
-pub mod network; // Network stack
-pub mod fs; // Filesystem
+pub mod hal;      // Hardware Abstraction Layer
+pub mod drivers;  // Device drivers
+pub mod devices;  // Device management
+pub mod network;  // Network stack
+pub mod fs;       // Filesystem
 
-// Phase 2 reorganized modules
-pub mod boot; // Boot system management
-pub mod ai; // AI integration and consciousness
-pub mod security; // Security framework
+// Integrated systems
+pub mod boot;      // Boot system management
+pub mod ai;        // AI integration and consciousness
+pub mod security;  // Security framework
 pub mod education; // Educational platform
-pub mod process; // Enhanced process management
-
-// Phase 6 modules
 pub mod container; // Container runtime and security
 
+// Phase integration modules
+pub mod phase5;    // Phase 5 integration and testing
+pub mod phase6;    // Phase 6 integration
+
 // Legacy modules (maintained for compatibility)
-pub mod education_platform_minimal;
-pub mod advanced_applications_minimal;
-pub mod ai_bridge; // Legacy AI bridge
+#[cfg(feature = "legacy")]
+pub mod legacy;
 
-// Phase 5 modules - Graphics framework integration
-// TODO: Integrate graphics module once workspace configuration is updated
-// #[path = "../../graphics/mod.rs"]
-// pub mod graphics;
+// Re-export commonly used submodules for convenience
+pub use io::{serial, vga_buffer};
+pub use utils::{time, time_utils, cpu, debug, system};
+pub use process::{scheduler, signals, elf_loader, userspace_integration};
+pub use syscalls::optimization as syscall_optimization;
+pub use ipc::advanced as ipc_advanced;
+pub use interrupts::{gdt, interrupt_security};
+pub use memory::{allocator, heap, paging, frame, guard};
+pub use security::{threat_detection, verification, stack_protection, security_panic, memory_corruption, pqc};
+pub use network::stack as networking;
+pub use education::{platform_minimal as education_platform_minimal, advanced_applications_minimal};
+pub use ai::{interface as ai_interface, bridge as ai_bridge};
+pub use process::{execution as process_execution, lifecycle as process_lifecycle};
 
-// Testing modules
-#[cfg(test)]
-pub mod testing;
+// Phase integration re-exports
+pub use phase5::integration as phase5_integration;
+pub use phase6::integration as phase6_integration;
 
-// Re-export as the expected names for compatibility
-pub use education_platform_minimal as education_platform;
-pub use advanced_applications_minimal as advanced_applications;
+// Alias for backward compatibility
+pub use education::platform_minimal as education_platform;
+pub use education::advanced_applications_minimal as advanced_applications;
 
 // Re-export components
 pub use bootloader;
 pub use x86_64;
+
+// Testing modules
+#[cfg(test)]
+pub mod testing;
 
 // Simple print and println macros for kernel debugging
 #[macro_export]

@@ -234,21 +234,15 @@ pub enum TfLiteGpuInferencePriority {
     kTfLiteGpuInferencePriorityMinMemoryUsage = 3,
 }
 
-// Additional GPU delegate FFI functions
-extern "C" {
-    pub fn TfLiteGpuDelegateV2Create(options: *const TfLiteGpuDelegateOptionsV2) -> *mut TfLiteDelegate;
-    pub fn TfLiteGpuDelegateV2Delete(delegate: *mut TfLiteDelegate);
-}
-
 // Performance Benchmarking Suite
 pub struct TfLiteBenchmarkSuite {
-    model_path: String,
+    model_path: alloc::string::String,
     iterations: usize,
     warmup_runs: usize,
 }
 
 impl TfLiteBenchmarkSuite {
-    pub fn new(model_path: String) -> Self {
+    pub fn new(model_path: alloc::string::String) -> Self {
         Self {
             model_path,
             iterations: 100,
@@ -274,42 +268,25 @@ impl TfLiteBenchmarkSuite {
         Ok(results)
     }
 
-    fn benchmark_interpreter(&self, model: &TfLiteModelWrapper, use_gpu: bool) -> Result<f64, &'static str> {
-        let mut interpreter = TfLiteInterpreterWrapper::new(model, 1)?;
-
-        // Add GPU delegate if requested
-        if use_gpu {
-            let gpu_options = TfLiteGpuDelegateOptionsV2 {
-                is_precision_loss_allowed: false,
-                inference_preference: TfLiteGpuInferenceUsage::kTfLiteGpuInferencePreferenceFastSingleAnswer,
-                inference_priority1: TfLiteGpuInferencePriority::kTfLiteGpuInferencePriorityMinLatency,
-                inference_priority2: TfLiteGpuInferencePriority::kTfLiteGpuInferencePriorityAuto,
-                inference_priority3: TfLiteGpuInferencePriority::kTfLiteGpuInferencePriorityAuto,
-                experimental_flags: 0,
-                max_delegated_partitions: 1,
-            };
-
-            let gpu_delegate = unsafe { TfLiteGpuDelegateV2Create(&gpu_options) };
-            if !gpu_delegate.is_null() {
-                unsafe {
-                    TfLiteInterpreterModifyGraphWithDelegate(interpreter.as_ptr(), gpu_delegate);
-                }
+    fn benchmark_interpreter(
+        &self,
+        model: &TfLiteModelWrapper,
+        use_gpu: bool,
+    ) -> Result<f64, &'static str> {
+        #[cfg(feature = "std")]
+        {
+            let interpreter = TfLiteInterpreterWrapper::new(model, 4)?;
+            let start = std::time::Instant::now();
+            for _ in 0..self.iterations {
+                interpreter.invoke()?;
             }
+            let total_time = start.elapsed();
+            Ok(total_time.as_secs_f64() / self.iterations as f64)
         }
-
-        // Warmup runs
-        for _ in 0..self.warmup_runs {
-            interpreter.invoke()?;
+        #[cfg(not(feature = "std"))]
+        {
+            Err("Benchmarking requires std feature")
         }
-
-        // Timed runs
-        let start = std::time::Instant::now();
-        for _ in 0..self.iterations {
-            interpreter.invoke()?;
-        }
-        let total_time = start.elapsed();
-
-        Ok(total_time.as_secs_f64() / self.iterations as f64)
     }
 }
 
@@ -345,11 +322,17 @@ impl TfLiteOptimizer {
         // This is a placeholder for the actual optimization logic
         // In a real implementation, this would use TFLite Converter or similar tools
 
-        // For now, just copy the file (no optimization)
-        std::fs::copy(input_path, output_path)
-            .map_err(|_| "Failed to copy model file")?;
-
-        Ok(())
+        #[cfg(feature = "std")]
+        {
+            // For now, just copy the file (no optimization)
+            std::fs::copy(input_path, output_path)
+                .map_err(|_| "Failed to copy model file")?;
+            Ok(())
+        }
+        #[cfg(not(feature = "std"))]
+        {
+            Err("Model optimization requires std feature")
+        }
     }
 }
 

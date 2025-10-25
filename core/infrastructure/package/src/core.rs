@@ -113,6 +113,7 @@ impl VersionConstraint {
 
 /// High-performance package manager core
 pub struct PackageManager {
+    #[allow(dead_code)]
     config: Arc<crate::PackageManagerConfig>,
     repository_manager: Arc<crate::repository::RepositoryManager>,
     dependency_resolver: Arc<crate::dependency::DependencyResolver>,

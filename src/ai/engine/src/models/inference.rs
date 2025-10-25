@@ -3,7 +3,7 @@
 //! Handles model inference across different AI frameworks and provides
 //! unified inference capabilities.
 
-use super::{ModelConfig, PredictionResult};
+use super::PredictionResult;
 use std::collections::HashMap;
 
 /// Main inference engine

@@ -2,7 +2,7 @@
 //!
 //! Handles signature verification, vulnerability scanning, and security policies
 
-use anyhow::{anyhow, Result};
+use anyhow::Result;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 

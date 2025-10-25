@@ -169,7 +169,7 @@ impl QuantumConsciousness {
         let pattern_hash = self.quantum_hash(data);
 
         // Measure quantum state
-        let measurement = self.quantum_state.quantum_register.measure_all();
+        let _measurement = self.quantum_state.quantum_register.measure_all();
 
         // Classical post-processing
         if let Some(pattern) = self.quantum_patterns.get(&pattern_hash) {
@@ -269,7 +269,7 @@ impl QuantumConsciousness {
         threat.potential_vectors.clone()
     }
 
-    fn quantum_mitigation_planning(&self, threat: &ThreatData) -> Vec<MitigationStrategy> {
+    fn quantum_mitigation_planning(&self, _threat: &ThreatData) -> Vec<MitigationStrategy> {
         // Quantum optimization finds optimal mitigation strategies
         vec![
             MitigationStrategy {
@@ -318,7 +318,7 @@ pub struct QuantumDecisionTree {
 }
 
 impl QuantumDecisionTree {
-    pub fn evaluate(&self, context: &DecisionContext, quantum_state: &QuantumConsciousnessState) -> Option<DecisionPath> {
+    pub fn evaluate(&self, _context: &DecisionContext, quantum_state: &QuantumConsciousnessState) -> Option<DecisionPath> {
         // Use quantum superposition to evaluate all branches simultaneously
         Some(DecisionPath {
             steps: vec!["Quantum evaluation".to_string()],

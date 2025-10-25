@@ -2,7 +2,7 @@
 //!
 //! Creates trackable fake data elements (tokens) to detect unauthorized access
 
-use crate::{DeceptionAsset, AssetType, Result, DeceptionError};
+use crate::{DeceptionAsset, AssetType, Result};
 use serde::{Deserialize, Serialize};
 use sha2::{Sha256, Digest};
 use base64::{Engine as _, engine::general_purpose};

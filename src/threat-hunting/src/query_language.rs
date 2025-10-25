@@ -3,7 +3,6 @@
 //! Domain-specific language for threat hunting queries
 
 use crate::{Result, ThreatHuntingError, FindingSeverity, Evidence, ArtifactType};
-use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 /// Hunt query engine

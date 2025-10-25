@@ -10,6 +10,12 @@ pub mod manager;
 pub mod physical;
 pub mod virtual_memory;
 
+// Newly organized modules
+pub mod heap;
+pub mod paging;
+pub mod frame;
+pub mod guard;
+
 // Re-export main components
 pub use allocator::BumpAllocator;
 pub use init::{init_memory_system, test_memory_system, MemoryConfig};

@@ -4,8 +4,6 @@
 
 extern crate alloc;
 use alloc::vec::Vec;
-use alloc::string::String;
-use alloc::boxed::Box;
 
 // Use native Rust inference instead of FFI
 use crate::native_inference::{NeuralNetwork, Activation};

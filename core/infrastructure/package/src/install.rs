@@ -13,10 +13,13 @@ pub struct InstallationEngine {
 
 #[derive(Debug, Clone)]
 struct InstallationTask {
+    #[allow(dead_code)]
     pub package_name: String,
     pub status: PackageStatus,
     pub progress: f32,
+    #[allow(dead_code)]
     pub start_time: chrono::DateTime<chrono::Utc>,
+    #[allow(dead_code)]
     pub log: Vec<String>,
 }
 

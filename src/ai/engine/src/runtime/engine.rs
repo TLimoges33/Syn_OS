@@ -4,13 +4,12 @@
 //! with hardware acceleration, model caching, and security validation.
 
 use super::{RuntimeConfig, RuntimeMetrics, RuntimeState};
-use crate::hal::{ExecutionStrategy, HardwareAbstractionLayer};
+use crate::hal::HardwareAbstractionLayer;
 use anyhow::{Result, anyhow};
-use serde::{Deserialize, Serialize};
 use std::path::Path;
 use std::sync::Arc;
 use std::collections::HashMap;
-use tracing::{error, info, warn};
+use tracing::{info, warn};
 
 #[cfg(feature = "tensorflow-lite")]
 use candle_core::{Device, Tensor};
@@ -19,7 +18,6 @@ use candle_core::{Device, Tensor};
 use ort::{Environment, ExecutionProvider, GraphOptimizationLevel, Session, SessionBuilder};
 
 // Additional imports for hex encoding and ring for checksums
-use ring::digest;
 
 /// AI Runtime managing model execution across multiple frameworks
 #[derive(Debug)]

@@ -82,13 +82,17 @@ fn create_memory_map(size: usize) -> Result<&'static mut [u8], &'static str> {
 /// Set up AI integration
 fn setup_ai_integration() -> Result<(), &'static str> {
     // Initialize AI bridge for memory management integration
-    ai_bridge::init();
+    // crate::ai::bridge::init(); // TODO: implement
     
-    if ai_bridge::is_initialized() {
-        crate::println!("� AI bridge initialized for memory management");
+    // TODO: Implement AI bridge initialization
+    // if crate::ai::bridge::is_initialized() {
+    if false {
+        crate::println!("✅ AI bridge initialized for memory management");
         Ok(())
     } else {
-        Err("Failed to initialize AI bridge")
+        // For now, return Ok as AI bridge is optional
+        crate::println!("⚠️  AI bridge not available (TODO: implement)");
+        Ok(())
     }
 }
 

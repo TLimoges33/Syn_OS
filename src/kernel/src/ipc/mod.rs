@@ -19,6 +19,7 @@ pub mod shared_memory;
 pub mod message_queue;
 pub mod semaphore;
 pub mod deadlock;
+pub mod advanced;  // Advanced IPC features
 
 use pipes::{Pipe, PipeManager};
 use shared_memory::{SharedMemorySegment, SharedMemoryManager};

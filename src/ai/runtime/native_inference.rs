@@ -157,7 +157,7 @@ impl ModelWeights {
         let mut network = NeuralNetwork::new(input_size, output_size);
 
         for layer_weights in &self.layers {
-            let mut layer = DenseLayer {
+            let layer = DenseLayer {
                 weights: layer_weights.weights.clone(),
                 biases: layer_weights.biases.clone(),
                 activation: layer_weights.activation,

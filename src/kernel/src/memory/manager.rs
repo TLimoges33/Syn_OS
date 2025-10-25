@@ -57,7 +57,7 @@ impl MemoryManager {
     /// Initialize the memory manager with AI integration
     pub fn init_with_ai(&mut self) {
         // AI integration is now handled through the ai_bridge module
-        ai_bridge::init();
+        // crate::ai::bridge::init(); // TODO: implement
     }
 
     /// Handle a page fault

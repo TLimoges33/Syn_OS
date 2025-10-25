@@ -37,6 +37,12 @@ members = [
     "src/universal-command",       # V1.9: Universal command orchestrator with AI tool selection
     "src/ctf-platform",            # V1.9: CTF training platform with challenges and leaderboards
     "src/quantum-consciousness",   # V2.0: Quantum AI consciousness - GRAND FINALE
+    # Service Daemons - System-level background services
+    "src/services/synos-ai-daemon",
+    "src/services/synos-consciousness-daemon",
+    "src/services/synos-hardware-accel",
+    "src/services/synos-llm-engine",
+    "src/services/synos-security-orchestrator",
 ]
 
 # Exclude archived, backup, and build directories
@@ -115,12 +121,30 @@ thiserror = { version = "1.0.50", default-features = false }
 chrono = { version = "0.4", default-features = false, features = ["serde"] }
 log = { version = "0.4", default-features = false }
 tracing = { version = "0.1", default-features = false }
+tracing-subscriber = { version = "0.3", default-features = false, features = ["fmt", "ansi"] }
 
 # ===================
 # ASYNC RUNTIME
 # ===================
 tokio = { version = "1.32", default-features = false, features = ["rt", "macros"] }
 futures = { version = "0.3", default-features = false }
+async-trait = { version = "0.1" }
+
+# ===================
+# MATH & DATA PROCESSING
+# ===================
+ndarray = { version = "0.15", default-features = false }
+
+# ===================
+# SYSTEM INFORMATION
+# ===================
+sysinfo = { version = "0.30" }
+
+# ===================
+# QUIC/HTTP3 PROTOCOLS
+# ===================
+quinn = { version = "0.10" }
+h3 = { version = "0.0.4" }
 
 # ===================
 # CRYPTOGRAPHY

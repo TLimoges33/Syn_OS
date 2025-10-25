@@ -14,7 +14,7 @@
 use anyhow::Result;
 use std::sync::Arc;
 use tokio::sync::RwLock;
-use tracing::{error, info, warn};
+use tracing::info;
 
 // Reorganized modular structure (Phase 1 implementation)
 pub mod consciousness; // Consciousness system with Neural Darwinism
@@ -54,7 +54,7 @@ impl AIEngine {
 
         // Initialize consciousness engine with new architecture
         let consciousness_config = consciousness::ConsciousnessConfig::default();
-        let mut consciousness_engine =
+        let consciousness_engine =
             consciousness::ConsciousnessEngine::new(consciousness_config);
         consciousness_engine.start().await?;
         let consciousness = Arc::new(RwLock::new(consciousness_engine));

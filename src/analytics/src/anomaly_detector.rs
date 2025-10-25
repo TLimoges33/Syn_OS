@@ -2,8 +2,7 @@
 //!
 //! ML-based anomaly detection for security metrics
 
-use crate::{MetricPoint, MetricType, Anomaly, AnomalySeverity, Result, AnalyticsError};
-use chrono::{DateTime, Utc};
+use crate::{MetricPoint, MetricType, Anomaly, AnomalySeverity, Result};
 use std::collections::HashMap;
 
 /// Anomaly detection algorithms

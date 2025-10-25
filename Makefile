@@ -66,6 +66,79 @@ FIRE := 🔥
 # Default enhanced target
 all: showcase kernel ai-engine
 
+# ===================
+# CONSOLIDATED BUILD SYSTEM V2.0
+# ===================
+
+help-build: ## 📋 Show all build system targets
+	@echo "$(BOLD)$(CYAN)🛠️  SynOS Build System v2.0 (Consolidated)$(NC)"
+	@echo ""
+	@echo "$(BOLD)Core Build Targets:$(NC)"
+	@echo "  $(GREEN)verify$(NC)          - Check build environment (verify-build.sh)"
+	@echo "  $(GREEN)kernel-iso$(NC)      - Quick kernel-only ISO (5-10 min)"
+	@echo "  $(GREEN)iso$(NC)             - Standard ISO build (20-30 min) [Recommended]"
+	@echo "  $(GREEN)full-linux$(NC)      - Complete distribution (60-90 min)"
+	@echo ""
+	@echo "$(BOLD)Testing & Validation:$(NC)"
+	@echo "  $(YELLOW)test-iso$(NC)        - Test ISO in QEMU (all modes)"
+	@echo "  $(YELLOW)verify$(NC)          - Verify build environment"
+	@echo ""
+	@echo "$(BOLD)Maintenance:$(NC)"
+	@echo "  $(BLUE)clean-builds$(NC)    - Clean old builds (interactive)"
+	@echo "  $(BLUE)archive-isos$(NC)    - Archive old ISOs"
+	@echo ""
+	@echo "$(BOLD)Advanced:$(NC)"
+	@echo "  $(PURPLE)sign-iso$(NC)        - Sign ISO with GPG"
+	@echo "  $(PURPLE)docker-build$(NC)    - Build in Docker container"
+	@echo ""
+	@echo "For more info: $(CYAN)docs/BUILD_SCRIPTS_MIGRATION_GUIDE.md$(NC)"
+	@echo ""
+
+verify: ## ✓ Verify build environment
+	@echo "$(CYAN)Verifying build environment...$(NC)"
+	@./scripts/testing/verify-build.sh
+
+kernel-iso: ## 🚀 Quick kernel-only ISO (5-10 minutes)
+	@echo "$(CYAN)Building kernel-only ISO (fast)...$(NC)"
+	@./scripts/build-kernel-only.sh
+
+iso-consolidated: ## 💿 Standard ISO build (20-30 minutes) - Recommended
+	@echo "$(CYAN)Building standard ISO (recommended)...$(NC)"
+	@./scripts/build-iso.sh
+
+full-linux: ## 🌍 Full Linux distribution (60-90 minutes)
+	@echo "$(CYAN)Building full distribution...$(NC)"
+	@./scripts/build-full-linux.sh
+
+test-iso: ## 🧪 Test ISO in QEMU
+	@echo "$(CYAN)Testing ISO in QEMU...$(NC)"
+	@if ls build/SynOS-*.iso 1> /dev/null 2>&1; then \
+		./scripts/testing/test-iso.sh build/SynOS-*.iso; \
+	else \
+		echo "$(RED)No ISO found in build/ directory$(NC)"; \
+		echo "$(YELLOW)Build one first: make iso-consolidated$(NC)"; \
+	fi
+
+clean-builds: ## 🧹 Clean old builds (interactive)
+	@echo "$(CYAN)Cleaning old builds...$(NC)"
+	@./scripts/maintenance/clean-builds.sh
+
+archive-isos: ## 📦 Archive old ISOs
+	@echo "$(CYAN)Archiving old ISOs...$(NC)"
+	@./scripts/maintenance/archive-old-isos.sh
+
+sign-iso: ## 🔏 Sign ISO with GPG
+	@echo "$(CYAN)Signing ISO with GPG...$(NC)"
+	@if ls build/SynOS-*.iso 1> /dev/null 2>&1; then \
+		./scripts/utilities/sign-iso.sh --sign build/SynOS-*.iso; \
+	else \
+		echo "$(RED)No ISO found in build/ directory$(NC)"; \
+	fi
+
+docker-build: ## 🐳 Build in Docker container
+	@echo "$(CYAN)Building in Docker container...$(NC)"
+	@./scripts/docker/build-docker.sh --build
+
 # Ultimate project showcase
 showcase: ## $(FIRE) Ultimate SynOS showcase with full metrics
 	@echo "$(BOLD)$(BLUE)$(BRAIN) SynOS Ultimate Developer Experience $(BRAIN)$(NC)"

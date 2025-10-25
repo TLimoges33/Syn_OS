@@ -3,7 +3,6 @@
 //! Various neural network architectures used in SynapticOS consciousness and AI processing.
 
 use super::{ModelConfig, TrainingData, ModelMetrics, PredictionResult};
-use std::collections::HashMap;
 
 /// Main neural network structure
 #[derive(Debug)]
@@ -212,7 +211,7 @@ impl NeuralNetwork {
             ActivationFunction::Tanh => value.tanh(),
             ActivationFunction::Linear => value,
             ActivationFunction::LeakyReLU => if value > 0.0 { value } else { 0.01 * value },
-            ActivationFunction::ELU => if value > 0.0 { value } else { (value.exp() - 1.0) },
+            ActivationFunction::ELU => if value > 0.0 { value } else { value.exp() - 1.0 },
             ActivationFunction::Softmax => {
                 // Softmax requires normalization across all outputs, simplified here
                 value.exp()

@@ -2,8 +2,6 @@
 
 use zero_trust::*;
 use serde_json;
-use std::net::IpAddr;
-use std::path::PathBuf;
 use chrono::Utc;
 use uuid::Uuid;
 

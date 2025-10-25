@@ -2,7 +2,7 @@
 
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
-use tracing::{info, warn, error};
+use tracing::info;
 
 /// Hardware capabilities discovered on the system
 #[derive(Debug, Clone, Serialize, Deserialize)]

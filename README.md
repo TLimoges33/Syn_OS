@@ -127,11 +127,26 @@ cd Syn_OS
 sudo apt update
 sudo apt install live-build debootstrap squashfs-tools xorriso grub-pc-bin
 
-# Build the ISO (30-60 minutes)
-sudo ./scripts/02-build/core/build-synos-ultimate-iso.sh
+# Verify build environment
+./scripts/testing/verify-build.sh
 
-# Output: build/synos-ultimate.iso (12-15GB)
+# Build options (choose one):
+
+# 1. Quick kernel-only ISO (5-10 minutes) - Fast testing
+./scripts/build-kernel-only.sh
+
+# 2. Standard ISO (20-30 minutes) - Recommended
+./scripts/build-iso.sh
+
+# 3. Full distribution (60-90 minutes) - Complete system
+./scripts/build-full-linux.sh
+
+# Output: build/SynOS-*.iso
 ```
+
+> **💡 New Build System:** SynOS now uses consolidated build scripts with better error handling,
+> progress tracking, and automated testing. See [Build Scripts Migration Guide](docs/BUILD_SCRIPTS_MIGRATION_GUIDE.md)
+> for details on the new system.
 
 ### Test in QEMU
 
@@ -268,9 +283,55 @@ SynOS v1.0 Architecture
 -   **AI Engine:** Neural Darwinism consciousness system
 -   **Security Tools:** 500+ from ParrotOS, Kali, BlackArch
 -   **Desktop:** XFCE with red/black cyberpunk theme
--   **Build System:** Debian live-build with custom packages
+-   **Build System:** Consolidated v2.0 - 10 optimized scripts (85% reduction)
 
 **Detailed Architecture:** [docs/04-development/Architecture-Overview.md](docs/04-development/Architecture-Overview.md)
+
+---
+
+## 🛠️ Build System v2.0 (Consolidated)
+
+SynOS features a completely redesigned build system with **10 optimized scripts** replacing 68 legacy scripts:
+
+### Core Build Scripts
+
+| Script                 | Purpose             | Time      | Usage                            |
+| ---------------------- | ------------------- | --------- | -------------------------------- |
+| `build-kernel-only.sh` | Fast kernel testing | 5-10 min  | `./scripts/build-kernel-only.sh` |
+| `build-iso.sh`         | Standard ISO        | 20-30 min | `./scripts/build-iso.sh`         |
+| `build-full-linux.sh`  | Full distribution   | 60-90 min | `./scripts/build-full-linux.sh`  |
+
+### Testing & Validation
+
+| Script                    | Purpose           | Usage                                       |
+| ------------------------- | ----------------- | ------------------------------------------- |
+| `testing/verify-build.sh` | Check environment | `./scripts/testing/verify-build.sh`         |
+| `testing/test-iso.sh`     | Test ISO in QEMU  | `./scripts/testing/test-iso.sh build/*.iso` |
+
+### Maintenance Tools
+
+| Script                            | Purpose          | Usage                                       |
+| --------------------------------- | ---------------- | ------------------------------------------- |
+| `maintenance/clean-builds.sh`     | Clean old builds | `./scripts/maintenance/clean-builds.sh`     |
+| `maintenance/archive-old-isos.sh` | Archive ISOs     | `./scripts/maintenance/archive-old-isos.sh` |
+
+### Specialized Tools
+
+| Script                   | Purpose           | Usage                                                |
+| ------------------------ | ----------------- | ---------------------------------------------------- |
+| `utilities/sign-iso.sh`  | Sign ISO with GPG | `./scripts/utilities/sign-iso.sh --sign build/*.iso` |
+| `docker/build-docker.sh` | Build in Docker   | `./scripts/docker/build-docker.sh --build`           |
+
+### Key Benefits
+
+-   ✅ **85% fewer scripts** to maintain (68 → 10)
+-   ✅ **65% less code** with no duplication
+-   ✅ **Consistent interface** across all tools
+-   ✅ **Better error handling** and progress tracking
+-   ✅ **Comprehensive help** (`--help` on any script)
+-   ✅ **New capabilities** (signing, Docker, archiving)
+
+**Migration Guide:** [docs/BUILD_SCRIPTS_MIGRATION_GUIDE.md](docs/BUILD_SCRIPTS_MIGRATION_GUIDE.md)
 
 ---
 

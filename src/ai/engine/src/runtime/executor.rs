@@ -6,7 +6,6 @@ use anyhow::Result;
 use super::{TaskScheduler, Task, TaskId, TaskType};
 use crate::hal::HardwareAbstractionLayer;
 use std::sync::Arc;
-use tokio::sync::RwLock;
 use tracing::{info, warn, error, debug};
 
 /// Task executor that manages task execution

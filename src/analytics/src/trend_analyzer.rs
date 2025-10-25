@@ -2,8 +2,8 @@
 //!
 //! Analyzes metric trends and provides forecasting capabilities
 
-use crate::{MetricPoint, MetricType, TrendDirection, TrendAnalysis, Result, AnalyticsError};
-use chrono::{DateTime, Utc, Duration};
+use crate::{MetricPoint, TrendDirection, TrendAnalysis, Result, AnalyticsError};
+use chrono::Utc;
 
 /// Trend analyzer for time series data
 pub struct TrendAnalyzer {

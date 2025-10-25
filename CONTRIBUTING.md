@@ -123,18 +123,33 @@ chore: Update dependencies
 **Before submitting PR:**
 
 ```bash
-# Build successfully
+# 1. Verify build environment
+./scripts/testing/verify-build.sh
+
+# 2. Build successfully
 cargo build --workspace
 
-# Run tests
+# 3. Run tests
 cargo test --workspace
 
-# Build ISO (if changing build system)
-sudo ./scripts/02-build/core/build-synos-ultimate-iso.sh
+# 4. Build ISO (if changing build system)
+# Choose based on what you're testing:
+./scripts/build-kernel-only.sh      # Fast (5-10 min)
+./scripts/build-iso.sh              # Standard (20-30 min)
+./scripts/build-full-linux.sh       # Complete (60-90 min)
 
-# Test in VM
-qemu-system-x86_64 -cdrom build/synos-ultimate.iso -m 4096
+# 5. Test ISO automatically
+./scripts/testing/test-iso.sh build/SynOS-*.iso
+
+# Or test manually in VM:
+qemu-system-x86_64 -cdrom build/SynOS-*.iso -m 4096 -enable-kvm
 ```
+
+> **💡 Tip:** All build scripts support `--help` to see available options:
+>
+> ```bash
+> ./scripts/build-iso.sh --help
+> ```
 
 ## 🏗️ Project Structure
 
@@ -241,12 +256,22 @@ See [SECURITY.md](docs/08-security/SECURITY.md) for details.
 **Example:**
 
 ```bash
-# In scripts/02-build/core/build-synos-ultimate-iso.sh
-# Add to install_security_tools() function
+# Tool installation happens in the live-build configuration
+# Add to linux-distribution/config/package-lists/security-tools.list.chroot
+
+# Or for custom scripts:
+# Add to scripts/build-iso.sh or scripts/build-full-linux.sh
+# in the install_security_tools() function
 
 chroot "${CHROOT_DIR}" apt install -y newtool
 echo "✓ New tool installed"
 ```
+
+**Build System Resources:**
+
+-   **Migration Guide:** [docs/BUILD_SCRIPTS_MIGRATION_GUIDE.md](docs/BUILD_SCRIPTS_MIGRATION_GUIDE.md)
+-   **Script Catalog:** [docs/LEGACY_SCRIPTS_CATALOG.md](docs/LEGACY_SCRIPTS_CATALOG.md)
+-   **Build Scripts:** All in `scripts/` (consolidated v2.0)
 
 ## 👥 Community
 

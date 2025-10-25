@@ -22,6 +22,7 @@ getrandom = { workspace = true, features = ["custom"] }
 [features]
 default = []
 std = []
-tensorflow-lite = ["std"]  # TensorFlow Lite FFI requires std
-onnx-runtime = ["std"]     # ONNX Runtime FFI requires std
-pytorch = ["std"]          # PyTorch LibTorch FFI requires std
+tensorflow-lite = ["std"] # TensorFlow Lite FFI requires std
+onnx-runtime = ["std"]    # ONNX Runtime FFI requires std
+pytorch = ["std"]         # PyTorch LibTorch FFI requires std
+generate-bindings = []    # Enable to regenerate FFI bindings during build

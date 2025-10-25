@@ -28,9 +28,10 @@ pub mod socket;
 pub mod tcp;
 pub mod tcp_complete;
 pub mod udp;
+pub mod stack;  // Complete network stack
+pub mod ai_dpi; // AI deep packet inspection
 
 // Phase 6c: AI-Powered Deep Packet Inspection
-pub mod ai_dpi;
 
 pub use device::*;
 pub use ethernet::*;

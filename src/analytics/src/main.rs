@@ -4,9 +4,9 @@
 
 use analytics::*;
 use analytics::metrics_collector::{MetricsCollector, SystemMetricsCollector, SecurityMetricsCollector, ConsoleSubscriber};
-use analytics::trend_analyzer::{TrendAnalyzer, AdvancedTrendDetector};
+use analytics::trend_analyzer::TrendAnalyzer;
 use analytics::anomaly_detector::{AnomalyDetector, DetectionAlgorithm, EnsembleDetector};
-use analytics::visualization_api::{VisualizationAPI, ApiResponse};
+use analytics::visualization_api::VisualizationAPI;
 use analytics::time_series::{TimeSeriesManager};
 
 use std::sync::Arc;

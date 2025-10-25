@@ -15,6 +15,11 @@ pub mod stack_protection;
 pub mod encryption;
 pub mod monitoring;
 
+// Newly organized modules
+pub mod verification;
+pub mod security_panic;
+pub mod pqc;
+
 // Phase 5b: Real-Time Threat Response
 pub mod realtime;
 

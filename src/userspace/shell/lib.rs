@@ -6,7 +6,6 @@
 
 extern crate alloc;
 
-use alloc::{string::{String, ToString}, vec::Vec, format};
 
 // Re-export the main shell module
 pub mod shell;

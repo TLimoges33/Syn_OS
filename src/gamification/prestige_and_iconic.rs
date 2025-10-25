@@ -7,7 +7,7 @@ extern crate alloc;
 
 use alloc::vec;
 use alloc::vec::Vec;
-use alloc::string::{String, ToString};
+use alloc::string::ToString;
 use super::legendary_skill_tree::*;
 
 // ============================================================================

@@ -59,7 +59,7 @@ pub async fn boot_kernel(config: BootConfig) -> Result<(), &'static str> {
     crate::memory::init_memory_system(crate::memory::init::MemoryConfig::default())?;
     
     // Phase 3: Interrupt handling setup
-    crate::interrupts::init_interrupts()?;
+    crate::interrupts::interrupts::init_interrupts()?;
     
     // Phase 4: Consciousness initialization (if enabled)
     if config.enable_consciousness {

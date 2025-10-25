@@ -9,12 +9,14 @@ pub struct DeviceMonitor {
 
 #[derive(Debug, Clone)]
 struct DeviceInfo {
+    #[allow(dead_code)]
     name: String,
     device_type: DeviceType,
     status: DeviceStatus,
 }
 
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 enum DeviceType {
     Cpu,
     Gpu,
@@ -24,6 +26,7 @@ enum DeviceType {
 }
 
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 enum DeviceStatus {
     Active,
     Idle,

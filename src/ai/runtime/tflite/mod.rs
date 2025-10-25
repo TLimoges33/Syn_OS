@@ -11,11 +11,8 @@
 
 pub mod ffi;
 
+use alloc::vec;
 use alloc::vec::Vec;
-use alloc::string::{String, ToString};
-use alloc::boxed::Box;
-use alloc::ffi::CString;
-use core::time::Duration;
 
 /// Hardware acceleration types
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -73,7 +70,7 @@ impl TFLiteRuntime {
         let model = ffi::TfLiteModelWrapper::from_file(model_path)?;
 
         // Create interpreter with optimal thread count
-        let num_threads = core::cmp::min(num_cpus::get() as i32, 4);
+        let num_threads = core::cmp::min(4, 4); // Default to 4 threads
         let interpreter = ffi::TfLiteInterpreterWrapper::new(&model, num_threads)?;
 
         // Store model and interpreter
@@ -170,11 +167,19 @@ impl TFLiteRuntime {
     /// Get current time in milliseconds
     fn get_time_ms(&self) -> u64 {
         // Use system time
-        use core::time::SystemTime;
-        SystemTime::now()
-            .duration_since(SystemTime::UNIX_EPOCH)
-            .unwrap_or(Duration::from_secs(0))
-            .as_millis() as u64
+        #[cfg(feature = "std")]
+        {
+            use std::time::SystemTime;
+            SystemTime::now()
+                .duration_since(SystemTime::UNIX_EPOCH)
+                .unwrap_or(core::time::Duration::from_secs(0))
+                .as_millis() as u64
+        }
+        #[cfg(not(feature = "std"))]
+        {
+            // Fallback for no_std: return 0 or use a custom time source
+            0
+        }
     }
 
     /// Get hardware acceleration type
@@ -264,28 +269,28 @@ pub fn detect_accelerators() -> Vec<AccelerationType> {
 /// Check if GPU acceleration is available
 fn check_gpu_available() -> bool {
     // Check if GPU delegate library exists
-    #[cfg(target_os = "linux")]
+    #[cfg(all(target_os = "linux", feature = "std"))]
     {
         use std::path::Path;
         Path::new("/usr/local/lib/libtensorflowlite_gpu_delegate.so").exists() ||
         Path::new("/usr/lib/libtensorflowlite_gpu_delegate.so").exists()
     }
 
-    #[cfg(not(target_os = "linux"))]
+    #[cfg(not(all(target_os = "linux", feature = "std")))]
     false
 }
 
 /// Check if Edge TPU is available
 fn check_edgetpu_available() -> bool {
     // Check if Edge TPU delegate library exists
-    #[cfg(target_os = "linux")]
+    #[cfg(all(target_os = "linux", feature = "std"))]
     {
         use std::path::Path;
         Path::new("/usr/local/lib/libedgetpu.so").exists() ||
         Path::new("/usr/lib/libedgetpu.so").exists()
     }
 
-    #[cfg(not(target_os = "linux"))]
+    #[cfg(not(all(target_os = "linux", feature = "std")))]
     false
 }
 
@@ -293,14 +298,14 @@ fn check_edgetpu_available() -> bool {
 fn check_npu_available() -> bool {
     // Check for vendor-specific NPU libraries
     // This varies by hardware vendor (Qualcomm, MediaTek, etc.)
-    #[cfg(target_os = "linux")]
+    #[cfg(all(target_os = "linux", feature = "std"))]
     {
         use std::path::Path;
         // Example: Check for Qualcomm SNPE
         Path::new("/opt/qcom/snpe/lib/libSNPE.so").exists()
     }
 
-    #[cfg(not(target_os = "linux"))]
+    #[cfg(not(all(target_os = "linux", feature = "std")))]
     false
 }
 

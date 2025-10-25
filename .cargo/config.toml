@@ -11,14 +11,14 @@ rustflags = [
 
 # Workspace-wide features
 [env]
-CARGO_INCREMENTAL = "1"         # Enable incremental compilation
+# CARGO_INCREMENTAL disabled for sccache         # Enable incremental compilation
 RUST_BACKTRACE = "1"           # Always enable backtraces for debugging
 
 [profile.dev]
 # Fast debug builds for development
 debug = 1
 overflow-checks = false
-incremental = true
+incremental = false  # Disabled for sccache
 split-debuginfo = "unpacked"  # Faster linking on Linux
 debug-assertions = false      # Disable debug assertions in dev for speed
 panic = "abort"

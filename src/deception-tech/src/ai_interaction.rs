@@ -2,7 +2,7 @@
 //!
 //! Intelligent responses to attacker interactions with deception assets
 
-use crate::{DeceptionInteraction, InteractionType, Result, DeceptionError};
+use crate::{DeceptionInteraction, InteractionType};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 

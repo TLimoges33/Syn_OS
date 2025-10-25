@@ -3,7 +3,7 @@
 //! Native Rust AI inference runtime for kernel and userspace integration
 //! Provides lightweight neural network inference without external dependencies
 
-#![no_std]
+#![cfg_attr(not(feature = "std"), no_std)]
 
 extern crate alloc;
 

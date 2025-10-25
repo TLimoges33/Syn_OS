@@ -6,7 +6,7 @@ use crate::{Result, HSMError, KeyType};
 use std::collections::HashMap;
 use uuid::Uuid;
 use aes_gcm::{
-    aead::{Aead, KeyInit, OsRng},
+    aead::{Aead, KeyInit},
     Aes256Gcm, Nonce,
 };
 use sha2::{Sha256, Digest};

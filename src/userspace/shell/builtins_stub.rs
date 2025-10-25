@@ -1,6 +1,6 @@
 //! # Stub implementation of built-in commands
 
-use alloc::{string::{String, ToString}, vec::Vec, format};
+use alloc::{string::{String, ToString}, format};
 use crate::shell::{ShellResult, ShellError, SecurityContext};
 use crate::parser_stub::ParsedCommand;
 

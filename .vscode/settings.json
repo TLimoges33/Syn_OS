@@ -68,7 +68,7 @@
   "terminal.integrated.fontSize": 12,
   "terminal.integrated.scrollback": 10000,
   "terminal.integrated.persistentSessionReviveProcess": "onExit",
-  "terminal.integrated.enableMultiLinePasteWarning": false,
+  "terminal.integrated.enableMultiLinePasteWarning": "never",
   "terminal.integrated.copyOnSelection": true,
   "terminal.integrated.cursorBlinking": true,
   "terminal.integrated.rightClickBehavior": "paste",
@@ -102,8 +102,10 @@
   "rust-analyzer.check.allTargets": false,
   "rust-analyzer.server.extraEnv": {
     "RA_LOG": "error",
-    "CARGO_BUILD_JOBS": "1"
+    "CARGO_BUILD_JOBS": "1",
+    "RUST_ANALYZER_MEMORY_LIMIT": "2048"
   },
+  "rust-analyzer.cargo.autoreload": false,
   "rust-analyzer.procMacro.enable": true,
   "rust-analyzer.cargo.buildScripts.enable": true,
   "rust-analyzer.cargo.buildScripts.overrideCommand": null,
@@ -134,7 +136,7 @@
   ],
 
   // 🚀 Performance Optimization
-  "files.maxMemoryForLargeFilesMB": 256,
+  "files.maxMemoryForLargeFilesMB": 512,
   "files.watcherExcludeBoost": 10000,
   "workbench.editor.limit.enabled": true,
   "workbench.editor.limit.value": 8,
@@ -142,7 +144,6 @@
   "workbench.editor.enablePreview": false,
   "workbench.editor.enablePreviewFromQuickOpen": false,
   "workbench.tree.renderIndentGuides": "onHover",
-  "files.maxMemoryForLargeFilesMB": 512,
   "search.maxResults": 10000,
   "search.smartCase": true,
   "search.useIgnoreFiles": true,
@@ -294,6 +295,7 @@
   "git.enableSmartCommit": true,
   "git.confirmSync": false,
   "git.ignoreLimitWarning": true,
+  "git.defaultCloneDirectory": "/home/diablorain/Projects",
 
   // 🐍 Python Configuration
   "python.analysis.typeCheckingMode": "off",
@@ -425,15 +427,10 @@
 
   // 🚀 Advanced Performance Optimizations
   "search.experimental.asyncFileStreams": true,
-  "search.maxResults": 50000,
-  "search.smartCase": true,
-  "search.useGlobalIgnoreFiles": true,
-  "search.useParentIgnoreFiles": true,
 
   // 🧠 Intelligent Code Assistance
   "editor.suggest.localityBonus": true,
   "editor.suggest.shareSuggestSelections": false,
-  "editor.suggestSelection": "first",
   "editor.wordBasedSuggestions": "matchingDocuments",
   "editor.wordBasedSuggestionsMode": "currentDocument",
 
@@ -445,10 +442,10 @@
   "outline.showModules": true,
 
   // 🔄 Advanced Git Integration
-  "git.autofetch": true,
-  "git.enableSmartCommit": true,
-  "git.confirmSync": false,
-  "git.defaultCloneDirectory": "/home/diablorain/Projects",
   "scm.diffDecorations": "all",
-  "scm.diffDecorationsGutterWidth": 3
+  "scm.diffDecorationsGutterWidth": 3,
+  "terminal.integrated.shellIntegration.decorationsEnabled": "gutter",
+  "terminal.integrated.shellIntegration.environmentReporting": true,
+  "terminal.integrated.shellIntegration.history": 30,
+  "terminal.integrated.suggest.enabled": true
 }

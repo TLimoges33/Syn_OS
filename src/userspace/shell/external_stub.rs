@@ -1,6 +1,5 @@
 //! # Stub implementation of external command manager
 
-use alloc::{string::String, vec::Vec};
 use crate::shell::{ShellResult, ShellError, SecurityContext};
 use crate::parser_stub::ParsedCommand;
 

@@ -2,10 +2,11 @@ use std::collections::{HashMap, VecDeque};
 use std::sync::Arc;
 use petgraph::{Graph, Direction};
 use petgraph::graph::{NodeIndex, UnGraph};
-use crate::core::{Package, Dependency, VersionConstraint};
+use crate::core::{Package, Dependency};
 
 /// High-performance dependency resolver using graph algorithms
 pub struct DependencyResolver {
+    #[allow(dead_code)]
     config: Arc<crate::PackageManagerConfig>,
     dependency_cache: tokio::sync::RwLock<HashMap<String, DependencyNode>>,
 }
@@ -13,6 +14,7 @@ pub struct DependencyResolver {
 #[derive(Debug, Clone)]
 struct DependencyNode {
     package: Package,
+    #[allow(dead_code)]
     resolved_dependencies: Vec<String>,
     resolution_time: chrono::DateTime<chrono::Utc>,
 }

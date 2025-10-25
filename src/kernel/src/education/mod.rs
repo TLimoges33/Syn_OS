@@ -20,6 +20,13 @@ pub mod labs;
 // Phase 6b: CTF Auto-Generation Engine
 pub mod ctf;
 
+// Newly organized modules
+pub mod hud_tutorial_engine;
+pub mod hud_command_interface;
+pub mod cybersecurity_tutorial_content;
+pub mod platform_minimal;
+pub mod advanced_applications_minimal;
+
 // Re-export key types
 pub use tutorials::{Tutorial, TutorialManager};
 pub use interactive::{InteractiveSession, InteractiveMode};

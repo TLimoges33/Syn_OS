@@ -2,7 +2,7 @@
 
 use anyhow::Result;
 use crate::linux::SystemEvent;
-use tracing::{info, warn, error};
+use tracing::info;
 
 /// IPC Hub managing communication between AI components
 #[derive(Debug)]

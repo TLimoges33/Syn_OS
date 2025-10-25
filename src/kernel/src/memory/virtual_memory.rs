@@ -536,20 +536,17 @@ impl PageFaultHandler {
                             });
                         }
 
-                        if let Some(bridge) = ai_bridge::get_bridge() {
-                            // Convert page data to bytes for AI reporting
-                            let event_data = [
-                                (fault_address.0 & 0xFF) as u8,
-                                ((fault_address.0 >> 8) & 0xFF) as u8,
-                                (victim_page.address.0 & 0xFF) as u8,
-                                ((victim_page.address.0 >> 8) & 0xFF) as u8,
-                            ];
-                            let _ = bridge.report_security_event(
-                                "ai_swap",
-                                1, // Low severity for routine swapping
-                                &event_data,
-                            );
-                        }
+                        // TODO: Implement AI bridge integration
+                        // if let Some(bridge) = crate::ai::bridge::get_bridge() {
+                        // Convert page data to bytes for AI reporting
+                        let _event_data = [
+                            (fault_address.0 & 0xFF) as u8,
+                            ((fault_address.0 >> 8) & 0xFF) as u8,
+                            (victim_page.address.0 & 0xFF) as u8,
+                            ((victim_page.address.0 >> 8) & 0xFF) as u8,
+                        ];
+                        // let _ = bridge.report_security_event("ai_swap", 1, &event_data);
+                        // }
 
                         return Ok(());
                     }

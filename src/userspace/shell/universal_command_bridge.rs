@@ -5,7 +5,7 @@
 //! message passing or system calls.
 
 use alloc::{string::{String, ToString}, vec::Vec, format};
-use crate::{ShellResult, ShellError};
+use crate::ShellError;
 
 /// Universal Command execution request
 #[derive(Debug, Clone)]

@@ -16,7 +16,7 @@
 
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use chrono::{DateTime, Utc, TimeZone};
+use chrono::{DateTime, Utc};
 
 // ============================================================================
 // AWS SECURITY FINDING TYPES

@@ -11,7 +11,7 @@ use alloc::vec::Vec;
 use core::arch::asm;
 use x86_64::{structures::paging::PageTable, PhysAddr, VirtAddr};
 
-use crate::interrupts::InterruptManager;
+use crate::interrupts::manager::InterruptManager;
 use crate::memory::educational_memory_manager::{
     LearningObjective, MemoryRegion, SandboxId, SchedulingStats, UsageStats,
 };
