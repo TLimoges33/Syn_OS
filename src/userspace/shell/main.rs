@@ -1,5 +1,5 @@
 //! # SynShell Application Entry Point
-//! 
+//!
 //! Main application for the SynOS Security-Focused Shell
 
 #![no_std]
@@ -17,19 +17,20 @@ use linked_list_allocator::LockedHeap;
 #[global_allocator]
 static ALLOCATOR: LockedHeap = LockedHeap::empty();
 
-mod shell;
 mod builtins_stub;
 mod environment_stub;
 mod external_stub;
 mod history_stub;
 mod parser_stub;
+mod shell;
+mod universal_command_bridge; // V1.9 Universal Command Integration
 
-use shell::{SynShell, SecurityContext, PrivilegeLevel, Capability, NetworkPermissions};
 use builtins_stub::*;
 use environment_stub::*;
 use external_stub::*;
 use history_stub::*;
 use parser_stub::*;
+use shell::{Capability, NetworkPermissions, PrivilegeLevel, SecurityContext, SynShell};
 
 /// Initialize heap allocator
 fn init_heap() {
@@ -44,13 +45,13 @@ pub extern "C" fn main() -> i32 {
     // Initialize allocator with a simple heap
     // In a real implementation, this would be done by the kernel
     init_heap();
-    
+
     // Create security context based on user privileges
     let security_context = create_security_context();
-    
+
     // Initialize shell with security context
     let mut shell = SynShell::new_with_security(security_context);
-    
+
     // Run the shell
     match shell.run() {
         Ok(()) => 0,
@@ -69,13 +70,13 @@ fn create_security_context() -> SecurityContext {
     // 3. Determine privilege level based on user
     // 4. Load capabilities from security policy
     // 5. Configure network permissions
-    
+
     let user_id = get_current_user_id();
     let group_id = get_current_group_id();
     let privilege_level = determine_privilege_level(user_id);
     let capabilities = load_user_capabilities(user_id, privilege_level);
     let network_permissions = configure_network_permissions(privilege_level, &capabilities);
-    
+
     SecurityContext {
         user_id,
         group_id,
@@ -110,7 +111,7 @@ fn determine_privilege_level(user_id: u32) -> PrivilegeLevel {
 /// Load user capabilities based on privilege level
 fn load_user_capabilities(user_id: u32, privilege_level: PrivilegeLevel) -> Vec<Capability> {
     let mut capabilities = Vec::new();
-    
+
     match privilege_level {
         PrivilegeLevel::Root => {
             // Root has all capabilities
@@ -122,7 +123,7 @@ fn load_user_capabilities(user_id: u32, privilege_level: PrivilegeLevel) -> Vec<
             capabilities.push(Capability::SysModule);
             capabilities.push(Capability::SysTime);
             capabilities.push(Capability::Kill);
-        },
+        }
         PrivilegeLevel::Administrator => {
             // Administrators get most capabilities except kernel-level ones
             capabilities.push(Capability::NetAdmin);
@@ -130,22 +131,22 @@ fn load_user_capabilities(user_id: u32, privilege_level: PrivilegeLevel) -> Vec<
             capabilities.push(Capability::NetBindService);
             capabilities.push(Capability::SysAdmin);
             capabilities.push(Capability::Kill);
-        },
+        }
         PrivilegeLevel::Operator => {
             // Operators get network and monitoring capabilities
             capabilities.push(Capability::NetAdmin);
             capabilities.push(Capability::NetRaw);
-        },
+        }
         PrivilegeLevel::User => {
             // Regular users get minimal capabilities
             // No special capabilities by default
-        },
+        }
     }
-    
+
     // Load additional capabilities from user's security profile
     // In a real implementation, this would read from a security database
     capabilities.extend(load_additional_capabilities(user_id));
-    
+
     capabilities
 }
 
@@ -157,23 +158,26 @@ fn load_additional_capabilities(user_id: u32) -> Vec<Capability> {
 }
 
 /// Configure network permissions based on privilege level and capabilities
-fn configure_network_permissions(privilege_level: PrivilegeLevel, capabilities: &[Capability]) -> NetworkPermissions {
+fn configure_network_permissions(
+    privilege_level: PrivilegeLevel,
+    capabilities: &[Capability],
+) -> NetworkPermissions {
     let mut permissions = NetworkPermissions::default();
-    
+
     // Configure based on capabilities
     if capabilities.contains(&Capability::NetBindService) {
         permissions.can_bind_privileged_ports = true;
     }
-    
+
     if capabilities.contains(&Capability::NetRaw) {
         permissions.can_send_raw_packets = true;
         permissions.can_monitor_traffic = true;
     }
-    
+
     if capabilities.contains(&Capability::NetAdmin) {
         permissions.can_monitor_traffic = true;
     }
-    
+
     // Configure allowed interfaces based on privilege level
     match privilege_level {
         PrivilegeLevel::Root | PrivilegeLevel::Administrator => {
@@ -183,23 +187,18 @@ fn configure_network_permissions(privilege_level: PrivilegeLevel, capabilities: 
                 "wlan0".to_string(),
                 "tun0".to_string(),
             ];
-        },
+        }
         PrivilegeLevel::Operator => {
-            permissions.allowed_interfaces = vec![
-                "lo".to_string(),
-                "eth0".to_string(),
-            ];
-        },
+            permissions.allowed_interfaces = vec!["lo".to_string(), "eth0".to_string()];
+        }
         PrivilegeLevel::User => {
-            permissions.allowed_interfaces = vec![
-                "lo".to_string(),
-            ];
-        },
+            permissions.allowed_interfaces = vec!["lo".to_string()];
+        }
     }
-    
+
     // Load blocked addresses from security policy
     permissions.blocked_addresses = load_blocked_addresses();
-    
+
     permissions
 }
 
@@ -207,11 +206,11 @@ fn configure_network_permissions(privilege_level: PrivilegeLevel, capabilities: 
 fn load_blocked_addresses() -> Vec<String> {
     // In a real implementation, this would load from security configuration
     vec![
-        "0.0.0.0/8".to_string(),        // Invalid addresses
-        "127.0.0.0/8".to_string(),      // Localhost (controlled separately)
-        "169.254.0.0/16".to_string(),   // Link-local
-        "224.0.0.0/4".to_string(),      // Multicast
-        "240.0.0.0/4".to_string(),      // Reserved
+        "0.0.0.0/8".to_string(),      // Invalid addresses
+        "127.0.0.0/8".to_string(),    // Localhost (controlled separately)
+        "169.254.0.0/16".to_string(), // Link-local
+        "224.0.0.0/4".to_string(),    // Multicast
+        "240.0.0.0/4".to_string(),    // Reserved
     ]
 }
 
@@ -271,11 +270,6 @@ pub fn get_version_string() -> String {
 pub fn get_app_info() -> String {
     format!(
         "{}\n{}\nVersion: {} ({})\nBuild: {}\nAuthor: {}",
-        APP_NAME,
-        APP_DESCRIPTION,
-        VERSION,
-        BUILD_DATE,
-        GIT_HASH,
-        APP_AUTHOR
+        APP_NAME, APP_DESCRIPTION, VERSION, BUILD_DATE, GIT_HASH, APP_AUTHOR
     )
 }
