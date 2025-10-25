@@ -1502,13 +1502,45 @@ else
     exit 1
 fi
 
-# Create squashfs from chroot
+# Unmount virtual filesystems before creating squashfs
+info "Unmounting virtual filesystems from chroot..."
+sudo umount -l "$CHROOT_DIR/proc" 2>/dev/null || true
+sudo umount -l "$CHROOT_DIR/sys" 2>/dev/null || true
+sudo umount -l "$CHROOT_DIR/dev/pts" 2>/dev/null || true
+sudo umount -l "$CHROOT_DIR/dev" 2>/dev/null || true
+sudo umount -l "$CHROOT_DIR/run" 2>/dev/null || true
+success "Virtual filesystems unmounted"
+
+# Check available disk space
+REQUIRED_SPACE=$((10 * 1024 * 1024))  # 10GB in KB
+AVAILABLE=$(df -k "$BUILD_DIR" | awk 'NR==2 {print $4}')
+if [ "$AVAILABLE" -lt "$REQUIRED_SPACE" ]; then
+    error "Insufficient disk space. Required: 10GB, Available: $((AVAILABLE / 1024 / 1024))GB"
+    exit 1
+fi
+success "Disk space check passed ($((AVAILABLE / 1024 / 1024))GB available)"
+
+# Create squashfs from chroot with proper exclusions
 info "Creating squashfs (this will take 10-20 minutes)..."
-if sudo mksquashfs "$CHROOT_DIR" "$ISO_ROOT/live/filesystem.squashfs" -comp xz -e boot 2>&1 | tee -a "$BUILD_LOG"; then
-    SQUASHFS_SIZE=$(du -h "$ISO_ROOT/live/filesystem.squashfs" | cut -f1)
+SQUASHFS_FILE="$ISO_ROOT/live/filesystem.squashfs"
+
+if sudo mksquashfs "$CHROOT_DIR" "$SQUASHFS_FILE" \
+    -comp xz -Xbcj x86 \
+    -b 1M \
+    -processors 4 \
+    -e proc sys dev run tmp boot \
+    2>&1 | tee -a "$BUILD_LOG"; then
+    
+    # Verify squashfs was created
+    if [ ! -f "$SQUASHFS_FILE" ]; then
+        error "Squashfs file not created at: $SQUASHFS_FILE"
+        exit 1
+    fi
+    
+    SQUASHFS_SIZE=$(du -h "$SQUASHFS_FILE" | cut -f1)
     success "Squashfs created: $SQUASHFS_SIZE"
 else
-    error "Failed to create squashfs"
+    error "Failed to create squashfs (mksquashfs command failed)"
     exit 1
 fi
 
