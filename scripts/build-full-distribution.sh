@@ -1311,7 +1311,31 @@ PYTHON_TOOLS=(
     "pycryptodome"
 )
 
+# AI/ML frameworks for SynOS AI features
+AI_PYTHON_PACKAGES=(
+    "tensorflow"
+    "tflite-runtime"
+    "onnxruntime"
+    "numpy"
+    "pillow"
+)
+
 info "Installing ${#PYTHON_TOOLS[@]} Python security packages..."
+
+# Install Python security tools first
+PYTHON_INSTALLED=0
+set +e  # CRITICAL: Disable set -e before arithmetic loop
+for tool in "${PYTHON_TOOLS[@]}"; do
+    if sudo chroot "$CHROOT_DIR" bash -c "pip3 install --break-system-packages '$tool' 2>&1" >> "$BUILD_LOG" 2>&1; then
+        ((PYTHON_INSTALLED++))
+    fi
+done
+set -e  # Re-enable after arithmetic is done
+
+success "Python security tools: $PYTHON_INSTALLED packages installed"
+
+# Install AI/ML frameworks
+info "Installing ${#AI_PYTHON_PACKAGES[@]} AI/ML packages..."
 
 PYTHON_INSTALLED=0
 set +e  # CRITICAL: Disable set -e before arithmetic loop
@@ -1322,7 +1346,27 @@ for tool in "${PYTHON_TOOLS[@]}"; do
 done
 set -e  # Re-enable after arithmetic is done
 
-success "Python tools: $PYTHON_INSTALLED packages installed"
+success "Python security tools: $PYTHON_INSTALLED packages installed"
+
+# Install AI/ML frameworks
+info "Installing ${#AI_PYTHON_PACKAGES[@]} AI/ML packages..."
+
+AI_INSTALLED=0
+set +e  # CRITICAL: Disable set -e before arithmetic loop
+for pkg in "${AI_PYTHON_PACKAGES[@]}"; do
+    info "Installing AI package: $pkg"
+    if sudo chroot "$CHROOT_DIR" bash -c "pip3 install --break-system-packages '$pkg' 2>&1" >> "$BUILD_LOG" 2>&1; then
+        ((AI_INSTALLED++))
+        success "Installed: $pkg"
+    else
+        warning "Failed to install: $pkg (continuing...)"
+    fi
+done
+set -e  # Re-enable after arithmetic is done
+
+success "AI/ML frameworks: $AI_INSTALLED packages installed"
+
+success "Python tools: $((PYTHON_INSTALLED + AI_INSTALLED)) total packages installed"
 
 complete_phase "Python Security Tools"
 
@@ -1344,6 +1388,12 @@ GITHUB_REPOS=(
     "https://github.com/carlospolop/hacktricks"
 )
 
+# Critical tools that failed package installation (compile from source)
+CRITICAL_SOURCE_REPOS=(
+    "https://github.com/rapid7/metasploit-framework"
+    "https://github.com/radareorg/radare2"
+)
+
 info "Cloning ${#GITHUB_REPOS[@]} essential GitHub repositories..."
 
 GITHUB_CLONED=0
@@ -1360,6 +1410,69 @@ set -e  # Re-enable after arithmetic is done
 
 success "GitHub tools: $GITHUB_CLONED repositories cloned"
 
+# Clone critical source repositories (for failed package installations)
+info "Cloning ${#CRITICAL_SOURCE_REPOS[@]} critical tools for source compilation..."
+
+CRITICAL_CLONED=0
+set +e  # CRITICAL: Disable set -e before arithmetic loop
+for repo in "${CRITICAL_SOURCE_REPOS[@]}"; do
+    repo_name=$(basename "$repo")
+    info "Cloning: $repo_name (may be large, please wait...)"
+
+    if sudo git clone --depth 1 "$repo" "$CHROOT_DIR/opt/security-tools/github/$repo_name" 2>&1 | tee -a "$BUILD_LOG"; then
+        ((CRITICAL_CLONED++))
+        success "Cloned: $repo_name"
+
+        # Add installation notes
+        case "$repo_name" in
+            "metasploit-framework")
+                info "Metasploit cloned - will need Ruby setup on first boot"
+                sudo bash -c "cat > '$CHROOT_DIR/opt/security-tools/github/metasploit-framework/INSTALL.txt' << 'EOFMSF'
+# Metasploit Framework Installation
+
+This is the source code for Metasploit Framework.
+
+## Installation on first boot:
+cd /opt/security-tools/github/metasploit-framework
+bundle install
+./msfconsole
+
+## Or use system package manager:
+sudo apt-get update
+sudo apt-get install metasploit-framework
+
+Note: Package installation failed during build due to dependency conflicts.
+EOFMSF"
+                ;;
+            "radare2")
+                info "Radare2 cloned - attempting compilation..."
+                # Try to compile radare2 during build
+                if sudo chroot "$CHROOT_DIR" bash -c "cd /opt/security-tools/github/radare2 && sys/install.sh 2>&1" >> "$BUILD_LOG" 2>&1; then
+                    success "Radare2 compiled and installed"
+                else
+                    warning "Radare2 compilation failed (can be compiled on first boot)"
+                    sudo bash -c "cat > '$CHROOT_DIR/opt/security-tools/github/radare2/INSTALL.txt' << 'EOFR2'
+# Radare2 Installation
+
+Source code cloned but compilation failed during build.
+
+## To compile on first boot:
+cd /opt/security-tools/github/radare2
+sys/install.sh
+
+Or use system package manager if dependencies are resolved.
+EOFR2"
+                fi
+                ;;
+        esac
+    else
+        warning "Failed to clone: $repo_name"
+    fi
+done
+set -e  # Re-enable after arithmetic is done
+
+success "Critical source tools: $CRITICAL_CLONED repositories cloned"
+
 complete_phase "GitHub Security Tools"
 
 ################################################################################
@@ -1370,6 +1483,52 @@ start_phase 12 "Installing SynOS Binaries"
 # Create /opt/synos structure
 sudo mkdir -p "$CHROOT_DIR/opt/synos"/{bin,lib,kernel,config,data,logs}
 sudo mkdir -p "$CHROOT_DIR/boot/synos"
+
+# Create AI model directories for TensorFlow Lite, ONNX, and PyTorch models
+info "Creating AI model directories..."
+sudo mkdir -p "$CHROOT_DIR/opt/synos/models"/{tflite,onnx,pytorch}
+sudo mkdir -p "$CHROOT_DIR/opt/synos/models/cache"
+
+# Create README for AI models
+sudo bash -c "cat > '$CHROOT_DIR/opt/synos/models/README.md' << 'EOFMODELS'
+# SynOS AI Models Directory
+
+This directory contains AI models for SynOS consciousness and security features.
+
+## Directory Structure:
+- **tflite/**: TensorFlow Lite models (.tflite)
+- **onnx/**: ONNX Runtime models (.onnx)
+- **pytorch/**: PyTorch Mobile models (.pt, .pth)
+- **cache/**: Model inference cache
+
+## Supported Frameworks:
+- TensorFlow Lite (LiteRT) - CPU inference
+- ONNX Runtime - Cross-platform inference
+- PyTorch Mobile - Research models
+
+## Usage:
+Models are loaded by synos-ai-daemon and synos-consciousness-daemon.
+
+Place your custom models in the appropriate directory:
+\`\`\`bash
+# Example: Add a TFLite model
+cp my_model.tflite /opt/synos/models/tflite/
+
+# Example: Add an ONNX model
+cp threat_detection.onnx /opt/synos/models/onnx/
+\`\`\`
+
+## Pre-trained Models:
+SynOS includes default models for:
+- Threat detection
+- Behavioral analysis
+- Network anomaly detection
+- Malware classification
+
+See /opt/synos/docs/AI-Models.md for more information.
+EOFMODELS"
+
+success "AI model directories created"
 
 # Copy kernel
 sudo cp -v "$BUILD_DIR/binaries/kernel/kernel" "$CHROOT_DIR/boot/synos/" 2>&1 | tee -a "$BUILD_LOG"
@@ -1530,13 +1689,13 @@ if sudo mksquashfs "$CHROOT_DIR" "$SQUASHFS_FILE" \
     -processors 4 \
     -e proc sys dev run tmp boot \
     2>&1 | tee -a "$BUILD_LOG"; then
-    
+
     # Verify squashfs was created
     if [ ! -f "$SQUASHFS_FILE" ]; then
         error "Squashfs file not created at: $SQUASHFS_FILE"
         exit 1
     fi
-    
+
     SQUASHFS_SIZE=$(du -h "$SQUASHFS_FILE" | cut -f1)
     success "Squashfs created: $SQUASHFS_SIZE"
 else
