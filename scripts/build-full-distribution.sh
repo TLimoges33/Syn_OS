@@ -314,6 +314,19 @@ CURRENT_PHASE=0
 declare -A STAGE_TIMES
 STAGE_START_TIME=0
 
+# Initialize counter variables (prevents unbound variable errors with set -u)
+GITHUB_CLONED=0
+CRITICAL_CLONED=0
+TIER1_BB_CLONED=0
+TIER1_AI_CLONED=0
+TIER2_RECON_CLONED=0
+TIER2_AI_CLONED=0
+INSTALLED_COUNT=0
+EXTRA_INSTALLED=0
+PYTHON_INSTALLED=0
+TOTAL_TOOLS=0
+TOTAL_REPOS=0
+
 ################################################################################
 # ULTIMATE FEATURES - RESOURCE MONITORING
 ################################################################################
@@ -1977,6 +1990,14 @@ TIER2_AI_FRAMEWORKS=(
     "https://github.com/google-ai-edge/mediapipe"
     "https://github.com/ray-project/ray"
 )
+
+# Initialize cloning counters
+GITHUB_CLONED=0
+CRITICAL_CLONED=0
+TIER1_BB_CLONED=0
+TIER1_AI_CLONED=0
+TIER2_RECON_CLONED=0
+TIER2_AI_CLONED=0
 
 info "Cloning ${#GITHUB_REPOS[@]} essential GitHub repositories..."
 

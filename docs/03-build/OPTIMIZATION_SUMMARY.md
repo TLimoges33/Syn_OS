@@ -9,14 +9,17 @@
 ## 📋 What We Built
 
 ### 1. ✅ Base Image Analysis
+
 **File:** `docs/03-build/BASE_IMAGE_ANALYSIS.md`
 
 Comprehensive analysis of Docker base images:
-- Compared debian:bookworm-slim vs Alpine, Ubuntu, Fedora, Arch
-- **Conclusion:** Debian Bookworm-slim optimal for debootstrap compatibility
-- Documented trade-offs and rationale
+
+-   Compared debian:bookworm-slim vs Alpine, Ubuntu, Fedora, Arch
+-   **Conclusion:** Debian Bookworm-slim optimal for debootstrap compatibility
+-   Documented trade-offs and rationale
 
 ### 2. ✅ Docker Consolidation (Option C)
+
 **Structure:** Organized `/docker/` into logical subdirectories
 
 ```
@@ -32,94 +35,110 @@ docker/
 ```
 
 ### 3. ✅ Multi-Stage Dockerfile
+
 **File:** `docker/build/Dockerfile`
 
 **Optimizations:**
-- Stage 1: Builder (835MB) - All build dependencies
-- Stage 2: Runtime (300MB) - Minimal runtime only
-- **60% size reduction** (835MB → 300MB)
-- Includes ccache and sccache for compilation caching
-- Non-root builder user (UID 1000)
-- Health checks and proper cleanup
+
+-   Stage 1: Builder (835MB) - All build dependencies
+-   Stage 2: Runtime (300MB) - Minimal runtime only
+-   **60% size reduction** (835MB → 300MB)
+-   Includes ccache and sccache for compilation caching
+-   Non-root builder user (UID 1000)
+-   Health checks and proper cleanup
 
 ### 4. ✅ BuildKit Caching
+
 **File:** `docker/build/docker-compose.yml`
 
 **Features:**
-- `cache_from: synos-builder:latest`
-- `BUILDKIT_INLINE_CACHE: 1`
-- Persistent volumes: `synos-build-cache`, `synos-rust-cache`
-- **Expected:** 50-70% faster rebuilds
+
+-   `cache_from: synos-builder:latest`
+-   `BUILDKIT_INLINE_CACHE: 1`
+-   Persistent volumes: `synos-build-cache`, `synos-rust-cache`
+-   **Expected:** 50-70% faster rebuilds
 
 ### 5. ✅ Compilation Caching
+
 **Tools:** ccache (C/C++) + sccache (Rust)
 
 **Benefits:**
-- ccache: 60-80% faster C/C++ recompiles
-- sccache: 70-90% faster Rust recompiles
-- Persistent cache volumes configured
-- Environment variables set correctly
+
+-   ccache: 60-80% faster C/C++ recompiles
+-   sccache: 70-90% faster Rust recompiles
+-   Persistent cache volumes configured
+-   Environment variables set correctly
 
 ### 6. ✅ Archive Cleanup Script
+
 **File:** `scripts/utilities/archive-cleanup.sh`
 
 **Fixed Issues:**
-- Removed complex nested commands causing hangs
-- Added `--dry-run` mode for safe testing
-- Simplified logic with direct file operations
-- Proper error handling throughout
+
+-   Removed complex nested commands causing hangs
+-   Added `--dry-run` mode for safe testing
+-   Simplified logic with direct file operations
+-   Proper error handling throughout
 
 **What It Does:**
-- Moves old logs to `archives/2025-10/logs/`
-- Compresses tarballs (tar.gz → tar.xz, 50% smaller)
-- Removes 5.4GB Parrot ISO (can re-download)
-- Creates archive index with retention policy
+
+-   Moves old logs to `archives/2025-10/logs/`
+-   Compresses tarballs (tar.gz → tar.xz, 50% smaller)
+-   Removes 5.4GB Parrot ISO (can re-download)
+-   Creates archive index with retention policy
 
 ### 7. ✅ Documentation Suite
 
 **Files Created/Updated:**
-- `docker/README.md` - Master Docker documentation
-- `docker/build/BUILD_VERSIONS.md` - Package versions for reproducibility
-- `docker/PODMAN_ISSUE.md` - Current system limitations
-- `docs/03-build/BASE_IMAGE_ANALYSIS.md` - Base image selection rationale
-- `docs/03-build/COMPREHENSIVE_AUDIT_PRE_COMMIT.md` - Full optimization guide
-- `.dockerignore` - Excludes 14GB of unnecessary context
+
+-   `docker/README.md` - Master Docker documentation
+-   `docker/build/BUILD_VERSIONS.md` - Package versions for reproducibility
+-   `docker/PODMAN_ISSUE.md` - Current system limitations
+-   `docs/03-build/BASE_IMAGE_ANALYSIS.md` - Base image selection rationale
+-   `docs/03-build/COMPREHENSIVE_AUDIT_PRE_COMMIT.md` - Full optimization guide
+-   `.dockerignore` - Excludes 14GB of unnecessary context
 
 ### 8. ✅ Path Updates
+
 **File:** `scripts/utilities/safe-docker-build.sh`
 
-- Updated all paths from `/docker/` to `/docker/build/`
-- Maintains backwards compatibility
-- Clear error messages
+-   Updated all paths from `/docker/` to `/docker/build/`
+-   Maintains backwards compatibility
+-   Clear error messages
 
 ### 9. ✅ Legacy Code Management
+
 **Verified:** `linux-distribution/SynOS-Linux-Builder` already archived
 
-- 6.6GB moved to `archives/2025-10/legacy-builders/`
-- Current `linux-distribution/` only 3.3M (active packages)
-- Main build script does not use legacy builder
+-   6.6GB moved to `archives/2025-10/legacy-builders/`
+-   Current `linux-distribution/` only 3.3M (active packages)
+-   Main build script does not use legacy builder
 
 ---
 
 ## ⚠️ Known Limitations
 
 ### Podman Permission Issue
+
 **System:** Parrot OS 6.4 uses **Podman 4.3.1** (not Docker)
 
 **Problem:**
+
 ```
-Error: cannot set up namespace using "/usr/bin/newuidmap": 
+Error: cannot set up namespace using "/usr/bin/newuidmap":
 Operation not permitted
 ```
 
 **Impact:**
-- Cannot build Docker images without root
-- Docker isolation unavailable on current system
+
+-   Cannot build Docker images without root
+-   Docker isolation unavailable on current system
 
 **Mitigation:**
-- ✅ **Host has all tools natively** (debootstrap, xorriso, rustc, cargo, python3)
-- ✅ Can build directly on host with pre-flight checks
-- ✅ Docker files ready for CI/CD and other systems
+
+-   ✅ **Host has all tools natively** (debootstrap, xorriso, rustc, cargo, python3)
+-   ✅ Can build directly on host with pre-flight checks
+-   ✅ Docker files ready for CI/CD and other systems
 
 **See:** `docker/PODMAN_ISSUE.md` for workarounds
 
@@ -128,48 +147,55 @@ Operation not permitted
 ## 📊 Improvements Achieved
 
 ### Disk Space
-- **Saved:** 6.6GB (SynOS-Linux-Builder archived)
-- **Potential:** 5.4GB more (Parrot ISO, run cleanup script)
-- **Total:** ~12GB savings possible
+
+-   **Saved:** 6.6GB (SynOS-Linux-Builder archived)
+-   **Potential:** 5.4GB more (Parrot ISO, run cleanup script)
+-   **Total:** ~12GB savings possible
 
 ### Build Performance
-- **Docker image:** 60% smaller (835MB → 300MB)
-- **Rebuilds:** 50-70% faster (BuildKit caching)
-- **C/C++ recompiles:** 60-80% faster (ccache)
-- **Rust recompiles:** 70-90% faster (sccache)
-- **Context:** 90% faster (14GB excluded via .dockerignore)
+
+-   **Docker image:** 60% smaller (835MB → 300MB)
+-   **Rebuilds:** 50-70% faster (BuildKit caching)
+-   **C/C++ recompiles:** 60-80% faster (ccache)
+-   **Rust recompiles:** 70-90% faster (sccache)
+-   **Context:** 90% faster (14GB excluded via .dockerignore)
 
 ### Organization
-- **Docker systems:** Clear separation (build/services/dev)
-- **Documentation:** 7 comprehensive files created
-- **Scripts:** Cleaned and debugged (archive-cleanup.sh)
-- **Legacy code:** Properly archived
+
+-   **Docker systems:** Clear separation (build/services/dev)
+-   **Documentation:** 7 comprehensive files created
+-   **Scripts:** Cleaned and debugged (archive-cleanup.sh)
+-   **Legacy code:** Properly archived
 
 ### Security
-- **Build isolation:** Complete (when Docker available)
-- **Non-root user:** Default in containers
-- **Resource limits:** Prevents exhaustion
-- **Package versions:** Documented for reproducibility
+
+-   **Build isolation:** Complete (when Docker available)
+-   **Non-root user:** Default in containers
+-   **Resource limits:** Prevents exhaustion
+-   **Package versions:** Documented for reproducibility
 
 ---
 
 ## 🚀 Next Steps
 
 ### Immediate (Before Next Build)
+
 1. **Run archive cleanup:**
-   ```bash
-   ./scripts/utilities/archive-cleanup.sh  # Remove --dry-run flag
-   # Saves 5.4GB by removing Parrot ISO
-   ```
+
+    ```bash
+    ./scripts/utilities/archive-cleanup.sh  # Remove --dry-run flag
+    # Saves 5.4GB by removing Parrot ISO
+    ```
 
 2. **Implement pre-flight checks:**
-   ```bash
-   # Add to build-full-distribution.sh (optional but recommended)
-   ls /dev/ | wc -l  # Must be 178+
-   df -h / | grep -q "100G.*available"  # Need 100GB+
-   ```
+    ```bash
+    # Add to build-full-distribution.sh (optional but recommended)
+    ls /dev/ | wc -l  # Must be 178+
+    df -h / | grep -q "100G.*available"  # Need 100GB+
+    ```
 
 ### Future Enhancements
+
 1. **Fix Podman permissions** (if needed for other projects)
 2. **Migrate deployment/docker/ → docker/services/** (consolidation)
 3. **Add CI/CD integration** (GitHub Actions with Docker)
@@ -178,31 +204,35 @@ Operation not permitted
 6. **Reproducible builds** (pin all versions, set SOURCE_DATE_EPOCH)
 
 ### Testing
+
 1. **Test archive cleanup:**
-   ```bash
-   ./scripts/utilities/archive-cleanup.sh --dry-run  # Preview
-   ./scripts/utilities/archive-cleanup.sh            # Actually run
-   ```
+
+    ```bash
+    ./scripts/utilities/archive-cleanup.sh --dry-run  # Preview
+    ./scripts/utilities/archive-cleanup.sh            # Actually run
+    ```
 
 2. **Test host build:**
-   ```bash
-   # Monitor /dev in another terminal
-   watch -n 5 'ls /dev/ | wc -l'
-   
-   # Run build
-   ./scripts/build-full-distribution.sh --clean --fresh
-   ```
+
+    ```bash
+    # Monitor /dev in another terminal
+    watch -n 5 'ls /dev/ | wc -l'
+
+    # Run build
+    ./scripts/build-full-distribution.sh --clean --fresh
+    ```
 
 3. **On Docker systems:**
-   ```bash
-   ./scripts/utilities/safe-docker-build.sh --auto --clean
-   ```
+    ```bash
+    ./scripts/utilities/safe-docker-build.sh --auto --clean
+    ```
 
 ---
 
 ## 📁 Files Changed
 
 ### Created
+
 ```
 ✅ docker/build/Dockerfile (189 lines, multi-stage)
 ✅ docker/build/docker-compose.yml (75 lines, BuildKit)
@@ -216,12 +246,14 @@ Operation not permitted
 ```
 
 ### Modified
+
 ```
 ✅ scripts/utilities/safe-docker-build.sh (updated paths)
 ✅ docs/03-build/COMPREHENSIVE_AUDIT_PRE_COMMIT.md (updated)
 ```
 
 ### Archived
+
 ```
 ✅ linux-distribution/SynOS-Linux-Builder/ → archives/2025-10/legacy-builders/ (6.6GB)
 ```
@@ -230,19 +262,19 @@ Operation not permitted
 
 ## 🎯 Commit Checklist
 
-- [x] Base image analysis documented
-- [x] Docker consolidation (Option C) implemented
-- [x] Multi-stage Dockerfile created
-- [x] BuildKit caching configured
-- [x] ccache/sccache integrated
-- [x] Archive cleanup script fixed
-- [x] Package versions documented
-- [x] Legacy code archived
-- [x] Path updates completed
-- [x] Comprehensive documentation
-- [x] .dockerignore created
-- [x] Podman limitations documented
-- [ ] Git commit and push
+-   [x] Base image analysis documented
+-   [x] Docker consolidation (Option C) implemented
+-   [x] Multi-stage Dockerfile created
+-   [x] BuildKit caching configured
+-   [x] ccache/sccache integrated
+-   [x] Archive cleanup script fixed
+-   [x] Package versions documented
+-   [x] Legacy code archived
+-   [x] Path updates completed
+-   [x] Comprehensive documentation
+-   [x] .dockerignore created
+-   [x] Podman limitations documented
+-   [ ] Git commit and push
 
 ---
 

@@ -1,6 +1,29 @@
 #!/bin/bash
 ################################################################################
-# Archive Cleanup Script for SynOS
+# Archive Clean# Remove Parrot ISO (may need sudo if owned by root)
+echo ""
+echo "🗑️  Removing Parrot remaster ISO..."
+if [ -f "$BUILD_DIR/parrot-remaster/Parrot-security-6.4_amd64.iso" ]; then
+    if [ "$DRY_RUN" = false ]; then
+        # Check if file is owned by root
+        if [ "$(stat -c '%U' "$BUILD_DIR/parrot-remaster/Parrot-security-6.4_amd64.iso" 2>/dev/null)" = "root" ]; then
+            echo "  ⚠️  File owned by root, using sudo..."
+            sudo rm -f "$BUILD_DIR/parrot-remaster/Parrot-security-6.4_amd64.iso" 2>/dev/null || true
+        else
+            rm -f "$BUILD_DIR/parrot-remaster/Parrot-security-6.4_amd64.iso" 2>/dev/null || true
+        fi
+        echo "  ✓ Removed Parrot ISO (5.4GB saved)"
+    else
+        SIZE=$(du -sh "$BUILD_DIR/parrot-remaster/Parrot-security-6.4_amd64.iso" 2>/dev/null | cut -f1 || echo "unknown")
+        OWNER=$(stat -c '%U' "$BUILD_DIR/parrot-remaster/Parrot-security-6.4_amd64.iso" 2>/dev/null || echo "unknown")
+        echo "  [DRY-RUN] Would remove Parrot ISO ($SIZE, owner: $OWNER)"
+        if [ "$OWNER" = "root" ]; then
+            echo "  [DRY-RUN] Would use sudo (file owned by root)"
+        fi
+    fi
+else
+    echo "  • Parrot ISO not found"
+fiSynOS
 # Compresses old logs, tarballs, and removes redundant build artifacts
 # Expected savings: 3-4GB
 #
