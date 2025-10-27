@@ -1,53 +1,17 @@
+# SynOS Cargo Audit Configuration
+# Minimal working configuration for cargo-audit 0.21+
+
 [advisories]
-db-path = "~/.cargo/advisory-db"
-db-urls = ["https://github.com/RustSec/advisory-db"]
-ignore = []  # Add CVE IDs here if needed for exemptions
-severity-threshold = "low"  # Report all vulnerabilities including low severity
+ignore = []
 
-[bans]
-# Deny use of unsafe dependencies in production
-deny = [
-    { name = "openssl", version = "*" },  # Use rustls instead
-    { name = "native-tls", version = "*" },  # Use rustls instead
-]
-# Allow certain crates that might be flagged
-allow = [
-    { name = "ring", version = "*" },    # Cryptographic library
-    { name = "untrusted", version = "*" }, # Used by ring
-]
-# Consolidate duplicate dependencies
-multiple-versions = "warn"  # Changed from deny to warn to allow necessary duplicates
-skip = [
-    { name = "bitflags", version = "1.3.2" },  # Allow v1 for legacy compatibility
-    { name = "nix", version = "0.26.4" }       # Allow older nix version temporarily
-]
-skip-tree = [
-    { name = "libbpf-rs", version = "0.21.2" }  # Skip tree analysis for this complex dep
-]
-
-[licenses]
-# Only allow specific license types
-allow = [
-    "MIT", "Apache-2.0", "BSD-3-Clause", "ISC", "Unicode-DFS-2016", "BSD-2-Clause"
-]
-deny = [
-    "GPL-3.0", "AGPL-3.0"  # Avoid strong copyleft licenses
-]
-# Allow dual licensing
-multiple-versions = "warn"
-
-[sources]
-# Ensure all crates come from trusted sources
-allow-registry = ["https://github.com/rust-lang/crates.io-index"]
-allow-git = []  # Be restrictive about git dependencies
+[database]
+url = "https://github.com/RustSec/advisory-db"
+fetch = true
+stale = false
 
 [output]
-format = "json"
+format = "terminal"
 quiet = false
-
-[target]
-arch = "x86_64"
-os = "linux"
 
 [yanked]
 enabled = true

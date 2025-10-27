@@ -226,7 +226,9 @@ data:
           scrape_interval: "15s"
         grafana:
           enabled: true
-          admin_password: "secure-password-change-me"
+          # WARNING: CHANGE THIS PASSWORD BEFORE DEPLOYMENT!
+          # Use: kubectl create secret generic grafana-admin --from-literal=password=$(openssl rand -base64 32)
+          admin_password: "CHANGE_ME_BEFORE_DEPLOYMENT"
         distributed_tracing:
           enabled: true
           jaeger_endpoint: "http://jaeger-service:14268"
