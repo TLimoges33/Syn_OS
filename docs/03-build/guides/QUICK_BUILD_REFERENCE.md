@@ -1,37 +1,41 @@
 # SynOS v1.0 - QUICK BUILD REFERENCE
 
-## ✅ Status: FIXED & READY TO BUILD
+**Updated:** October 28, 2025
+
+## ✅ Status: Foundation Ready | AI Kernel Not Started
+
+---
+
+## ⚠️ What This Builds
+
+**Foundation ISO (Production Ready):**
+- ✅ ParrotOS 6.4 base with 500+ security tools
+- ✅ Stock Debian kernel 6.1.0-40 (NOT custom AI kernel)
+- ✅ Build system and branding complete
+- ⚠️ AI daemon binaries (infrastructure only, no ML engines)
+- ⚠️ Rust kernel source (educational, not used for boot)
+
+**AI Kernel Customization:** 6-month roadmap, not yet started
 
 ---
 
 ## The Single Command
 
 ```bash
-cd /home/diablorain/Syn_OS && sudo ./scripts/BUILD-COMPLETE-SYNOS-DISTRIBUTION.sh
+cd /home/diablorain/Syn_OS && sudo ./scripts/02-build/core/build-synos-ultimate-iso.sh
 ```
 
 ---
 
-## What Was Fixed
+## What's Actually Included
 
-| Issue                        | Fix                                   |
-| ---------------------------- | ------------------------------------- |
-| Security tools not in Debian | Install via Kali repos in chroot hook |
-| Missing Rust projects        | Enhanced to build ALL 42 projects     |
-| Repo timing issue            | Kali added AFTER base system ready    |
-| No verification              | Added Phase 16 to verify ISO          |
-
----
-
-## What's Included (100% of Your Work)
-
--   ✅ **Kernel**: 66 KB custom kernel
--   ✅ **Binaries**: All 10 compiled executables
--   ✅ **Source**: All 133,649 lines at `/usr/src/synos`
--   ✅ **Security Tools**: 100+ from Kali repos
--   ✅ **AI Engine**: PyTorch + transformers
--   ✅ **Desktop**: MATE customized
--   ✅ **Docs**: All 1,050 files
+-   ✅ **Kernel**: Stock Debian 6.1.0-40 (AI customization: 0%)
+-   ✅ **Binaries**: AI daemon infrastructure (no ML engines)
+-   ✅ **Source**: Research code at `/usr/src/synos` (educational)
+-   ✅ **Security Tools**: 500+ from ParrotOS/Kali/BlackArch
+-   ⚠️ **AI Engine**: FFI bindings only (TFLite/ONNX not installed)
+-   ✅ **Desktop**: MATE customized with Red Phoenix branding
+-   ✅ **Docs**: Complete documentation
 
 ---
 
